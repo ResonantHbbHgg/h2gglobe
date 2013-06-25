@@ -1,0 +1,8 @@
+*.o
+*.so
+*.d
+LoopAllDict.*
+dict.*
+TmpLinkDef.h
+.extraTags
+
