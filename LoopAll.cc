@@ -652,7 +652,8 @@ void LoopAll::Loop(Int_t a) {
   TreesPar[a]->GetEntry(0);
 
   // Loop over events
-  for (Int_t jentry=0; jentry<nentries;jentry++) {
+  for (Int_t jentry=0; jentry<nentries;jentry++) { 
+//  for (Int_t jentry=0; jentry<10;jentry++) { // DEBUG OLIVIER 
     
     if(jentry%10000==0) {
       cout << "Entry: "<<jentry << " / "<<nentries <<  " "  ;

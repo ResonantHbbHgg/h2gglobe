@@ -37,7 +37,7 @@ bool InterferenceSmearer::smearEvent( float & weight, const TLorentzVector & p4,
   else if (sample_type == -73) genMassPoint=124;
   else if (sample_type == -77) genMassPoint=126;
   
-  else if (sample_type <-80) assert(0);   // this is the case of non-existing sample
+  else if (sample_type <-8000) assert(0);   // this is the case of non-existing sample
   else    return true;                     // this is the case of backgrounds
 
   weight = 1.-(correction_+syst_shift*error_);
