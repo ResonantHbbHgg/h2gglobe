@@ -3707,6 +3707,23 @@ void LoopAll::DefineUserBranches()
     BRANCH_DICT(gh_vh1_pdgid);
     BRANCH_DICT(gh_vh2_pdgid);
 //  BRANCH_DICT(METcorrected); //met at analysis step
+    BRANCH_DICT(gr_mcg1);
+    BRANCH_DICT(gr_mcg2);
+    BRANCH_DICT(gr_mcb1);
+    BRANCH_DICT(gr_mcb2);
+    BRANCH_DICT(gr_gen2reco_g1);
+    BRANCH_DICT(gr_gen2reco_g2);
+    BRANCH_DICT(gr_gen2reco_b1);
+    BRANCH_DICT(gr_gen2reco_b2);
+    BRANCH_DICT(gr_radion_p4);
+    BRANCH_DICT(gr_hgg_p4);
+    BRANCH_DICT(gr_hbb_p4);
+    BRANCH_DICT(gr_g1_p4);
+    BRANCH_DICT(gr_g2_p4);
+    BRANCH_DICT(gr_b1_p4);
+    BRANCH_DICT(gr_b2_p4);
+    BRANCH_DICT(gr_j1_p4);
+    BRANCH_DICT(gr_j2_p4);
     BRANCH_DICT(gh_higgs_p4);
     BRANCH_DICT(gh_pho1_p4);
     BRANCH_DICT(gh_pho2_p4);
@@ -3896,6 +3913,70 @@ std::pair<int, int> LoopAll::Select2HighestPtJets(TLorentzVector& leadpho, TLore
         }
     }
 
+    return myJets;
+}
+
+vector<int> LoopAll::SelectJets(const TLorentzVector& leadpho, const TLorentzVector& subleadpho, Bool_t * jetid_flags)
+{
+    float dr2pho = 0.5;
+    TLorentzVector* j1p4;
+    TLorentzVector* j2p4;
+    float j1pt=-1.;
+    float j2pt=-1.;
+		vector<int> myJets;
+		myJets.clear();
+
+    for(int j1_i=0; j1_i<jet_algoPF1_n; j1_i++){
+        j1p4 = (TLorentzVector*) jet_algoPF1_p4->At(j1_i);
+        if(GFDEBUG) std::cout<<"jet "<<j1_i<<std::endl;
+        if(GFDEBUG) std::cout<<"passing pu id?"<<std::endl;
+ //       if(jetid_flags != 0 && !jetid_flags[j1_i]) continue; 
+        if(GFDEBUG) std::cout<<"within eta 2.5?"<<std::endl;
+        if(fabs(j1p4->Eta()) > 2.5) continue;
+        if(GFDEBUG) std::cout<<"close to leadpho?"<<std::endl;
+        if(j1p4->DeltaR(leadpho) < dr2pho) continue;
+        if(GFDEBUG) std::cout<<"close to subleadpho?"<<std::endl;
+        if(j1p4->DeltaR(subleadpho) < dr2pho) continue;
+        j1pt=j1p4->Pt();
+				if(j1pt < 25) continue;
+        if(GFDEBUG) std::cout<<"passing all single jet requirements with pt"<<j1pt<<std::endl;
+			myJets.push_back(j1_i);
+    }
+
+// now sort the vector by jet pt
+  int tmp = myJets[0];
+  int max = myJets[0];
+	float maxpt = -1.;
+	if(GFDEBUG) cout << "jet_algoPF1_n= "<< jet_algoPF1_n << "\tmyJets.size()= " << myJets.size() << endl;
+  for(int i=0;i<(int)myJets.size()-1;i++) {
+		j1p4 = (TLorentzVector*) jet_algoPF1_p4->At(myJets[i]);
+		j1pt = (float)j1p4->Pt();
+    max = i;
+		maxpt = j1pt;
+		if(GFDEBUG) cout << "i= " << i << "\tmyJets[i]= " << myJets[i] << "\tj1pt= " << j1pt << endl;
+    for(int x=i+1; x<(int)myJets.size(); x++) {
+			j2p4 = (TLorentzVector*) jet_algoPF1_p4->At(myJets[x]);
+    	j2pt = (float)j2p4->Pt();
+			if(GFDEBUG) cout << "\tx= " << x << "\tmyJets[x]= " << myJets[x] << "j2pt= " << j2pt << endl;
+      if(j2pt > maxpt) {
+        max = x;
+				maxpt = j2pt;
+				if(GFDEBUG) cout << "## New Max found: max= " << max << "\tmyJets[max]= " << myJets[max] << endl;
+				
+      }
+    }
+    tmp = myJets[i];
+    myJets[i] = myJets[max];
+    myJets[max] = tmp;
+  }
+		if(GFDEBUG)
+		{
+			for(int i=0 ; i< myJets.size() ; i++)
+			{
+				j1p4 = (TLorentzVector*) jet_algoPF1_p4->At(myJets[i]);
+				cout << "myJets[" << i << "]= " << myJets[i] << "\tj1p4->Pt()= " << j1p4->Pt() << endl;
+			}
+		}
     return myJets;
 }
 
@@ -4425,8 +4506,9 @@ int LoopAll::FindElectronVertex(int el_ind){
 
 //--- RECO-MC JET MATCHING --------------------------------------------------------------------------------------------------------
 void LoopAll::doJetMatching(TClonesArray & reco, TClonesArray & gen, 
-                            Bool_t  * match_flag, Bool_t * match_vbf_flag,  
-                            Float_t * match_pt,   Float_t * match_dr,      Float_t maxDr )
+                            Bool_t  * match_flag, Bool_t * match_vbf_flag,
+                            Float_t * match_pt,   Float_t * match_dr,   Float_t maxDr,
+														Bool_t * match_radion_flag)
 {
     int ngen  = gen.GetEntries();
     int nreco = reco.GetEntries();
@@ -4434,6 +4516,7 @@ void LoopAll::doJetMatching(TClonesArray & reco, TClonesArray & gen,
     for(int ir=0; ir<nreco; ++ir) {
         match_flag[ir] = false;
         match_vbf_flag[ir] = false;
+        if(match_radion_flag!=0) match_radion_flag[ir] = false;
         match_pt[ir] = 0.;
         match_dr[ir] = 999.;
         TLorentzVector & recop4 = *(TLorentzVector*)reco.At(ir);
@@ -4449,6 +4532,17 @@ void LoopAll::doJetMatching(TClonesArray & reco, TClonesArray & gen,
                     match_vbf_flag[ir] = ( gh_vbfq1_pdgid != 0 && recop4.DeltaR( *(TLorentzVector*)gh_vbfq1_p4->At(0) ) < maxDr ||
                                            gh_vbfq2_pdgid != 0 && recop4.DeltaR( *(TLorentzVector*)gh_vbfq2_p4->At(0) ) < maxDr );
                 }
+								if( (match_radion_flag!=0) && (!match_radion_flag[ir]) && (itype[current]<-250))
+								{
+//									if(gr_mcb1 != -1) cout << "ig= " << ig << "\trecop4.DeltaR( *(TLorentzVector*)gr_b1_p4->At(0) )= " << recop4.DeltaR( *(TLorentzVector*)gr_b1_p4->At(0) ) << endl;
+//									if(gr_mcb2 != -1) cout << "ig= " << ig << "\trecop4.DeltaR( *(TLorentzVector*)gr_b2_p4->At(0) )= " << recop4.DeltaR( *(TLorentzVector*)gr_b2_p4->At(0) ) << endl;
+									match_radion_flag[ir] = (
+										(gr_mcb1 != -1 && recop4.DeltaR( *(TLorentzVector*)gr_b1_p4->At(0) ) < maxDr)
+										||
+										(gr_mcb2 != -1 && recop4.DeltaR( *(TLorentzVector*)gr_b2_p4->At(0) ) < maxDr)
+									);
+//									cout << "match_radion_flag[" << ir << "]= " << match_radion_flag[ir] << endl;
+								}
             }
         }
     }
@@ -4510,9 +4604,11 @@ bool LoopAll::FindMCHiggsPhotons(int& higgsind, int& mc1, int& mc2, int& i1, int
     int pho1stat3 = -1;
     int pho2stat3 = -1;
   
+//		cout << "Printing out gen information" << endl;
     for ( int i = 0; i< gp_n ; i++ ){
         int pid        = gp_pdgid[i];
         int status     = gp_status[i];
+//				cout << "i= " << i << "\tpid= " << pid << "\tstatus= " << status << "\tgp_mother= " << gp_mother[i] << endl;
     
         if (pid == 25) {
             if(status==2) higgsstat2=i;
@@ -4586,6 +4682,224 @@ bool LoopAll::FindMCHiggsPhotons(int& higgsind, int& mc1, int& mc2, int& i1, int
     return is_mcmatched;
 }
 
+// Find Radion MC system (Olivier)
+
+bool LoopAll::FindMCRadion(int& radionInd, int& ggHiggsInd, int& bbHiggsInd, int& mcg1, int& mcg2, int& mcb1, int& mcb2, int& mcj1, int& mcj2, int& g1, int& g2, int& j1, int& j2)
+{
+	// radionInd= index of mc radion
+	// ggHiggsInd= index of mc higgs going to gg
+	// bbHiggsInd= index of mc higgs going to bb
+	// mcg1, mcg2= index of mc gamma coming from one higgs
+	// mcb1, mcb2= index of mc b-quarks coming from one higgs
+	// mcj1, mcj2= index of mc genjet associated with mc b-quark
+	// g1, g2, j1, j2= index of reco gamma/jet matched to mc objects
+//		cout << "Print initial information" << endl;
+//		cout << "radionInd= " << radionInd << "\tggHiggsInd= " << ggHiggsInd << "\tbbHiggsInd= " << bbHiggsInd << "\tmcg1= " << mcg1 << "\tmcg2= " << mcg2 << "\tmcb1= " << mcb1 << "\tmcb2= " << mcb2 << "\tmcj1= " << mcj1 << "\tmcj2= " << mcj2 << "\tg1= " << g1 << "\tg2= " << g2 << "\tj1= " << j1 << "\tj2= " << j2 << endl;
+
+	// initialisation
+		bool is_mcmatched = false;
+		int radionStat2, radionStat3;
+		int ggHiggsStat2, ggHiggsStat3;
+		int bbHiggsStat2, bbHiggsStat3;
+		int g1stat3, g2stat3;
+		int b1stat3, b2stat3;
+		radionStat2=radionStat3=ggHiggsStat2=ggHiggsStat3=bbHiggsStat2=bbHiggsStat3=g1stat3=g2stat3=b1stat3=b2stat3 = -1;
+	
+//		cout << "Printing out gen information" << endl;
+		// Looping over gen particles
+		for ( int i = 0; i< gp_n ; i++ ){
+				int pid				= gp_pdgid[i];
+				int status		 = gp_status[i];
+//				cout << "i= " << i << "\tpid= " << pid << "\tstatus= " << status << "\tgp_mother= " << gp_mother[i] << endl;
+
+				// if particle is the radion (35) or the graviton (39)
+				if( (pid == 35) || (pid == 39) ){
+					if(status==2) radionStat2=i;
+					if(status==3) radionStat3=radionInd=i;
+					continue;
+				}
+
+				// if particle is a higgs, then let's say the first one is going to gg the last one to bb, re-ordering will be done just after
+				if (pid == 25) {
+						if(status==2 && ggHiggsStat2<0) ggHiggsStat2=i;
+						else if(status==2 && bbHiggsStat2<0) bbHiggsStat2=i;
+						if(status==3 && ggHiggsStat3<0) ggHiggsStat3=ggHiggsInd=i;
+						else if(status==3 && bbHiggsStat3<0) bbHiggsStat3=bbHiggsInd=i;
+						continue;
+				}
+
+				// if particle is a hard photon, store the index and possibly reshuffle the ggHiggs/bbHiggs attribution
+				if (pid == 22 && status==3 && (gp_mother[i]==ggHiggsStat3 || gp_mother[i]==bbHiggsStat3)) {
+						// first re-assign correctly ggHiggs and bbHiggs, if need be
+						if(gp_mother[i]==bbHiggsStat3){
+							int tmp_i = ggHiggsInd;
+							int tmp_s2 = ggHiggsStat2;
+							int tmp_s3 = ggHiggsStat3;
+							ggHiggsInd = bbHiggsInd;
+							ggHiggsStat2 = bbHiggsStat2;
+							ggHiggsStat3 = bbHiggsStat3;
+							bbHiggsInd = tmp_i;
+							bbHiggsStat2 = tmp_s2;
+							bbHiggsStat3 = tmp_s3;
+						}
+						// store photon indexes
+						if(g1stat3==-1) g1stat3=i;
+						else if(g2stat3==-1) g2stat3=i;
+						continue;
+				}
+
+				// if particle is a b-quark, store the indexes
+				if (fabs(pid) == 5 && status==3 && (gp_mother[i]==ggHiggsStat3 || gp_mother[i]==bbHiggsStat3)){
+						// first re-assign correctly ggHiggs and bbHiggs, if need be
+						if(gp_mother[i]==ggHiggsStat3){
+							int tmp_i = ggHiggsInd;
+							int tmp_s2 = ggHiggsStat2;
+							int tmp_s3 = ggHiggsStat3;
+							ggHiggsInd = bbHiggsInd;
+							ggHiggsStat2 = bbHiggsStat2;
+							ggHiggsStat3 = bbHiggsStat3;
+							bbHiggsInd = tmp_i;
+							bbHiggsStat2 = tmp_s2;
+							bbHiggsStat3 = tmp_s3;
+						}
+						// store b-quark indexes
+						if(b1stat3==-1) b1stat3=mcb1=i;
+						else if(b2stat3==-1) b2stat3=mcb2=i;
+						continue;
+				}
+
+				// If the particle is one of the final mc photons, then store info
+				if( pid==22 && status==1 ){
+					if ( (gp_mother[i]==g1stat3 || gp_mother[i]==g2stat3) && mcg1 < 0 ) { mcg1	= i; }
+					else if ( (gp_mother[i]==g1stat3 || gp_mother[i]==g2stat3) && mcg2 < 0 ) { mcg2	= i; break; }
+				}
+		}
+
+		// If the higgses have not been found... return false !
+/*		if (ggHiggsStat2==-1 || bbHiggsStat2==-1)
+		{
+			cout << "##### #####" << endl;
+			cout << "##### WARNING, THIS IS A SIGNAL SAMPLE AND SIGNAL MATCHING DID NOT SUCCEED... SOMETHING IS GOING WRONG #####" << endl;
+			cout << "##### #####" << endl;
+			return is_mcmatched;
+		}*/
+
+		// Loop over the genjets to match them to the original b-quarks
+		TLorentzVector* b1 = (TLorentzVector*)gp_p4->At(mcb1);
+		TLorentzVector* b2 = (TLorentzVector*)gp_p4->At(mcb2);
+		double drb1min = 100.0;
+		double drb2min = 100.0;
+
+//		cout << "mcb1= " << mcb1 << "\tPt= " << b1->Pt() << "\tM= " << b1->M() << "\tE= " << b1->Energy() << endl;
+//		cout << "mcb2= " << mcb2 << "\tPt= " << b2->Pt() << "\tM= " << b2->M() << "\tE= " << b2->Energy() << endl;
+
+		for(int j=0 ; j < genjet_algo1_n; j++)
+		{
+			TLorentzVector *jet = (TLorentzVector*)genjet_algo1_p4->At(j);
+//			cout << "j= " << j << "\tPt= " << jet->Pt() << "\tM= " << jet->M() << "\tE= " << jet->Energy() << "\tDR= " << jet->DeltaR(*b1) << " ; " << jet->DeltaR(*b2) << endl;
+			double drb1 = jet->DeltaR(*b1);
+			double drb2 = jet->DeltaR(*b2);
+			if( drb1 < drb1min ) {drb1min = drb1; mcj1 = j;}
+			if( drb2 < drb2min ) {drb2min = drb2; mcj2 = j;}
+
+		}
+
+		// if one matching failed, then return false
+//NOTE: Commented since we keep the reco object the closest to gen info, without min requirement or ambiguity matching for now, so it does not crash/matter to go deeper in this function
+//		if (mcg1 < 0 || mcg2 < 0) return is_mcmatched;
+//		if (mcb1 < 0 || mcb2 < 0) return is_mcmatched;
+//		if (mcj1 < 0 || mcj2 < 0) return is_mcmatched;
+
+// FIXME: not sure if any of the below is useful in this function
+		TLorentzVector* radion2 = (TLorentzVector*)gp_p4->At(radionStat2);
+		TLorentzVector* radion3 = (TLorentzVector*)gp_p4->At(radionStat3);
+		TLorentzVector* ggHiggs2 = (TLorentzVector*)gp_p4->At(ggHiggsStat2);
+		TLorentzVector* ggHiggs3 = (TLorentzVector*)gp_p4->At(ggHiggsStat3);
+		TLorentzVector* bbHiggs2 = (TLorentzVector*)gp_p4->At(bbHiggsStat2);
+		TLorentzVector* bbHiggs3 = (TLorentzVector*)gp_p4->At(bbHiggsStat3);
+
+		TLorentzVector *mcVg1 = (TLorentzVector*)gp_p4->At(mcg1);	
+		TLorentzVector *mcVg2 = (TLorentzVector*)gp_p4->At(mcg2);	
+		TLorentzVector *mcVb1 = (TLorentzVector*)gp_p4->At(mcb1);	
+		TLorentzVector *mcVb2 = (TLorentzVector*)gp_p4->At(mcb2);	
+		TLorentzVector *mcVj1 = (TLorentzVector*)genjet_algo1_p4->At(mcj1);	
+		TLorentzVector *mcVj2 = (TLorentzVector*)genjet_algo1_p4->At(mcj2);	
+		
+		TLorentzVector higgs_gg = *mcVg1 + *mcVg2;
+		TLorentzVector higgs_bb = *mcVb1 + *mcVb2;
+		TLorentzVector higgs_jj = *mcVj1 + *mcVj2;
+
+		// Now trying to match reco objects !
+		// FIXME need to implement amiguity resolution...
+		// First photons
+		int index1 = -100, index2 = -100;
+		double dr1min = 100.;
+		double dr2min = 100.;
+		for (int i = 0; i < pho_n; i++){
+				TVector3 *scpos = (TVector3*) pho_calopos -> At(i);
+				double dr1 = scpos->DeltaR(mcVg1->Vect());
+				if (dr1 < dr1min) { dr1min = dr1; index1 = i; }
+				double dr2 = scpos->DeltaR(mcVg2->Vect());
+				if (dr2 < dr2min) { dr2min = dr2; index2 = i; }
+		}
+		g1 = index1;
+		g2 = index2;
+/*
+		if(index1!=-100 && index2!=-100){
+				TLorentzVector *photon1 = (TLorentzVector*)pho_p4->At(index1);
+				TLorentzVector *photon2 = (TLorentzVector*)pho_p4->At(index2);
+				// order photons by pt
+				if (photon1->Pt() > photon2->Pt()) {
+						g1 = index1;
+						g2 = index2;
+				} else {
+						g1 = index2;
+						g2 = index1;
+				}
+//				is_mcmatched	 = (dr1min < 0.15) && (dr2min< 0.15);
+		} else if(index1!=-100 || index2!=-100) {
+				cout << "##### #####" << endl;
+				cout << "##### WARNING, THIS IS A SIGNAL SAMPLE AND SIGNAL MATCHING DID NOT SUCCEED... SOMETHING IS GOING WRONG #####" << endl;
+				cout << "##### #####" << endl;
+				g1 = std::max(index1,index2);
+		}		
+*/
+		// Now jets
+		index1 = -100; index2 = -100;
+		dr1min = 100.; dr2min = 100.;
+		vector<int> jets;
+
+		if( g1 != -100 && g2 != -100 )
+		{			 
+			TLorentzVector *p1 = (TLorentzVector*)pho_p4->At(g1);
+			TLorentzVector *p2 = (TLorentzVector*)pho_p4->At(g2);
+			jets = SelectJets(*p1, *p2);
+			// loop over jet collection, perform matching
+			for( int k = 0 ; k < jets.size() ; k++ )
+			{
+				TLorentzVector *jet = (TLorentzVector*)jet_algoPF1_p4->At(jets[k]);
+				double dr1 = jet->DeltaR(*mcVb1);
+				if (dr1 < dr1min) { dr1min = dr1; index1 = k; }
+				double dr2 = jet->DeltaR(*mcVb2);
+				if (dr2 < dr2min) { dr2min = dr2; index2 = k; }
+//				cout << "k= " << k << "\tPt= " << jet->Pt() << "\tM= " << jet->M() << "\tE= " << jet->Energy() << "\tDR= " << dr1 << " ; " << dr2 << endl;				
+			}
+/*		} else {
+			cout << "##### #####" << endl;
+			cout << "##### WARNING, THIS IS A SIGNAL SAMPLE AND SIGNAL MATCHING DID NOT SUCCEED... SOMETHING IS GOING WRONG #####" << endl;
+			cout << "##### #####" << endl;*/
+		}
+
+		j1 = index1;
+		j2 = index2;
+
+//		cout << "Print final information" << endl;
+//		cout << "radionInd= " << radionInd << "\tggHiggsInd= " << ggHiggsInd << "\tbbHiggsInd= " << bbHiggsInd << "\tmcg1= " << mcg1 << "\tmcg2= " << mcg2 << "\tmcb1= " << mcb1 << "\tmcb2= " << mcb2 << "\tmcj1= " << mcj1 << "\tmcj2= " << mcj2 << "\tg1= " << g1 << "\tg2= " << g2 << "\tj1= " << j1 << "\tj2= " << j2 << endl;
+
+		return is_mcmatched;
+
+}
+
 
 //--- GEN-VBF MATCHING --------------------------------------------------------------------------------------------------------
 bool LoopAll::FindMCVBF(int higgsind, int& vbfq1, int& vbfq2 )
@@ -4643,6 +4957,40 @@ void LoopAll::FillMuonGsfTracks() {
     for (int indel=0; indel<el_std_n; indel++) if (mu_glo_tkind[indmu]==el_std_tkind[indel]) hasgsftrack=true;
     mu_glo_hasgsftrack[indmu]=int(hasgsftrack);
   }
+}
+
+
+// Nicolas gen particle info
+Int_t LoopAll::GenParticleInfo(Int_t ipho, Int_t vtxind, float dRmax){
+
+  //cout << "GenParticleInfo" << endl;
+
+  Int_t gpinfo = -1;
+
+  TLorentzVector photon_p4 = get_pho_p4( ipho, vtxind );
+
+  for (Int_t i=0; i<gp_n; i++){
+
+    TLorentzVector* genpart_p4 = (TLorentzVector*)gp_p4->At(i);
+
+    if (gp_status[i]==1 && gp_pdgid[i]==22 && genpart_p4->Pt()>0.){
+
+      double deta = fabs(photon_p4.Eta() - genpart_p4->Eta());
+      double dphi = fabs(photon_p4.Phi() - genpart_p4->Phi());
+      if(dphi > TMath::Pi())dphi = TMath::TwoPi() - dphi;
+      double deltaR = sqrt(deta*deta + dphi*dphi);
+
+      if (deltaR<dRmax && gp_pdgid[i]==22){
+        if (gp_pdgid[gp_mother[i]]==22) gpinfo = 1;
+        if (abs(gp_pdgid[gp_mother[i]])<=6 || gp_pdgid[gp_mother[i]]==21) gpinfo = 0;
+        //else gpinfo = -1; 
+      }
+    }
+  }
+
+  //cout << "gpinfo="<<gpinfo<<endl;
+
+  return gpinfo;
 }
 
 

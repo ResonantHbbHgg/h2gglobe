@@ -351,7 +351,9 @@ class PhotonAnalysis : public BaseAnalysis
     void PreselectPhotons(LoopAll& l, int jentry);
     float GetSmearSigma(float eta, float r9, int epoch=0);
 
+    void SetNullRadion(LoopAll& l);
     void SetNullHiggs(LoopAll& l);
+    bool FindRadionObjects(LoopAll& l);
     bool FindHiggsObjects(LoopAll& l);
     Bool_t GenMatchedPhoton(LoopAll& l, int ipho);
 

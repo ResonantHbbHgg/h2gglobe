@@ -378,16 +378,6 @@ hlt_n
 hlt_candpath
 hlt_path_names_HLT
 hlt_p4
-#### l1emiso_n
-#### l1emiso_et
-#### l1emiso_eta
-#### l1emiso_phi
-#### l1emnoniso_n
-#### l1emnoniso_et
-#### l1emnoniso_eta
-#### l1emnoniso_phi
-#### l1bits_phy
-#### l1_labels
 
 # Jets
 jet_algoPF1_n
@@ -424,48 +414,30 @@ jet_algoPF1_cutbased_wp_level_ext
 jet_algoPF1_full_mva_ext
 jet_algoPF1_simple_mva_ext
 
+#B-tagging
 jet_algoPF1_csvBtag
 jet_algoPF1_csvMvaBtag
 jet_algoPF1_jetProbBtag
 jet_algoPF1_tcheBtag
+#Variables for jet energy regression
+jet_algoPF1_ptD
+jet_algoPF1_nSecondaryVertices
+jet_algoPF1_secVtxPt
+jet_algoPF1_secVtx3dL
+jet_algoPF1_secVtx3deL
+jet_algoPF1_emfrac
+jet_algoPF1_hadfrac
+# extra
+jet_algoPF1_ntk
+jet_algoPF1_nNeutrals
+jet_algoPF1_nCharged
+jet_algoPF1_axis1
+jet_algoPF1_axis2
+jet_algoPF1_pull
+jet_algoPF1_Rchg
+jet_algoPF1_Rneutral
+jet_algoPF1_R
 
-#jet_algoPF2_n
-#jet_algoPF2_erescale
-#jet_algoPF2_p4
-#jet_algoPF2_beta
-#jet_algoPF2_betaStar
-#jet_algoPF2_betaStarClassic
-#jet_algoPF2_dR2Mean
-#jet_algoPF2_dRMean
-#jet_algoPF2_dZ
-#jet_algoPF2_frac01
-#jet_algoPF2_frac02
-#jet_algoPF2_frac03
-#jet_algoPF2_frac04
-#jet_algoPF2_frac05
-#jet_algoPF2_full_mva
-#jet_algoPF2_simple_mva
-#jet_algoPF2_nCharged
-#jet_algoPF2_nNeutrals
-#jet_algoPF2_full_wp_level
-#jet_algoPF2_simple_wp_level
-#jet_algoPF2_cutbased_wp_level
-#jet_algoPF2_pfloose
-#jet_algoPF2_area
-
-#jet_algoPF2_beta_ext
-#jet_algoPF2_betaStar_ext
-#jet_algoPF2_betaStarClassic_ext
-#jet_algoPF2_full_wp_level_ext
-#jet_algoPF2_simple_wp_level_ext
-#jet_algoPF2_cutbased_wp_level_ext
-#jet_algoPF2_full_mva_ext
-#jet_algoPF2_simple_mva_ext
-
-#jet_algoPF2_csvBtag
-#jet_algoPF2_csvMvaBtag
-#jet_algoPF2_jetProbBtag
-#jet_algoPF2_tcheBtag
 
 jet_algoPF3_n
 jet_algoPF3_erescale
@@ -500,11 +472,6 @@ jet_algoPF3_simple_wp_level_ext
 jet_algoPF3_cutbased_wp_level_ext
 jet_algoPF3_full_mva_ext
 jet_algoPF3_simple_mva_ext
-
-#jet_algoPF3_csvBtag
-#jet_algoPF3_csvMvaBtag
-#jet_algoPF3_jetProbBtag
-#jet_algoPF3_tcheBtag
 
 # New photon variables 
 pho_pfRawEnergy

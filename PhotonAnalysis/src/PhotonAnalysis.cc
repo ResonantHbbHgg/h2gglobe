@@ -1691,7 +1691,8 @@ void PhotonAnalysis::PreselectPhotons(LoopAll& l, int jentry)
 // ----------------------------------------------------------------------------------------------------
 void PhotonAnalysis::FillReductionVariables(LoopAll& l, int jentry)
 {
-    cout<<"myFillReduceVar START"<<endl;
+    if(PADEBUG)
+        cout<<"myFillReduceVar START"<<endl;
 
     PreselectPhotons(l,jentry);
 
@@ -1801,17 +1802,23 @@ bool PhotonAnalysis::SelectEventsReduction(LoopAll& l, int jentry)
 
     if(l.itype[l.current]<0) {
         bool foundHiggs=FindHiggsObjects(l);
+        bool foundRadion=false;
+        if(l.itype[l.current]<-250) foundRadion=FindRadionObjects(l);
+        else SetNullRadion(l);    
         if(PADEBUG)  cout << " foundHiggs? "<<foundHiggs<<std::endl;
+        if(PADEBUG)  cout << " foundRadion? "<<foundRadion<<std::endl;
+        if(PADEBUG)  cout << " l.itype[l.current] "<<l.itype[l.current]<<std::endl;
     } else {
         SetNullHiggs(l);
+        SetNullRadion(l);
     }
     /// Jet matching
     // pfJets ak5
-    l.doJetMatching(*l.jet_algoPF1_p4,*l.genjet_algo1_p4,l.jet_algoPF1_genMatched,l.jet_algoPF1_vbfMatched,l.jet_algoPF1_genPt,l.jet_algoPF1_genDr);
+    l.doJetMatching(*l.jet_algoPF1_p4,*l.genjet_algo1_p4,l.jet_algoPF1_genMatched,l.jet_algoPF1_vbfMatched,l.jet_algoPF1_genPt,l.jet_algoPF1_genDr, (Float_t)0.4, l.jet_algoPF1_radionMatched);
     // pfJets ak7
     //l.doJetMatching(*l.jet_algoPF2_p4,*l.genjet_algo2_p4,l.jet_algoPF2_genMatched,l.jet_algoPF2_vbfMatched,l.jet_algoPF2_genPt,l.jet_algoPF2_genDr);
     // CHS ak5
-    l.doJetMatching(*l.jet_algoPF3_p4,*l.genjet_algo1_p4,l.jet_algoPF3_genMatched,l.jet_algoPF3_vbfMatched,l.jet_algoPF3_genPt,l.jet_algoPF3_genDr);
+    l.doJetMatching(*l.jet_algoPF3_p4,*l.genjet_algo1_p4,l.jet_algoPF3_genMatched,l.jet_algoPF3_vbfMatched,l.jet_algoPF3_genPt, l.jet_algoPF3_genDr);
 
     if( pho_presel.size() < 2 ) {
         // zero or one photons, can't determine a vertex based on photon pairs
@@ -2133,6 +2140,7 @@ void PhotonAnalysis::ReducedOutputTree(LoopAll &l, TTree * outputTree)
 	l.Branch_pho_regr_energyerr_otf(outputTree);
 
 	l.Branch_jet_algoPF1_genMatched(outputTree);
+	l.Branch_jet_algoPF1_radionMatched(outputTree);
 	l.Branch_jet_algoPF1_vbfMatched(outputTree);
 	l.Branch_jet_algoPF1_genPt(outputTree);
 	l.Branch_jet_algoPF1_genDr(outputTree);
@@ -2161,6 +2169,42 @@ void PhotonAnalysis::ReducedOutputTree(LoopAll &l, TTree * outputTree)
 	l.Branch_shiftscaleMET_eta(outputTree);
 	l.Branch_shiftscaleMET_e(outputTree);
     }
+
+    l.gr_radion_p4 = new TClonesArray("TLorentzVector", 1);
+    l.gr_radion_p4->Clear();
+    ((*l.gr_radion_p4)[0]) = new TLorentzVector();
+
+    l.gr_hgg_p4 = new TClonesArray("TLorentzVector", 1);
+    l.gr_hgg_p4->Clear();
+    ((*l.gr_hgg_p4)[0]) = new TLorentzVector();
+
+    l.gr_hbb_p4 = new TClonesArray("TLorentzVector", 1);
+    l.gr_hbb_p4->Clear();
+    ((*l.gr_hbb_p4)[0]) = new TLorentzVector();
+
+    l.gr_g1_p4 = new TClonesArray("TLorentzVector", 1);
+    l.gr_g1_p4->Clear();
+    ((*l.gr_g1_p4)[0]) = new TLorentzVector();
+
+    l.gr_g2_p4 = new TClonesArray("TLorentzVector", 1);
+    l.gr_g2_p4->Clear();
+    ((*l.gr_g2_p4)[0]) = new TLorentzVector();
+
+    l.gr_b1_p4 = new TClonesArray("TLorentzVector", 1);
+    l.gr_b1_p4->Clear();
+    ((*l.gr_b1_p4)[0]) = new TLorentzVector();
+
+    l.gr_b2_p4 = new TClonesArray("TLorentzVector", 1);
+    l.gr_b2_p4->Clear();
+    ((*l.gr_b2_p4)[0]) = new TLorentzVector();
+
+    l.gr_j1_p4 = new TClonesArray("TLorentzVector", 1);
+    l.gr_j1_p4->Clear();
+    ((*l.gr_j1_p4)[0]) = new TLorentzVector();
+
+    l.gr_j2_p4 = new TClonesArray("TLorentzVector", 1);
+    l.gr_j2_p4->Clear();
+    ((*l.gr_j2_p4)[0]) = new TLorentzVector();
 
     l.gh_higgs_p4 = new TClonesArray("TLorentzVector", 1);
     l.gh_higgs_p4->Clear();
@@ -2204,6 +2248,23 @@ void PhotonAnalysis::ReducedOutputTree(LoopAll &l, TTree * outputTree)
     l.Branch_gh_vh1_pdgid( outputTree );
     l.Branch_gh_vh2_pdgid( outputTree );
 //    l.Branch_METcorrected( outputTree );  //met at analysis step
+	l.Branch_gr_mcg1( outputTree );
+	l.Branch_gr_mcg2( outputTree );
+	l.Branch_gr_mcb1( outputTree );
+	l.Branch_gr_mcb2( outputTree );
+	l.Branch_gr_gen2reco_g1( outputTree );
+	l.Branch_gr_gen2reco_g2( outputTree );
+	l.Branch_gr_gen2reco_b1( outputTree );
+	l.Branch_gr_gen2reco_b2( outputTree );
+	l.Branch_gr_radion_p4( outputTree );
+	l.Branch_gr_hgg_p4( outputTree );
+	l.Branch_gr_hbb_p4( outputTree );
+	l.Branch_gr_g1_p4( outputTree );
+	l.Branch_gr_g2_p4( outputTree );
+	l.Branch_gr_b1_p4( outputTree );
+	l.Branch_gr_b2_p4( outputTree );
+	l.Branch_gr_j1_p4( outputTree );
+	l.Branch_gr_j2_p4( outputTree );
     l.Branch_gh_higgs_p4( outputTree );
     l.Branch_gh_pho1_p4( outputTree );
     l.Branch_gh_pho2_p4( outputTree );
@@ -2423,6 +2484,17 @@ float PhotonAnalysis::GetSmearSigma(float eta, float r9, int epoch){
     return sigma;
 }
 
+void PhotonAnalysis::SetNullRadion(LoopAll& l){
+    ((TLorentzVector *)l.gr_radion_p4->At(0))->SetXYZT(0,0,0,0);
+    ((TLorentzVector *)l.gr_hgg_p4->At(0))->SetXYZT(0,0,0,0);
+    ((TLorentzVector *)l.gr_hbb_p4->At(0))->SetXYZT(0,0,0,0);
+    ((TLorentzVector *)l.gr_g1_p4->At(0))->SetXYZT(0,0,0,0);
+    ((TLorentzVector *)l.gr_g2_p4->At(0))->SetXYZT(0,0,0,0);
+    ((TLorentzVector *)l.gr_b1_p4->At(0))->SetXYZT(0,0,0,0);
+    ((TLorentzVector *)l.gr_b2_p4->At(0))->SetXYZT(0,0,0,0);
+    ((TLorentzVector *)l.gr_j1_p4->At(0))->SetXYZT(0,0,0,0);
+    ((TLorentzVector *)l.gr_j2_p4->At(0))->SetXYZT(0,0,0,0);
+}
 
 void PhotonAnalysis::SetNullHiggs(LoopAll& l){
 
@@ -2444,6 +2516,99 @@ void PhotonAnalysis::SetNullHiggs(LoopAll& l){
 
 }
 
+
+bool PhotonAnalysis::FindRadionObjects(LoopAll& l)
+{
+    int radionInd, ggHiggsInd, bbHiggsInd, mcg1, mcg2, mcb1, mcb2, mcj1, mcj2, g1, g2, j1, j2;
+    radionInd=ggHiggsInd=bbHiggsInd=mcg1=mcg2=mcb1=mcb2=mcj1=mcj2=g1=g2=j1=j2 = -1;
+  
+    l.FindMCRadion(radionInd, ggHiggsInd, bbHiggsInd, mcg1, mcg2, mcb1, mcb2, mcj1, mcj2, g1, g2, j1, j2);
+
+    // Fill Radion
+    if(radionInd != -1)
+    {
+        TLorentzVector *TheRadion = (TLorentzVector*) l.gp_p4->At(radionInd);
+        ((TLorentzVector*)l.gr_radion_p4->At(0))->SetPxPyPzE(TheRadion->Px(),TheRadion->Py(),TheRadion->Pz(),TheRadion->E());
+    } else {
+        ((TLorentzVector *)l.gr_radion_p4->At(0))->SetXYZT(0,0,0,0);
+    }
+    // Fill Hgg
+    if(ggHiggsInd != -1)
+    {
+        TLorentzVector *TheHgg = (TLorentzVector*) l.gp_p4->At(ggHiggsInd);
+        ((TLorentzVector*)l.gr_hgg_p4->At(0))->SetPxPyPzE(TheHgg->Px(),TheHgg->Py(),TheHgg->Pz(),TheHgg->E());
+    } else {
+        ((TLorentzVector *)l.gr_hgg_p4->At(0))->SetXYZT(0,0,0,0);
+    }
+    // Fill Hbb
+    if(bbHiggsInd != -1)
+    {
+        TLorentzVector *TheHbb = (TLorentzVector*) l.gp_p4->At(bbHiggsInd);
+        ((TLorentzVector*)l.gr_hbb_p4->At(0))->SetPxPyPzE(TheHbb->Px(),TheHbb->Py(),TheHbb->Pz(),TheHbb->E());
+    } else {
+        ((TLorentzVector *)l.gr_hbb_p4->At(0))->SetXYZT(0,0,0,0);
+    }
+
+	l.gr_gen2reco_g1=g1;
+	l.gr_gen2reco_g2=g2;
+	l.gr_gen2reco_b1=j1;
+	l.gr_gen2reco_b2=j2;
+    l.gr_mcg1=mcg1;
+    l.gr_mcg2=mcg2;
+    l.gr_mcb1=mcb1;
+    l.gr_mcb2=mcb2;
+
+    // Fill g1
+    if(mcg1 != -1)
+    {
+        TLorentzVector *Theg1 = (TLorentzVector*) l.gp_p4->At(mcg1);
+        ((TLorentzVector*)l.gr_g1_p4->At(0))->SetPxPyPzE(Theg1->Px(),Theg1->Py(),Theg1->Pz(),Theg1->E());
+    } else {
+        ((TLorentzVector *)l.gr_g1_p4->At(0))->SetXYZT(0,0,0,0);
+    }
+    // Fill g2
+    if(mcg2 != -1)
+    {
+        TLorentzVector *Theg2 = (TLorentzVector*) l.gp_p4->At(mcg2);
+        ((TLorentzVector*)l.gr_g2_p4->At(0))->SetPxPyPzE(Theg2->Px(),Theg2->Py(),Theg2->Pz(),Theg2->E());
+    } else {
+        ((TLorentzVector *)l.gr_g2_p4->At(0))->SetXYZT(0,0,0,0);
+    }
+    // Fill b1
+    if(mcb1 != -1)
+    {
+        TLorentzVector *Theb1 = (TLorentzVector*) l.gp_p4->At(mcb1);
+        ((TLorentzVector*)l.gr_b1_p4->At(0))->SetPxPyPzE(Theb1->Px(),Theb1->Py(),Theb1->Pz(),Theb1->E());
+    } else {
+        ((TLorentzVector *)l.gr_b1_p4->At(0))->SetXYZT(0,0,0,0);
+    }
+    // Fill b2
+    if(mcb2 != -1)
+    {
+        TLorentzVector *Theb2 = (TLorentzVector*) l.gp_p4->At(mcb2);
+        ((TLorentzVector*)l.gr_b2_p4->At(0))->SetPxPyPzE(Theb2->Px(),Theb2->Py(),Theb2->Pz(),Theb2->E());
+    } else {
+        ((TLorentzVector *)l.gr_b2_p4->At(0))->SetXYZT(0,0,0,0);
+    }
+    // Fill j1
+    if(mcj1 != -1)
+    {
+        TLorentzVector *Thej1 = (TLorentzVector*) l.genjet_algo1_p4->At(mcj1);
+        ((TLorentzVector*)l.gr_j1_p4->At(0))->SetPxPyPzE(Thej1->Px(),Thej1->Py(),Thej1->Pz(),Thej1->E());
+    } else {
+        ((TLorentzVector *)l.gr_j1_p4->At(0))->SetXYZT(0,0,0,0);
+    }
+    // Fill j2
+    if(mcj2 != -1)
+    {
+        TLorentzVector *Thej2 = (TLorentzVector*) l.genjet_algo1_p4->At(mcj2);
+        ((TLorentzVector*)l.gr_j2_p4->At(0))->SetPxPyPzE(Thej2->Px(),Thej2->Py(),Thej2->Pz(),Thej2->E());
+    } else {
+        ((TLorentzVector *)l.gr_j2_p4->At(0))->SetXYZT(0,0,0,0);
+    }
+
+    return (radionInd != -1);
+}
 
 bool PhotonAnalysis::FindHiggsObjects(LoopAll& l){
 

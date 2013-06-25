@@ -396,6 +396,7 @@ std::vector<int> vertexSelection(HggVertexAnalyzer & vtxAna, HggVertexFromConver
 				 bool useMva=false, TMVA::Reader * reader=0, std::string tmvaMethod="");
 
 //----------------------------------------
+bool FindMCRadion(int& radionInd, int& ggHiggsInd, int& bbHiggsInd, int& mcg1, int& mcg2, int& mcb1, int& mcb2, int& mcj1, int& mcj2, int& g1, int& g2, int& j1, int&j2);
 bool FindMCLeptons(int index, int& mc1, int& mc2, int& pho, int leptonType=11);
 bool FindMCHiggsPhotons(int& higgsind, int& mc1, int& mc2, int& i1, int& i2  );
 bool FindMCVBF(int higgsind, int& vbfq1, int& vbfq2 );
@@ -683,6 +684,23 @@ Int_t gh_vbfq2_pdgid;
 Int_t gh_vh_pdgid;
 Int_t gh_vh1_pdgid;
 Int_t gh_vh2_pdgid;
+Int_t gr_gen2reco_g1;
+Int_t gr_gen2reco_g2;
+Int_t gr_gen2reco_b1;
+Int_t gr_gen2reco_b2;
+Int_t gr_mcg1;
+Int_t gr_mcg2;
+Int_t gr_mcb1;
+Int_t gr_mcb2;
+TClonesArray *gr_radion_p4;
+TClonesArray *gr_hgg_p4;
+TClonesArray *gr_hbb_p4;
+TClonesArray *gr_g1_p4;
+TClonesArray *gr_g2_p4;
+TClonesArray *gr_b1_p4;
+TClonesArray *gr_b2_p4;
+TClonesArray *gr_j1_p4;
+TClonesArray *gr_j2_p4;
 TClonesArray *gh_higgs_p4;
 TClonesArray *gh_pho1_p4;
 TClonesArray *gh_pho2_p4;
@@ -755,6 +773,23 @@ TBranch *b_gh_vh_pdgid;
 TBranch *b_gh_vh1_pdgid;
 TBranch *b_gh_vh2_pdgid;
 //TBranch *b_METcorrected;  //met at analysis step
+TBranch *b_gr_mcg1;
+TBranch *b_gr_mcg2;
+TBranch *b_gr_mcb1;
+TBranch *b_gr_mcb2;
+TBranch *b_gr_gen2reco_g1;
+TBranch *b_gr_gen2reco_g2;
+TBranch *b_gr_gen2reco_b1;
+TBranch *b_gr_gen2reco_b2;
+TBranch *b_gr_radion_p4;
+TBranch *b_gr_hgg_p4;
+TBranch *b_gr_hbb_p4;
+TBranch *b_gr_g1_p4;
+TBranch *b_gr_g2_p4;
+TBranch *b_gr_b1_p4;
+TBranch *b_gr_b2_p4;
+TBranch *b_gr_j1_p4;
+TBranch *b_gr_j2_p4;
 TBranch *b_gh_higgs_p4;
 TBranch *b_gh_pho1_p4;
 TBranch *b_gh_pho2_p4;
@@ -950,6 +985,23 @@ void Branch_gh_vh_pdgid(TTree * tree) { tree->Branch("gh_vh_pdgid",&gh_vh_pdgid,
 void Branch_gh_vh1_pdgid(TTree * tree) { tree->Branch("gh_vh1_pdgid",&gh_vh1_pdgid, "gh_vh1_pdgid/I");  }; 
 void Branch_gh_vh2_pdgid(TTree * tree) { tree->Branch("gh_vh2_pdgid",&gh_vh2_pdgid, "gh_vh2_pdgid/I");  }; 
 //void Branch_METcorrected(TTree * tree) { tree->Branch("METcorrected", "TClonesArray",&METcorrected, 32000, 0); }; //met at analysis step
+void Branch_gr_mcg1(TTree * tree) { tree->Branch("gr_mcg1",&gr_mcg1, "gr_mcg1/I");  }; 
+void Branch_gr_mcg2(TTree * tree) { tree->Branch("gr_mcg2",&gr_mcg2, "gr_mcg2/I");  }; 
+void Branch_gr_mcb1(TTree * tree) { tree->Branch("gr_mcb1",&gr_mcb1, "gr_mcb1/I");  }; 
+void Branch_gr_mcb2(TTree * tree) { tree->Branch("gr_mcb2",&gr_mcb2, "gr_mcb2/I");  }; 
+void Branch_gr_gen2reco_g1(TTree * tree) { tree->Branch("gr_gen2reco_g1",&gr_gen2reco_g1, "gr_gen2reco_g1/I");  }; 
+void Branch_gr_gen2reco_g2(TTree * tree) { tree->Branch("gr_gen2reco_g2",&gr_gen2reco_g2, "gr_gen2reco_g2/I");  }; 
+void Branch_gr_gen2reco_b1(TTree * tree) { tree->Branch("gr_gen2reco_b1",&gr_gen2reco_b1, "gr_gen2reco_b1/I");  }; 
+void Branch_gr_gen2reco_b2(TTree * tree) { tree->Branch("gr_gen2reco_b2",&gr_gen2reco_b2, "gr_gen2reco_b2/I");  }; 
+void Branch_gr_radion_p4(TTree * tree) { tree->Branch("gr_radion_p4", "TClonesArray",&gr_radion_p4, 32000, 0); }; 
+void Branch_gr_hgg_p4(TTree * tree) { tree->Branch("gr_hgg_p4", "TClonesArray",&gr_hgg_p4, 32000, 0); }; 
+void Branch_gr_hbb_p4(TTree * tree) { tree->Branch("gr_hbb_p4", "TClonesArray",&gr_hbb_p4, 32000, 0); }; 
+void Branch_gr_g1_p4(TTree * tree) { tree->Branch("gr_g1_p4", "TClonesArray",&gr_g1_p4, 32000, 0); }; 
+void Branch_gr_g2_p4(TTree * tree) { tree->Branch("gr_g2_p4", "TClonesArray",&gr_g2_p4, 32000, 0); }; 
+void Branch_gr_b1_p4(TTree * tree) { tree->Branch("gr_b1_p4", "TClonesArray",&gr_b1_p4, 32000, 0); }; 
+void Branch_gr_b2_p4(TTree * tree) { tree->Branch("gr_b2_p4", "TClonesArray",&gr_b2_p4, 32000, 0); }; 
+void Branch_gr_j1_p4(TTree * tree) { tree->Branch("gr_j1_p4", "TClonesArray",&gr_j1_p4, 32000, 0); }; 
+void Branch_gr_j2_p4(TTree * tree) { tree->Branch("gr_j2_p4", "TClonesArray",&gr_j2_p4, 32000, 0); }; 
 void Branch_gh_higgs_p4(TTree * tree) { tree->Branch("gh_higgs_p4", "TClonesArray",&gh_higgs_p4, 32000, 0); }; 
 void Branch_gh_pho1_p4(TTree * tree) { tree->Branch("gh_pho1_p4", "TClonesArray",&gh_pho1_p4, 32000, 0); }; 
 void Branch_gh_pho2_p4(TTree * tree) { tree->Branch("gh_pho2_p4", "TClonesArray",&gh_pho2_p4, 32000, 0); }; 
@@ -972,6 +1024,23 @@ void SetBranchAddress_gh_vh_pdgid(TTree * tree) { tree->SetBranchAddress("gh_vh_
 void SetBranchAddress_gh_vh1_pdgid(TTree * tree) { tree->SetBranchAddress("gh_vh1_pdgid", &gh_vh1_pdgid, &b_gh_vh1_pdgid); }; 
 void SetBranchAddress_gh_vh2_pdgid(TTree * tree) { tree->SetBranchAddress("gh_vh2_pdgid", &gh_vh2_pdgid, &b_gh_vh2_pdgid); }; 
 //void SetBranchAddress_METcorrected(TTree * tree) { tree->SetBranchAddress("METcorrected", &METcorrected, &b_METcorrected); }; //met at analysis step
+void SetBranchAddress_gr_mcg1(TTree * tree) { tree->SetBranchAddress("gr_mcg1", &gr_mcg1, &b_gr_mcg1); }; 
+void SetBranchAddress_gr_mcg2(TTree * tree) { tree->SetBranchAddress("gr_mcg2", &gr_mcg2, &b_gr_mcg2); }; 
+void SetBranchAddress_gr_mcb1(TTree * tree) { tree->SetBranchAddress("gr_mcb1", &gr_mcb1, &b_gr_mcb1); }; 
+void SetBranchAddress_gr_mcb2(TTree * tree) { tree->SetBranchAddress("gr_mcb2", &gr_mcb2, &b_gr_mcb2); }; 
+void SetBranchAddress_gr_gen2reco_g1(TTree * tree) { tree->SetBranchAddress("gr_gen2reco_g1", &gr_gen2reco_g1, &b_gr_gen2reco_g1); }; 
+void SetBranchAddress_gr_gen2reco_g2(TTree * tree) { tree->SetBranchAddress("gr_gen2reco_g2", &gr_gen2reco_g2, &b_gr_gen2reco_g2); }; 
+void SetBranchAddress_gr_gen2reco_b1(TTree * tree) { tree->SetBranchAddress("gr_gen2reco_b1", &gr_gen2reco_b1, &b_gr_gen2reco_b1); }; 
+void SetBranchAddress_gr_gen2reco_b2(TTree * tree) { tree->SetBranchAddress("gr_gen2reco_b2", &gr_gen2reco_b2, &b_gr_gen2reco_b2); }; 
+void SetBranchAddress_gr_radion_p4(TTree * tree) { tree->SetBranchAddress("gr_radion_p4", &gr_radion_p4, &b_gr_radion_p4); }; 
+void SetBranchAddress_gr_hgg_p4(TTree * tree) { tree->SetBranchAddress("gr_hgg_p4", &gr_hgg_p4, &b_gr_hgg_p4); }; 
+void SetBranchAddress_gr_hbb_p4(TTree * tree) { tree->SetBranchAddress("gr_hbb_p4", &gr_hbb_p4, &b_gr_hbb_p4); }; 
+void SetBranchAddress_gr_g1_p4(TTree * tree) { tree->SetBranchAddress("gr_g1_p4", &gr_g1_p4, &b_gr_g1_p4); }; 
+void SetBranchAddress_gr_g2_p4(TTree * tree) { tree->SetBranchAddress("gr_g2_p4", &gr_g2_p4, &b_gr_g2_p4); }; 
+void SetBranchAddress_gr_b1_p4(TTree * tree) { tree->SetBranchAddress("gr_b1_p4", &gr_b1_p4, &b_gr_b1_p4); }; 
+void SetBranchAddress_gr_b2_p4(TTree * tree) { tree->SetBranchAddress("gr_b2_p4", &gr_b2_p4, &b_gr_b2_p4); }; 
+void SetBranchAddress_gr_j1_p4(TTree * tree) { tree->SetBranchAddress("gr_j1_p4", &gr_j1_p4, &b_gr_j1_p4); }; 
+void SetBranchAddress_gr_j2_p4(TTree * tree) { tree->SetBranchAddress("gr_j2_p4", &gr_j2_p4, &b_gr_j2_p4); }; 
 void SetBranchAddress_gh_higgs_p4(TTree * tree) { tree->SetBranchAddress("gh_higgs_p4", &gh_higgs_p4, &b_gh_higgs_p4); }; 
 void SetBranchAddress_gh_pho1_p4(TTree * tree) { tree->SetBranchAddress("gh_pho1_p4", &gh_pho1_p4, &b_gh_pho1_p4); }; 
 void SetBranchAddress_gh_pho2_p4(TTree * tree) { tree->SetBranchAddress("gh_pho2_p4", &gh_pho2_p4, &b_gh_pho2_p4); }; 
@@ -1158,9 +1227,10 @@ void SetBranchAddress_pho_passcuts_lead(TTree * tree) { tree->SetBranchAddress("
 void SetBranchAddress_pho_cutlevel_sublead(TTree * tree) { tree->SetBranchAddress("pho_cutlevel_sublead", &pho_cutlevel_sublead, &b_pho_cutlevel_sublead ); };
 void SetBranchAddress_pho_passcuts_sublead(TTree * tree) { tree->SetBranchAddress("pho_passcuts_sublead", &pho_passcuts_sublead, &b_pho_passcuts_sublead ); };
 
-void doJetMatching(TClonesArray & reco, TClonesArray & gen, Bool_t * match_flag, Bool_t * match_vbf_flag, Float_t * match_pt, Float_t * match_dr, Float_t maxDr=0.4 );
+void doJetMatching(TClonesArray & reco, TClonesArray & gen, Bool_t * match_flag, Bool_t * match_vbf_flag, Float_t * match_pt, Float_t * match_dr, Float_t maxDr=0.4, Bool_t * match_radion_flag = 0);
 
 std::pair<int, int> Select2HighestPtJets(TLorentzVector& leadpho, TLorentzVector& subleadpho, Bool_t * jetid_flags=0);
+vector<int> SelectJets(const TLorentzVector& leadpho, const TLorentzVector& subleadpho, Bool_t * jetid_flags=0);
 int RescaleJetEnergy(bool force=false);
 
 //Moriond2012
@@ -1224,6 +1294,7 @@ int IEta (double eta){
 void getIetaIPhi(int phoid, int & ieta, int & iphi ) const ;
 bool CheckSphericalPhoton(int ieta, int iphi) const;
 bool CheckSphericalPhoton(int phoind) const;
+Int_t GenParticleInfo(Int_t ipho, Int_t vtxind, float dRmax);
  
 #ifdef NewFeatures
 #include "Marco/plotInteractive_h.h"
