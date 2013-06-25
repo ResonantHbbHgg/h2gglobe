@@ -1,8 +1,27 @@
+# Compiled Object files
+*.slo
+*.lo
 *.o
+
+# Compiled Dynamic libraries
 *.so
+*.dylib
 *.d
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# executables
+*.exe
+
+# h2gglobe specifics
 LoopAllDict.*
 dict.*
 TmpLinkDef.h
 .extraTags
 
+# Ignore links in Reduction directory
+Reduction/AnalysisScripts
+Reduction/Macros
