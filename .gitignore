@@ -25,3 +25,6 @@ TmpLinkDef.h
 # Ignore links in Reduction directory
 Reduction/AnalysisScripts
 Reduction/Macros
+
+# vi temp files
+*.swp
