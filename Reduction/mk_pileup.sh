@@ -6,7 +6,8 @@ source "version.sh"
 
 mkdir -p pileup
 
-dir=/store/group/phys_higgs/Resonant_HH/reduced/${version}/mc/Summer12_S10_8TeV
+#dir=/store/group/phys_higgs/Resonant_HH/reduced/${version}
+dir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/${version}
 
 cd pileup 
 rm *.root

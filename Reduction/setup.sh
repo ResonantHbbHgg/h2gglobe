@@ -6,7 +6,8 @@
 
 base_storedir="./datastore"
 ## storeremote="/castor/cern.ch/user/c/Resonant_HH/reduced"
-storeremote="/store/group/phys_higgs/Resonant_HH/reduced"
+## storeremote="/store/group/phys_higgs/Resonant_HH/reduced"
+storeremote="/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced"
 
 [[ -f $(whoami)_setup.sh ]] && . $(whoami)_setup.sh
 

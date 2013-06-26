@@ -15,16 +15,23 @@
 
 # executables
 *.exe
+*.pyc
 
 # h2gglobe specifics
 LoopAllDict.*
 dict.*
 TmpLinkDef.h
 .extraTags
+Reduction/pileup/
+Reduction/*summary.txt
 
 # Ignore links in Reduction directory
 Reduction/AnalysisScripts
 Reduction/Macros
 
-# vi temp files
+# vim temp files
 *.swp
+
+# batch .tgz
+*.tgz
+*.tar.gz
