@@ -1,0 +1,10 @@
+GravitonToHH_2Gamma_2b_M-1000_TuneZ2star_8TeV-Madgraph_pythia6 -1000
+GravitonToHH_2Gamma_2b_M-1500_TuneZ2star_8TeV-Madgraph_pythia6 -1500
+GravitonToHH_2Gamma_2b_M-300_TuneZ2star_8TeV-Madgraph_pythia6 -300
+GravitonToHH_2Gamma_2b_M-500_TuneZ2star_8TeV-Madgraph_pythia6 -500
+GravitonToHH_2Gamma_2b_M-700_TuneZ2star_8TeV-Madgraph_pythia6 -700
+RadionToHHTo2G2B_M-1000_TuneZ2star_8TeV-nm-madgraph -1000
+RadionToHHTo2G2B_M-1500_TuneZ2star_8TeV-nm-madgraph -1500
+RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph -300
+RadionToHHTo2G2B_M-500_TuneZ2star_8TeV-nm-madgraph -500
+RadionToHHTo2G2B_M-700_TuneZ2star_8TeV-nm-madgraph -700
