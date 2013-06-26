@@ -22,12 +22,15 @@ LoopAllDict.*
 dict.*
 TmpLinkDef.h
 .extraTags
+
+# ignore Reduction stuff
 Reduction/pileup/
 Reduction/*summary.txt
-
-# Ignore links in Reduction directory
 Reduction/AnalysisScripts
 Reduction/Macros
+
+# ignore AnalysisScripts stuff
+AnalysisScripts/baseline/tmp_*
 
 # vim temp files
 *.swp
