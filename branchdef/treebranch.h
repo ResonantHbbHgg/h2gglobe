@@ -274,8 +274,8 @@ void Branch_jet_algoPF2_frac04(TTree * tree) { tree->Branch("jet_algoPF2_frac04"
 void Branch_jet_algoPF2_frac05(TTree * tree) { tree->Branch("jet_algoPF2_frac05",&jet_algoPF2_frac05, "jet_algoPF2_frac05[jet_algoPF2_n]/F"); }; 
 void Branch_jet_algoPF2_full_mva(TTree * tree) { tree->Branch("jet_algoPF2_full_mva",&jet_algoPF2_full_mva, "jet_algoPF2_full_mva[jet_algoPF2_n]/F"); }; 
 void Branch_jet_algoPF2_simple_mva(TTree * tree) { tree->Branch("jet_algoPF2_simple_mva",&jet_algoPF2_simple_mva, "jet_algoPF2_simple_mva[jet_algoPF2_n]/F"); }; 
-void Branch_jet_algoPF2_nCharged(TTree * tree) { tree->Branch("jet_algoPF2_nCharged",&jet_algoPF2_nCharged, "jet_algoPF2_nCharged[jet_algoPF2_n]/F"); }; 
-void Branch_jet_algoPF2_nNeutrals(TTree * tree) { tree->Branch("jet_algoPF2_nNeutrals",&jet_algoPF2_nNeutrals, "jet_algoPF2_nNeutrals[jet_algoPF2_n]/F"); }; 
+void Branch_jet_algoPF2_nCharged(TTree * tree) { tree->Branch("jet_algoPF2_nCharged",&jet_algoPF2_nCharged, "jet_algoPF2_nCharged[jet_algoPF2_n]/I"); }; 
+void Branch_jet_algoPF2_nNeutrals(TTree * tree) { tree->Branch("jet_algoPF2_nNeutrals",&jet_algoPF2_nNeutrals, "jet_algoPF2_nNeutrals[jet_algoPF2_n]/I"); }; 
 void Branch_jet_algoPF2_full_wp_level(TTree * tree) { tree->Branch("jet_algoPF2_full_wp_level",&jet_algoPF2_full_wp_level, "jet_algoPF2_full_wp_level[jet_algoPF2_n]/I"); }; 
 void Branch_jet_algoPF2_simple_wp_level(TTree * tree) { tree->Branch("jet_algoPF2_simple_wp_level",&jet_algoPF2_simple_wp_level, "jet_algoPF2_simple_wp_level[jet_algoPF2_n]/I"); }; 
 void Branch_jet_algoPF3_n(TTree * tree) { tree->Branch("jet_algoPF3_n",&jet_algoPF3_n, "jet_algoPF3_n/I"); }; 
@@ -300,8 +300,8 @@ void Branch_jet_algoPF3_frac04(TTree * tree) { tree->Branch("jet_algoPF3_frac04"
 void Branch_jet_algoPF3_frac05(TTree * tree) { tree->Branch("jet_algoPF3_frac05",&jet_algoPF3_frac05, "jet_algoPF3_frac05[jet_algoPF3_n]/F"); }; 
 void Branch_jet_algoPF3_full_mva(TTree * tree) { tree->Branch("jet_algoPF3_full_mva",&jet_algoPF3_full_mva, "jet_algoPF3_full_mva[jet_algoPF3_n]/F"); }; 
 void Branch_jet_algoPF3_simple_mva(TTree * tree) { tree->Branch("jet_algoPF3_simple_mva",&jet_algoPF3_simple_mva, "jet_algoPF3_simple_mva[jet_algoPF3_n]/F"); }; 
-void Branch_jet_algoPF3_nCharged(TTree * tree) { tree->Branch("jet_algoPF3_nCharged",&jet_algoPF3_nCharged, "jet_algoPF3_nCharged[jet_algoPF3_n]/F"); }; 
-void Branch_jet_algoPF3_nNeutrals(TTree * tree) { tree->Branch("jet_algoPF3_nNeutrals",&jet_algoPF3_nNeutrals, "jet_algoPF3_nNeutrals[jet_algoPF3_n]/F"); }; 
+void Branch_jet_algoPF3_nCharged(TTree * tree) { tree->Branch("jet_algoPF3_nCharged",&jet_algoPF3_nCharged, "jet_algoPF3_nCharged[jet_algoPF3_n]/I"); }; 
+void Branch_jet_algoPF3_nNeutrals(TTree * tree) { tree->Branch("jet_algoPF3_nNeutrals",&jet_algoPF3_nNeutrals, "jet_algoPF3_nNeutrals[jet_algoPF3_n]/I"); }; 
 void Branch_jet_algoPF3_full_wp_level(TTree * tree) { tree->Branch("jet_algoPF3_full_wp_level",&jet_algoPF3_full_wp_level, "jet_algoPF3_full_wp_level[jet_algoPF3_n]/I"); }; 
 void Branch_jet_algoPF3_simple_wp_level(TTree * tree) { tree->Branch("jet_algoPF3_simple_wp_level",&jet_algoPF3_simple_wp_level, "jet_algoPF3_simple_wp_level[jet_algoPF3_n]/I"); }; 
 

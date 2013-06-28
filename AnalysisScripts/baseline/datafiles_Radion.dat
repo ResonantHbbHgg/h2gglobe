@@ -33,17 +33,17 @@ intL=19620. histfile=CMS-HGG.root output=eventsList.txt
 #typ=-1000 ind=1 draw=1   Nam=Radion_m1000_8TeV   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v04/RadionToHHTo2G2B_M-1000_TuneZ2star_8TeV-madgraph   red=0 lum=19620.   xsec=0.00000263   kfac=1.000000   scal=1.000000
 #typ=-1500 ind=1 draw=1   Nam=Radion_m1500_8TeV   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v04/RadionToHHTo2G2B_M-1500_TuneZ2star_8TeV-madgraph   red=0 lum=19620.   xsec=0.000000290   kfac=1.000000   scal=1.000000
 
-typ=-301 ind=1 draw=1   Nam=Radion_m300_8TeV_nm   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v06/RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.000271   kfac=1.000000   scal=1.000000
-typ=-501 ind=1 draw=1   Nam=Radion_m500_8TeV_nm   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v06/RadionToHHTo2G2B_M-500_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.0000471   kfac=1.000000   scal=1.000000
-typ=-701 ind=1 draw=1   Nam=Radion_m700_8TeV_nm   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v06/RadionToHHTo2G2B_M-700_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.0000158   kfac=1.000000   scal=1.000000
-typ=-1001 ind=1 draw=1   Nam=Radion_m1000_8TeV_nm   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v06/RadionToHHTo2G2B_M-1000_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.00000263   kfac=1.000000   scal=1.000000
-typ=-1501 ind=1 draw=1   Nam=Radion_m1500_8TeV_nm   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v06/RadionToHHTo2G2B_M-1500_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.000000290   kfac=1.000000   scal=1.000000
+typ=-301 ind=1 draw=1   Nam=Radion_m300_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07_dev/RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.000271   kfac=1.000000   scal=1.000000
+#typ=-501 ind=1 draw=1   Nam=Radion_m500_8TeV_nm   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v06/RadionToHHTo2G2B_M-500_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.0000471   kfac=1.000000   scal=1.000000
+#typ=-701 ind=1 draw=1   Nam=Radion_m700_8TeV_nm   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v06/RadionToHHTo2G2B_M-700_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.0000158   kfac=1.000000   scal=1.000000
+#typ=-1001 ind=1 draw=1   Nam=Radion_m1000_8TeV_nm   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v06/RadionToHHTo2G2B_M-1000_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.00000263   kfac=1.000000   scal=1.000000
+#typ=-1501 ind=1 draw=1   Nam=Radion_m1500_8TeV_nm   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v06/RadionToHHTo2G2B_M-1500_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.000000290   kfac=1.000000   scal=1.000000
 
-typ=-302 ind=1 draw=1   Nam=Graviton_m300_8TeV   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v06/GravitonToHH_2Gamma_2b_M-300_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.000574   kfac=1.000000   scal=1.000000
-typ=-502 ind=1 draw=1   Nam=Graviton_m500_8TeV   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v06/GravitonToHH_2Gamma_2b_M-500_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.000138   kfac=1.000000   scal=1.000000
-typ=-702 ind=1 draw=1   Nam=Graviton_m700_8TeV   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v06/GravitonToHH_2Gamma_2b_M-700_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.0000479   kfac=1.000000   scal=1.000000
-typ=-1002 ind=1 draw=1   Nam=Graviton_m1000_8TeV   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v06/GravitonToHH_2Gamma_2b_M-1000_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.0000133   kfac=1.000000   scal=1.000000
-typ=-1502 ind=1 draw=1   Nam=Graviton_m1500_8TeV   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v06/GravitonToHH_2Gamma_2b_M-1500_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.00000244   kfac=1.000000   scal=1.000000
+#typ=-302 ind=1 draw=1   Nam=Graviton_m300_8TeV   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v06/GravitonToHH_2Gamma_2b_M-300_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.000574   kfac=1.000000   scal=1.000000
+#typ=-502 ind=1 draw=1   Nam=Graviton_m500_8TeV   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v06/GravitonToHH_2Gamma_2b_M-500_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.000138   kfac=1.000000   scal=1.000000
+#typ=-702 ind=1 draw=1   Nam=Graviton_m700_8TeV   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v06/GravitonToHH_2Gamma_2b_M-700_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.0000479   kfac=1.000000   scal=1.000000
+#typ=-1002 ind=1 draw=1   Nam=Graviton_m1000_8TeV   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v06/GravitonToHH_2Gamma_2b_M-1000_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.0000133   kfac=1.000000   scal=1.000000
+#typ=-1502 ind=1 draw=1   Nam=Graviton_m1500_8TeV   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v06/GravitonToHH_2Gamma_2b_M-1500_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.00000244   kfac=1.000000   scal=1.000000
 
 #
 # Background

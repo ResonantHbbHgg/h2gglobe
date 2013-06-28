@@ -128,15 +128,12 @@ type=2 name=j1_secVtx3dL
 type=2 name=j1_secVtx3deL
 type=2 name=j1_emfrac
 type=2 name=j1_hadfrac
-type=2 name=j1_ntk
-type=2 name=j1_nNeutrals
-type=2 name=j1_nCharged
+type=0 name=j1_ntk
+type=0 name=j1_nNeutrals
+type=0 name=j1_nCharged
 type=2 name=j1_axis1
 type=2 name=j1_axis2
 type=2 name=j1_pull
-type=2 name=j1_Rchg
-type=2 name=j1_Rneutral
-type=2 name=j1_R
 
 type=2 name=j2_e
 type=2 name=j2_pt
@@ -158,15 +155,12 @@ type=2 name=j2_secVtx3dL
 type=2 name=j2_secVtx3deL
 type=2 name=j2_emfrac
 type=2 name=j2_hadfrac
-type=2 name=j2_ntk
-type=2 name=j2_nNeutrals
-type=2 name=j2_nCharged
+type=0 name=j2_ntk
+type=0 name=j2_nNeutrals
+type=0 name=j2_nCharged
 type=2 name=j2_axis1
 type=2 name=j2_axis2
 type=2 name=j2_pull
-type=2 name=j2_Rchg
-type=2 name=j2_Rneutral
-type=2 name=j2_R
 
 type=2 name=j3_e
 type=2 name=j3_pt
@@ -188,15 +182,12 @@ type=2 name=j3_secVtx3dL
 type=2 name=j3_secVtx3deL
 type=2 name=j3_emfrac
 type=2 name=j3_hadfrac
-type=2 name=j3_ntk
-type=2 name=j3_nNeutrals
-type=2 name=j3_nCharged
+type=0 name=j3_ntk
+type=0 name=j3_nNeutrals
+type=0 name=j3_nCharged
 type=2 name=j3_axis1
 type=2 name=j3_axis2
 type=2 name=j3_pull
-type=2 name=j3_Rchg
-type=2 name=j3_Rneutral
-type=2 name=j3_R
 
 type=2 name=j4_e
 type=2 name=j4_pt
@@ -218,15 +209,12 @@ type=2 name=j4_secVtx3dL
 type=2 name=j4_secVtx3deL
 type=2 name=j4_emfrac
 type=2 name=j4_hadfrac
-type=2 name=j4_ntk
-type=2 name=j4_nNeutrals
-type=2 name=j4_nCharged
+type=0 name=j4_ntk
+type=0 name=j4_nNeutrals
+type=0 name=j4_nCharged
 type=2 name=j4_axis1
 type=2 name=j4_axis2
 type=2 name=j4_pull
-type=2 name=j4_Rchg
-type=2 name=j4_Rneutral
-type=2 name=j4_R
 
 # dijet variables
 type=2 name=JetsMass
