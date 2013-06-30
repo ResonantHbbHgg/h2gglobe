@@ -17,6 +17,12 @@ type=2 name=pu_n
 type=2 name=nvtx
 type=2 name=rho
 type=0 name=category
+type=2 name=met_pfmet
+type=2 name=met_phi_pfmet
+type=2 name=met_corr_pfmet
+type=2 name=met_corr_phi_pfmet
+type=2 name=met_corr_eta_pfmet
+type=2 name=met_corr_e_pfmet
 
 # photon variables
 type=2 name=ph1_e

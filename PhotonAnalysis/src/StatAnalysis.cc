@@ -1970,6 +1970,15 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	l.FillTree("rho", (float)l.rho_algo1);
     l.FillTree("category", (int)category);
 
+    TLorentzVector myMet = l.METCorrection2012B(lead_p4, sublead_p4);
+
+    l.FillTree("met_pfmet", (float)l.met_pfmet);
+    l.FillTree("met_phi_pfmet", (float)l.met_phi_pfmet);
+    l.FillTree("met_corr_pfmet", (float)myMet.Pt());
+    l.FillTree("met_corr_phi_pfmet", (float)myMet.Phi());
+    l.FillTree("met_corr_eta_pfmet", (float)myMet.Eta());
+    l.FillTree("met_corr_e_pfmet", (float)myMet.Energy());
+
 // photon variables
 	l.FillTree("ph1_e",(float)lead_p4.E());
 	l.FillTree("ph2_e",(float)sublead_p4.E());
