@@ -13,7 +13,7 @@ subleadEtVHmetCut=25
 
 ##
 massMin=100.
-massMax=300.
+massMax=180.
 nDataBins=400
 
 ## Un-tagged categories
