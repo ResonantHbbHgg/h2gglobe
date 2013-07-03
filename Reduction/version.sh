@@ -1,1 +1,1 @@
-version="radion_reduction_v07_dev"
+version="radion_reduction_v07"
