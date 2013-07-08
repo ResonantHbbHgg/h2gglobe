@@ -39,3 +39,7 @@ AnalysisScripts/baseline/tmp_*
 # batch .tgz
 *.tgz
 *.tar.gz
+
+# scratch dump files
+dump.*
+
