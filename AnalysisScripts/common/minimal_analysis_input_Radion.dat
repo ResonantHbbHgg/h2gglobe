@@ -25,13 +25,13 @@ jet_algoPF1_betaStarClassic
 jet_algoPF1_dR2Mean
 jet_algoPF1_dRMean
 jet_algoPF1_dZ
-jet_algoPF1_frac01
-jet_algoPF1_frac02
-jet_algoPF1_frac03
-jet_algoPF1_frac04
-jet_algoPF1_frac05
-jet_algoPF1_full_mva
-jet_algoPF1_simple_mva
+#jet_algoPF1_frac01
+#jet_algoPF1_frac02
+#jet_algoPF1_frac03
+#jet_algoPF1_frac04
+#jet_algoPF1_frac05
+#jet_algoPF1_full_mva
+#jet_algoPF1_simple_mva
 jet_algoPF1_nCharged
 jet_algoPF1_nNeutrals
 jet_algoPF1_pfloose
@@ -39,11 +39,11 @@ jet_algoPF1_vbfMatched
 jet_algoPF1_genMatched
 jet_algoPF1_genPt
 jet_algoPF1_genDr
-jet_algoPF1_full_mva_ext
-jet_algoPF1_simple_mva_ext
-jet_algoPF1_full_wp_level_ext
-jet_algoPF1_simple_wp_level_ext
-jet_algoPF1_cutbased_wp_level_ext
+#jet_algoPF1_full_mva_ext
+#jet_algoPF1_simple_mva_ext
+#jet_algoPF1_full_wp_level_ext
+#jet_algoPF1_simple_wp_level_ext
+#jet_algoPF1_cutbased_wp_level_ext
 jet_algoPF1_beta_ext
 jet_algoPF1_betaStar_ext
 jet_algoPF1_betaStarClassic_ext
@@ -51,8 +51,8 @@ jet_algoPF1_area
 jet_algoPF1_nvtx
 jet_algoPF1_csvBtag
 jet_algoPF1_csvMvaBtag
-jet_algoPF1_jetProbBtag
-jet_algoPF1_tcheBtag
+#jet_algoPF1_jetProbBtag
+#jet_algoPF1_tcheBtag
 jet_algoPF1_radionMatched
 jet_algoPF1_genMatched
 jet_algoPF1_ptD
@@ -62,10 +62,10 @@ jet_algoPF1_secVtx3dL
 jet_algoPF1_secVtx3deL
 jet_algoPF1_emfrac
 jet_algoPF1_hadfrac
-jet_algoPF1_ntk
-jet_algoPF1_axis1
-jet_algoPF1_axis2
-jet_algoPF1_pull
+#jet_algoPF1_ntk
+#jet_algoPF1_axis1
+#jet_algoPF1_axis2
+#jet_algoPF1_pull
 
 ##
 ## SuperClusters
