@@ -7,7 +7,8 @@
 #bash submit_reduction.sh data_2012 DoublePhoton_Run2012B-22Jan2013-v1_AOD 75
 #bash submit_reduction.sh data_2012 DoublePhoton_Run2012C-22Jan2013-v2_AOD 120
 #bash submit_reduction.sh data_2012 DoublePhoton_Run2012D-22Jan2013-v1_v3  120
-#bash submit_reduction.sh data_2012 Photon_Run2012A_22Jan2013-v1_AOD       30
+#bash submit_reduction.sh data_2012 Photon_Run2012A_22Jan2013-v1_AOD       100
+bash submit_reduction.sh data_2012_v2 Photon_Run2012A_22Jan2013-v1_AOD       100
 
 #
 ### SIGNAL RADION
@@ -30,10 +31,10 @@
 ### MC HIGGS
 #
 
-bash submit_reduction.sh mc_radion_SMhiggs_summer12_rd1 GluGluToHToGG_M-125_8TeV-powheg-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1 5 
-bash submit_reduction.sh mc_radion_SMhiggs_summer12_rd1 TTH_HToGG_M-125_8TeV-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
-bash submit_reduction.sh mc_radion_SMhiggs_summer12_rd1 VBF_HToGG_M-125_8TeV-powheg-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
-bash submit_reduction.sh mc_radion_SMhiggs_summer12_rd1 WH_ZH_HToGG_M-125_8TeV-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v2 5
+#bash submit_reduction.sh mc_radion_SMhiggs_summer12_rd1 GluGluToHToGG_M-125_8TeV-powheg-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1 5 
+#bash submit_reduction.sh mc_radion_SMhiggs_summer12_rd1 TTH_HToGG_M-125_8TeV-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
+#bash submit_reduction.sh mc_radion_SMhiggs_summer12_rd1 VBF_HToGG_M-125_8TeV-powheg-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
+#bash submit_reduction.sh mc_radion_SMhiggs_summer12_rd1 WH_ZH_HToGG_M-125_8TeV-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v2 5
 
 
 #

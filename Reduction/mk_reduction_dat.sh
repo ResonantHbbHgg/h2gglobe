@@ -11,6 +11,9 @@
 #rm data_2012/*.dat
 #./AnalysisScripts/mk_reduction_dat.py /store/group/phys_higgs/cmshgg/processed/V15_00_05/data ${storedir}/data data_2012.txt
 
+rm data_2012_v2/*.dat
+./AnalysisScripts/mk_reduction_dat.py /store/group/phys_higgs/cmshgg/processed/V15_00_05/data ${storedir}/data data_2012_v2.txt
+
 #rm mc_radion_bkg_diphoton/*.dat
 #./AnalysisScripts/mk_reduction_dat.py /store/group/phys_higgs/cmshgg/processed/V15_00_05/mc/Summer12_DR53X-PU_S10_START53_V7C ${storedir} mc_radion_bkg_diphoton.txt
 
