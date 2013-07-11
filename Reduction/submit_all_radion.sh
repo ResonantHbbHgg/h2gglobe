@@ -22,7 +22,7 @@
 
 ## bash submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-1000_TuneZ2star_8TeV-nm-madgraph 4
 ## bash submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-1500_TuneZ2star_8TeV-nm-madgraph 4
-bash submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph 4
+bash submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph 8
 ## bash submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-500_TuneZ2star_8TeV-nm-madgraph 4
 ## bash submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-700_TuneZ2star_8TeV-nm-madgraph 4
 
