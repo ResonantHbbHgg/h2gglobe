@@ -101,4 +101,4 @@ cuts jetanalysis/cuts_vbfcutb.dat
 ##   analyzer <class_name> <config_file>
 ##
 ## analyzer PhotonAnalysis photonanalysis.dat
-analyzer StatAnalysis photonanalysis.dat analysis_settings_Radion.dat statanalysis_Radion.dat bkgPolOrderByCat=5,5,5,5 jetanalysis/cutbvbftag.dat saveDatacardTrees_=0 dumpAscii=0 dumpMcAscii=0 scaleR9Only=0 fillOptTree=1
+analyzer StatAnalysis photonanalysis.dat analysis_settings_Radion.dat statanalysis_Radion.dat bkgPolOrderByCat=5,5,5,5 jetanalysis/cutbvbftag.dat saveDatacardTrees_=0 dumpAscii=0 dumpMcAscii=0 scaleR9Only=0 fillOptTree=1 useDefaultVertex=1

@@ -4,27 +4,26 @@
 ### DATA
 #
 
-#bash submit_reduction.sh data_2012 DoublePhoton_Run2012B-22Jan2013-v1_AOD 75
-#bash submit_reduction.sh data_2012 DoublePhoton_Run2012C-22Jan2013-v2_AOD 120
-#bash submit_reduction.sh data_2012 DoublePhoton_Run2012D-22Jan2013-v1_v3  120
-#bash submit_reduction.sh data_2012 Photon_Run2012A_22Jan2013-v1_AOD       100
-bash submit_reduction.sh data_2012_v2 Photon_Run2012A_22Jan2013-v1_AOD       100
+bash submit_reduction.sh data_2012 DoublePhoton_Run2012B-22Jan2013-v1_AOD 75
+bash submit_reduction.sh data_2012 DoublePhoton_Run2012C-22Jan2013-v2_AOD 120
+bash submit_reduction.sh data_2012 DoublePhoton_Run2012D-22Jan2013-v1_v3  120
+bash submit_reduction.sh data_2012 Photon_Run2012A_22Jan2013-v1_AOD       100
 
 #
 ### SIGNAL RADION
 #
 
-#bash submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-1000_TuneZ2star_8TeV-nm-madgraph 4
-#bash submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-1500_TuneZ2star_8TeV-nm-madgraph 4
-#bash submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph 4
-#bash submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-500_TuneZ2star_8TeV-nm-madgraph 4
-#bash submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-700_TuneZ2star_8TeV-nm-madgraph 4
+bash submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-1000_TuneZ2star_8TeV-nm-madgraph 4
+bash submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-1500_TuneZ2star_8TeV-nm-madgraph 4
+bash submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph 4
+bash submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-500_TuneZ2star_8TeV-nm-madgraph 4
+bash submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-700_TuneZ2star_8TeV-nm-madgraph 4
 
-#bash submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-1000_TuneZ2star_8TeV-Madgraph_pythia6 4
-#bash submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-1500_TuneZ2star_8TeV-Madgraph_pythia6 4
-#bash submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-300_TuneZ2star_8TeV-Madgraph_pythia6 4
-#bash submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-500_TuneZ2star_8TeV-Madgraph_pythia6 4
-#bash submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-700_TuneZ2star_8TeV-Madgraph_pythia6 4
+bash submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-1000_TuneZ2star_8TeV-Madgraph_pythia6 4
+bash submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-1500_TuneZ2star_8TeV-Madgraph_pythia6 4
+bash submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-300_TuneZ2star_8TeV-Madgraph_pythia6 4
+bash submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-500_TuneZ2star_8TeV-Madgraph_pythia6 4
+bash submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-700_TuneZ2star_8TeV-Madgraph_pythia6 4
 
 
 #
