@@ -12,9 +12,9 @@ run
 bx
 
 # SuperClusters
+sc_n
 #sc_p4
 sc_xyz
-#sc_n
 sc_sphi
 #sc_seta
 sc_raw
@@ -91,7 +91,7 @@ met_significance_pfmetType1
 #el_std_regr_energyerr
 
 # Muons
-#mu_glo_n
+mu_glo_n
 #mu_glo_p4
 #mu_glo_dof
 #mu_glo_chi2
@@ -273,13 +273,13 @@ pho_betacry
 pho_phicry
 
 # All Conversions
+conv_n
 conv_ntracks
 conv_singleleg_momentum
 conv_refitted_momentum
 conv_validvtx
 conv_chi2_probability
 conv_zofprimvtxfromtrks
-conv_n
 conv_p4
 conv_vtx
 conv_eoverp
@@ -437,9 +437,9 @@ jet_algoPF1_hadfrac
 #jet_algoPF1_R
 
 
-#jet_algoPF3_n
+jet_algoPF3_n
 #jet_algoPF3_erescale
-#jet_algoPF3_p4
+jet_algoPF3_p4
 #jet_algoPF3_beta
 #jet_algoPF3_betaStar
 #jet_algoPF3_betaStarClassic

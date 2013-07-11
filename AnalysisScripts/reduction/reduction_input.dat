@@ -84,6 +84,12 @@ genjet_algo2_p4:1
 genjet_algo3_n:1
 genjet_algo3_p4:1
 
+# extra inputs for Radion reduction preselection
+jet_algoPF1_n
+jet_algoPF1_p4
+jet_algoPF1_betaStarClassic
+jet_algoPF1_dR2Mean
+
 jet_algoPF1_beta_ext
 jet_algoPF1_betaStar_ext
 jet_algoPF1_betaStarClassic_ext
@@ -91,6 +97,7 @@ vtx_std_tkind
 vtx_std_xyz
 jet_algoPF1_tkind
 #jet_algoPF2_tkind
+jet_algoPF3_n
 jet_algoPF3_tkind
 jet_algoPF1_ntk
 #jet_algoPF2_ntk

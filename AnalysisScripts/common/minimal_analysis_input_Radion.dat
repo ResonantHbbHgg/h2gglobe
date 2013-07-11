@@ -208,9 +208,9 @@ conv_vtx
 conv_ntracks
 conv_singleleg_momentum
 conv_refitted_momentum
-conv_ntracks
-conv_validvtx
-conv_chi2_probability
+#conv_ntracks
+#conv_validvtx
+#conv_chi2_probability
 conv_eoverp
 pho_conv_refitted_momentum
 pho_conv_vtx
