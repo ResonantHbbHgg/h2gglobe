@@ -42,7 +42,7 @@ for d in ds.read().split("\n"):
         iname,dname = dname.rsplit(":",1)
     else:
         iname = dname
-    analyzer = "analyzer PhotonAnalysis photonanalysis.dat"
+    analyzer = "analyzer PhotonAnalysis photonanalysis.dat useDefaultVertex=1"
     getanalyzer = False
     for s in sl:
         if "append" in s:
