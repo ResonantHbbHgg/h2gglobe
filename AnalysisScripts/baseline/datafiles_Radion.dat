@@ -4,7 +4,7 @@ intL=19620. histfile=CMS-HGG.root output=eventsList.txt
 # Data
 #
 #typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07/data/Photon_Run2012A_22Jan2013-v1_AOD
-#typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07_tests/data/Photon_Run2012A_22Jan2013-v1_AOD
+typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07_tests/data/Photon_Run2012A_22Jan2013-v1_AOD
 # typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v03/data/Photon_Run2012A-13Jul2012-v1
 # typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v03/data/Photon_Run2012A-recover-06Aug2012-v1
 # typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v03/data/DoublePhoton_Run2012B-13Jul2012-v1
@@ -29,7 +29,7 @@ intL=19620. histfile=CMS-HGG.root output=eventsList.txt
 # Radion Signal
 # Cross sections taken from https://twiki.cern.ch/twiki/bin/viewauth/CMS/HHtoGammaGammabb#MC_signal_simulation for radion and prep (http://cms.cern.ch/iCMS/jsp/mcprod/admin/requestmanagement.jsp?dsn=GravitonToHH_2Gamma_2b_M-*&campid=Summer12) for graviton
 
-typ=-301 ind=1 draw=1   Nam=Radion_m300_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07_tests/RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.000271   kfac=1.000000   scal=1.000000
+#typ=-301 ind=1 draw=1   Nam=Radion_m300_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07_tests/RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.000271   kfac=1.000000   scal=1.000000
 #typ=-301 ind=1 draw=1   Nam=Radion_m300_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07/RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.000271   kfac=1.000000   scal=1.000000
 #typ=-501 ind=1 draw=1   Nam=Radion_m500_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07/RadionToHHTo2G2B_M-500_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.0000471   kfac=1.000000   scal=1.000000
 #typ=-701 ind=1 draw=1   Nam=Radion_m700_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07/RadionToHHTo2G2B_M-700_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.0000158   kfac=1.000000   scal=1.000000
@@ -88,7 +88,7 @@ typ=-301 ind=1 draw=1   Nam=Radion_m300_8TeV_nm   CaDir=/store/cmst3/user/obondu
 #
 inputBranches minimal_analysis_input_Radion.dat
 inputBranches minimal_statanalysis_input.dat
-#inputBranches minimal_leptmetanalysis_input.dat
+inputBranches minimal_leptmetanalysis_input.dat
 
 #treevariables massfac_mva_binned/unbinned_datacard_trees.dat
 treevariables RadionTree.dat
