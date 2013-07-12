@@ -1885,7 +1885,7 @@ bool PhotonAnalysis::SelectEventsReduction(LoopAll& l, int jentry)
                 l.dipho_vtx_std_sel->push_back( (l.vtx_std_ranked_list)->back()[0] );
             } else {
                 l.dipho_vtx_std_sel->push_back(0);
-                std::cerr << "NO VERTEX SELECTED " << l.event << " " << l.run << " " << diphotons[id].first << " " << diphotons[id].second << std::endl;
+                if(PADEBUG) std::cerr << "NO VERTEX SELECTED " << l.event << " " << l.run << " " << diphotons[id].first << " " << diphotons[id].second << std::endl;
             }
 
             l.dipho_leadind[l.dipho_n] = diphotons[id].first;
