@@ -14,10 +14,12 @@ fi
 for dir in `cat ${dirFile}`
 do
 	echo "listing files in ${dir}"
-	for file in `cmsLs ${dir} | awk '{print $5}'`
+#	for file in `cmsLs ${dir} | awk '{print $5}'`
+	for file in `eos ls ${dir}`
 	do
-		cmsPfn ${file} >> ${fileList}
+#		cmsPfn ${file} >> ${fileList}
+		echo "root://eoscms//eos/cms${dir}/${file}" >> ${fileList}
 	done
 done
 
-exit 0
+#exit 0
