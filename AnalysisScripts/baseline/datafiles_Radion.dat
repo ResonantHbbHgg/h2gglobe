@@ -1,20 +1,12 @@
-intL=19620. histfile=CMS-HGG.root output=eventsList.txt
+intL=19788. histfile=CMS-HGG.root output=eventsList.txt
 
 #
 # Data
 #
-#typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07/data/Photon_Run2012A_22Jan2013-v1_AOD
-typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07_tests/data/Photon_Run2012A_22Jan2013-v1_AOD
-# typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v03/data/Photon_Run2012A-13Jul2012-v1
-# typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v03/data/Photon_Run2012A-recover-06Aug2012-v1
-# typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v03/data/DoublePhoton_Run2012B-13Jul2012-v1
-# typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v03/data/DoublePhoton_Run2012C-24Aug2012-v2
-# typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v03/data/DoublePhoton_Run2012C-EcalRecover_11Dec2012-v1
-# typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v03/data/DoublePhoton_Run2012C-PromptReco-v2
-# typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v03/data/DoublePhoton_Run2012C-PromptReco-v2_sub2
-# typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v03/data/DoublePhoton_Run2012D-PromptReco-v1
-# typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/group/phys_higgs/Resonant_HH/reduced/radion_reduction_v03/data/DoublePhoton_Run2012D-PromptReco-v1_sub2
-
+#typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v08/data/Photon_Run2012A_22Jan2013-v1_AOD json=aux/Cert_190456-208686_8TeV_22Jan2013ReReco_Collisions12_JSON.txt
+#typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v08/data/DoublePhoton_Run2012B-22Jan2013-v1_AOD json=aux/Cert_190456-208686_8TeV_22Jan2013ReReco_Collisions12_JSON.txt
+#typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v08/data/DoublePhoton_Run2012C-22Jan2013-v2_AOD json=aux/Cert_190456-208686_8TeV_22Jan2013ReReco_Collisions12_JSON.txt
+#typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v08/data/DoublePhoton_Run2012D-22Jan2013-v1_v3 json=aux/Cert_190456-208686_8TeV_22Jan2013ReReco_Collisions12_JSON.txt
 
 #
 # SM Higgs
@@ -29,18 +21,17 @@ typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal
 # Radion Signal
 # Cross sections taken from https://twiki.cern.ch/twiki/bin/viewauth/CMS/HHtoGammaGammabb#MC_signal_simulation for radion and prep (http://cms.cern.ch/iCMS/jsp/mcprod/admin/requestmanagement.jsp?dsn=GravitonToHH_2Gamma_2b_M-*&campid=Summer12) for graviton
 
-#typ=-301 ind=1 draw=1   Nam=Radion_m300_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07_tests/RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.000271   kfac=1.000000   scal=1.000000
-#typ=-301 ind=1 draw=1   Nam=Radion_m300_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07/RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.000271   kfac=1.000000   scal=1.000000
-#typ=-501 ind=1 draw=1   Nam=Radion_m500_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07/RadionToHHTo2G2B_M-500_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.0000471   kfac=1.000000   scal=1.000000
-#typ=-701 ind=1 draw=1   Nam=Radion_m700_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07/RadionToHHTo2G2B_M-700_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.0000158   kfac=1.000000   scal=1.000000
-#typ=-1001 ind=1 draw=1   Nam=Radion_m1000_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07/RadionToHHTo2G2B_M-1000_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.00000263   kfac=1.000000   scal=1.000000
-#typ=-1501 ind=1 draw=1   Nam=Radion_m1500_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07/RadionToHHTo2G2B_M-1500_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.000000290   kfac=1.000000   scal=1.000000
+typ=-301 ind=1 draw=1   Nam=Radion_m300_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v08/mc/RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.000271   kfac=1.000000   scal=1.000000
+typ=-501 ind=1 draw=1   Nam=Radion_m500_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v08/mc/RadionToHHTo2G2B_M-500_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.0000471   kfac=1.000000   scal=1.000000
+typ=-701 ind=1 draw=1   Nam=Radion_m700_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v08/mc/RadionToHHTo2G2B_M-700_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.0000158   kfac=1.000000   scal=1.000000
+typ=-1001 ind=1 draw=1   Nam=Radion_m1000_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v08/mc/RadionToHHTo2G2B_M-1000_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.00000263   kfac=1.000000   scal=1.000000
+typ=-1501 ind=1 draw=1   Nam=Radion_m1500_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v08/mc/RadionToHHTo2G2B_M-1500_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19620.   xsec=0.000000290   kfac=1.000000   scal=1.000000
 
-#typ=-302 ind=1 draw=1   Nam=Graviton_m300_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07/GravitonToHH_2Gamma_2b_M-300_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.000574   kfac=1.000000   scal=1.000000
-#typ=-502 ind=1 draw=1   Nam=Graviton_m500_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07/GravitonToHH_2Gamma_2b_M-500_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.000138   kfac=1.000000   scal=1.000000
-#typ=-702 ind=1 draw=1   Nam=Graviton_m700_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07/GravitonToHH_2Gamma_2b_M-700_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.0000479   kfac=1.000000   scal=1.000000
-#typ=-1002 ind=1 draw=1   Nam=Graviton_m1000_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07/GravitonToHH_2Gamma_2b_M-1000_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.0000133   kfac=1.000000   scal=1.000000
-#typ=-1502 ind=1 draw=1   Nam=Graviton_m1500_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v07/GravitonToHH_2Gamma_2b_M-1500_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.00000244   kfac=1.000000   scal=1.000000
+typ=-302 ind=1 draw=1   Nam=Graviton_m300_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v08/mc/GravitonToHH_2Gamma_2b_M-300_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.000574   kfac=1.000000   scal=1.000000
+typ=-502 ind=1 draw=1   Nam=Graviton_m500_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v08/mc/GravitonToHH_2Gamma_2b_M-500_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.000138   kfac=1.000000   scal=1.000000
+typ=-702 ind=1 draw=1   Nam=Graviton_m700_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v08/mc/GravitonToHH_2Gamma_2b_M-700_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.0000479   kfac=1.000000   scal=1.000000
+typ=-1002 ind=1 draw=1   Nam=Graviton_m1000_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v08/mc/GravitonToHH_2Gamma_2b_M-1000_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.0000133   kfac=1.000000   scal=1.000000
+typ=-1502 ind=1 draw=1   Nam=Graviton_m1500_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v08/mc/GravitonToHH_2Gamma_2b_M-1500_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=19620.   xsec=0.00000244   kfac=1.000000   scal=1.000000
 
 #
 # Background
@@ -101,4 +92,4 @@ cuts jetanalysis/cuts_vbfcutb.dat
 ##   analyzer <class_name> <config_file>
 ##
 ## analyzer PhotonAnalysis photonanalysis.dat
-analyzer StatAnalysis photonanalysis.dat analysis_settings_Radion.dat statanalysis_Radion.dat bkgPolOrderByCat=5,5,5,5 jetanalysis/cutbvbftag.dat saveDatacardTrees_=0 dumpAscii=0 dumpMcAscii=0 scaleR9Only=0 fillOptTree=1 useDefaultVertex=1
+analyzer StatAnalysis photonanalysis.dat analysis_settings_Radion.dat statanalysis_Radion.dat bkgPolOrderByCat=5,5,5,5 jetanalysis/cutbvbftag.dat saveDatacardTrees_=0 dumpAscii=0 dumpMcAscii=0 scaleR9Only=0 fillOptTree=1 useDefaultVertex=1 escale_and_smearing_jan22rereco_8TeV_std_mc.dat
