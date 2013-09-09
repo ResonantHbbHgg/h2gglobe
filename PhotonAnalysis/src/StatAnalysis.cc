@@ -2100,7 +2100,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     l.FillTree("event",(float)l.event);
 	l.FillTree("weight",(float)weight);
 	l.FillTree("evweight",(float)evweight);
-    float pu_weight = weight/l.sampleContainer[l.current_sample_index].weight; // contains also the smearings, not only pu
+    float pu_weight = weight/l.sampleContainer[l.current_sample_index].weight(); // contains also the smearings, not only pu
 	l.FillTree("pu_weight",(float)pu_weight);
 	l.FillTree("pu_n",(float)l.pu_n);
 	l.FillTree("nvtx",(float)l.vtx_std_n);
@@ -2298,7 +2298,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j1_jetProbBtag", (float)l.jet_algoPF1_jetProbBtag[jets[0]]);
         l.FillTree("j1_tcheBtag", (float)l.jet_algoPF1_tcheBtag[jets[0]]);
         l.FillTree("j1_radionMatched", (float)l.jet_algoPF1_radionMatched[jets[0]]);
-		l.FillTree("j1_ptD", (float)l.jet_algoPF1_ptD[jets[0]]);
 		l.FillTree("j1_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[0]]);
 		l.FillTree("j1_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[0]]);
 		l.FillTree("j1_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[0]]);
@@ -2308,9 +2307,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j1_ntk", (int)l.jet_algoPF1_ntk[jets[0]]);
 		l.FillTree("j1_nNeutrals", (int)l.jet_algoPF1_nNeutrals[jets[0]]);
 		l.FillTree("j1_nCharged", (int)l.jet_algoPF1_nCharged[jets[0]]);
-		l.FillTree("j1_axis1", (float)l.jet_algoPF1_axis1[jets[0]]);
-		l.FillTree("j1_axis2", (float)l.jet_algoPF1_axis2[jets[0]]);
-		l.FillTree("j1_pull", (float)l.jet_algoPF1_pull[jets[0]]);
     } else {
 	    l.FillTree("j1_e",(float)-1001.);
     	l.FillTree("j1_pt",(float)-1001.);
@@ -2326,7 +2322,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j1_jetProbBtag", (float)-1001.);
         l.FillTree("j1_tcheBtag", (float)-1001.);
         l.FillTree("j1_radionMatched", (float)-1001.);
-		l.FillTree("j1_ptD", (float)-1001.);
 		l.FillTree("j1_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j1_secVtxPt", (float)-1001.);
 		l.FillTree("j1_secVtx3dL", (float)-1001.);
@@ -2336,9 +2331,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j1_ntk", (int)-1001);
 		l.FillTree("j1_nNeutrals", (int)-1001);
 		l.FillTree("j1_nCharged", (int)-1001);
-		l.FillTree("j1_axis1", (float)-1001.);
-		l.FillTree("j1_axis2", (float)-1001.);
-		l.FillTree("j1_pull", (float)-1001.);
     } // end if njets > 0
 
     if(jets.size()>1){
@@ -2357,7 +2349,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j2_jetProbBtag", (float)l.jet_algoPF1_jetProbBtag[jets[1]]);
         l.FillTree("j2_tcheBtag", (float)l.jet_algoPF1_tcheBtag[jets[1]]);
         l.FillTree("j2_radionMatched", (float)l.jet_algoPF1_radionMatched[jets[1]]);
-		l.FillTree("j2_ptD", (float)l.jet_algoPF1_ptD[jets[1]]);
 		l.FillTree("j2_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[1]]);
 		l.FillTree("j2_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[1]]);
 		l.FillTree("j2_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[1]]);
@@ -2367,9 +2358,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j2_ntk", (int)l.jet_algoPF1_ntk[jets[1]]);
 		l.FillTree("j2_nNeutrals", (int)l.jet_algoPF1_nNeutrals[jets[1]]);
 		l.FillTree("j2_nCharged", (int)l.jet_algoPF1_nCharged[jets[1]]);
-		l.FillTree("j2_axis1", (float)l.jet_algoPF1_axis1[jets[1]]);
-		l.FillTree("j2_axis2", (float)l.jet_algoPF1_axis2[jets[1]]);
-		l.FillTree("j2_pull", (float)l.jet_algoPF1_pull[jets[1]]);
     } else {
 	    l.FillTree("j2_e",(float)-1001.);
 	    l.FillTree("j2_pt",(float)-1001.);
@@ -2385,7 +2373,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j2_jetProbBtag", (float)-1001.);
         l.FillTree("j2_tcheBtag", (float)-1001.);
         l.FillTree("j2_radionMatched", (float)-1001.);
-		l.FillTree("j2_ptD", (float)-1001.);
 		l.FillTree("j2_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j2_secVtxPt", (float)-1001.);
 		l.FillTree("j2_secVtx3dL", (float)-1001.);
@@ -2395,9 +2382,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j2_ntk", (int)-1001);
 		l.FillTree("j2_nNeutrals", (int)-1001);
 		l.FillTree("j2_nCharged", (int)-1001);
-		l.FillTree("j2_axis1", (float)-1001.);
-		l.FillTree("j2_axis2", (float)-1001.);
-		l.FillTree("j2_pull", (float)-1001.);
     } // end if njets > 1
 
     if(jets.size()>1){
@@ -2454,7 +2438,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j3_jetProbBtag", (float)l.jet_algoPF1_jetProbBtag[jets[2]]);
         l.FillTree("j3_tcheBtag", (float)l.jet_algoPF1_tcheBtag[jets[2]]);
         l.FillTree("j3_radionMatched", (float)l.jet_algoPF1_radionMatched[jets[2]]);
-		l.FillTree("j3_ptD", (float)l.jet_algoPF1_ptD[jets[2]]);
 		l.FillTree("j3_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[2]]);
 		l.FillTree("j3_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[2]]);
 		l.FillTree("j3_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[2]]);
@@ -2464,9 +2447,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j3_ntk", (int)l.jet_algoPF1_ntk[jets[2]]);
 		l.FillTree("j3_nNeutrals", (int)l.jet_algoPF1_nNeutrals[jets[2]]);
 		l.FillTree("j3_nCharged", (int)l.jet_algoPF1_nCharged[jets[2]]);
-		l.FillTree("j3_axis1", (float)l.jet_algoPF1_axis1[jets[2]]);
-		l.FillTree("j3_axis2", (float)l.jet_algoPF1_axis2[jets[2]]);
-		l.FillTree("j3_pull", (float)l.jet_algoPF1_pull[jets[2]]);
     } else {
     	l.FillTree("j3_e",(float)-1001.);
 	    l.FillTree("j3_pt",(float)-1001.);
@@ -2482,7 +2462,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j3_jetProbBtag", (float)-1001.);
         l.FillTree("j3_tcheBtag", (float)-1001.);
         l.FillTree("j3_radionMatched", (float)-1001.);
-		l.FillTree("j3_ptD", (float)-1001.);
 		l.FillTree("j3_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j3_secVtxPt", (float)-1001.);
 		l.FillTree("j3_secVtx3dL", (float)-1001.);
@@ -2492,9 +2471,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j3_ntk", (int)-1001);
 		l.FillTree("j3_nNeutrals", (int)-1001);
 		l.FillTree("j3_nCharged", (int)-1001);
-		l.FillTree("j3_axis1", (float)-1001.);
-		l.FillTree("j3_axis2", (float)-1001.);
-		l.FillTree("j3_pull", (float)-1001.);
     } // if 3 jets
 
     if(jets.size() > 3){
@@ -2513,7 +2489,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j4_jetProbBtag", (float)l.jet_algoPF1_jetProbBtag[jets[3]]);
         l.FillTree("j4_tcheBtag", (float)l.jet_algoPF1_tcheBtag[jets[3]]);
         l.FillTree("j4_radionMatched", (float)l.jet_algoPF1_radionMatched[jets[3]]);
-		l.FillTree("j4_ptD", (float)l.jet_algoPF1_ptD[jets[3]]);
 		l.FillTree("j4_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[3]]);
 		l.FillTree("j4_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[3]]);
 		l.FillTree("j4_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[3]]);
@@ -2523,9 +2498,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j4_ntk", (int)l.jet_algoPF1_ntk[jets[3]]);
 		l.FillTree("j4_nNeutrals", (int)l.jet_algoPF1_nNeutrals[jets[3]]);
 		l.FillTree("j4_nCharged", (int)l.jet_algoPF1_nCharged[jets[3]]);
-		l.FillTree("j4_axis1", (float)l.jet_algoPF1_axis1[jets[3]]);
-		l.FillTree("j4_axis2", (float)l.jet_algoPF1_axis2[jets[3]]);
-		l.FillTree("j4_pull", (float)l.jet_algoPF1_pull[jets[3]]);
     } else {
     	l.FillTree("j4_e",(float)-1001.);
 	    l.FillTree("j4_pt",(float)-1001.);
@@ -2541,7 +2513,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j4_jetProbBtag", (float)-1001.);
         l.FillTree("j4_tcheBtag", (float)-1001.);
         l.FillTree("j4_radionMatched", (float)-1001.);
-		l.FillTree("j4_ptD", (float)-1001.);
 		l.FillTree("j4_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j4_secVtxPt", (float)-1001.);
 		l.FillTree("j4_secVtx3dL", (float)-1001.);
@@ -2551,9 +2522,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j4_ntk", (int)-1001);
 		l.FillTree("j4_nNeutrals", (int)-1001);
 		l.FillTree("j4_nCharged", (int)-1001);
-		l.FillTree("j4_axis1", (float)-1001.);
-		l.FillTree("j4_axis2", (float)-1001.);
-		l.FillTree("j4_pull", (float)-1001.);
     } // if 4 jets
 
 // MC Truth radion signal information
