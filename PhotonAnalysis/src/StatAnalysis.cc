@@ -33,12 +33,14 @@ StatAnalysis::StatAnalysis()  :
     nVHhadCategories = 0;
     nVHlepCategories = 0;
     nVHmetCategories = 0;
+    nCosThetaCategories = 0;
     
     nVtxCategories = 0;
     R9CatBoundary = 0.94;
 
     fillOptTree = false;
     doFullMvaFinalTree = false;
+    doSpinAnalysis = false;
 
     splitwzh=false;
     sigmaMrv=0.;
@@ -117,6 +119,7 @@ void StatAnalysis::Init(LoopAll& l)
         << "doVtxEffSyst "<< doVtxEffSyst << "\n"
         << "doTriggerEffSyst "<< doTriggerEffSyst << "\n"
         << "doKFactorSyst "<< doKFactorSyst << "\n"
+        << "doPtSpinSyst "<< doPtSpinSyst << "\n"
         << "-------------------------------------------------------------------------------------- \n"
         << std::endl;
 
@@ -135,7 +138,7 @@ void StatAnalysis::Init(LoopAll& l)
     nInclusiveCategories_ = nEtaCategories;
     if( nR9Categories != 0 ) nInclusiveCategories_ *= nR9Categories;
     if( nPtCategories != 0 ) nInclusiveCategories_ *= nPtCategories;
-
+    
     // mva removed cp march 8
     //if( useMVA ) nInclusiveCategories_ = nDiphoEventClasses;
 
@@ -170,11 +173,14 @@ void StatAnalysis::Init(LoopAll& l)
     if(includeVHlep){
         nVHlepCategories = nElectronCategories + nMuonCategories;
     }
+    if(includeVHlepPlusMet){
+        nVHlepCategories = 2;
+    }
     nVHmetCategories = (int)includeVHmet;  //met at analysis step
 
     nCategories_=(nInclusiveCategories_+nVBFCategories+nVHhadCategories+nVHlepCategories+nVHmetCategories);  //met at analysis step
 //    nCategories_=(nInclusiveCategories_+nVBFCategories+nVHhadCategories+nVHlepCategories);
-
+    if (doSpinAnalysis) nCategories_*=nCosThetaCategories;
 
     effSmearPars.categoryType = effPhotonCategoryType;
     effSmearPars.n_categories = effPhotonNCat;
@@ -239,6 +245,14 @@ void StatAnalysis::Init(LoopAll& l)
         kFactorSmearer->name("kFactor");
         kFactorSmearer->init();
         genLevelSmearers_.push_back(kFactorSmearer);
+    }
+    if(doPtSpinSmear) {
+        // ptSpin efficiency
+        std::cerr << __LINE__ << std::endl;
+        ptSpinSmearer = new PtSpinSmearer( ptspinHist );
+        ptSpinSmearer->name("ptSpin");
+        ptSpinSmearer->init();
+        genLevelSmearers_.push_back(ptSpinSmearer);
     }
     if(doInterferenceSmear) {
         // interference efficiency
@@ -306,6 +320,12 @@ void StatAnalysis::Init(LoopAll& l)
         std::vector<int> sys_t(1,-1);   // -1 for signal, 1 for background 0 for both
         l.rooContainer->MakeSystematicStudy(sys,sys_t);
     }
+    if(doPtSpinSmear && doPtSpinSyst) {
+        systGenLevelSmearers_.push_back(ptSpinSmearer);
+        std::vector<std::string> sys(1,ptSpinSmearer->name());
+        std::vector<int> sys_t(1,-1);   // -1 for signal, 1 for background 0 for both
+        l.rooContainer->MakeSystematicStudy(sys,sys_t);
+    }
 
     // ----------------------------------------------------
     // ----------------------------------------------------
@@ -316,107 +336,35 @@ void StatAnalysis::Init(LoopAll& l)
     // Create observables for shape-analysis with ranges
     // l.rooContainer->AddObservable("mass" ,100.,150.);
     l.rooContainer->AddObservable("CMS_hgg_mass" ,massMin,massMax);
-
     l.rooContainer->AddConstant("IntLumi",l.intlumi_);
 
     // SM Model
-    l.rooContainer->AddConstant("XSBR_tth_155",0.00004370);
-    l.rooContainer->AddConstant("XSBR_ggh_150",0.01428);
-    l.rooContainer->AddConstant("XSBR_vbf_150",0.001308);
-    l.rooContainer->AddConstant("XSBR_wzh_150",0.000641);
-    l.rooContainer->AddConstant("XSBR_tth_150",0.000066);
-    l.rooContainer->AddConstant("XSBR_ggh_145",0.018820);
-    l.rooContainer->AddConstant("XSBR_vbf_145",0.001676);
-    l.rooContainer->AddConstant("XSBR_wzh_145",0.000891);
-    l.rooContainer->AddConstant("XSBR_tth_145",0.000090);
-    l.rooContainer->AddConstant("XSBR_ggh_140",0.0234109);
-    l.rooContainer->AddConstant("XSBR_vbf_140",0.00203036);
-    l.rooContainer->AddConstant("XSBR_wzh_140",0.001163597);
-    l.rooContainer->AddConstant("XSBR_tth_140",0.000117189);
-    l.rooContainer->AddConstant("XSBR_ggh_135",0.0278604);
-    l.rooContainer->AddConstant("XSBR_vbf_135",0.002343);
-    l.rooContainer->AddConstant("XSBR_wzh_135",0.001457559);
-    l.rooContainer->AddConstant("XSBR_tth_135",0.000145053);
-    l.rooContainer->AddConstant("XSBR_ggh_130",0.0319112);
-    l.rooContainer->AddConstant("XSBR_vbf_130",0.00260804);
-    l.rooContainer->AddConstant("XSBR_wzh_130",0.001759636);
-    l.rooContainer->AddConstant("XSBR_tth_130",0.000173070);
-    l.rooContainer->AddConstant("XSBR_ggh_125",0.0350599);
-    l.rooContainer->AddConstant("XSBR_vbf_125",0.00277319);
-    l.rooContainer->AddConstant("XSBR_wzh_125",0.002035123);
-    l.rooContainer->AddConstant("XSBR_tth_125",0.000197718);
-    l.rooContainer->AddConstant("XSBR_ggh_120",0.0374175);
-    l.rooContainer->AddConstant("XSBR_vbf_120",0.00285525);
-    l.rooContainer->AddConstant("XSBR_wzh_120",0.002285775);
-    l.rooContainer->AddConstant("XSBR_tth_120",0.00021951);
-    l.rooContainer->AddConstant("XSBR_ggh_123",0.0360696);
-    l.rooContainer->AddConstant("XSBR_vbf_123",0.00281352);
-    l.rooContainer->AddConstant("XSBR_wzh_123",0.00213681);
-    l.rooContainer->AddConstant("XSBR_tth_123",0.00020663);
-    l.rooContainer->AddConstant("XSBR_ggh_121",0.0369736);
-    l.rooContainer->AddConstant("XSBR_vbf_121",0.00284082);
-    l.rooContainer->AddConstant("XSBR_wzh_121",0.00223491);
-    l.rooContainer->AddConstant("XSBR_tth_121",0.00021510);
-    l.rooContainer->AddConstant("XSBR_ggh_115",0.0386169);
-    l.rooContainer->AddConstant("XSBR_vbf_115",0.00283716);
-    l.rooContainer->AddConstant("XSBR_wzh_115",0.002482089);
-    l.rooContainer->AddConstant("XSBR_tth_115",0.000235578);
-    l.rooContainer->AddConstant("XSBR_ggh_110",0.0390848);
-    l.rooContainer->AddConstant("XSBR_vbf_110",0.00275406);
-    l.rooContainer->AddConstant("XSBR_wzh_110",0.002654575);
-    l.rooContainer->AddConstant("XSBR_tth_110",0.000247629);
-    l.rooContainer->AddConstant("XSBR_ggh_105",0.0387684);
-    l.rooContainer->AddConstant("XSBR_vbf_105",0.00262016);
-    l.rooContainer->AddConstant("XSBR_wzh_105",0.002781962);
-    l.rooContainer->AddConstant("XSBR_tth_105",0.000255074);
-
-    // FF model
-    l.rooContainer->AddConstant("ff_XSBR_vbf_150",0.00259659);
-    l.rooContainer->AddConstant("ff_XSBR_wzh_150",0.00127278);
-    l.rooContainer->AddConstant("ff_XSBR_vbf_145",0.00387544);
-    l.rooContainer->AddConstant("ff_XSBR_wzh_145",0.00205969);
-    l.rooContainer->AddConstant("ff_XSBR_vbf_140",0.00565976);
-    l.rooContainer->AddConstant("ff_XSBR_wzh_140",0.003243602);
-    l.rooContainer->AddConstant("ff_XSBR_vbf_135",0.00825);
-    l.rooContainer->AddConstant("ff_XSBR_wzh_135",0.00513225);
-    l.rooContainer->AddConstant("ff_XSBR_vbf_130",0.0122324);
-    l.rooContainer->AddConstant("ff_XSBR_wzh_130",0.00825316);
-    l.rooContainer->AddConstant("ff_XSBR_vbf_125",0.0186494);
-    l.rooContainer->AddConstant("ff_XSBR_wzh_125",0.01368598);
-    l.rooContainer->AddConstant("ff_XSBR_vbf_123",0.022212);
-    l.rooContainer->AddConstant("ff_XSBR_wzh_123",0.0168696);
-    l.rooContainer->AddConstant("ff_XSBR_vbf_121",0.0266484);
-    l.rooContainer->AddConstant("ff_XSBR_wzh_121",0.0209646);
-    l.rooContainer->AddConstant("ff_XSBR_vbf_120",0.0293139);
-    l.rooContainer->AddConstant("ff_XSBR_wzh_120",0.02346729);
-    l.rooContainer->AddConstant("ff_XSBR_vbf_115",0.0482184);
-    l.rooContainer->AddConstant("ff_XSBR_wzh_115",0.04218386);
-    l.rooContainer->AddConstant("ff_XSBR_vbf_110",0.083181);
-    l.rooContainer->AddConstant("ff_XSBR_wzh_110",0.08017625);
-    l.rooContainer->AddConstant("ff_XSBR_vbf_105",0.151616);
-    l.rooContainer->AddConstant("ff_XSBR_wzh_105",0.1609787);
-
+    for(size_t isig=0; isig<sigPointsToBook.size(); ++isig) {
+        int sig = sigPointsToBook[isig];
+        l.rooContainer->AddConstant(Form("XSBR_ggh_%d",sig),l.signalNormalizer->GetXsection(double(sig),"ggh")*l.signalNormalizer->GetBR(double(sig)));
+    }
+    
     // -----------------------------------------------------
     // Configurable background model
     // if no configuration was given, set some defaults
     std::string postfix=(dataIs2011?"":"_8TeV");
-
+    
     if( bkgPolOrderByCat.empty() ) {
-	    for(int i=0; i<nCategories_; i++){
+	for(int i=0; i<nCategories_; i++){
 	        if(i<nInclusiveCategories_) {
-	    	bkgPolOrderByCat.push_back(5);
+		    bkgPolOrderByCat.push_back(5);
 	        } else if(i<nInclusiveCategories_+nVBFCategories){
-	    	bkgPolOrderByCat.push_back(3);
+		    bkgPolOrderByCat.push_back(3);
 	        } else if(i<nInclusiveCategories_+nVBFCategories+nVHhadCategories){
-	    	bkgPolOrderByCat.push_back(2);
+		    bkgPolOrderByCat.push_back(2);
 	        } else if(i<nInclusiveCategories_+nVBFCategories+nVHhadCategories+nVHlepCategories){
-	    	bkgPolOrderByCat.push_back(1);
+		    bkgPolOrderByCat.push_back(1);
 	        }
-	    }
+	}
     }
     // build the model
     buildBkgModel(l, postfix);
-
+/* //FIXME: CHECK IF IT CRASHES
     // -----------------------------------------------------
     // Make some data sets from the observables to fill in the event loop
     // Binning is for histograms (will also produce unbinned data sets)
@@ -478,6 +426,8 @@ void StatAnalysis::Init(LoopAll& l)
         l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_Radion_m%d_8TeV_nm", sig),-1);
         l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_Graviton_m%d_8TeV", sig),-1);
     }
+*/
+    bookSignalModel(l,nDataBins);
 
     // Make sure the Map is filled
     FillSignalLabelMap(l);
@@ -610,6 +560,100 @@ void StatAnalysis::buildBkgModel(LoopAll& l, const std::string & postfix)
     }
 }
 
+
+// ----------------------------------------------------------------------------------------------------
+void StatAnalysis::bookSignalModel(LoopAll& l, Int_t nDataBins) 
+{
+    // -----------------------------------------------------
+    // Make some data sets from the observables to fill in the event loop
+    // Binning is for histograms (will also produce unbinned data sets)
+    l.rooContainer->CreateDataSet("CMS_hgg_mass","data_mass"    ,nDataBins); // (100,110,150) -> for a window, else full obs range is taken
+    l.rooContainer->CreateDataSet("CMS_hgg_mass","bkg_mass"     ,nDataBins);
+    
+    // Create Signal DataSets:
+    for(size_t isig=0; isig<sigPointsToBook.size(); ++isig) {
+	int sig = sigPointsToBook[isig];
+	// SM datasets
+	if (!doSpinAnalysis){
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_ggh_mass_m%d",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_vbf_mass_m%d",sig),nDataBins);
+            if(!splitwzh) l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wzh_mass_m%d",sig),nDataBins);
+            else{
+                l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wh_mass_m%d",sig),nDataBins);
+                l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_zh_mass_m%d",sig),nDataBins);
+            }
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_tth_mass_m%d",sig),nDataBins);
+
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_ggh_mass_m%d_rv",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_vbf_mass_m%d_rv",sig),nDataBins);
+            if(!splitwzh) l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wzh_mass_m%d_rv",sig),nDataBins);
+            else{
+                l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wh_mass_m%d_rv",sig),nDataBins);
+                l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_zh_mass_m%d_rv",sig),nDataBins);
+            }
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_tth_mass_m%d_rv",sig),nDataBins);
+
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_ggh_mass_m%d_wv",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_vbf_mass_m%d_wv",sig),nDataBins);
+            if(!splitwzh) l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wzh_mass_m%d_wv",sig),nDataBins);
+            else{
+                l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wh_mass_m%d_wv",sig),nDataBins);
+                l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_zh_mass_m%d_wv",sig),nDataBins);
+            }
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_tth_mass_m%d_wv",sig),nDataBins);
+        }
+        // Spin Analysis Datasets
+        else {
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_ggh_mass_m%d",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_vbf_mass_m%d",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wzh_mass_m%d",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_tth_mass_m%d",sig),nDataBins);
+
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_ggh_mass_m%d_rv",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_vbf_mass_m%d_rv",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wzh_mass_m%d_rv",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_tth_mass_m%d_rv",sig),nDataBins);
+
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_ggh_mass_m%d_wv",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_vbf_mass_m%d_wv",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wzh_mass_m%d_wv",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_tth_mass_m%d_wv",sig),nDataBins);
+            
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_gg_grav_mass_m%d",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_qq_grav_mass_m%d",sig),nDataBins);
+                                                                            
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_gg_grav_mass_m%d_rv",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_qq_grav_mass_m%d_rv",sig),nDataBins);
+                                                                            
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_gg_grav_mass_m%d_wv",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_qq_grav_mass_m%d_wv",sig),nDataBins);
+        }
+    }
+
+    // Make more datasets representing Systematic Shifts of various quantities
+    for(size_t isig=0; isig<sigPointsToBook.size(); ++isig) {
+        int sig = sigPointsToBook[isig];
+        if (!doSpinAnalysis){
+            l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_ggh_mass_m%d",sig),-1);
+            l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_vbf_mass_m%d",sig),-1);
+            if(!splitwzh) l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_wzh_mass_m%d",sig),-1);
+            else{
+                l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_wh_mass_m%d",sig),-1);
+                l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_zh_mass_m%d",sig),-1);
+            }
+            l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_tth_mass_m%d",sig),-1);
+        }
+        else {
+            l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_ggh_mass_m%d",sig),-1);
+            l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_vbf_mass_m%d",sig),-1);
+            l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_wzh_mass_m%d",sig),-1);
+            l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_tth_mass_m%d",sig),-1);
+            l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_gg_grav_mass_m%d",sig),-1);
+            l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_qq_grav_mass_m%d",sig),-1);
+        }
+    }
+}
+
 // ----------------------------------------------------------------------------------------------------
 bool StatAnalysis::Analysis(LoopAll& l, Int_t jentry)
 {
@@ -617,8 +661,8 @@ bool StatAnalysis::Analysis(LoopAll& l, Int_t jentry)
         cout << "Analysis START; cur_type is: " << l.itype[l.current] <<endl;
 
     int cur_type = l.itype[l.current];
-    float weight = l.sampleContainer[l.current_sample_index].weight;
-    float sampleweight = l.sampleContainer[l.current_sample_index].weight;
+    float weight = l.sampleContainer[l.current_sample_index].weight();
+    float sampleweight = l.sampleContainer[l.current_sample_index].weight();
 
     // Set reRunCiC Only if this is an MC event since scaling of R9 and Energy isn't done at reduction
     if (cur_type==0) {
@@ -802,7 +846,7 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
     assert( isSyst || ! skipSelection );
 
     int cur_type = l.itype[l.current];
-    float sampleweight = l.sampleContainer[l.current_sample_index].weight;
+    float sampleweight = l.sampleContainer[l.current_sample_index].weight();
     /// diphoton_id = -1;
 
     std::pair<int,int> diphoton_index;
@@ -822,6 +866,11 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
 
     int leadpho_ind=-1;
     int subleadpho_ind=-1;
+
+    bool VHmuevent_prov=false;
+    bool VHelevent_prov=false;
+    int Njet_lepcat = 0;
+
     if( ! skipSelection ) {
 
 	    // first apply corrections and smearing on the single photons
@@ -860,6 +909,8 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
 	    int diphotonVHmet_id = -1; //met at analysis step
 	    VHmuevent = false;
 	    VHelevent = false;
+	    VHlep1event = false;
+	    VHlep2event = false;
 	    VHmuevent_cat = 0;
 	    VHelevent_cat = 0;
 	    VBFevent = false;
@@ -879,11 +930,32 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
 	            //VHmuevent=MuonTag2012(l, diphotonVHlep_id, &smeared_pho_energy[0],lep_sync);
 	            //VHelevent=ElectronTag2012(l, diphotonVHlep_id, &smeared_pho_energy[0],lep_sync);
 	    	    float eventweight = weight * genLevWeight;
-                VHmuevent=MuonTag2012B(l, diphotonVHlep_id, mu_ind, muVtx, VHmuevent_cat, &smeared_pho_energy[0], lep_sync, false, -0.2, eventweight, smeared_pho_weight, !isSyst);
-                if(!VHmuevent){
-                    VHelevent=ElectronTag2012B(l, diphotonVHlep_id, el_ind, elVtx, VHelevent_cat, &smeared_pho_energy[0], lep_sync, false, -0.2, eventweight, smeared_pho_weight, !isSyst);
-                }
+		    VHmuevent=MuonTag2012B(l, diphotonVHlep_id, mu_ind, muVtx, VHmuevent_cat, &smeared_pho_energy[0], lep_sync, false, -0.2, eventweight, smeared_pho_weight, !isSyst);
+		    if(!VHmuevent){
+			VHelevent=ElectronTag2012B(l, diphotonVHlep_id, el_ind, elVtx, VHelevent_cat, &smeared_pho_energy[0], lep_sync, false, -0.2, eventweight, smeared_pho_weight, !isSyst);
+		    }
 	        }
+	    }
+	    
+	    if(includeVHlepPlusMet){
+		float eventweight = weight * genLevWeight;
+		float myweight=1.;
+		if(eventweight*sampleweight!=0) myweight=eventweight/sampleweight;
+		VHmuevent_prov=MuonTag2012B(l,diphotonVHlep_id,mu_ind,muVtx,VHmuevent_cat,&smeared_pho_energy[0],lep_sync,false,-0.2,eventweight,smeared_pho_weight,!isSyst);
+		int diphotonVH_ele_id=-1;
+		VHelevent_prov=ElectronTag2012B(l,diphotonVH_ele_id,el_ind,elVtx,VHelevent_cat,&smeared_pho_energy[0],lep_sync,false,-0.2,eventweight,smeared_pho_weight,!isSyst);
+		int vertex = -1;
+		if(VHmuevent_prov) vertex=muVtx;
+		if(!VHmuevent_prov && VHelevent_prov){
+		    vertex =elVtx;
+		    diphotonVHlep_id=diphotonVH_ele_id;
+		} 
+		if(VHmuevent_prov || VHelevent_prov){
+		    Njet_lepcat = VHNumberOfJets(l, diphotonVHlep_id, vertex, VHelevent_prov, VHmuevent_prov, el_ind, mu_ind, &smeared_pho_energy[0]);
+		    if(Njet_lepcat<3) l.VHNewLeptonCategorization(VHlep1event, VHlep2event, diphotonVHlep_id, vertex, VHelevent_prov, VHmuevent_prov, el_ind, mu_ind, &smeared_pho_energy[0], 45.0);
+		}
+		l.VHTwoMuonsEvents(VHlep1event, VHlep2event, diphotonVHlep_id, muVtx, &smeared_pho_energy[0], leadEtVHlepCut, subleadEtVHlepCut, applyPtoverM);
+		l.VHTwoElectronsEvents(VHlep1event, VHlep2event, diphotonVHlep_id, elVtx, &smeared_pho_energy[0], leadEtVHlepCut, subleadEtVHlepCut, applyPtoverM);
 	    }
 
 	    //Met tag //met at analysis step
@@ -933,6 +1005,10 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
             diphoton_id = diphotonVHlep_id;
         } else if (includeVHlep&&VHelevent){
             diphoton_id = diphotonVHlep_id;
+	} else if (includeVHlepPlusMet&&VHlep1event){
+	    diphoton_id = diphotonVHlep_id;
+	} else if (includeVHlepPlusMet&&VHlep2event){
+	    diphoton_id = diphotonVHlep_id;
 	} else if(includeVBF&&VBFevent) {
 	    diphoton_id = diphotonVBF_id;
 	} else if(includeVHmet&&VHmetevent) {
@@ -959,25 +1035,44 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
         TLorentzVector lead_p4, sublead_p4, Higgs;
         float lead_r9, sublead_r9;
         TVector3 * vtx;
-        if(( (includeVHlep && (VHelevent || VHmuevent))) && !(includeVBF&&VBFevent) ) {
-            if(VHmuevent){
+	if(includeVHlep){
+	    if(( (includeVHlep && (VHelevent || VHmuevent))) && !(includeVBF&&VBFevent) ) {
+		if(VHmuevent){
 	            fillDiphoton(lead_p4, sublead_p4, Higgs, lead_r9, sublead_r9, vtx, &smeared_pho_energy[0], l, l.dipho_leadind[diphoton_id],  l.dipho_subleadind[diphoton_id], 0);  // use default vertex for the muon tag
-            } else if(VHelevent){
-                if(nElectronCategories==2){
-                    if(PADEBUG) std::cout<<"nElectronCategories "<<nElectronCategories<<std::endl;
+		} else if(VHelevent){
+		    if(nElectronCategories==2){
+			if(PADEBUG) std::cout<<"nElectronCategories "<<nElectronCategories<<std::endl;
 	                fillDiphoton(lead_p4, sublead_p4, Higgs, lead_r9, sublead_r9, vtx, &smeared_pho_energy[0], l, leadpho_ind, subleadpho_ind, elVtx);  // use elVtx for ElectronTag2012B
-                    if(PADEBUG) std::cout<<"post fillDiphoton Higgs.Pt() "<<Higgs.Pt()<<std::endl;
-                } else {
-                    fillDiphoton(lead_p4, sublead_p4, Higgs, lead_r9, sublead_r9, vtx, &smeared_pho_energy[0], l, l.dipho_leadind[diphoton_id],  l.dipho_subleadind[diphoton_id], 0);  // use default vertex for old electron tag
-                }
-            }
-        } else {
+			if(PADEBUG) std::cout<<"post fillDiphoton Higgs.Pt() "<<Higgs.Pt()<<std::endl;
+		    } else {
+			fillDiphoton(lead_p4, sublead_p4, Higgs, lead_r9, sublead_r9, vtx, &smeared_pho_energy[0], l, l.dipho_leadind[diphoton_id],  l.dipho_subleadind[diphoton_id], 0);  // use default vertex for old electron tag
+		    }
+		}
+	    } else {
 	        fillDiphoton(lead_p4, sublead_p4, Higgs, lead_r9, sublead_r9, vtx, &smeared_pho_energy[0], l, diphoton_id);
-        }
-        // apply beamspot reweighting if necessary
+	    }
+	}
+	if(includeVHlepPlusMet){
+	    if(( (includeVHlepPlusMet && (VHlep1event || VHlep2event))) && !(includeVBF&&VBFevent) ) {
+		if(VHlep1event){
+	            fillDiphoton(lead_p4,sublead_p4,Higgs,lead_r9,sublead_r9,vtx,&smeared_pho_energy[0],l,l.dipho_leadind[diphoton_id],l.dipho_subleadind[diphoton_id],0); 
+		} else if(VHlep2event){
+		    fillDiphoton(lead_p4,sublead_p4,Higgs,lead_r9,sublead_r9,vtx,&smeared_pho_energy[0],l,l.dipho_leadind[diphoton_id],l.dipho_subleadind[diphoton_id],0); 
+		}
+	    } else {
+	        fillDiphoton(lead_p4, sublead_p4, Higgs, lead_r9, sublead_r9, vtx, &smeared_pho_energy[0], l, diphoton_id);
+	    }
+	}
+	
+	// apply beamspot reweighting if necessary
         if(reweighBeamspot && cur_type!=0) {
             evweight*=BeamspotReweight(vtx->Z(),((TVector3*)l.gv_pos->At(0))->Z());
         }
+        // for spin study
+        if (reweighPt && cur_type!=0){
+            evweight*=PtReweight(Higgs.Pt(),cur_type);
+        }
+
 
         // FIXME pass smeared R9
         category = l.DiphotonCategory(diphoton_index.first,diphoton_index.second,Higgs.Pt(),nEtaCategories,nR9Categories,R9CatBoundary,nPtCategories,nVtxCategories,l.vtx_std_n);
@@ -999,6 +1094,9 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
 	// see if the event falls into an exclusive category
 	computeExclusiveCategory(l, category, diphoton_index, Higgs.Pt() );
 
+	// if doing the spin analysis calculate new category
+	if (doSpinAnalysis) computeSpinCategory(l, category, lead_p4, sublead_p4);
+	
 	// fill control plots and counters
 	if( ! isSyst ) {
 	    l.FillCounter( "Accepted", weight );
@@ -1019,7 +1117,12 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
 
         // save trees for unbinned datacards
         int inc_cat = l.DiphotonCategory(diphoton_index.first,diphoton_index.second,Higgs.Pt(),nEtaCategories,nR9Categories,R9CatBoundary,nPtCategories,nVtxCategories,l.vtx_std_n);
-        if (!isSyst && cur_type<0 && saveDatacardTrees_) saveDatCardTree(l,cur_type,category, inc_cat, evweight, diphoton_index.first,diphoton_index.second,l.dipho_vtxind[diphoton_id],lead_p4,sublead_p4,true);
+        if (!isSyst && cur_type<0 && saveDatacardTrees_ && TMath::Abs(datacardTreeMass-l.signalNormalizer->GetMass(cur_type))<0.001) saveDatCardTree(l,cur_type,category, inc_cat, evweight, diphoton_index.first,diphoton_index.second,l.dipho_vtxind[diphoton_id],lead_p4,sublead_p4,true,GetSignalLabel(cur_type,l));
+        
+        float vtx_mva  = l.vtx_std_evt_mva->at(diphoton_id);
+        float vtxProb   = 1.-0.49*(vtx_mva+1.0); /// should better use this: vtxAna_.setPairID(diphoton_id); vtxAna_.vertexProbability(vtx_mva); PM
+        // save trees for IC spin analysis
+        if (!isSyst && saveSpinTrees_) saveSpinTree(l,category,evweight,Higgs,lead_p4,sublead_p4,diphoton_index.first,diphoton_index.second,diphoton_id,vtxProb,isCorrectVertex);
 
 	//save vbf trees
 	if (!isSyst && cur_type<0 && saveVBFTrees_) saveVBFTree(l,category, evweight, -99.);
@@ -1236,34 +1339,34 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
             }
 
             if(VHmetevent){
-                TLorentzVector myMet = l.METCorrection2012B(lead_p4, sublead_p4); 
-                float corrMet    = myMet.Pt();
-                float corrMetPhi = myMet.Phi();
-
-                eventListText 
-                    << "    metuncor:"<<        l.met_pfmet
-                    << "    metphiuncor:"<<     l.met_phi_pfmet
-                    << "    metcor:"<<          corrMet
-                    << "    metphicor:"<<       corrMetPhi;
+		TLorentzVector myMet = l.METCorrection2012B(lead_p4, sublead_p4); 
+		float corrMet    = myMet.Pt();
+		float corrMetPhi = myMet.Phi();
+		
+		eventListText 
+		    << "    metuncor:"<<        l.met_pfmet
+		    << "    metphiuncor:"<<     l.met_phi_pfmet
+		    << "    metcor:"<<          corrMet
+		    << "    metphicor:"<<       corrMetPhi;
             } else {
-                eventListText 
-                    << "    metuncor:"<<        -1
-                    << "    metphiuncor:"<<     -1
-                    << "    metcor:"<<          -1
-                    << "    metphicor:"<<       -1;
-            }
-        
-	        if( VBFevent ) {
-		        eventListText 
-			      << "\tjetPt1:"  << ( (TLorentzVector*)l.jet_algoPF1_p4->At(vbfIjet1) )->Pt()
-			      << "\tjetPt2:"  << ( (TLorentzVector*)l.jet_algoPF1_p4->At(vbfIjet2) )->Pt()
-			      << "\tjetEta1:" << ( (TLorentzVector*)l.jet_algoPF1_p4->At(vbfIjet1) )->Eta()
+		eventListText 
+		    << "    metuncor:"<<        -1
+		    << "    metphiuncor:"<<     -1
+		    << "    metcor:"<<          -1
+		    << "    metphicor:"<<       -1;
+	    }
+	    
+	    if( VBFevent ) {
+		eventListText 
+		    << "\tjetPt1:"  << ( (TLorentzVector*)l.jet_algoPF1_p4->At(vbfIjet1) )->Pt()
+		    << "\tjetPt2:"  << ( (TLorentzVector*)l.jet_algoPF1_p4->At(vbfIjet2) )->Pt()
+		    << "\tjetEta1:" << ( (TLorentzVector*)l.jet_algoPF1_p4->At(vbfIjet1) )->Eta()
 			      << "\tjetEta2:" << ( (TLorentzVector*)l.jet_algoPF1_p4->At(vbfIjet2) )->Eta()
-		        ;
-		        dumpJet(eventListText,1,l,vbfIjet1);
-		        dumpJet(eventListText,2,l,vbfIjet2);
-	        }
-
+		    ;
+		dumpJet(eventListText,1,l,vbfIjet1);
+		dumpJet(eventListText,2,l,vbfIjet2);
+	    }
+	    
             eventListText << endl;
         }
 	    
@@ -1451,10 +1554,10 @@ void StatAnalysis::FillRooContainerSyst(LoopAll& l, const std::string &name, int
 // ----------------------------------------------------------------------------------------------------
 void StatAnalysis::computeExclusiveCategory(LoopAll & l, int & category, std::pair<int,int> diphoton_index, float pt, float diphobdt_output)
 {
-    if(VHmuevent) {
+    if(VHmuevent || VHlep1event) {
 	category=nInclusiveCategories_ + ( (int)includeVBF )*nVBFCategories + ( (int)includeVHhad )*nVHhadEtaCategories;
 	if(nMuonCategories>1) category+=VHmuevent_cat;
-    } else if(VHelevent) {
+    } else if(VHelevent || VHlep2event) {
 	    category=nInclusiveCategories_ + ( (int)includeVBF )*nVBFCategories + ( (int)includeVHhad )*nVHhadEtaCategories + nMuonCategories;
         if(nElectronCategories>1) category+=VHelevent_cat;
     } else if(VBFevent) {
@@ -1479,6 +1582,34 @@ void StatAnalysis::computeExclusiveCategory(LoopAll & l, int & category, std::pa
 	    category=nInclusiveCategories_ + ( (int)includeVBF )*nVBFCategories + ( (int)includeVHhad )*nVHhadEtaCategories + nVHlepCategories;
         if(nVHmetCategories>1) category+=VHmetevent_cat;
     }
+}
+
+void StatAnalysis::computeSpinCategory(LoopAll &l, int &category, TLorentzVector lead_p4, TLorentzVector sublead_p4){
+    
+    double cosTheta;
+    int cosThetaCategory=-1;
+    if (cosThetaDef=="CS"){
+        cosTheta = getCosThetaCS(lead_p4,sublead_p4);
+    }
+    else if (cosThetaDef=="HX"){
+        cosTheta = getCosThetaHX(lead_p4,sublead_p4);
+    }
+    else {
+        cout << "ERROR -- cosThetaDef - " << cosThetaDef << " not recognised" << endl;
+        exit(1);
+    }
+
+    if (cosThetaCatBoundaries.size()!=nCosThetaCategories+1){
+        cout << "ERROR - cosThetaCatBoundaries size does not correspond to nCosThetaCategories" << endl;
+        exit(1);
+    }
+
+    for (int scat=0; scat<nCosThetaCategories; scat++){
+       if (TMath::Abs(cosTheta)>=cosThetaCatBoundaries[scat] && TMath::Abs(cosTheta)<cosThetaCatBoundaries[scat+1]) cosThetaCategory=scat; 
+    }
+    
+    if (cosThetaCategory==-1) category=-1;
+    else category = (category*nCosThetaCategories)+cosThetaCategory;
 }
 
 int StatAnalysis::categoryFromBoundaries(std::vector<float> & v, float val)
@@ -1519,6 +1650,7 @@ void StatAnalysis::fillControlPlots(const TLorentzVector & lead_p4, const  TLore
         }
         l.FillHist("all_mass",category+1, Higgs.M(), evweight);
         if( mass>=massMin && mass<=massMax  ) {
+            l.FillHist("diphobdt",category+1, diphobdt_output, evweight);
             l.FillHist("process_id",category+1, l.process_id, evweight);
             l.FillHist("mass",category+1, Higgs.M(), evweight);
             l.FillHist("eta",category+1, Higgs.Eta(), evweight);
@@ -1526,7 +1658,7 @@ void StatAnalysis::fillControlPlots(const TLorentzVector & lead_p4, const  TLore
             if( isCorrectVertex ) { l.FillHist("pt_rv",category+1, Higgs.Pt(), evweight); }
             l.FillHist("nvtx",category+1, l.vtx_std_n, evweight);
             if( isCorrectVertex ) { l.FillHist("nvtx_rv",category+1, l.vtx_std_n, evweight); }
-
+	    
             vtxAna_.setPairID(diphoton_id);
             float vtxProb = vtxAna_.vertexProbability(l.vtx_std_evt_mva->at(diphoton_id), l.vtx_std_n);
             l.FillHist2D("probmva_pt",category+1, Higgs.Pt(), l.vtx_std_evt_mva->at(diphoton_id), evweight);
@@ -1570,7 +1702,7 @@ void StatAnalysis::fillControlPlots(const TLorentzVector & lead_p4, const  TLore
             TLorentzVector myMet = l.METCorrection2012B(lead_p4, sublead_p4);
             float corrMet    = myMet.Pt();
             float corrMetPhi = myMet.Phi();
-
+	    
             l.FillHist("uncorrmet",     category+1, l.met_pfmet, evweight);
             l.FillHist("uncorrmetPhi",  category+1, l.met_phi_pfmet, evweight);
             l.FillHist("corrmet",       category+1, corrMet,    evweight);
@@ -1580,14 +1712,19 @@ void StatAnalysis::fillControlPlots(const TLorentzVector & lead_p4, const  TLore
                 if (!multiclassVbfSelection) {
                     l.FillHist("vbf_mva",category+1,myVBF_MVA,evweight);
                 } else {
-                    l.FillHist("vbf_mva0",category+1,myVBF_MVA0,evweight);
-                    l.FillHist("vbf_mva1",category+1,myVBF_MVA1,evweight);
-                    l.FillHist("vbf_mva2",category+1,myVBF_MVA2,evweight);
+		    if( vbfVsDiphoVbfSelection ) { 
+			l.FillHist("vbf_mva0",category+1,myVBF_MVA,evweight);
+			l.FillHist("vbf_mva1",category+1,diphobdt_output,evweight);
+		    } else { 
+			l.FillHist("vbf_mva0",category+1,myVBF_MVA0,evweight);
+			l.FillHist("vbf_mva1",category+1,myVBF_MVA1,evweight);
+			l.FillHist("vbf_mva2",category+1,myVBF_MVA2,evweight);
+		    }
                 }
 
                 if (VBFevent){
                     float myweight =  1;
-                    float sampleweight = l.sampleContainer[l.current_sample_index].weight;
+                    float sampleweight = l.sampleContainer[l.current_sample_index].weight();
                     if(evweight*sampleweight!=0) myweight=evweight/sampleweight;
                     l.FillCutPlots(category+1,1,"_sequential",evweight,myweight);
 		    if( sublead_r9 > 0.9 ) { l.FillCutPlots(category+1+nCategories_,1,"_sequential",evweight,myweight); }
@@ -1617,7 +1754,7 @@ void StatAnalysis::fillControlPlots(const TLorentzVector & lead_p4, const  TLore
                 }
 
                 if (VHmetevent){
-                    ControlPlotsMetTag2012B(l, lead_p4, sublead_p4, diphobdt_output, evweight, label);
+		    ControlPlotsMetTag2012B(l, lead_p4, sublead_p4, diphobdt_output, evweight, label);
                     l.FillHist("METTag_sameVtx",   (int)isEBEB, (float)(0==l.dipho_vtxind[diphoton_id]), evweight);
                 }
 
@@ -1634,7 +1771,7 @@ void StatAnalysis::fillControlPlots(const TLorentzVector & lead_p4, const  TLore
                     ControlPlotsElectronTag2012B(l, lead_p4, sublead_p4, el_ind, diphobdt_output, evweight, label);
                 }
                 if (VHmetevent){
-                    ControlPlotsMetTag2012B(l, lead_p4, sublead_p4, diphobdt_output, evweight, label);
+		    ControlPlotsMetTag2012B(l, lead_p4, sublead_p4, diphobdt_output, evweight, label);
                 }
 
             }
@@ -1648,7 +1785,7 @@ void StatAnalysis::fillControlPlots(const TLorentzVector & lead_p4, const  TLore
             ControlPlotsElectronTag2012B(l, lead_p4, sublead_p4, el_ind, diphobdt_output, evweight, label);
         }
         if (VHmetevent){
-            ControlPlotsMetTag2012B(l, lead_p4, sublead_p4, diphobdt_output, evweight, label);
+            //// ControlPlotsMetTag2012B(l, lead_p4, sublead_p4, diphobdt_output, evweight, label);
         }
     }
 }
@@ -2077,6 +2214,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	l.FillTree("dipho_eta", (float)diphoton.Eta());
 	l.FillTree("dipho_phi", (float)diphoton.Phi());
     // cosThetaStar computation with explicit Collin-Sopper Frame, from M. Peruzzi
+    // FIXME: Use the build-in costhetastar function
     TLorentzVector b1,b2;
     b1.SetPx(0); b1.SetPy(0); b1.SetPz( 4000); b1.SetE(4000);
     b2.SetPx(0); b2.SetPy(0); b2.SetPz(-4000); b2.SetE(4000);

@@ -34,27 +34,21 @@ USERLIBS += -L$(BOOST_PATH)/libs/ -lboost_regex -lboost_program_options
 endif
 ifeq ($(UNAME),Linux)
 $(info Found OS Linux - using linux build)
-BOOST_PATH=$(CMSSW_DATA_PATH)/../external/boost/1.47.0
+BOOST_PATH=$(shell scram tool info boost | awk -F= '/BOOST_BASE/ {  print $$2  }')
 USERINCLUDES += -I$(BOOST_PATH)/include/
 USERINCLUDES += -I $(CMSSW_BASE)/src/ -I $(CMSSW_RELEASE_BASE)/src/
 USERLIBS += -L$(BOOST_PATH)/lib/ -lboost_regex -lboost_program_options
 USERINCLUDES += -I$(ROOFITSYS)/include
 USERLIBS += -L$(ROOFITSYS)/lib -lRooFit -lRooFitCore
+USERLIBS += -L$(CMSSW_BASE)/lib/ -L $(CMSSW_RELEASE_BASE)/lib/
 endif
 
 USERLIBS += $(shell root-config --glibs) -lTMVA -lMinuit -lFoam -lRooFit -lRooFitCore 
-CXXFLAGS = -Wall -g -O2 -Wl,-rpath=$(BASEDIR)/lib 
+CXXFLAGS = -Wall -g -Wl,-rpath=$(BASEDIR)/lib 
 LDFLAGS = -shared -W 
 
-CXX=clang++
-LD=clang++
-CLANGPATH := $(shell type -p clang++)
-
-ifeq ($(CLANGPATH),)
-#$(warning clang++ not found, reverting to g++!)
 CXX=g++
 LD=g++
-endif
 
 INCLUDE +=  -I $(BASEDIR)/interface
 INCLUDE += $(USERINCLUDES)
@@ -73,6 +67,8 @@ DOCDIR= $(BASEDIR)/docs
 OBJ_EXT=o
 TEST_EXT=cpp
 
+ROOT_DICT=RootDict.cxx
+ROOT_OBJ=$(subst cxx,$(OBJ_EXT),$(ROOT_DICT))
 SRCS=$(wildcard $(BASEDIR)/src/*.cc)
 EXES=$(wildcard $(BASEDIR)/test/*.cpp)
 HEADERS=$(wildcard $(BASEDIR)/interface/*.h)
@@ -88,17 +84,21 @@ all:  $(BINS)
 
 $(EXEDIR)/%: $(TESTDIR)/%.cpp $(LIBDIR)/lib$(LIBNAME).so $(BASEDIR)/interface/*.h  
 	@echo Compiling executable $@
-	@$(CXX) -o $@ $(CXXFLAGS) $< $(LIBS) -L$(LIBDIR) -l$(LIBNAME) $(USERLIBSX)
+	@$(CXX) -o $@ $(CXXFLAGS) $< $(ROOT_DICT) $(ROOTCLASSES) $(LIBS) -L$(LIBDIR) -l$(LIBNAME) $(USERLIBSX)
 
 
-$(OBJDIR)/%.$(OBJ_EXT): $(SRCDIR)/%.cc $(COMBINELIB) 
+$(OBJDIR)/%.$(OBJ_EXT): $(SRCDIR)/%.cc $(ROOT_DICT) $(COMBINELIB) 
 	@echo Making object $@
 	@$(CXX) $(CXXFLAGS) -fPIC -c -l $(COMBINELIB) $<  -o $@
 
-$(LIBDIR)/lib$(LIBNAME).so:$(OBJS) $(COMBINELIB)
+$(LIBDIR)/lib$(LIBNAME).so:$(OBJS) $(ROOT_OBJ) $(COMBINELIB)
 	@echo Building shared library $@
 	@$(LD) $(LDFLAGS) -o $(LIBDIR)/lib$(LIBNAME).so  $^ $(LIBS) -l $(COMBINELIB)
-	
+
+$(ROOT_DICT): $(SRCS) $(HEADERS)
+	@echo Making dictionary $@
+	@rootcint -f $@ -c -L$(ROOFITSYS)/lib -I$(ROOFITSYS)/include -L$(CMSSW_BASE)/lib -I$(CMSSW_BASE)/src $(HEADERS)
+	@$(CXX) $(CXXFLAGS) -fPIC -c $(ROOT_DICT) -o $(ROOT_OBJ)
 
 lib: $(LIBDIR)/lib$(LIBNAME).so
 
@@ -110,6 +110,6 @@ vars:
 	@echo "Executables:  " $(TARGETS)
 
 clean:
-	rm -rf $(OBJS) $(LIBDIR)/lib$(LIBNAME).so $(BINS)
+	rm -rf $(OBJS) $(LIBDIR)/lib$(LIBNAME).so $(BINS) $(ROOT_DICT)
 
 

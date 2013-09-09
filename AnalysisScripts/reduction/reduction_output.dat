@@ -124,7 +124,7 @@ pho_n
 #pho_localcorr
 pho_isEB
 pho_isEE
-pho_see
+##skimmed pho_see
 pho_sieie
 pho_sipip
 pho_sieip
@@ -134,20 +134,20 @@ pho_e3x3
 pho_e5x5
 pho_emaxxtal
 pho_hoe
-pho_r1x5
-pho_r2x5
+##skimmed pho_r1x5
+##skimmed pho_r2x5
 pho_r9
-pho_isEBGap
-pho_isEEGap
-pho_isEBEEGap
+##skimmed pho_isEBGap
+##skimmed pho_isEEGap
+##skimmed pho_isEBEEGap
 # pho_h1oe
 # pho_h2oe
 # pho_hcal1sumetconedr04
 # pho_hcal2sumetconedr04
 # pho_hcal1sumetconedr03
 # pho_hcal2sumetconedr03
-pho_zernike20
-pho_zernike42
+##skimmed pho_zernike20
+##skimmed pho_zernike42
 pho_e2nd
 pho_e2x5max
 pho_e2x5right
@@ -158,14 +158,14 @@ pho_eright
 pho_eleft
 pho_etop
 pho_ebottom
-pho_r19
-pho_maxoraw
-pho_cep
+##skimmed pho_r19
+##skimmed pho_maxoraw
+##skimmed pho_cep
 pho_lambdaratio
-pho_lambdadivcov
+##skimmed pho_lambdadivcov
 pho_etawidth
 pho_brem
-pho_smaj
+##skimmed pho_smaj
 pho_e2x2
 # pho_e2overe9
 #pho_seed_time
@@ -175,15 +175,15 @@ pho_e2x2
 #pho_seed_severity
 pho_ecalsumetconedr04
 pho_hcalsumetconedr04
-pho_trksumptsolidconedr04
-pho_trksumpthollowconedr04
-pho_ntrksolidconedr04
-pho_ntrkhollowconedr04
+##skimmed pho_trksumptsolidconedr04
+##skimmed pho_trksumpthollowconedr04
+##skimmed pho_ntrksolidconedr04
+##skimmed pho_ntrkhollowconedr04
 pho_ecalsumetconedr03
 pho_hcalsumetconedr03
-pho_trksumptsolidconedr03
+##skimmed pho_trksumptsolidconedr03
 pho_trksumpthollowconedr03
-pho_ntrksolidconedr03
+##skimmed pho_ntrksolidconedr03
 pho_ntrkhollowconedr03
 #pho_barrel
 pho_haspixseed
@@ -352,25 +352,25 @@ vtx_std_ntks
 vtx_std_x2dof
 vtx_std_xyz
 vtx_std_dxdydz
-vtx_std_ndof
+##skimmed vtx_std_ndof
 vtx_std_tkind 
 
 # PU correction
 rho_algo1
-rho_algo2
-rho_algo3
+##skimmed rho_algo2
+##skimmed rho_algo3
 
 # Beam spot
 bs_xyz
 bs_sigmaZ
-bs_x0Error
-bs_y0Error
-bs_z0Error
-bs_sigmaZ0Error
+##skimmed bs_x0Error
+##skimmed bs_y0Error
+##skimmed bs_z0Error
+##skimmed bs_sigmaZ0Error
 
 # MET
 met_tcmet
-met_phi_tcmet
+##skimmed met_phi_tcmet
 
 ###### # Trigger
 hlt_bit
@@ -436,6 +436,49 @@ jet_algoPF1_hadfrac
 #jet_algoPF1_Rneutral
 #jet_algoPF1_R
 
+# QG tagging variables
+jet_algoPF1_ptD_QC
+jet_algoPF1_nCharged_QC
+jet_algoPF1_axis2_QC
+jet_algoPF1_nNeutrals_ptCut
+
+#jet_algoPF2_n
+#jet_algoPF2_erescale
+#jet_algoPF2_p4
+#jet_algoPF2_beta
+#jet_algoPF2_betaStar
+#jet_algoPF2_betaStarClassic
+#jet_algoPF2_dR2Mean
+#jet_algoPF2_dRMean
+#jet_algoPF2_dZ
+#jet_algoPF2_frac01
+#jet_algoPF2_frac02
+#jet_algoPF2_frac03
+#jet_algoPF2_frac04
+#jet_algoPF2_frac05
+#jet_algoPF2_full_mva
+#jet_algoPF2_simple_mva
+#jet_algoPF2_nCharged
+#jet_algoPF2_nNeutrals
+#jet_algoPF2_full_wp_level
+#jet_algoPF2_simple_wp_level
+#jet_algoPF2_cutbased_wp_level
+#jet_algoPF2_pfloose
+#jet_algoPF2_area
+
+#jet_algoPF2_beta_ext
+#jet_algoPF2_betaStar_ext
+#jet_algoPF2_betaStarClassic_ext
+#jet_algoPF2_full_wp_level_ext
+#jet_algoPF2_simple_wp_level_ext
+#jet_algoPF2_cutbased_wp_level_ext
+#jet_algoPF2_full_mva_ext
+#jet_algoPF2_simple_mva_ext
+
+#jet_algoPF2_csvBtag
+#jet_algoPF2_csvMvaBtag
+#jet_algoPF2_jetProbBtag
+#jet_algoPF2_tcheBtag
 
 jet_algoPF3_n
 #jet_algoPF3_erescale

@@ -6,6 +6,7 @@
 
 #include "boost/program_options.hpp"
 
+#include "Optimizations.h"
 #include "TDirectory.h"
 #include "TFile.h"
 #include "TTree.h"
@@ -13,6 +14,7 @@
 #include "TSystem.h"
 #include "TROOT.h"
 #include "TCut.h"
+#include "TMath.h"
 
 #ifndef __CINT__
 #include "TMVA/Tools.h"
@@ -28,6 +30,8 @@ string filename_;
 string outfilename_;
 string methodname_;
 map<string,int> Methods_;
+int nSidebands_;
+double sidebandWidth_=0.02;
 vector<string> allowedMethods_;
 vector<string> chosenMethods_;
 bool optimize_=false;
@@ -35,6 +39,13 @@ bool skipTraining_=false;
 bool skipTesting_=false;
 bool skipEvaluation_=false;
 bool isCutBased_=false;
+int trainingMass_=124;
+float bdtCut_=-0.05;
+float mggMin_=100.;
+float mggMax_=180.;
+
+TFile *input_;
+TFile *outFile_;
 
 template <class T>
 vector<T> getVecFromString(string name){
@@ -64,6 +75,7 @@ vector<T> getVecFromString(string name){
 void MethodReader(){
 
   allowedMethods_.push_back("MLP"); allowedMethods_.push_back("BDTG"); allowedMethods_.push_back("FDA_GA"); allowedMethods_.push_back("PDEFoam");
+  allowedMethods_.push_back("2DOpt");
   for (vector<string>::iterator itM=chosenMethods_.begin(); itM!=chosenMethods_.end(); itM++){
     bool found=false;
     for (vector<string>::iterator it=allowedMethods_.begin(); it!=allowedMethods_.end(); it++){
@@ -86,11 +98,16 @@ void OptionParser(int argc, char *argv[]){
     ("filename,i", po::value<string>(&filename_),                                               "Input file name")
     ("outfile,o", po::value<string>(&outfilename_)->default_value("SidebandTrainingOut.root"),  "Output file name")
     ("method,m", po::value<string>(&methodname_)->default_value("BDTG"),                        "Training method")
+    ("nSidebands,n", po::value<int>(&nSidebands_)->default_value(4),                            "Number of sidebands for training")
     ("optimize,O",                                                                              "Optimize training - takes time")
     ("skipTraining,s",                                                                          "Skip training")
     ("skipTesting,t",                                                                           "Skip testing")
     ("skipEvaluation,e",                                                                        "Skip evaluation")
     ("isCutBased",                                                                              "Train cut based style")
+    ("trainingMass", po::value<int>(&trainingMass_)->default_value(124),                        "Training Mass")
+    ("bdtMin", po::value<float>(&bdtCut_)->default_value(-0.05),                        "diphton BDT Cut")
+    ("mggMin", po::value<float>(&mggMin_)->default_value(100),                        "Minimum for Mgg")
+    ("mggMax", po::value<float>(&mggMax_)->default_value(180),                        "Maximum for Mgg")
     ;
 
   po::positional_options_description p;
@@ -117,15 +134,23 @@ void OptionParser(int argc, char *argv[]){
 vector<pair<string,string> > getSignalTreeNames(){
 
   vector<pair<string,string> > treeNames;
-  treeNames.push_back(pair<string,string>("full_mva_trees/ggh_m124_8TeV","signal"));
-  treeNames.push_back(pair<string,string>("full_mva_trees/vbf_m124_8TeV","signal"));
-  treeNames.push_back(pair<string,string>("full_mva_trees/wzh_m124_8TeV","signal"));
-  treeNames.push_back(pair<string,string>("full_mva_trees/tth_m124_8TeV","signal"));
+  treeNames.push_back(pair<string,string>(Form("full_mva_trees/ggh_m%d_8TeV",trainingMass_),"signal"));
+  treeNames.push_back(pair<string,string>(Form("full_mva_trees/vbf_m%d_8TeV",trainingMass_),"signal"));
+  treeNames.push_back(pair<string,string>(Form("full_mva_trees/wzh_m%d_8TeV",trainingMass_),"signal"));
+  treeNames.push_back(pair<string,string>(Form("full_mva_trees/tth_m%d_8TeV",trainingMass_),"signal"));
+
+/*
+  std::vector<int>::iterator it = extraMasses_.begin();
+  for (;it!=extraMasses.end();it++){
+	treeNames.push_back(
+  }
+*/
   return treeNames;
 }
 
 vector<pair<string,string> > getBackgroundTreeNames(){
 
+  // KEEP ONLY HIGH STATS SAMPLES SO SOME ARE DROPPED
   vector<pair<string,string> > treeNames;
   // fake-fake
   //treeNames.push_back(pair<string,string>("full_mva_trees/qcd_30_8TeV_ff","background"));
@@ -134,42 +159,179 @@ vector<pair<string,string> > getBackgroundTreeNames(){
   //treeNames.push_back(pair<string,string>("full_mva_trees/qcd_30_8TeV_pf","background"));
   //treeNames.push_back(pair<string,string>("full_mva_trees/qcd_40_8TeV_pf","background"));
   treeNames.push_back(pair<string,string>("full_mva_trees/gjet_20_8TeV_pf","background"));
-  treeNames.push_back(pair<string,string>("full_mva_trees/gjet_40_8TeV_pf","background"));
+  //treeNames.push_back(pair<string,string>("full_mva_trees/gjet_40_8TeV_pf","background"));
   // prompt-prompt
   treeNames.push_back(pair<string,string>("full_mva_trees/diphojet_8TeV","background"));
   treeNames.push_back(pair<string,string>("full_mva_trees/dipho_Box_25_8TeV","background"));
-  treeNames.push_back(pair<string,string>("full_mva_trees/dipho_Box_250_8TeV","background"));
+  //treeNames.push_back(pair<string,string>("full_mva_trees/dipho_Box_250_8TeV","background"));
 
   return treeNames;
 }
 
-int main (int argc, char *argv[]){
+void makeTrainingTree(TTree *tree, vector<pair<string,string> > treeNames, bool isSignal){
+  
+  float mass;
+  float weight;
+  float deltaMoverM;
+  float bdtoutput;
+  double lead_eta;
+  double sublead_eta;
+  double lead_r9;
+  double sublead_r9;
 
-  OptionParser(argc,argv);
+  tree->Branch("deltaMoverM",&deltaMoverM,"deltaMoverM/F");
+  tree->Branch("weight",&weight,"weight/F");
+  if (isCutBased_){
+    tree->Branch("lead_eta",&lead_eta,"lead_eta/D");
+    tree->Branch("sublead_eta",&sublead_eta,"sublead_eta/D");
+    tree->Branch("lead_r9",&lead_r9,"lead_r9/D");
+    tree->Branch("sublead_r9",&sublead_r9,"sublead_r9/D");
+  }
+  else {
+    tree->Branch("bdtoutput",&bdtoutput,"bdtoutput/F");
+  }
+
+  TH1F *check = new TH1F("check","check",100,0,100);
+  for (vector<pair<string,string> >::iterator it=treeNames.begin(); it!=treeNames.end(); it++){
+    TTree *thisTree = (TTree*)input_->Get(it->first.c_str());
+    thisTree->Draw("1>>check","weight*(weight>0)","goff");
+    cout << Form("Using  tree %15s with entries %8d and sum of weights %4.4f",thisTree->GetName(),int(thisTree->GetEntries()),check->GetSumOfWeights()) << endl;
+    check->Reset();
+    thisTree->SetBranchAddress("mass",&mass);
+    thisTree->SetBranchAddress("weight",&weight);
+    if (isCutBased_){
+      thisTree->SetBranchAddress("lead_eta",&lead_eta);
+      thisTree->SetBranchAddress("sublead_eta",&sublead_eta);
+      thisTree->SetBranchAddress("lead_r9",&lead_r9);
+      thisTree->SetBranchAddress("sublead_r9",&sublead_r9);
+    }
+    else {
+      thisTree->SetBranchAddress("bdtoutput",&bdtoutput);
+    }
+    for (int e=0; e<thisTree->GetEntries(); e++){
+      thisTree->GetEntry(e);
+      // signal is easy just fill signal region
+      if (isSignal) {
+        deltaMoverM = (mass-trainingMass_)/trainingMass_;
+      }
+      // for background want to sum up a few sidebands
+      else {
+        // if in signal region add and move on
+        deltaMoverM = (mass-trainingMass_)/trainingMass_;
+        if (TMath::Abs(deltaMoverM)>sidebandWidth_){
+          // else loop sidebands
+          for (int i=1; i<=nSidebands_; i++){
+            double hypothesisModifierLow = (1.-sidebandWidth_)/(1.+sidebandWidth_);
+            double sidebandCenterLow = trainingMass_*hypothesisModifierLow*TMath::Power(hypothesisModifierLow,i-1);
+            double hypothesisModifierHigh = (1.+sidebandWidth_)/(1.-sidebandWidth_);
+            double sidebandCenterHigh = trainingMass_*hypothesisModifierHigh*TMath::Power(hypothesisModifierHigh,i-1);
+            deltaMoverM = (mass-sidebandCenterLow)/sidebandCenterLow;
+            if (TMath::Abs(deltaMoverM)<=sidebandWidth_) break;
+            deltaMoverM = (mass-sidebandCenterHigh)/sidebandCenterHigh;
+            if (TMath::Abs(deltaMoverM)<=sidebandWidth_) break;
+          }
+        }
+      }
+      tree->Fill();
+    }
+  }
+  tree->Draw("1>>check","weight*(weight>0)","goff");
+  cout << Form("Filled tree %15s with entries %8d and sum of weights %4.4f",tree->GetName(),int(tree->GetEntries()),check->GetSumOfWeights()) << endl;
+  check->Reset();
+  delete check;
+}
+
+void fillTwoDHists(TTree *tr, TH2F* h){
+  
+  float dmom,bdt,weight;
+  tr->SetBranchAddress("deltaMoverM",&dmom);
+  tr->SetBranchAddress("bdtoutput",&bdt);
+  tr->SetBranchAddress("weight",&weight);
+
+  for (int j=0;j<tr->GetEntries();j++){
+    tr->GetEntry(j);
+    h->Fill(bdt,dmom,weight);
+  }
+}
+
+void run2DOptimization(TFile *outFile_,TTree *signalTree_, TTree *backgroundTree_){
+
+ signalTree_->Print("v");
+ gROOT->SetBatch(0);
+ int nBins_dmom = 100;
+ int nBins_bdt  = 50;
+ // Step 1, make Signal and Background 2D histograms
+ TH2F *hsig =new TH2F("hsig","hsig",nBins_bdt,bdtCut_,1,nBins_dmom,-1*sidebandWidth_,sidebandWidth_);
+ TH2F *hbkg =new TH2F("hbkg","hbkg",nBins_bdt,bdtCut_,1,nBins_dmom,-1*sidebandWidth_,sidebandWidth_);
+ fillTwoDHists(signalTree_,hsig) ;
+ fillTwoDHists(backgroundTree_,hbkg) ;
+
+// std::cout << "Producing 2D Histogram " << Form("deltaMoverM:bdtoutput>>hsig(%d,%f,1,%d,%.3f,%.3f)",nBins_bdt,bdtCut_,nBins_dmom,-1*sidebandWidth_,sidebandWidth_) << std::endl; 
+// signalTree_->Draw("deltaMoverM:bdtoutput>>hsig","weight","");
+// std::cout << "Producing 2D Histogram " << Form("deltaMoverM:bdtoutput>>hbkg(%d,%f,1,%d,%.3f,%.3f)",nBins_bdt,bdtCut_,nBins_dmom,-1*sidebandWidth_,sidebandWidth_) << std::endl; 
+// backgroundTree_->Draw("deltaMoverM:bdtoutput>>hbkg","weight","");
+
+// TH2F *hsig =(TH2F*) gROOT->FindObject("hsig")	;
+// TH2F *hbkg =(TH2F*) gROOT->FindObject("hbkg")	;
+
+ // Have to do this :(
+ //hsig->Smooth(1,"k5b");
+ //hbkg->Smooth(1,"k5b");
+
+ // Clone the originl hists, saved to File
+ TH1F *hsig_o = (TH1F*)hsig->Clone("hsig_raw") ;
+ TH1F *hbkg_o = (TH1F*)hbkg->Clone("hbkg_raw") ;
+	
+ // Step 2, create an optimization class
+
+ Optimizations *optimizer = new Optimizations(hsig,hbkg);
+ optimizer->setMaxBins(6);
+ optimizer->smoothHistograms(0.01,0.01,0);
+ optimizer->runOptimization();
+  
+ // Thats it so nw get the outputs
+ TH2F *categoryMap = (TH2F*) optimizer->getCategoryMap();
+ TH2F *bkg = (TH2F*) optimizer->getBackgroundTarget();
+ TH2F *signal = (TH2F*) optimizer->getSignalTarget();
+ TGraph *optGraph = (TGraph*)optimizer->getOptimizationGraph();
+ int nFinalBins = optimizer->getFinalNumberOfBins();
+
+ // Step 3, save output and print ranges also S/B
+ TH1F *binedgesMap = new TH1F("Bin_Edges","Bin Boundaries",nFinalBins,-1,1);
+ for (int b = 1 ; b <= nFinalBins ; b++){
+	binedgesMap->SetBinContent(b,b);
+ }
+ 
+ 
+ std::cout << "Final Number Of Bins -- (Copy these into .dat file)" << nFinalBins << std::endl;
+ std::cout << "-1";
+ for (int b = 1 ; b < nFinalBins ; b++){
+	
+	std::cout << "," << (double)b/nFinalBins;
+ }
+ std::cout << ",1" <<std::endl;
+	
+ outFile_->cd();
+ categoryMap->Write();	 
+ signal->Write();
+ bkg->Write();
+ hsig_o->Write();
+ hbkg_o->Write();
+ binedgesMap->Write();
+ optGraph->Write();
+ 
+
+}
+
+  
+void runTMVATraining(TFile *outFile_,TTree *signalTree, TTree *backgroundTree){
+
 
   TMVA::Tools::Instance();
-
-  std::cout << std::endl;
-  std::cout << "==> Start TMVAMulticlass" << std::endl;
-  std::cout << "Running methods: " << endl;
-  for (map<string,int>::iterator it=Methods_.begin(); it!=Methods_.end(); it++){
-    if (it->second==1) cout << "\t" << it->first << endl;
-  }
-
-  TFile *input = TFile::Open(filename_.c_str());
-  if (!input) {
-    cerr << "ERROR: could not open data file" << endl;
-    exit(1);
-  }
-
-  vector<string> trackOfFilesWritten;
-
-  TFile *outFile = new TFile(outfilename_.c_str(),"RECREATE");
-
-  TMVA::Factory *factory = new TMVA::Factory("TMVA_SidebandMVA", outFile, "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification");
+  TMVA::Factory *factory = new TMVA::Factory("TMVA_SidebandMVA", outFile_, "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification");
   
+  factory->AddVariable("deltaMoverM",  "#DeltaM / M_{H}", 'F');
   if (isCutBased_){
-    factory->AddVariable("(mass-124.)/124.","DeltaM / M_{H}", 'F');
     factory->AddVariable("lead_eta","#eta_{1}", 'D');
     factory->AddVariable("sublead_eta","#eta_{2}", 'D');
     factory->AddVariable("lead_r9","#r9_{1}", 'D');
@@ -179,21 +341,20 @@ int main (int argc, char *argv[]){
   }
   else {
     factory->AddVariable("bdtoutput", "Diphoton BDT", 'F');
-    factory->AddVariable("deltaMoverM",  "#DeltaM / M_{H}", 'F');
   }
 
-  // Get all the Trees and assign them to the factory by their type (signal,background)
-  vector<pair<string,string> > signalTrees = getSignalTreeNames();
-  vector<pair<string,string> > backgroundTrees = getBackgroundTreeNames();
-  map<string,TTree*> trees;
-  // set global weight for signal and background
-  float signalWeight=1.0;
-  float backgroundWeight=1.0;
 
+  factory->AddSignalTree(signalTree);
+  factory->AddBackgroundTree(backgroundTree);
+
+  /*
   for (vector<pair<string,string> >::iterator sig=signalTrees.begin(); sig!=signalTrees.end(); sig++){
     TTree *temp = (TTree*)input->Get((sig->first).c_str());
     if (temp!=NULL) {
       if (temp->GetEntries()==0) continue;
+      temp->Draw("1>>check","weight*(weight>0)","goff");
+      cout << Form("Using tree %15s with entries %8d and sum of weights %4.4f",temp->GetName(),int(temp->GetEntries()),check->GetSumOfWeights()) << endl;
+      check->Reset();
       trees[sig->first] = temp;
       factory->AddSignalTree(trees[sig->first],signalWeight);
     }
@@ -204,49 +365,73 @@ int main (int argc, char *argv[]){
     TTree *temp = (TTree*)input->Get((bkg->first).c_str());
     if (temp!=NULL) {
       if (temp->GetEntries()==0) continue;
+      temp->Draw("1>>check","weight*(weight>0)","goff");
+      cout << Form("Using tree %15s with entries %8d and sum of weights %4.4f",temp->GetName(),int(temp->GetEntries()),check->GetSumOfWeights()) << endl;
+      check->Reset();
       trees[bkg->first] = temp;
       factory->AddBackgroundTree(trees[bkg->first],backgroundWeight);
     }
     else { cerr << "WARNING -- invalid pointer -- " << bkg->first << endl; exit(1); }
   }
+  */
   
   // Set individual event weights
   factory->SetBackgroundWeightExpression("weight");
   factory->SetSignalWeightExpression("weight");
 
   // Apply cuts on samples
-  TString cutString = "TMath::Abs((mass-124.)/124.)<=0.02";
-  if (!isCutBased_) cutString += " && bdtoutput>=-0.05";
-  TCut cuts(cutString);
+  /*
+  TString sigCutString = Form("TMath::Abs((mass-%d)/%d)<=0.02",trainingMass_,trainingMass_);
+  // figure out high and low sideband boundary
+  double hypothesisModifierLow = (1.-sidebandWidth_)/(1.+sidebandWidth_);
+  double hypothesisModifierHigh = (1.+sidebandWidth_)/(1.-sidebandWidth_);
+  double sidebandCenterLow = trainingMass_*hypothesisModifierLow*TMath::Power(hypothesisModifierLow,nSidebands_);
+  double sidebandCenterHigh = trainingMass_*hypothesisModifierHigh*TMath::Power(hypothesisModifierHigh,nSidebands_);
+  double sidebandBoundaryLow = sidebandCenterLow*(1-sidebandWidth_);
+  double sidebandBoundaryHigh = sidebandCenterHigh*(1+sidebandWidth_);
+  TString bkgCutString = Form("mass>=%3.1f && mass<=%3.1f",sidebandBoundaryLow,sidebandBoundaryHigh);
+  */
+  
+  TString sigCutString = Form("TMath::Abs(deltaMoverM)<=%f",sidebandWidth_);
+  TString bkgCutString = Form("TMath::Abs(deltaMoverM)<=%f",sidebandWidth_);
+  if (!isCutBased_) {
+    sigCutString += Form(" && bdtoutput>=%f",bdtCut_);
+    bkgCutString += Form(" && bdtoutput>=%f",bdtCut_);
+  }
+  TCut sigCut(sigCutString);
+  TCut bkgCut(bkgCutString);
 
-  factory->PrepareTrainingAndTestTree( cuts, cuts, "SplitMode=Alternate:NormMode=NumEvents:!V" );
+  factory->PrepareTrainingAndTestTree( sigCut, bkgCut, "SplitMode=Random:NormMode=NumEvents:!V" );
 
   if (Methods_["BDTG"]) // gradient boosted decision trees
     factory->BookMethod( TMVA::Types::kBDT, "BDTgradMIT", "!H:!V:NTrees=500:MaxDepth=3:BoostType=Grad:Shrinkage=1.0:UseBaggedGrad:GradBaggingFraction=0.50:nCuts=20:NNodesMax=8:IgnoreNegWeights"); 
-//  if (Methods_["MLP"]) // neural network
-//    factory->BookMethod( TMVA::Types::kMLP, "MLP", "!H:!V:NeuronType=tanh:NCycles=300:HiddenLayers=N+5,5:TestRate=5:EstimatorType=MSE");   
-//  if (Methods_["FDA_GA"]) // functional discriminant with GA minimizer
-//    factory->BookMethod( TMVA::Types::kFDA, "FDA_GA", "H:!V:Formula=(0)+(1)*x0+(2)*x1+(3)*x2+(4)*x3:ParRanges=(-1,1);(-10,10);(-10,10);(-10,10);(-10,10):FitMethod=GA:PopSize=300:Cycles=3:Steps=20:Trim=True:SaveBestGen=1" );
-//  if (Methods_["PDEFoam"]) // PDE-Foam approach
-//    factory->BookMethod( TMVA::Types::kPDEFoam, "PDEFoam", "!H:!V:TailCut=0.001:VolFrac=0.0666:nActiveCells=500:nSampl=2000:nBin=5:Nmin=100:Kernel=None:Compress=T" );
+  if (Methods_["MLP"]) // neural network
+    factory->BookMethod( TMVA::Types::kMLP, "MLP", "!H:!V:NeuronType=tanh:NCycles=300:HiddenLayers=N+5,5:TestRate=5:EstimatorType=MSE");   
+  if (Methods_["FDA_GA"]) // functional discriminant with GA minimizer
+    factory->BookMethod( TMVA::Types::kFDA, "FDA_GA", "H:!V:Formula=(0)+(1)*x0+(2)*x1+(3)*x2+(4)*x3:ParRanges=(-1,1);(-10,10);(-10,10);(-10,10);(-10,10):FitMethod=GA:PopSize=300:Cycles=3:Steps=20:Trim=True:SaveBestGen=1" );
+  if (Methods_["PDEFoam"]) // PDE-Foam approach
+    factory->BookMethod( TMVA::Types::kPDEFoam, "PDEFoam", "!H:!V:TailCut=0.001:VolFrac=0.0666:nActiveCells=500:nSampl=2000:nBin=5:Nmin=100:Kernel=None:Compress=T" );
+  
   // To do multiple tests of one BDT use e.g
-/*
-  int nTrees[3] = {100,200,500};
-  int maxDepth[4] = {3,5,10,50};
-  float shrinkage[3] = {0.1,0.5,1.};
-  float bagFrac[3] = {0.1,0.5,1.};
-  for (int n=0; n<3; n++){
-    for (int d=0; d<4;d++){
-      for (int s=0; s<3; s++){
-        for (int b=0; b<3; b++){
-          factory->BookMethod( TMVA::Types::kBDT, 
-                  Form("BDTG_Test_nTrees%d_mDepth%d_shr%1.2f_bf%1.2f",nTrees[n],maxDepth[d],shrinkage[s],bagFrac[b]), 
-                  Form("!H:!V:NTrees=%d:MaxDepth=%d:BoostType=Grad:Shrinkage=%1.2f:UseBaggedGrad:GradBaggingFraction=%1.2f:nCuts=20:NNodesMax=8",nTrees[n],maxDepth[d],shrinkage[s],bagFrac[b])); 
+  if (Methods_["SCAN"]){
+    int nTrees[3] = {50,100,200};
+    int maxDepth[3] = {3,5,10};
+    float shrinkage[3] = {0.1,0.5,1.};
+    float bagFrac[2] = {0.6,1.};
+    //float shrinkage[3] = {0.1,0.5,1.};
+    //float bagFrac[3] = {0.1,0.5,1.};
+    for (int n=0; n<3; n++){
+      for (int d=0; d<3;d++){
+        for (int s=0; s<3; s++){
+          for (int b=0; b<2; b++){
+            factory->BookMethod( TMVA::Types::kBDT, 
+                    Form("BDTG_Test_nTrees%d_mDepth%d_shr%1.2f_bf%1.2f",nTrees[n],maxDepth[d],shrinkage[s],bagFrac[b]), 
+                    Form("!H:!V:NTrees=%d:MaxDepth=%d:BoostType=Grad:Shrinkage=%1.2f:UseBaggedGrad:GradBaggingFraction=%1.2f:nCuts=20:NNodesMax=8:IgnoreNegWeights",nTrees[n],maxDepth[d],shrinkage[s],bagFrac[b])); 
+          }
         }
       }
     }
   }
-*/
 
   if (optimize_) factory->OptimizeAllMethodsForClassification();
   // Train MVAs using the set of training events
@@ -259,15 +444,56 @@ int main (int argc, char *argv[]){
   if (!skipEvaluation_) factory->EvaluateAllMethods();
 
   // Save the output
-  cout << "==> Wrote root file: " << outFile->GetName() << endl; 
+  cout << "==> Wrote root file: " << outFile_->GetName() << endl; 
   cout << "==> TMVAClassification is done!" << endl;
   cout << "==> To view the results, launch the GUI: \"root -l ./TMVAGui.C\"" << endl;
 
-  input->Close();
-  outFile->Close();
-  delete outFile;
-  delete input;
+}
+
+int main (int argc, char *argv[]){
+
+  OptionParser(argc,argv);
+
+  bool doTMVA = true;
+
+  std::cout << std::endl;
+  std::cout << "Start Sideband Training ==>" << std::endl;
+  std::cout << "Running methods: " << endl;
+  for (map<string,int>::iterator it=Methods_.begin(); it!=Methods_.end(); it++){
+    if (it->second==1) {
+	cout << "\t" << it->first << endl;
+	if (it->first == "2DOpt") doTMVA = false; 
+    }
+  }
+
+  input_ = TFile::Open(filename_.c_str());
+  if (!input_) {
+    cerr << "ERROR: could not open data file" << endl;
+    exit(1);
+  }
+
+  outFile_ = new TFile(outfilename_.c_str(),"RECREATE");
+  // Get all the Trees and assign them to the factory by their type (signal,background)
+  vector<pair<string,string> > signalTrees = getSignalTreeNames();
+  vector<pair<string,string> > backgroundTrees = getBackgroundTreeNames();
+
+  TTree *signalTree = new TTree("signalTree","signalTree");
+  TTree *backgroundTree = new TTree("backgroundTree","backgroundTree");
+
+  makeTrainingTree(signalTree,signalTrees,true);
+  makeTrainingTree(backgroundTree,backgroundTrees,false);
+ 
+  // TMVA training or 2D optimization training
+  if (doTMVA){
+	runTMVATraining(outFile_,signalTree,backgroundTree);
+  } else {
+	run2DOptimization(outFile_,signalTree,backgroundTree);
+  }
+ 
+  input_->Close();
+  outFile_->Close();
+  delete outFile_;
+  delete input_;
 
   return 0;
 }
-

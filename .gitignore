@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Compiled Object files
 *.slo
 *.lo
@@ -22,6 +23,7 @@ LoopAllDict.*
 dict.*
 TmpLinkDef.h
 .extraTags
+__init__*
 
 # ignore Reduction stuff
 Reduction/pileup/
@@ -33,8 +35,9 @@ Reduction/Macros
 AnalysisScripts/baseline/tmp_*
 *.pevents
 
-# vim temp files
+# editor temp files
 *.swp
+*~
 
 # batch .tgz
 *.tgz

@@ -1,10 +1,10 @@
 # Python Configuration Handler for Util
 # Original Author - Nicholas Wardle
 
-PYDEBUG = 1
+PYDEBUG = 0
 
 # System python imports
-import sys,os, json
+import commands,sys,os, json
 import array
 import ROOT
 
@@ -39,7 +39,10 @@ def defineEvList(fname,dataset):
 
 class configProducer:
 
-  def __init__(self,Ut,conf_filename,Type,njobs=-1,jobId=0,makehistos=True,search_path="common:reduction:baseline:massfac_mva_binned:full_mva_binned:jetanalysis:photonjet"):
+  def __init__(self,Ut,conf_filename,Type,njobs=-1,jobId=0,makehistos=True,
+               search_path="common:reduction:baseline:massfac_mva_binned:full_mva_binned:jetanalysis:photonjet:spinanalysis",
+               label="",mountEos=False,
+               files=[],histfile=""):
 
     print "h2gglobe: step %d, with Config %s. Number of jobs %d. Running job %d" %(Type,conf_filename,njobs,jobId)
 
@@ -50,9 +53,14 @@ class configProducer:
     self.njobs_ = njobs
     self.jobId_ = jobId
     self.nf_ 	= [0]
-	
-    self.make_histograms=makehistos
 
+    self.expdict_ = {"label":label}
+    self.toprint_ = { str(self.ut_) : set() }
+    self.analyzers_ = []
+    
+    self.make_histograms=makehistos
+    self.mounteos=mountEos
+    
     self.black_list = ["root://eoscms//eos/cms/store/group/phys_higgs/cmshgg/processed/V13_03_05/data/DoublePhotonPromptReco2012B/PromptPhoton2012Data_628_1_MEr.root",
                        "root://eoscms//eos/cms/store/group/phys_higgs/cmshgg/processed/V13_03_05/mc/Summer12_S7_8TeV/VBF_HToGG_M-145_8TeV_sub2/SignalMC_19_2_g4J.root",
                        "root://eoscms//eos/cms/store/group/phys_higgs/cmshgg/processed/V13_03_06/mc/Summer12_S7_8TeV/GluGluToHToGG_M-110_8TeV/Signal_MC_3_1_QrU.root",
@@ -63,12 +71,14 @@ class configProducer:
                        "root://eoscms//eos/cms/store/group/phys_higgs/cmshgg/reduced/hcp2012_unblind_reduction_v2/mc/Summer12_S10_8TeV/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball_Summer12_DR53X-PU_S10_START53_V7A-v1/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball_Summer12_DR53X-PU_S10_START53_V7A-v1_13.root",
                        "root://eoscms//eos/cms/store/group/phys_higgs/cmshgg/reduced/hcp2012_unblind_reduction_v2/mc/Summer12_S10_8TeV/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball_Summer12_DR53X-PU_S10_START53_V7A-v1/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball_Summer12_DR53X-PU_S10_START53_V7A-v1_31.root",
                        "root://eoscms//eos/cms/store/group/phys_higgs/cmshgg/reduced/hcp2012_unblind_reduction_v2/mc/Summer12_S10_8TeV/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball_Summer12_DR53X-PU_S10_START53_V7A-v1/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball_Summer12_DR53X-PU_S10_START53_V7A-v1_7.root",
+                       "root://eoscms//eos/cms/store/group/phys_higgs/cmshgg/reduced/reduction_vbf_optimization_v1/mc/Summer12_RD_DR53X-PU_S10_START53_V7C/DiPhotonJetsBox_M60_8TeV-sherpa_Summer12_DR53X-PU_S10_START53_V7C-v1_v3/DiPhotonJetsBox_M60_8TeV-sherpa_Summer12_DR53X-PU_S10_START53_V7C-v1_v3_86.root",
+                       "root://eoscms//eos/cms/store/group/phys_higgs/cmshgg/reduced/moriond2013_reduction_v1/mc/Summer12_S10_8TeV/QCD_Pt-30to40_doubleEMEnriched_TuneZ2star_8TeV-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_ff/QCD_Pt-30to40_doubleEMEnriched_TuneZ2star_8TeV-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_ff_23.root"
                        ]
 
     # configurable from .dat file
     self.plottingvariables_ = "plotvariables.dat"
     self.cutvariables_ = "cuts.dat"
-    self.treevariables_ = "treevariables.dat"
+    self.treevariables_ = ["treevariables.dat"]
 
     self.sample_weights_file_ = 0
     self.file_processed_events_ = {}
@@ -77,6 +87,8 @@ class configProducer:
     self.lines_ = []
 
     self.conf_    = confBlock()
+    self.conf_.files.extend(files)
+    self.conf_.histfile = histfile
     self.plotvar_ = datBlock()
 
     self.tmac = []
@@ -119,6 +131,15 @@ class configProducer:
 
     else: 
       sys.exit("No Such Type As: %d"%self.type_)
+
+  def __del__(self):
+      if self.mounteos:
+          mp = os.path.join(os.getcwd(),"eos")
+          ret,out=commands.getstatusoutput("fusermount -u %s" % mp)
+          
+          
+  def set_macro(self,var,val):
+      self.expdict_[var]=val % self.expdict_
 
   def print_members(self):
     self.member_lines.reverse()
@@ -185,8 +206,16 @@ class configProducer:
             comment_status = False
           else:
             comment_status = True
+        elif line.startswith("#setmacro "):
+          print line
+          toks = [ t.lstrip().rstrip() for t in line.replace("#setmacro","").split(":") if t != "" ]
+          print toks
+          if( len(toks)==2 ):
+              self.set_macro(toks[0],toks[1])
+          print self.expdict_
+          self.conf_.comments+=line
         elif not comment_status and not line.startswith("#"):
-          lines.append(line)
+          lines.append(line % self.expdict_)
         else:
           self.conf_.comments+=line
       self.store_config_file(conf_filename)
@@ -244,16 +273,35 @@ class configProducer:
         defineJsonFilter(dum["json"], dataContainer)
       if("evlist" in dum and dum["evlist"] != ""):
         defineEvList(dum["evlist"], dataContainer)
-        
+
+  def eosmount(self):
+      from makeFilelist import eos
+      mp = os.path.join(os.getcwd(),"eos")
+      ret,out=commands.getstatusoutput("(mount | grep %s) || (%s -b fuse mount %s)" % (mp,eos,mp))
+      print out
+      if ret != 0:
+          print out
+          return None
+      else:
+          return mp
+      
   def add_files(self):
+    print "Adding files"
+    eosmp = None
+    if self.mounteos:
+        print "Mounting eos"
+        eosmp=self.eosmount()
     for t_f in self.conf_.files:
       if not t_f[0]: ## only adding files which aren't Null
           continue
       ## print t_f
       if t_f[0] in self.black_list:
           print "Skipping %s " % t_f[0]
-          continue 
-      self.ut_.AddFile(t_f[0],t_f[1])
+          continue
+      if self.mounteos:
+          self.ut_.AddFile(t_f[0].replace("root://eoscms//eos",eosmp),t_f[1])
+      else:
+          self.ut_.AddFile(t_f[0],t_f[1])
       
   # File Parsers ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -264,7 +312,7 @@ class configProducer:
     map_dict = { "htyp" : int, "plot": int, "ncat": int, "xbins" : int,  "ybins": int, "xmin": float, "xmax": float, "ymin": float, "ymax": float, "name": str, "xaxis":str, "yaxis":str };
     map_c    = { }
     default = 0
-    for line in self.lines_:       
+    for line in self.lines_:
       if len(line) < 2:
         continue
       if (len(line.split()) < 1):
@@ -400,7 +448,7 @@ class configProducer:
        # Decide whether this is a define line or a file line:
        if "output=" in line:
          self.read_output_file(line)
-
+         
        elif "Fil=" in line or "Dir=" in line:
          self.read_input_files_reduce(line)
 
@@ -419,7 +467,9 @@ class configProducer:
        # Read a generic member of the LoopAll class
        else:
          self.read_struct_line(line,self.ut_)
-           
+
+     self.printSummary()
+
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   def generate_weights_file(self,filename):
@@ -441,6 +491,9 @@ class configProducer:
 
      for line in self.lines_:
        # Decide whether this is a define line or a file line:
+       if line[0] == '#':
+         continue
+  
        if "histfile" in line:  
          self.read_histfile(line)
 
@@ -474,13 +527,15 @@ class configProducer:
        # Read a generic member of the LoopAll class
        else:
          self.read_struct_line(line,self.ut_)
-     
+
      for cc in  self.conf_.confs:
        cc["intL"] = self.intL 
 
      if  self.sample_weights_file_==0:
 	 if self.njobs_==-1 or self.jobId_==0:
 	    self.generate_weights_file(f+".pevents")
+
+     self.printSummary()
 
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   def expand_file(self,val):
@@ -489,6 +544,42 @@ class configProducer:
           return self.find_file(val)
       return val
   
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  def addToPrintList(self,struct,name):
+      if not str(struct) in self.toprint_:
+          self.toprint_[str(struct)] = set()
+      self.toprint_[str(struct)].add( name )
+      
+  def printStruct(self,struct,name,pfx="  "):
+      if name != "":
+          print "%s: " % name
+      for aname in sorted(self.toprint_[str(struct)]):
+          att = getattr(struct,aname)
+          if str(att) in self.toprint_:
+              self.printStruct(att,"","%s%s." % (pfx,aname) )
+          else:
+              cont = str(att)
+              if 'vector' in cont:
+                  cont = ""
+                  for i in range(att.size()):
+                      cont += "%s," % att[i]
+              if cont.startswith("/"):
+                  cont = cont.replace( "%s/" % os.getcwd(), "" )
+              print "%s%s = %s " % ( pfx, aname,  cont)
+
+  def printSummary(self):
+      print
+      print "------------------------------------------------------------"
+      print "Configured analyzers:"
+      print "------------------------------------------------------------"
+      print
+      for a in self.analyzers_:
+          self.printStruct(a,str(a))
+          print 
+      self.printStruct(self.ut_,"LoopAll")
+      print
+      print "------------------------------------------------------------"
+      
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   def read_struct_line(self,line,struct):
     split_line = line.split()
@@ -500,15 +591,17 @@ class configProducer:
       val = self.expand_file(val)
       t = type( struct.__getattribute__(name) )
       struct.__setattr__(name, t(val) )
-
+      self.addToPrintList(struct,name)
+      
       nameofstructure=""
       try: nameofstructure=struct.__name__
       except AttributeError :nameofstructure="LoopAll"
 
-      print "%s.%s = %s" % ( nameofstructure, name, str(val) )
+      ## print "%s.%s = %s" % ( nameofstructure, name, str(val) )
       return
 
     # otherwise it is complex structure
+    self.addToPrintList(struct,struct_name)
     struct = struct.__getattribute__(struct_name)
     try:
       if os.path.isfile(self.find_file(split_line[0])):
@@ -539,13 +632,14 @@ class configProducer:
         for sp in split_line:
           name,val = [ s.lstrip(" ").rstrip(" ") for s in sp.split("=") ]
           val = self.expand_file(val)
+          self.addToPrintList(struct,name)
           ## print val, str(type(struct.__getattribute__(name)))
           try:
 	    if ".root" in val and not "/castor" in val and not os.path.isfile(val): sys.exit("No File found - %s, check the line %s"%(val,line))
       	    if "," in val or "vector<" in str(type(struct.__getattribute__(name))):
 	     ele = val.split(",")
              value_type = type( type(struct.__getattribute__(name))(1)[0] )
-             print value_type
+             ## print value_type
              (struct.__getattribute__(name)).clear()
              if val != "":
                  for v in ele:
@@ -553,7 +647,7 @@ class configProducer:
             else :
              t = type( struct.__getattribute__(name) )
              struct.__setattr__(name, t(val) )
-            print "%s = %s" % ( name, str(struct.__getattribute__(name)) )
+            ## print "%s = %s" % ( name, str(struct.__getattribute__(name)) )
           except AttributeError:
             sys.exit( "Error: unkown attribute: %s\nline: %s\n%s" % ( name, line, struct ) )
           except ValueError, e:
@@ -620,6 +714,7 @@ class configProducer:
         except Exception, e:
             sys.exit("Unable to read analyzer %s at line:\n\n%s\n%s"% (name, line, e) )
     print "Loaded analyzer %s " % name
+    self.analyzers_.append(a)
     
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   def read_output_file(self,line):
@@ -646,7 +741,7 @@ class configProducer:
   def read_input_files_reduce(self,line):
     values = { "CaDir" : "","DcDir" : "","EosDir":"", "Dir" : "", "typ" : -1, "Fil" : "",
                "Nam":"default","draw":-999,"ind":-999,"tot":0,"red":-999,"lum":1.0,"xsec":-1.0,"kfac":1.0,
-               "scal":1.0,"json":"","evlist":"","pileup":"","intL":1.,"addnevents":0,
+               "scal":1.0,"json":"","evlist":"","pileup":"","intL":1.,"addnevents":0, "site":"cern.ch"
                }; 
     # We have one of the file def lines
     split_line = line.split()
@@ -659,7 +754,6 @@ class configProducer:
     directory = values["Dir"]
     cas_directory = values["CaDir"]
     dcs_directory = values["DcDir"]
-    eos_directory = values["EosDir"]
     fi_name   = values["Fil"]
     fi_type   = values["typ"]
     if fi_type != 0:
@@ -671,9 +765,9 @@ class configProducer:
       tuple_n = fi_name, fi_type
       self.conf_.files.append(tuple_n)
     self.conf_.confs.append(values.copy())
-      
+
     if cas_directory != '':
-      ca_files = makeCaFiles(cas_directory,self.njobs_,self.jobId_)
+      ca_files = makeCaFiles(cas_directory,self.njobs_,self.jobId_,site=values["site"])
       for file_s in ca_files:
 	if file_s[1]:self.conf_.files.append((file_s[0],fi_type))
 	else	    :self.conf_.files.append((None,fi_type))
@@ -681,12 +775,6 @@ class configProducer:
     if dcs_directory != '':
       dc_files = makeDcFiles(dcs_directory,self.njobs_,self.jobId_)
       for file_s in dc_files:
-	if file_s[1]:self.conf_.files.append((file_s[0],fi_type))
-	else	    :self.conf_.files.append((None,fi_type))
-
-    if eos_directory != '':
-      eo_files = makeEosFiles(eos_directory,self.njobs_,self.jobId_)
-      for file_s in eo_files:
 	if file_s[1]:self.conf_.files.append((file_s[0],fi_type))
 	else	    :self.conf_.files.append((None,fi_type))
 
@@ -755,12 +843,12 @@ class configProducer:
         self.conf_.files.append(tuple_n)
       else: self.conf_.files.append((None,fi_type));
       if fi_type!=0 and fi_type!=99999 and map_c["tot"] == 0:
-	if self.sample_weights_file_==0 :
-	  if map_c["tot"] <= 0:
+        if self.sample_weights_file_==0 :
+          if map_c["tot"] <= 0:
               nEventsInFile = getTreeEntry(fi_name,"global_variables","processedEvents")
           else:
               nEventsInFile = map_c["tot"]
-	  self.file_processed_events_[fi_name] = nEventsInFile
+          self.file_processed_events_[fi_name] = nEventsInFile
           map_c["tot"] = nEventsInFile;
 	  
 	else:  

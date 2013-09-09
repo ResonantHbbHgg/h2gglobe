@@ -1,3 +1,4 @@
+#include <fstream>
 #include <limits>
 #include <algorithm>
 
@@ -19,7 +20,7 @@
 using namespace std;
 using namespace RooFit;
 
-SimultaneousFit::SimultaneousFit(string infilename, string outfilename, int mhLow, int mhHigh, int verbose, int nInclusiveCats, int nExclusiveCats, bool SMasBkg, bool SecHiggs, bool NatWidth):
+SimultaneousFit::SimultaneousFit(string infilename, string outfilename, int mhLow, int mhHigh, int verbose, int nInclusiveCats, int nExclusiveCats, bool SMasBkg, bool SecHiggs, bool NatWidth, bool spin, bool splitVH):
   mhLow_(mhLow),
   mhHigh_(mhHigh),
   verbose_(verbose),
@@ -48,22 +49,36 @@ SimultaneousFit::SimultaneousFit(string infilename, string outfilename, int mhLo
   normalization = new Normalization_8TeV();
   xsecsGraph.insert(pair<string,TGraph*>("ggh",normalization->GetSigmaGraph("ggh")));
   xsecsGraph.insert(pair<string,TGraph*>("vbf",normalization->GetSigmaGraph("vbf")));
-  xsecsGraph.insert(pair<string,TGraph*>("wzh",normalization->GetSigmaGraph("wzh")));
+  if (splitVH) {
+    xsecsGraph.insert(pair<string,TGraph*>("wh",normalization->GetSigmaGraph("wh")));
+    xsecsGraph.insert(pair<string,TGraph*>("zh",normalization->GetSigmaGraph("zh")));
+  }
+  else {
+    xsecsGraph.insert(pair<string,TGraph*>("wzh",normalization->GetSigmaGraph("wzh")));
+  }
   xsecsGraph.insert(pair<string,TGraph*>("tth",normalization->GetSigmaGraph("tth")));
+  if (spin) {
+    xsecsGraph.insert(pair<string,TGraph*>("ggh_grav",normalization->GetSigmaGraph("ggh_grav")));
+    xsecsGraph.insert(pair<string,TGraph*>("vbf_grav",normalization->GetSigmaGraph("vbf_grav")));
+  }
   brGraph = normalization->GetBrGraph();
 }
 
 SimultaneousFit::~SimultaneousFit(){
-  inFile->Close();
   cout << "Cleaning..." << endl;
+  inFile->Close();
   outFile->cd();
   outWS->Write();
+  /// outFile->Write();
   outFile->Close();
-  clean();
   delete outWS;
   delete inFile;
   delete outFile;
-  if (saveExtraFile_) delete extraFile_;
+  /// clean();
+  if (saveExtraFile_) {
+    extraFile_->Close();
+    delete extraFile_;
+  }
 }
 
 void SimultaneousFit::clean(){
@@ -73,23 +88,25 @@ void SimultaneousFit::clean(){
   for (map<string,RooGaussian*>::iterator f=initialGaussians.begin(); f!=initialGaussians.end(); f++) delete f->second;
   for (map<string,RooRealVar*>::iterator f=polParams.begin(); f!=polParams.end(); f++) delete f->second;
   for (map<string,RooFormulaVar*>::iterator f=formVars.begin(); f!=formVars.end(); f++) delete f->second;
-  for (map<string,TFormula*>::iterator f=tforms.begin(); f!=tforms.end(); f++) delete f->second;
-  for (map<string,TGraph*>::iterator f=tgraphs.begin(); f!=tgraphs.end(); f++) delete f->second;
   for (map<string,RooDataSet*>::iterator d=allData.begin(); d!=allData.end(); d++) delete d->second;
   for (map<string,RooHistFunc*>::iterator h=histFuncs.begin(); h!=histFuncs.end(); h++) delete h->second;
-  delete weight;
-  delete mhCategory;
-  delete normalization;
-  delete mass;
-  delete MH;
+  for (map<string,RooDataHist*>::iterator h=dHists.begin(); h!=dHists.end(); h++) delete h->second;
+  for (map<string,RooSpline1D*>::iterator h=spline1Ds.begin(); h!=spline1Ds.end(); h++) delete h->second;
   if (simultaneousFit_) {
     delete simFitCombData;
     delete simFitCombPdf;
     for (map<string,RooAbsPdf*>::iterator f=simFitPdfMap.begin(); f!=simFitPdfMap.end(); f++) delete f->second;
   }
   delete extendPdfRel;
+  delete dHist_eA;
+  delete dHist_norm;
   delete funcEffAcc;
   delete funcEffAccRel;
+  delete weight;
+  delete mhCategory;
+  delete normalization;
+  delete mass;
+  delete MH;
 }
 
 void SimultaneousFit::setFork(int f){
@@ -374,10 +391,10 @@ void SimultaneousFit::setupSystematics(int cat){
   if (isExclusiveCat(cat)) mycat=nInclusiveCats_;
 
   loadSmearVals(); 
-  globalScale = new RooRealVar("CMS_hgg_globalscale","CMS_hgg_globalscale",0.0,-10.0,10.0);
-  categoryScale = new RooRealVar(Form("CMS_hgg_nuissancedeltamcat%d",mycat),Form("CMS_hgg_nuissancedeltamcat%d",mycat),0.0,0.0,10.0);
+  globalScale = new RooRealVar("CMS_hgg_globalscale","CMS_hgg_globalscale",0.,-0.2,0.2); // 20%
+  categoryScale = new RooRealVar(Form("CMS_hgg_nuissancedeltamcat%d",mycat),Form("CMS_hgg_nuissancedeltamcat%d",mycat),0.0,-0.2,0.2); // 20%
   categorySmear = new RooConstVar(Form("CMS_hgg_constsmearcat%d",cat),Form("CMS_hgg_constsmearcat%d",cat),categorySmears[Form("CMS_hgg_constsmearcat%d",cat)]);
-  categoryResolution = new RooRealVar(Form("CMS_hgg_nuissancedeltasmearcat%d",mycat),Form("CMS_hgg_nuissancedeltasmearcat%d",mycat),0.0,0.,10.);
+  categoryResolution = new RooRealVar(Form("CMS_hgg_nuissancedeltasmearcat%d",mycat),Form("CMS_hgg_nuissancedeltasmearcat%d",mycat),0.0,-0.2,0.2); // 20%
   systematicsSet_=true;
 }
 
@@ -426,11 +443,12 @@ RooAddPdf *SimultaneousFit::buildFinalPdf(string name, int nGaussians, bool recu
       if (doSMHiggsAsBackground_) sig_fit_SM = findHistFunc(Form("hist_func_sigma_g%d_%s_cat%d_SM",g,proc.c_str(),cat)); 
       if (doSecondHiggs_) sig_fit_2 = findSpline1D(Form("hist_func_sigma_g%d_%s_cat%d_2",g,proc.c_str(),cat)); 
     }
-    RooFormulaVar *sigma = new RooFormulaVar(Form("hgg_sigma_g%d_%s_cat%d",g,proc.c_str(),cat),Form("hgg_sigma_g%d_%s_cat%d",g,proc.c_str(),cat),"TMath::Sqrt(TMath::Power(@0,2)-TMath::Power(@1*@2,2)+TMath::Power(@1*(@2+@3),2))",RooArgList(*sig_fit,*MH,*categorySmear,*categoryResolution));
+    // Have to ensure what's in side the sqrt is not negative
+    RooFormulaVar *sigma = new RooFormulaVar(Form("hgg_sigma_g%d_%s_cat%d",g,proc.c_str(),cat),Form("hgg_sigma_g%d_%s_cat%d",g,proc.c_str(),cat),"(TMath::Power(@0,2)-TMath::Power(@1*@2,2)+TMath::Power(@1*(@2+@3),2))>0. ? TMath::Sqrt(TMath::Power(@0,2)-TMath::Power(@1*@2,2)+TMath::Power(@1*(@2+@3),2)) : 0.",RooArgList(*sig_fit,*MH,*categorySmear,*categoryResolution));
     RooFormulaVar *sigma_SM=NULL;
     RooFormulaVar *sigma_2=NULL;
-    if (doSMHiggsAsBackground_) sigma_SM = new RooFormulaVar(Form("hgg_sigma_g%d_%s_cat%d_SM",g,proc.c_str(),cat),Form("hgg_sigma_g%d_%s_cat%d_SM",g,proc.c_str(),cat),"TMath::Sqrt(TMath::Power(@0,2)-TMath::Power(@1*@2,2)+TMath::Power(@1*(@2+@3),2))",RooArgList(*sig_fit_SM,*MH_SM,*categorySmear,*categoryResolution));
-    if (doSecondHiggs_) sigma_2 = new RooFormulaVar(Form("hgg_sigma_g%d_%s_cat%d_2",g,proc.c_str(),cat),Form("hgg_sigma_g%d_%s_cat%d_2",g,proc.c_str(),cat),"TMath::Sqrt(TMath::Power(@0,2)-TMath::Power(@1*@2,2)+TMath::Power(@1*(@2+@3),2))",RooArgList(*sig_fit_2,*MH_2,*categorySmear,*categoryResolution));
+    if (doSMHiggsAsBackground_) sigma_SM = new RooFormulaVar(Form("hgg_sigma_g%d_%s_cat%d_SM",g,proc.c_str(),cat),Form("hgg_sigma_g%d_%s_cat%d_SM",g,proc.c_str(),cat),"(TMath::Power(@0,2)-TMath::Power(@1*@2,2)+TMath::Power(@1*(@2+@3),2))>0. ? TMath::Sqrt(TMath::Power(@0,2)-TMath::Power(@1*@2,2)+TMath::Power(@1*(@2+@3),2)) : 0.",RooArgList(*sig_fit_SM,*MH_SM,*categorySmear,*categoryResolution));
+    if (doSecondHiggs_) sigma_2 = new RooFormulaVar(Form("hgg_sigma_g%d_%s_cat%d_2",g,proc.c_str(),cat),Form("hgg_sigma_g%d_%s_cat%d_2",g,proc.c_str(),cat),"(TMath::Power(@0,2)-TMath::Power(@1*@2,2)+TMath::Power(@1*(@2+@3),2))>0. ? TMath::Sqrt(TMath::Power(@0,2)-TMath::Power(@1*@2,2)+TMath::Power(@1*(@2+@3),2)) : 0.",RooArgList(*sig_fit_2,*MH_2,*categorySmear,*categoryResolution));
     
     // make Gaussians
     RooGaussian *gaus = new RooGaussian(Form("hgg_gaus_g%d_%s_cat%d",g,proc.c_str(),cat),Form("hgg_gaus_g%d_%s_cat%d",g,proc.c_str(),cat),*mass,*mean,*sigma);
@@ -697,7 +715,7 @@ void SimultaneousFit::constructFormulaVars(int nGaussians, int dmOrder, int sigm
 }
 
 void SimultaneousFit::plotPolParam(string name, int order, string proc, int cat){
- 
+
   string formula="";
   string text="";
   for (int i=0; i<=order; i++){
@@ -711,8 +729,7 @@ void SimultaneousFit::plotPolParam(string name, int order, string proc, int cat)
     formula += Form("%10.6f*TMath::Power(x,%d)",value,i);
   }
   TFormula *tf = new TFormula(Form("tf_%s",name.c_str()),formula.c_str());
-  tforms.insert(pair<string,TFormula*>(string(tf->GetName()),tf));
-
+  
   TGraph *tg = new TGraph();
   tg->SetName(Form("tg_%s",name.c_str()));
   int i=0;
@@ -720,7 +737,7 @@ void SimultaneousFit::plotPolParam(string name, int order, string proc, int cat)
     tg->SetPoint(i,mh,tf->Eval(mh));
     i++;
   }
-  tgraphs.insert(pair<string,TGraph*>(string(tg->GetName()),tg));
+  delete tf;
 
   TPaveText pave(0.1,0.9,0.9,0.99,"NDC");
   pave.SetFillColor(0);
@@ -741,10 +758,11 @@ void SimultaneousFit::plotPolParam(string name, int order, string proc, int cat)
     extraFile_->cd();
     tg->Write();
   }
+  delete tg;
 }
 
 void SimultaneousFit::plotPolParams(int nGaussians, int dmOrder, int sigmaOrder, int fracOrder, string proc, int cat){
-  
+ 
   for (int g=0; g<nGaussians; g++){
     plotPolParam(Form("dm_g%d_%s_cat%d",g,proc.c_str(),cat),dmOrder,proc,cat);
     plotPolParam(Form("sigma_g%d_%s_cat%d",g,proc.c_str(),cat),sigmaOrder,proc,cat);
@@ -871,7 +889,7 @@ void SimultaneousFit::fitTH1F(string name, int order, string proc, int cat, bool
     for (int i=0; i<=order; i++){
       polStartVals.insert(pair<string,double>(Form("p%d_%s_%s_cat%d",i,name.c_str(),proc.c_str(),cat),pol->GetParameter(i)));
     }
-    TCanvas *canv = new TCanvas();
+    TCanvas *canv = new TCanvas("TH1F","TH1F");
     th1f->second->Draw("LEP");
     pol->Draw("same");
     canv->Print(Form("plots/initialFit/%s_cat%d/%s.pdf",proc.c_str(),cat,thname.c_str()));
@@ -957,7 +975,7 @@ void SimultaneousFit::makeHistFunc(string name, int order, string proc, int cat)
       spline1Ds.insert(pair<string,RooSpline1D*>(spline2->GetName(),spline2)); 
     }
     
-    TCanvas *canv = new TCanvas();
+    TCanvas *canv = new TCanvas("hFunc","hFunc");
     RooPlot *plot = MH->frame(Range(110,150));
     hFunc->plotOn(plot);
     plot->Draw();
@@ -1004,7 +1022,7 @@ void SimultaneousFit::runFit(string proc, int cat, int nGaussians, int dmOrder, 
   system(Form("mkdir -p plots/finalFit/%s_cat%d",proc.c_str(),cat));
   system("mkdir -p dat/in");
   system("mkdir -p dat/out");
-  TCanvas *canv = new TCanvas();
+  //TCanvas *canv = new TCanvas("GenFit","GenFit");
   
   // mh for FormulaVars
   MH = new RooRealVar("MH","m_{H}",mhLow_-2.5,mhHigh_+2.5);
@@ -1027,7 +1045,6 @@ void SimultaneousFit::runFit(string proc, int cat, int nGaussians, int dmOrder, 
   if (doNaturalWidth_){
     higgsDecayWidth = new RooRealVar("HiggsDecayWidth","#Gamma_{H}",0.,0.,10.);
   }
-
 
   RooAddPdf *sigModel = getSumOfGaussians(nGaussians,recursive);
 
@@ -1066,9 +1083,10 @@ void SimultaneousFit::runFit(string proc, int cat, int nGaussians, int dmOrder, 
       fitRes->floatParsFinal().Print("v");
       addFitResultToMap(mh);
       delete fitRes;
-
+      
       cout << "------ plotting ------- " << endl;
       //plot
+      TCanvas *canv = new TCanvas();
       RooPlot *plot = mass->frame(Range(100,160));
       data->plotOn(plot);
       sigModel->plotOn(plot);
@@ -1076,20 +1094,21 @@ void SimultaneousFit::runFit(string proc, int cat, int nGaussians, int dmOrder, 
       canv->Print(Form("plots/initialFit/%s_cat%d/%s_cat%d_m%d.pdf",proc.c_str(),cat,proc.c_str(),cat,mh));
       canv->Print(Form("plots/initialFit/%s_cat%d/%s_cat%d_m%d.png",proc.c_str(),cat,proc.c_str(),cat,mh));
       delete plot;
+      delete canv;
     }
     // save results in TH1Fs
     for (map<string,RooRealVar*>::iterator param=fitParams.begin(); param!=fitParams.end(); param++){
       string thname = "th_"+param->first;
       if (th1fs.find(thname)!=th1fs.end()) {
         th1fs[thname]->SetBinContent(th1fs[thname]->FindBin(mh),param->second->getVal());
-        //th1fs[thname]->SetBinError(i+1,param->second->getError());
+        th1fs[thname]->SetBinError(i+1,param->second->getError());
       }
       else {
         cout << "WARNING -- TH1F " << thname << " not found" << endl;
       }
     }
   }
-  
+ 
   // Gaussian ordering
   // ordering type = 0 by mass 1 by sigma 2 by frac
   if (!loadPriorConstraints_) orderGaussians(nGaussians,recursive,0);
@@ -1177,7 +1196,8 @@ void SimultaneousFit::runFit(string proc, int cat, int nGaussians, int dmOrder, 
 
     assert(simFitDataMap.size()==simFitPdfMap.size());
     for (unsigned int i=0; i<allMH_.size(); i++) {
-      int mh = allMH_[i];  
+      int mh = allMH_[i];
+      TCanvas *canv = new TCanvas();
       RooPlot *plot = mass->frame(Range(100,160));
       simFitCombData->plotOn(plot,Cut(Form("mhCat==mhCat::mh%d",mh)));
       simFitCombPdf->plotOn(plot,Slice(*mhCategory,Form("mh%d",mh)),ProjWData(*mhCategory,*simFitCombData));
@@ -1185,6 +1205,7 @@ void SimultaneousFit::runFit(string proc, int cat, int nGaussians, int dmOrder, 
       canv->Print(Form("plots/simFit/%s_cat%d/%s_cat%d_m%d.pdf",proc.c_str(),cat,proc.c_str(),cat,mh));
       canv->Print(Form("plots/simFit/%s_cat%d/%s_cat%d_m%d.png",proc.c_str(),cat,proc.c_str(),cat,mh));
       delete plot;
+      delete canv;
     }
   }
 
@@ -1217,6 +1238,7 @@ void SimultaneousFit::runFit(string proc, int cat, int nGaussians, int dmOrder, 
       
     mhFitRes->floatParsFinal().Print("v");
     delete mhFitRes;
+    TCanvas *canv = new TCanvas();
     RooPlot *plot = mass->frame(Range(100,160));
     mhFitCombData->plotOn(plot,SumW2Error(true));
     mhFitCombPdf->plotOn(plot);
@@ -1231,6 +1253,7 @@ void SimultaneousFit::runFit(string proc, int cat, int nGaussians, int dmOrder, 
     canv->Print(Form("plots/mhFit/%s_cat%d/mh_%s_cat%d.pdf",proc.c_str(),cat,proc.c_str(),cat));
     canv->Print(Form("plots/mhFit/%s_cat%d/mh_%s_cat%d.png",proc.c_str(),cat,proc.c_str(),cat));
     delete mhplot;
+    delete canv;
   }
   
   plotPolParams(nGaussians,dmOrder,sigmaOrder,fracOrder,proc,cat);
@@ -1240,7 +1263,7 @@ void SimultaneousFit::runFit(string proc, int cat, int nGaussians, int dmOrder, 
   
   finalPdf = buildFinalPdf(Form("hggpdfrel_%s_cat%d",proc.c_str(),cat),nGaussians,recursive,proc,cat);
   
-  if (simultaneousFit_ || mhDependentFit_) {
+  if ((simultaneousFit_ || mhDependentFit_) && verbose_>0) {
     cout << "Dump of pol params....." << endl;
     dumpPolParams();
     cout << "Dump of const vars....." << endl;
@@ -1265,9 +1288,10 @@ void SimultaneousFit::runFit(string proc, int cat, int nGaussians, int dmOrder, 
     MH->setVal(mh);
     MH->setConstant(true);
     
-    RooDataSet *data = (RooDataSet*)work->data(getDataSetName(proc,mh,cat).c_str());
-      
+    RooDataSet *data = allData[getDataSetName(proc,mh,cat)];
+     
     //plot
+    TCanvas *canv = new TCanvas();
     RooPlot *plot = mass->frame(Range(100,160));
     data->plotOn(plot);
     finalPdf->plotOn(plot);
@@ -1277,13 +1301,15 @@ void SimultaneousFit::runFit(string proc, int cat, int nGaussians, int dmOrder, 
     canv->Print(Form("plots/finalFit/%s_cat%d/%s_cat%d_m%d.pdf",proc.c_str(),cat,proc.c_str(),cat,mh));
     canv->Print(Form("plots/finalFit/%s_cat%d/%s_cat%d_m%d.png",proc.c_str(),cat,proc.c_str(),cat,mh));
     delete plot;
+    delete canv;
   }
+  TCanvas *canv = new TCanvas();
   allPlot->Draw();
   canv->Print(Form("plots/%s_cat%d_allmh.pdf",proc.c_str(),cat));
   canv->Print(Form("plots/%s_cat%d_allmh.png",proc.c_str(),cat));
   delete allPlot;
   delete canv;
- 
+  
   freezePolParams();
   makeEffAccFunc(work,proc,cat);
   makeExtendPdf(proc,cat);
@@ -1305,7 +1331,6 @@ void SimultaneousFit::runFit(string proc, int cat, int nGaussians, int dmOrder, 
   }
   putDataInWS(work,proc,cat);
   plotPDF(proc,cat);
-
   cout << "Fit complete. Output written to " << outFile->GetName() << " : " << outWS->GetName() << endl;
 }
 
@@ -1344,8 +1369,8 @@ void SimultaneousFit::makeEffAccFunc(RooWorkspace *inWS, string proc, int cat){
     xvalues.push_back(th1f_norm->GetBinCenter(i));
     yvalues.push_back(th1f_norm->GetBinContent(i));
   }
-  RooDataHist *dHist_eA = new RooDataHist("dHist_eA","dHist_eA",RooArgList(*MH),th1f_eA);
-  RooDataHist *dHist_norm = new RooDataHist("dHist_norm","dHist_norm",RooArgList(*MH),th1f_norm);
+  dHist_eA = new RooDataHist("dHist_eA","dHist_eA",RooArgList(*MH),th1f_eA);
+  dHist_norm = new RooDataHist("dHist_norm","dHist_norm",RooArgList(*MH),th1f_norm);
   
   funcEffAcc = new RooHistFunc(Form("hggpdfea_%s_cat%d_norm",proc.c_str(),cat),Form("hggpdfea_%s_cat%d_norm",proc.c_str(),cat),RooArgSet(*MH),*dHist_eA,2);
   funcEffAccRel = new RooHistFunc(Form("hggpdfrel_%s_cat%d_norm",proc.c_str(),cat),Form("hggpdfrel_%s_cat%d_norm",proc.c_str(),cat),RooArgSet(*MH),*dHist_norm,2);
@@ -1360,7 +1385,7 @@ void SimultaneousFit::makeEffAccFunc(RooWorkspace *inWS, string proc, int cat){
   }
   if (doNaturalWidth_) funcEffAccRel_NW = new RooHistFunc(Form("hggpdfrel_%s_cat%d_NW_norm",proc.c_str(),cat),Form("hggpdfrel_%s_cat%d_NW_norm",proc.c_str(),cat),RooArgSet(*MH),*dHist_norm,2);
   
-  TCanvas *canv = new TCanvas();
+  TCanvas *canv = new TCanvas("EffAccFunc","EffAccFunc");
   RooPlot *plot = MH->frame(Range(110,150),Title("#epsilon#times#alpha"));
   funcEffAcc->plotOn(plot);
   plot->Draw();
@@ -1394,7 +1419,7 @@ TGraph* SimultaneousFit::makeEffAccGraph(RooWorkspace *work, string proc, int ca
   TGraph *graph = new TGraph(pol2);
   graph->SetName(Form("tg_effAcc_%s_cat%d",proc.c_str(),cat));
 
-  TCanvas *canv = new TCanvas();
+  TCanvas *canv = new TCanvas("EffAccGraph","EffAccGraph");
   temp->SetMarkerStyle(kFullCircle);
   temp->SetMarkerSize(2);
   temp->Draw("AP");
@@ -1408,7 +1433,7 @@ TGraph* SimultaneousFit::makeEffAccGraph(RooWorkspace *work, string proc, int ca
 
 void SimultaneousFit::plotXS(string proc){
   
-  TCanvas *canv = new TCanvas();
+  TCanvas *canv = new TCanvas("XS","XS");
   canv->SetLogy();
   if (proc!=""){
     assert(xsecsGraph.find(proc)!=xsecsGraph.end());
@@ -1448,7 +1473,7 @@ void SimultaneousFit::plotXS(string proc){
 
 void SimultaneousFit::plotBR(){
   
-  TCanvas *canv = new TCanvas();
+  TCanvas *canv = new TCanvas("BR","BR");
   brGraph->SetLineWidth(3);
   brGraph->GetXaxis()->SetTitle("m_{H} (GeV)");
   brGraph->GetXaxis()->SetRangeUser(110,150);
@@ -1461,7 +1486,7 @@ void SimultaneousFit::plotBR(){
 
 void SimultaneousFit::plotPDF(string proc, int cat){
   
-  TCanvas *canv = new TCanvas();
+  TCanvas *canv = new TCanvas("PDF","PDF");
   RooPlot *plot = mass->frame(Range(105,155));
   for (int m=110; m<=150; m++){
     MH->setVal(m);
@@ -1470,8 +1495,11 @@ void SimultaneousFit::plotPDF(string proc, int cat){
   plot->Draw();
   canv->Print(Form("plots/%s_cat%d.pdf",proc.c_str(),cat));
   canv->Print(Form("plots/%s_cat%d.png",proc.c_str(),cat));
-  delete plot;
-  delete canv;
+  //delete MH;
+  //delete extendPdfRel;
+  //delete plot;
+  //delete canv;
+  //delete extendPdfRel;
 }
 
 bool SimultaneousFit::isInclusiveCat(int cat){

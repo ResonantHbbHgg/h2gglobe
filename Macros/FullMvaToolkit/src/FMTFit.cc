@@ -17,6 +17,49 @@
 
 using namespace std;
 using namespace RooFit;
+FMTFit::FMTFit(TFile *tFile, TFile *outFile):
+	FMTBase(),
+	blind_(false),
+	plot_(true),
+	infilename_(tFile->GetName()),
+	outfilename_(outFile->GetName())
+{
+  gROOT->SetStyle("Plain");
+  r1 = new RooRealVar("r1","r1",-0.02,-10.,0.); 
+  r2 = new RooRealVar("r2","r2",-0.02,-10.,0.); 
+  r3 = new RooRealVar("r3","r3",-1.,-20.,0.); 
+  f1 = new RooRealVar("f1","f1",0.5,0.01,1.); 
+  f2 = new RooRealVar("f2","f2",0.001,0.001,0.49); 
+  nBkgInSigReg = new RooRealVar("nbis","nbis",10,0,100000);
+	inWS = (RooWorkspace*)tFile->Get("cms_hgg_workspace");
+	outWS = new RooWorkspace("cms_hgg_workspace");
+  mass_var = (RooRealVar*)inWS->var("CMS_hgg_mass");
+  
+  //RooExponential *e1 = new RooExponential("e1","e1",*mass_var,*r1);
+  //RooExponential *e2 = new RooExponential("e2","e2",*mass_var,*r2);
+  //fit = new RooAddPdf("data_exp_model","data_exp_model",*e1,*e2,*f1);
+  fit = new RooGenericPdf("data_pow_model","data_pow_model","@1*TMath::Power(@0,@2)+(1.-@1)*TMath::Power(@0,@3)",RooArgList(*mass_var,*f1,*r1,*r2));
+
+	// get data and combine all cats
+	cout << "Looking for datasets....." << endl;
+	/*
+  data = (RooDataSet*)((RooDataSet*)inWS->data("data_mass_cat0"))->Clone("data_mass");
+	for (int cat=0; cat<getNcats(); cat++){
+    RooDataSet *temp = (RooDataSet*)inWS->data(Form("data_mass_cat%d",cat));
+    outWS->import(*temp);
+		if (cat>0) data->append(*((RooDataSet*)inWS->data(Form("data_mass_cat%d",cat))));
+	}
+  */
+  data = (RooDataSet*)inWS->data("data_mass");
+	if (!outWS->data("data_mass")) outWS->import(*data);
+ 
+  //g_counter=0;
+
+   readFitsFromFile = false;
+    //normGraph = new TGraph();
+    //normGraph->SetName("NormGraph");
+}
+
 
 FMTFit::FMTFit(TFile *tFile, TFile *outFile, double intLumi, bool is2011, int mHMinimum, int mHMaximum, double mHStep, double massMin, double massMax, int nDataBins, double signalRegionWidth, double sidebandWidth, int numberOfSidebands, int numberOfSidebandsForAlgos, int numberOfSidebandGaps, double massSidebandMin, double massSidebandMax, int nIncCategories, bool includeVBF, int nVBFCategories, bool includeLEP, int nLEPCategories, vector<string> systematics, bool rederiveOptimizedBinEdges, vector<map<int,vector<double> > > AllBinEdges, bool verbose):
 	
@@ -37,9 +80,10 @@ FMTFit::FMTFit(TFile *tFile, TFile *outFile, double intLumi, bool is2011, int mH
 	outWS = new RooWorkspace("cms_hgg_workspace");
   mass_var = (RooRealVar*)inWS->var("CMS_hgg_mass");
   
-  RooExponential *e1 = new RooExponential("e1","e1",*mass_var,*r1);
-  RooExponential *e2 = new RooExponential("e2","e2",*mass_var,*r2);
-  fit = new RooAddPdf("data_exp_model","data_exp_model",*e1,*e2,*f1);
+  //RooExponential *e1 = new RooExponential("e1","e1",*mass_var,*r1);
+  //RooExponential *e2 = new RooExponential("e2","e2",*mass_var,*r2);
+  //fit = new RooAddPdf("data_exp_model","data_exp_model",*e1,*e2,*f1);
+  fit = new RooGenericPdf("data_pow_model","data_pow_model","@1*TMath::Pow(@0,@2)+(1.-@1)*TMath::Pow(@0,@3)",RooArgList(*mass_var,*f1,*r1,*r2));
 
 	// get data and combine all cats
 	cout << "Looking for datasets....." << endl;
@@ -53,7 +97,12 @@ FMTFit::FMTFit(TFile *tFile, TFile *outFile, double intLumi, bool is2011, int mH
   */
   data = (RooDataSet*)inWS->data("data_mass");
 	if (!outWS->data("data_mass")) outWS->import(*data);
-  
+ 
+  //g_counter=0;
+
+   readFitsFromFile = false;
+    //normGraph = new TGraph();
+    //normGraph->SetName("NormGraph");
 }
 
 FMTFit::~FMTFit(){
@@ -64,6 +113,17 @@ FMTFit::~FMTFit(){
 	delete outWS;
 }
 
+void FMTFit::SetNormGraph(TFile *nFile){
+
+	//delete normGraph;
+        
+	std::cout << "OK "<<std::endl;
+	normGraph = (TGraph*) (nFile->Get("NormGraph")->Clone());
+	
+  	readFitsFromFile = true;
+	std::cout << "OK "<< normGraph<<std::endl;
+}
+
 pair<double,double> FMTFit::FitPow(double mass){
   
   gROOT->SetBatch();
@@ -72,6 +132,18 @@ pair<double,double> FMTFit::FitPow(double mass){
     exit(1);
   }
 
+  if (readFitsFromFile){
+	
+	RooRealVar *temp = new RooRealVar(Form("NBkgInSignal_mH%3.1f",mass),"t",10,0,1e6);
+	double normVal = normGraph->Eval(mass);
+	temp->setVal(normVal);
+	outWS->import(*temp,RecycleConflictNodes());
+	gDirectory->Cd(Form("%s:/",outfilename_.c_str()));
+	outWS->Write();
+	//normGraph->Write();
+
+  	return pair<double,double>(normGraph->Eval(mass),0);
+  }
 	// set up fit function
 	r1->SetName(Form("r1_%3.1f",mass));
   r2->SetName(Form("r2_%3.1f",mass));
@@ -113,7 +185,6 @@ pair<double,double> FMTFit::FitPow(double mass){
 	RooRealVar *temp = new RooRealVar(Form("NBkgInSignal_mH%3.1f",mass),"t",10,0,1e6);
 	temp->setVal(result);
 	temp->setError(fullError);
-	outWS->import(*temp);
 	
 	if (verbose_) cout << "Transfer to workspace" << endl;
   RooRealVar *intL = (RooRealVar*)inWS->var("IntLumi");
@@ -121,18 +192,28 @@ pair<double,double> FMTFit::FitPow(double mass){
     intL = new RooRealVar("IntLumi","IntLumi",intLumi_);
     outWS->import(*intL);
   }
-	for (vector<double>::iterator mH=MHMasses_.begin(); mH!=MHMasses_.end(); mH++){
+	/*
+  for (vector<double>::iterator mH=MHMasses_.begin(); mH!=MHMasses_.end(); mH++){
 		if (TMath::Abs(*mH-mass)<mHStep_/2.) continue;
 		else {
 			temp = (RooRealVar*)inWS->var(Form("NBkgInSignal_mH%3.1f",mass));
 			if (temp) outWS->import(*temp);
 		}
 	}
+  */
+  if (verbose_) { 
+    outWS->allVars().Print();
+    temp->Print();
+  }
+	outWS->import(*temp,RecycleConflictNodes());
 	gDirectory->Cd(Form("%s:/",outfilename_.c_str()));
 	outWS->Write();
 	if (verbose_) outWS->allVars().Print();
 	//delete fit;
+	//normGraph->SetPoint(g_counter,mass,result);
 
+  // internal Counter 
+ // g_counter++;
   return pair<double,double>(result,fullError);
 /*
   nBkgInSigReg = outWS->var(Form("NBkgInSignal_mH%3.1f",mass));
@@ -220,9 +301,10 @@ void FMTFit::Plot(double mass){
 }
 
 void FMTFit::redoFit(double mass){
-  
-  pair<double,double> dummyVar = FitPow(mass);
-  if (verbose_) cout << dummyVar.first << " +/- " << dummyVar.second << endl;
+ 
+
+    pair<double,double> dummyVar = FitPow(mass);
+    if (verbose_) cout << dummyVar.first << " +/- " << dummyVar.second << endl;
 }
 
 bool FMTFit::getblind(){

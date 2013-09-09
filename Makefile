@@ -35,28 +35,33 @@ MainObjs=$(patsubst %$(SrcSuf), %$(ObjSuf), $(MainSrc))
 
 ## ROOT dictionary
 LinkDef=LinkDef.h 
+TmpLinkDef=TmpLinkDef.h 
 MainDicts=LoopAll.h
 MainDicts+=$(wildcard Base*.$(HeadSuf))
 MainDicts+=$(wildcard *Smearer.$(HeadSuf))
 MainDicts+=$(wildcard *Container.$(HeadSuf))
 MainDicts+=PhotonFix.h MassResolution.h HtmlHelper.h Macros/Normalization_8TeV.h Macros/MassInterpolator.h
-
+MainFullDicts=
 
 ##
 ## Subdirectories
 ##
-SubPkgs=PhotonAnalysis VertexAnalysis JetAnalysis PhotonJetAnalysis ZMuMuGammaAnalysis
-SubPkgsDict=VertexAnalysis/interface/VertexAlgoParameters.h
+SubPkgs=PhotonAnalysis VertexAnalysis VertexOptimization JetAnalysis PhotonJetAnalysis ZMuMuGammaAnalysis CategoryOptimizer FutureAnalysis
+SubPkgsDict=VertexAnalysis/interface/VertexAlgoParameters.h 
+SubPkgsFullDicts=CategoryOptimizer/interface/*.$(HeadSuf)
 
 ##
 ## Flags and external dependecies
 ## 
 ROOFIT_BASE=$(ROOFITSYS)
 LDFLAGS+=-L$(ROOFIT_BASE)/lib $(ROOTLIBS) -lRooFitCore -lRooFit -lTMVA 
-LDFLAGS+= $(patsubst %, -L%, $(shell echo ${LD_LIBRARY_PATH} | tr ':' '\n')) -lFWCorePythonParameterSet -lFWCoreParameterSet -lCMGToolsExternal -lCondFormatsJetMETObjects
+LDFLAGS+= $(patsubst %, -L%, $(shell echo ${LD_LIBRARY_PATH} | tr ':' '\n')) -lFWCorePythonParameterSet -lFWCoreParameterSet -lCMGToolsExternal -lCondFormatsJetMETObjects -lHiggsAnalysisGBRLikelihood 
 CXXFLAGS+=-I$(ROOFIT_BASE)/include -I$(CMSSW_BASE)/src  -I$(CMSSW_RELEASE_BASE)/src 
 CXXFLAGS+= $(patsubst %, -I%, $(shell echo ${CMSSW_FWLITE_INCLUDE_PATH} | tr ':' '\n'))
 CXXFLAGS+=-I$(shell pwd) -g
+ifneq (,$(findstring CMSSW_6,$(CMSSW_VERSION)))
+CXXFLAGS += -D__slc5_amd64_gcc472__
+endif
 
 ##
 ## Code from users
@@ -85,6 +90,7 @@ endif
 ## 
 Objs = $(MainObjs) $(SubPkgsObjs)
 Dicts = $(MainDicts) $(_SubPkgsDict) 
+FullDicts = $(MainFullDicts) $(SubPkgsFullDicts) 
 Deps = $(patsubst %$(ObjSuf), %$(DepSuf), $(Objs))
 ExtPacks=.extraTags
 
@@ -121,7 +127,11 @@ print:
 	@echo
 
 clean:
-	@rm -fv $(Objs) $(Deps) $(LOOPALL) *[dD]ict.* .extraTags
+	@rm -fv $(Objs) $(Deps) $(LOOPALL) *[dD]ict.*
+
+deepclean:
+	@make clean
+	@rm .extraTags
 
 .extraTags: extraTags
 	@echo "Getting extra tags"
@@ -136,9 +146,13 @@ LoopAllDict.$(SrcSuf): $(MainHead) $(SubPkgsHead)
 	@echo "Generating dictionary $@"
 	@rootcint -v4 -f $@ -c -I$(ROOFIT_BASE)/include -I$(CMSSW_BASE)/src  -I$(CMSSW_RELEASE_BASE)/src $(Dicts)
 
-dict.$(SrcSuf): $(LinkDef)
+$(TmpLinkDef): $(FullDicts)
+	@rm -f $(TmpLinkDef)
+	@./gen_dict $(TmpLinkDef) $(FullDicts)
+
+dict.$(SrcSuf):  $(TmpLinkDef) $(LinkDef) $(FullDicts)
 	@echo "Generating dictionary $@"
-	@rootcint -f dict.cc -c -p $(LinkDef)
+	@rootcint -f dict.cc -c -p -I$(ROOFIT_BASE)/include -I$(CMSSW_BASE)/src  -I$(CMSSW_RELEASE_BASE)/src $(FullDicts) $(LinkDef)
 
 %.$(ObjSuf): $(ExtPacks)
 

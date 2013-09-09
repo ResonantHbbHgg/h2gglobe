@@ -6,6 +6,7 @@
 #include <string>
 
 #include "TH1F.h"
+#include "TH2F.h"
 
 #include "TMVA/Reader.h"
 
@@ -20,10 +21,12 @@ using namespace std;
 class FMTTree : public FMTBase {
 	
 	public:
-    FMTTree(string,string,string,string,double,bool,int, int, double, double, double, int, double, double, int, int, int, double, double, int, bool, int, bool, int, vector<string>, bool, vector<map<int,vector<double> > >, bool isCutBased=false, bool verbose=false);
+    FMTTree(string,string);
+    FMTTree(string,string,string,string,double,bool,int, int, double, double, double, int, double, double, int, int, int, double, double, int, bool, int, bool, int, vector<string>, bool, vector<map<int,vector<double> > >, bool isCutBased=false, bool useSidebandBDT=true, bool verbose=false);
 
     ~FMTTree();
 		
+		void Setup(string,string);
 		void addTreeToMap(map<string,TTree*>&, string, string label="0");
 		map<string,TTree*> getSignalTrees(string option="all");
 		map<string,TTree*> getDataTrees();
@@ -45,11 +48,11 @@ class FMTTree : public FMTBase {
 		void FillMassDatasets();
 
 		float tmvaGetVal(float,float);
+		float getCategoryMapVal(float,float);
     float tmvaGetValCutBased(float);
 		void run(string option="all");
 
 		void setdirname(string);
-    void setIsCutBased(bool);
 
    private:
     float mass_;
@@ -76,10 +79,11 @@ class FMTTree : public FMTBase {
 		RooDataSet *dataSet_;
     vector<RooDataSet*> catDataSets_;
 		TMVA::Reader *tmvaReader_;
+		TH2F *categoryMap;		
+		TH1F *binedgeMap;		
 		
 		string dirname_;
 		string bdtname_;
-    bool isCutBased_;
 		bool crossCheck_;
 		
     float deltaMOverM_;

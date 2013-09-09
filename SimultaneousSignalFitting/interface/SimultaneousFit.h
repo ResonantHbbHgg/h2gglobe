@@ -34,7 +34,7 @@ class SimultaneousFit {
   
   public:
     
-    SimultaneousFit(string infilename, string outfilename, int mhLow=110, int mhHigh=150, int verbose=0, int nInclusiveCats=4, int nExclusiveCats=5, bool SMasBkg=true, bool SecHiggs=true, bool NatWidth=true);
+    SimultaneousFit(string infilename, string outfilename, int mhLow=110, int mhHigh=150, int verbose=0, int nInclusiveCats=4, int nExclusiveCats=5, bool SMasBkg=true, bool SecHiggs=true, bool NatWidth=true, bool spin=false, bool splitVH=true);
     ~SimultaneousFit();
 
     void runFit(string proc="ggh", int cat=0, int nGaussians=3, int dmOrder=1, int sigmaOrder=1, int fracOrder=0, bool recursive=false, bool setToFitValues=true);
@@ -168,10 +168,6 @@ class SimultaneousFit {
     map<string,RooHistFunc*> histFuncs;
     map<string,RooSpline1D*> spline1Ds;
 
-    // tgraphs from final fit
-    map<string,TFormula*> tforms;
-    map<string,TGraph*> tgraphs;
-
     // polynomial params
     map<string,RooRealVar*> polParams;
     map<string,RooFormulaVar*> formVars;
@@ -209,6 +205,8 @@ class SimultaneousFit {
     TGraph* brGraph;
     RooHistFunc *funcEffAcc;
     RooHistFunc *funcEffAccRel;
+    RooDataHist *dHist_eA;
+    RooDataHist *dHist_norm;
     bool systematicsSet_;
     bool loadPriorConstraints_;
     float constraintValue_;

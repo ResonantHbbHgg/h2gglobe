@@ -17,8 +17,8 @@ class FMTSetup : public FMTBase {
 		~FMTSetup();
 
 		void OptionParser(int argc, char *argv[]);
-		void configureOptions(boost::program_options::variables_map);
-		void ReadRunConfig();
+		void configureOptions(FMTBase *);
+		void ReadRunConfig(FMTBase *);
 
 		void CheckRunOptions();
 		void checkAllHistos(string opt="analysis");
@@ -54,11 +54,13 @@ class FMTSetup : public FMTBase {
 
 	private:
 		
+		boost::program_options::variables_map vm;
 		string filename_;
 		string outfilename_;
 
 		string fitString_;
 		string rebinString_;
+		string normFitsFile_;
 		vector<double> fitMasses_;
 		vector<int> rebinMasses_;
 		bool all_;
@@ -79,10 +81,13 @@ class FMTSetup : public FMTBase {
 		bool runCombine_;
 		bool checkHistos_;
 		bool safeMode_;
+		bool readInFits_;
     bool noPlot_;
 		bool runSB_;
 		bool cleaned;
     double userLumi_;
+    string bdtname;
+    string weightsFile;
     string histFromTreeMode_;
 
 		int tempmHMin_;

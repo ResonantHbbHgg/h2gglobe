@@ -15,15 +15,18 @@
 #include "../interface/FMTSigInterp.h"
 
 using namespace std;
+FMTSigInterp::FMTSigInterp(string filename):FMTBase()
+{
+  tFile = new TFile(filename.c_str(),"UPDATE");
+}
 
 FMTSigInterp::FMTSigInterp(string filename, double intLumi, bool is2011, bool diagnose, bool doSyst, int mHMinimum, int mHMaximum, double mHStep, double massMin, double massMax, int nDataBins, double signalRegionWidth, double sidebandWidth, int numberOfSidebands, int numberOfSidebandsForAlgos, int numberOfSidebandGaps, double massSidebandMin, double massSidebandMax, int nIncCategories, bool includeVBF, int nVBFCategories, bool includeLEP, int nLEPCategories, vector<string> systematics, bool rederiveOptimizedBinEdges, vector<map<int, vector<double> > > AllBinEdges, bool blind, bool verbose):
   
-	FMTBase(intLumi, is2011, mHMinimum, mHMaximum, mHStep, massMin, massMax, nDataBins, signalRegionWidth, sidebandWidth, numberOfSidebands, numberOfSidebandsForAlgos, numberOfSidebandGaps, massSidebandMin, massSidebandMax, nIncCategories, includeVBF, nVBFCategories, includeLEP, nLEPCategories, systematics, rederiveOptimizedBinEdges, AllBinEdges, verbose),
-  diagnose_(diagnose),
-  blind_(blind)
+	FMTBase(intLumi, is2011, mHMinimum, mHMaximum, mHStep, massMin, massMax, nDataBins, signalRegionWidth, sidebandWidth, numberOfSidebands, numberOfSidebandsForAlgos, numberOfSidebandGaps, massSidebandMin, massSidebandMax, nIncCategories, includeVBF, nVBFCategories, includeLEP, nLEPCategories, systematics, rederiveOptimizedBinEdges, AllBinEdges, verbose)
+ // diagnose_(diagnose),
+ // blind_(blind)
 {
   tFile = new TFile(filename.c_str(),"UPDATE");
-  normalizer = new Normalization_8TeV(is2011);
 
 }
 
@@ -33,14 +36,16 @@ FMTSigInterp::~FMTSigInterp(){
   delete tFile;
 }
 
-TH1F* FMTSigInterp::Interpolate(double massLow, TH1F* low, double massHigh, TH1F* high, double massInt){
+TH1F* FMTSigInterp::Interpolate(double massLow, TH1F* low, double massHigh, TH1F* high, double massInt, bool smoothEff,std::string prod){
 
   if (low->GetNbinsX()!=high->GetNbinsX()) std::cout << "Cannot interpolate differently binned histograms" << std::endl;
   assert(low->GetNbinsX()==high->GetNbinsX());
 
   // Scale histograms for interpolation
-  low->Scale(1./(normalizer->GetXsection(massLow)*normalizer->GetBR(massLow)));
-  high->Scale(1./(normalizer->GetXsection(massHigh)*normalizer->GetBR(massHigh)));
+  double lowScale = (normalizer->GetXsection(massLow,low->GetName())*normalizer->GetBR(massLow));
+  double highScale = (normalizer->GetXsection(massHigh,high->GetName())*normalizer->GetBR(massHigh));
+  low->Scale(1./lowScale);
+  high->Scale(1./highScale);
   
   TH1F *interp = (TH1F*)low->Clone();
   for (int i=0; i<interp->GetNbinsX(); i++){
@@ -50,9 +55,10 @@ TH1F* FMTSigInterp::Interpolate(double massLow, TH1F* low, double massHigh, TH1F
     interp->SetBinContent(i+1,OutInt);
   }
 
+
   // Scale back interpolation histograms
-  low->Scale(normalizer->GetXsection(massLow)*normalizer->GetBR(massLow));
-  high->Scale(normalizer->GetXsection(massHigh)*normalizer->GetBR(massHigh));
+  low->Scale(lowScale );
+  high->Scale(highScale);
 
   std::string name = low->GetName();
   std::string strLow = Form("%3.1f",massLow);
@@ -61,16 +67,43 @@ TH1F* FMTSigInterp::Interpolate(double massLow, TH1F* low, double massHigh, TH1F
   name.replace(ind-6,11,strInt);
   interp->SetName(name.c_str());
 
-  // Scale interpolated histogram
-  double norm = normalizer->GetNorm(massLow,low,massHigh,high,massInt);
-  interp->Scale(norm/interp->Integral());
+  // Smooth eff*acc for nominal signal
+  double XSnorm = normalizer->GetXsection(massInt,interp->GetName())*normalizer->GetBR(massInt);
+  if (smoothEff){
+      double EffNorm = (efficiencyGraphs[prod])->GetFunction("pol4")->Eval(massInt);
+      interp->Scale(EffNorm*XSnorm/interp->Integral());
+  } else {
+      interp->Scale(XSnorm);
+  }
 
   return interp;
 }
 
+void FMTSigInterp::makeEfficiencyGraphs(){
+
+  vector<int> mcMasses = getMCMasses();
+  vector<string> productionTypes = getProdTypes();
+
+  for (vector<string>::iterator prod=productionTypes.begin(); prod!=productionTypes.end(); prod++){
+    TGraph *gr = new TGraph();
+    gr->SetName(prod->c_str());
+    int pt = 0;
+    for (vector<int>::iterator mcMass=mcMasses.begin(); mcMass!=mcMasses.end(); mcMass++){
+    	  double thismH = (double)*mcMass;
+          TH1F *sig = (TH1F*)tFile->Get(Form("th1f_sig_grad_%s_%3.1f_%3.1f",prod->c_str(),thismH,thismH));
+	  double val = normalizer->GetXsection(thismH,prod->c_str())*normalizer->GetBR(thismH);
+	  gr->SetPoint(pt,thismH,sig->Integral()/val);
+	  pt++;
+    }
+    gr->Fit("pol4","F","");
+    efficiencyGraphs.insert(std::pair<std::string, TGraph* >(*prod,(TGraph*)gr->Clone()));
+  }  
+}
 
 void FMTSigInterp::runInterpolation(){
   
+  normalizer = new Normalization_8TeV(is2011_);
+
   gROOT->SetBatch();
   gStyle->SetOptStat(0);
   gErrorIgnoreLevel = kWarning;
@@ -79,18 +112,28 @@ void FMTSigInterp::runInterpolation(){
   vector<int> mcMasses = getMCMasses();
   vector<string> productionTypes = getProdTypes();
 
+  // make Smooth efficiency Graphs
+
+  makeEfficiencyGraphs();
+  
+  
   // now do interpolation
   for (vector<int>::iterator mcMass=mcMasses.begin(); mcMass!=mcMasses.end(); mcMass++){
     vector<double> mhMasses = getMHMasses(*mcMass);
     for (vector<double>::iterator mh = mhMasses.begin(); mh!=mhMasses.end(); mh++){
       if (fabs(*mh-boost::lexical_cast<double>(*mcMass))<0.01) {
         if (verbose_) cout << "Already know this mass " << *mh << endl;
-        TH1F *allSig;
+        TH1F *allSig=0;
         for (vector<string>::iterator prod=productionTypes.begin(); prod!=productionTypes.end(); prod++){
           TH1F *sig = (TH1F*)tFile->Get(Form("th1f_sig_grad_%s_%3.1f_%3.1f",prod->c_str(),*mh,*mh));
           sig->SetName(Form("th1f_sig_grad_%s_%3.1f",prod->c_str(),*mh));
-          if (verbose_) checkHisto(sig);
           //write(tFile,sig);
+	  // Make its Normalization and efficiency smoother!
+      	  double EffNorm = (efficiencyGraphs[*prod])->GetFunction("pol4")->Eval(*mh);
+	  double XSnorm  = normalizer->GetXsection(*mh,sig->GetName())*normalizer->GetBR(*mh);
+      	  sig->Scale(EffNorm*XSnorm/sig->Integral());
+	  
+          if (verbose_) checkHisto(sig);
           gDirectory->Cd(Form("%s:/",tFile->GetName()));
           sig->Write();
           if (*prod=="ggh") allSig = (TH1F*)sig->Clone();
@@ -129,13 +172,13 @@ void FMTSigInterp::runInterpolation(){
           if (verbose_) cout << "Mass: " << *mh << " binMass: " << nearest << " (" << nearest << "," << nextNear << ")" << endl;
         }
         // first do central signal histograms
-        TH1F *allSig;
+        TH1F *allSig = 0;
         for (vector<string>::iterator prod=productionTypes.begin(); prod!=productionTypes.end(); prod++){
           TH1F *lowInterp = (TH1F*)tFile->Get(Form("th1f_sig_grad_%s_%d.0_%d.0",prod->c_str(),binningMass,lowInterpMass));
           TH1F *highInterp = (TH1F*)tFile->Get(Form("th1f_sig_grad_%s_%d.0_%d.0",prod->c_str(),binningMass,highInterpMass));
           if (verbose_) checkHisto(lowInterp);
           if (verbose_) checkHisto(highInterp);
-          TH1F *interpolated = Interpolate(double(lowInterpMass), lowInterp, double(highInterpMass), highInterp, *mh);
+          TH1F *interpolated = Interpolate(double(lowInterpMass), lowInterp, double(highInterpMass), highInterp, *mh,true,*prod);
           if (verbose_) checkHisto(interpolated);
           //write(tFile,interpolated);
           gDirectory->Cd(Form("%s:/",tFile->GetName()));

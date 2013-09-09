@@ -1,6 +1,7 @@
 #define LDEBUG 0
 
 #include "LoopAll.h"
+#include "ErrorCodes.h"
 
 #include <iostream>
 #include <iterator>
@@ -160,7 +161,7 @@ SampleContainer & LoopAll::DefineSamples(const char *filesshortnam,
     return sampleContainer[sample_is_defined];
   }
 
-  sampleContainer.push_back(SampleContainer());
+  sampleContainer.push_back(SampleContainer(&weight));
   sampleContainer.back().itype = type;
   sampleContainer.back().ntot = ntot;
   sampleContainer.back().nred = nred;
@@ -212,7 +213,7 @@ void LoopAll::MergeContainers(){
   for (;it!=files.end()
 	 ;it_file++,it++){
  
-    *it_file = TFile::Open((*it).c_str());
+	  *it_file = TFile::Open((*it).c_str());
     (*it_file)->cd();
     std::cout << "Combining Current File " << i << " / " << numberOfFiles << " - " << (*it) << std::endl;
 
@@ -297,7 +298,11 @@ void LoopAll::LoopAndFillHistos(TString treename) {
     cout<<"LoopAndFillHistos: opening file " << i+1 << " / " << numberOfFiles << " : " << files[i]<<endl;
     
 
-    *it_file = TFile::Open((*it).c_str());
+    *it_file = TFile::Open((*it).c_str(),"TIMEOUT=60");
+    if( *it_file == 0 ){
+	    std::cerr << "Error opening file " << (*it).c_str() << std::endl;
+	    exit(H2GG_ERR_FILEOP);
+    }
     //Files[i] = TFile::Open(files[i]);
     tot_events=1;
     sel_events=1;
@@ -397,7 +402,7 @@ void LoopAll::Term(){
 
 // ------------------------------------------------------------------------------------
 LoopAll::LoopAll(TTree *tree) :
-  counters(4,0.), countersred(4,0.)
+	counters(4,0.), countersred(4,0.), checkBench(0)
 {  
 #include "branchdef/newclonesarray.h"
 
@@ -471,7 +476,8 @@ void LoopAll::InitHistos(){
   for(int ind=0; ind<sampleContainer.size(); ind++) {
     SampleContainer thisSample = (SampleContainer) sampleContainer.at(ind);
     HistoContainer temp(ind,thisSample.filesshortnam);
-    temp.setScale(thisSample.weight);
+    temp.setScale(1.);
+    /// temp.setScale(thisSample.weight);
     histoContainer.push_back(temp);
   }
 
@@ -616,7 +622,7 @@ void LoopAll::Loop(Int_t a) {
   Int_t nentries = 0;
   if(fChain) 
     nentries = Int_t(fChain->GetEntriesFast());
-
+  
   Int_t nbytes = 0, nb = 0;
 
   outputEvents=0;
@@ -652,8 +658,11 @@ void LoopAll::Loop(Int_t a) {
   TreesPar[a]->GetEntry(0);
 
   // Loop over events
-  for (Int_t jentry=0; jentry<nentries;jentry++) { 
+  if(checkBench > 0) {
+	  stopWatch.Start();
+  }
 //  for (Int_t jentry=0; jentry<100;jentry++) { // DEBUG OLIVIER 
+  for (Int_t jentry=0; jentry<nentries;jentry++) {
     
     if(jentry%10000==0) {
       cout << "Entry: "<<jentry << " / "<<nentries <<  " "  ;
@@ -662,6 +671,20 @@ void LoopAll::Loop(Int_t a) {
     }
     if(makeDummyTrees) continue;
     
+    if(checkBench > 0 && jentry%checkBench == 0 ) {
+	    stopWatch.Stop();
+	    float cputime  = stopWatch.CpuTime();
+	    float realtime = stopWatch.RealTime();
+	    stopWatch.Start(false);
+	    if( realtime > benchStart*60. && cputime / realtime < benchThr ) {
+		    std::cout << 
+			    "\n\n\n\nAbourting exection.\n"
+			    "Sorry: too inefficient to continue (cputime " << cputime << " realtime " << realtime << ")" 
+			      << std::endl;
+		    exit(H2GG_ERR_DUTYC);
+	    }
+    }
+
     if(LDEBUG) 
       cout<<"call LoadTree"<<endl;
     
@@ -745,6 +768,10 @@ void LoopAll::Loop(Int_t a) {
     copy(countersred.begin(), countersred.end(), std::ostream_iterator<float>(cout, "_") );
     cout << endl;
   }
+  if(checkBench > 0) {
+	  stopWatch.Stop();
+  }
+
 }
 
 // ------------------------------------------------------------------------------------
@@ -979,7 +1006,7 @@ void LoopAll::WriteCounters() {
       }
       fprintf(file, "%f, , ,", tot);
 
-      float weight = sampleContainer[c].weight;
+      float weight = sampleContainer[c].weight();
       for (Int_t cat=0; cat<cats; cat++) {
 	fprintf(file, "%f,", counterContainer[c][var][cat]*weight);
       }
@@ -1340,7 +1367,11 @@ int LoopAll::ApplyCut(std::string cutname, float var, int icat) {
   return 0;
 }
 // ------------------------------------------------------------------------------------
-void LoopAll::FillTreeContainer(){	// To Be Called after each jentry
+void LoopAll::FillTreeContainer(std::string dir){	// To Be Called after each jentry
+  if( ! dir.empty() ) {
+    treeContainer[dir][current_sample_index].FillTree();
+    return;
+  }
   for (std::map<std::string, std::vector<TreeContainer> >::iterator ii = treeContainer.begin(); ii!=treeContainer.end(); ++ii) {
     (((*ii).second)[current_sample_index]).FillTree();
   }

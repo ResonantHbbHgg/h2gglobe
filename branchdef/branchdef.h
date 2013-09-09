@@ -844,24 +844,14 @@ TBranch* b_jet_algoPF3_nSecondaryVertices;
 TBranch* b_jet_algoPF3_secVtxPt;
 TBranch* b_jet_algoPF3_secVtx3dL;
 TBranch* b_jet_algoPF3_secVtx3deL;
-TBranch* b_jet_algoPF1_ptD;
-TBranch* b_jet_algoPF2_ptD;
-TBranch* b_jet_algoPF3_ptD;
-TBranch* b_jet_algoPF1_axis1;
-TBranch* b_jet_algoPF2_axis1;
-TBranch* b_jet_algoPF3_axis1;
-TBranch* b_jet_algoPF1_axis2;
-TBranch* b_jet_algoPF2_axis2;
-TBranch* b_jet_algoPF3_axis2;
-TBranch* b_jet_algoPF1_pull;
-TBranch* b_jet_algoPF2_pull;
-TBranch* b_jet_algoPF3_pull;
-TBranch* b_jet_algoPF1_R;
-TBranch* b_jet_algoPF1_Rchg;
-TBranch* b_jet_algoPF1_Rneutral;
-TBranch* b_jet_algoPF2_R;
-TBranch* b_jet_algoPF2_Rchg;
-TBranch* b_jet_algoPF2_Rneutral;
-TBranch* b_jet_algoPF3_R;
-TBranch* b_jet_algoPF3_Rchg;
-TBranch* b_jet_algoPF3_Rneutral;
+
+TBranch* b_jet_algoPF1_ptD_QC;
+TBranch* b_jet_algoPF1_axis1_QC;
+TBranch* b_jet_algoPF1_axis2_QC;
+TBranch* b_jet_algoPF1_nCharged_QC;
+TBranch* b_jet_algoPF1_nNeutrals_ptCut;
+
+TBranch* b_jet_algoPF1_bgenMatched;
+TBranch* b_jet_algoPF2_bgenMatched;
+TBranch* b_jet_algoPF3_bgenMatched;
+

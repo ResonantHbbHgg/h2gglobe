@@ -11,6 +11,7 @@
 #include "EfficiencySmearer.h"
 #include "DiPhoEfficiencySmearer.h"
 #include "KFactorSmearer.h"
+#include "PtSpinSmearer.h"
 #include "PdfWeightSmearer.h"
 #include "InterferenceSmearer.h"
 #include <iostream>
@@ -52,9 +53,9 @@ class StatAnalysis : public PhotonAnalysis
     
     bool unblind;
     
-    bool  doEscaleSyst, doEresolSyst, doPhotonIdEffSyst, doVtxEffSyst, doR9Syst, doTriggerEffSyst, doKFactorSyst;
+    bool  doEscaleSyst, doEresolSyst, doPhotonIdEffSyst, doVtxEffSyst, doR9Syst, doTriggerEffSyst, doKFactorSyst, doPtSpinSyst;
     bool  doEscaleSmear, doEresolSmear, doPhotonIdEffSmear, doVtxEffSmear, doR9Smear, doTriggerEffSmear, 
-	doKFactorSmear, doInterferenceSmear;
+	doKFactorSmear, doPtSpinSmear, doInterferenceSmear;
     float systRange;
     int   nSystSteps;   
     //int   nEtaCategories, nR9Categories, nPtCategories;
@@ -63,6 +64,11 @@ class StatAnalysis : public PhotonAnalysis
     bool doMcOptimization;
     bool fillOptTree;
     bool doFullMvaFinalTree;
+    
+    bool doSpinAnalysis;
+    int nCosThetaCategories;
+    std::string cosThetaDef;
+    std::vector<float> cosThetaCatBoundaries;
 
     bool splitwzh;
     void fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const TLorentzVector & sublead_p4, float *smeared_pho_energy, Float_t vtxProb,
@@ -81,6 +87,7 @@ class StatAnalysis : public PhotonAnalysis
     
     std::string kfacHist;
     std::string pdfWeightHist;
+    std::string ptspinHist;
 
     TH1D *thm110,*thm120,*thm130,*thm140;
 
@@ -105,6 +112,7 @@ class StatAnalysis : public PhotonAnalysis
 				      std::vector<int>    & categories, std::vector<double> & weights, int diphoton_id=-1);
     
     bool VHmuevent, VHelevent, VBFevent, VHhadevent, VHmetevent;  //met at analysis step
+    bool VHlep1event, VHlep2event;
     int VHelevent_cat;
 	int VHmuevent_cat;
     int VHmetevent_cat;
@@ -113,12 +121,14 @@ class StatAnalysis : public PhotonAnalysis
     int vbfIjet1, vbfIjet2;
 
     void buildBkgModel(LoopAll& l, const std::string & postfix);
+    void bookSignalModel(LoopAll& l, int nBins);
 
     std::vector<float> smeared_pho_energy;
     std::vector<float> smeared_pho_r9;
     std::vector<float> smeared_pho_weight;
 
-    void  computeExclusiveCategory(LoopAll & l, int & category, std::pair<int,int> diphoton_index, float pt, float diphoBDT=1. );	
+    void  computeExclusiveCategory(LoopAll & l, int & category, std::pair<int,int> diphoton_index, float pt, float diphoBDT=1. );
+    void computeSpinCategory(LoopAll &l, int &category, TLorentzVector lead_p4, TLorentzVector sublead_p4);
     int  categoryFromBoundaries(std::vector<float> & v, float val);
     int  categoryFromBoundaries2D(std::vector<float> & v1, std::vector<float> & v2, std::vector<float> & v3, float val1, float val2, float val3);
 
@@ -136,6 +146,7 @@ class StatAnalysis : public PhotonAnalysis
     KFactorSmearer * kFactorSmearer;
     PdfWeightSmearer * pdfWeightSmearer;
     InterferenceSmearer * interferenceSmearer;
+    PtSpinSmearer * ptSpinSmearer;
     
     std::string name_;
     std::map<int,std::string> signalLabels;
@@ -148,8 +159,8 @@ class StatAnalysis : public PhotonAnalysis
     int nVBFCategories  ; 
     int nVHhadCategories; 
     int nVHlepCategories; 
-    int nVHmetCategories; 
-    
+    int nVHmetCategories;
+
     // RooStuff
     RooContainer *rooContainer;
 

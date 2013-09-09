@@ -11,6 +11,9 @@ class Conf:
 			rt += "%s = %s\n" % (k,v)
 		return rt
 	
+	def set_macro(self,var,val):
+		self.expdict_[var]=val % self.expdict_
+
 	def read_histfile(self,line):
 		self.histline = line
 		split_line = line.split()
@@ -19,11 +22,12 @@ class Conf:
 			
 			if val[0] == "output":
 				self.outfile = tuple(str(val[1]).rsplit(".",1))
-				
+			
 			elif val[0] == 'histfile':
 				histfile, extension = str(val[1]).rsplit(".",1)
 				self.histfile = os.path.basename(histfile), extension
 				self.histdir  = os.path.dirname(histfile)
+		
 
 
 if __name__  == "__main__":
@@ -44,6 +48,8 @@ if __name__  == "__main__":
 	parser.add_option("--onlyData",dest="onlyData",action="store_true",default=False,help="default: %default")
 	parser.add_option("--onlySig",dest="onlySig",action="store_true",default=False,help="default: %default")
 	parser.add_option("--onlyBkg",dest="onlyBkg",action="store_true",default=False,help="default: %default")
+	parser.add_option("-w","--watchDutyCycle",dest="watchDutyCycle",action="store_true",default=False,help="default: %default")
+	parser.add_option("-m","--mountEos",dest="mountEos",action="store_true",default=False,help="default: %default")
 
 	(options,args)=parser.parse_args()
 
@@ -86,14 +92,11 @@ if __name__  == "__main__":
 		if line.startswith("->"):
 			in_comment = not in_comment
 
-		if in_comment:
+		if in_comment or line.startswith("#"):
 			datfile += "%s\n" % line
 			continue
 
-		if line.startswith("#"):
-			continue
-		
-		line = line % { "label" : options.label } 
+		line = line.replace("%(label)s",options.label)
 
 		if "histfile" in line:
 			cfg.read_histfile(line)
@@ -111,21 +114,45 @@ if __name__  == "__main__":
 			if keep:
 				files.append("%s\n" % line.replace("split ",""))
 			if not has_polder:
-				datfile += "%s"
+				datfile += "$input_files"
 				has_polder = True
 		elif "typ" in line:
 			if keep:
 				for i in xrange(options.nJobs):
 					files[i] += "%s\n" % line
 			if not has_polder:
-				datfile += "%s"
+				datfile += "$input_files"
 				has_polder = True
 		else:
 			datfile += "%s\n" % line
-  
+
 	mydir=os.getcwd()
 	scriptdir=os.path.dirname(options.outputScript)
 	os.system("mkdir -p %s" % scriptdir)
+
+	
+	domain = commands.getoutput("hostname -d")
+	knownDomains = { "cern.ch" : "root://eoscms//eos/cms" }
+	knownDomain = domain in knownDomains
+	if domain == "cern.ch":
+		atCern = True
+	mkdir="mkdir"
+	cp="cp -pv"
+	prependToStore=""
+	if not options.runIC:
+	  if cfg.histdir.startswith("/castor"):
+		mkdir="rfmkdir"
+		cp="rfcp"
+	  elif cfg.histdir.startswith("/store"):
+		cp="cmsStage -f"
+		mkdir="cmsMkdir"
+		if knownDomain:
+			prependToStore = knownDomains[domain]
+	if cfg.histdir=="":
+		if os.path.isabs(scriptdir):
+			cfg.histdir=scriptdir
+		else:
+			cfg.histdir=os.path.join(os.getcwd(),scriptdir)
 
 	outnam=os.path.join(scriptdir, "filestocombine_%s" % os.path.basename(options.inputDat))
 	g = open(outnam,"w+") 
@@ -134,46 +161,37 @@ if __name__  == "__main__":
 	  for i in xrange(len(files)):
                 if cfg.histdir=='':cfg.histdir='./'
 		filestocmb += "typ=99999 Fil=%s/%s_%d.%s\n"  %(cfg.histdir,cfg.histfile[0],i,cfg.histfile[1])
-	  g.write( (datfile % filestocmb).replace("$histdir",scriptdir ) )
+	  g.write( datfile.replace("$input_files",filestocmb).replace("$histdir",scriptdir ) )
 	  g.close()	
 		
 	if not options.runIC:
 	  filestocmb = ""
 	  for i in xrange(len(files)):
-		fil = commands.getoutput("cmsPfn %s_%d.%s" % ( os.path.join(cfg.histdir,cfg.histfile[0]), i, cfg.histfile[1] ))
+	        if knownDomain:
+			if prependToStore != "":
+				fil = "%s/%s_%d.%s" % ( prependToStore, os.path.join(cfg.histdir,cfg.histfile[0]), i, cfg.histfile[1] )
+			else:
+				fil = "%s_%d.%s" % ( os.path.join(cfg.histdir,cfg.histfile[0]), i, cfg.histfile[1] )
+		else:
+			fil = commands.getoutput("cmsPfn %s_%d.%s" % ( os.path.join(cfg.histdir,cfg.histfile[0]), i, cfg.histfile[1] ))
 		filestocmb += "typ=99999 Fil=%s\n" % fil
-	  g.write( (datfile % filestocmb).replace("$histdir", "%s/" % scriptdir ) )
+	  g.write( datfile.replace("$input_files",filestocmb).replace("$histdir", "%s/" % scriptdir ) )
 	  g.close()	
 
 	tmpnam = os.path.join(os.path.dirname(options.inputDat), "tmp_%s" % os.path.basename(options.inputDat))
 	tmp  = open("%s" % tmpnam, "w+")
 	idat = open(options.inputDat, "r")
-	if options.runIC:tmp.write(idat.read().replace("%(label)s",options.label))
-	else:	tmp.write( idat.read() % { "label": options.label } )
+	if options.runIC:tmp.write(idat.read())
+	else:	tmp.write( idat.read() )
 	
 
 	idat.close()
 	tmp.close()
 	if not os.path.isfile("%s.pevents" % tmpnam) and not options.combine:
 		print "Generating the pevents file...",
-		print "python fitter.py -i %s --dryRun >& %s.log\n" % (tmpnam,tmpnam)
-		os.system("python fitter.py -i %s --dryRun >& %s.log" % (tmpnam,tmpnam) )
+		print "python fitter.py -l %s -i %s --dryRun >& %s.log\n" % (options.label,tmpnam,tmpnam)
+		os.system("python fitter.py -l %s -i %s --dryRun >& %s.log" % (options.label,tmpnam,tmpnam) )
 		print "Done. Check %s.log for errors" % tmpnam
-		
-	mkdir="mkdir"
-	cp="cp -pv"
-	if not options.runIC:
-	  if cfg.histdir.startswith("/castor"):
-		mkdir="rfmkdir"
-		cp="rfcp"
-	  elif cfg.histdir.startswith("/store"):
-		cp="cmsStage -f"
-		mkdir="cmsMkdir"
-	if cfg.histdir=="":
-		if os.path.isabs(scriptdir):
-			cfg.histdir=scriptdir
-		else:
-			cfg.histdir=os.path.join(os.getcwd(),scriptdir)
 
 	os.system("%s %s" % ( mkdir, cfg.histdir) )
 	if not options.notgz:
@@ -205,6 +223,7 @@ if __name__  == "__main__":
 		f.write("touch %s.sh.run\n" % os.path.join(mydir,jobname))
 		f.write("eval `scramv1 runtime -sh`\n")
                 whatRun = options.combine and "combiner.py" or "fitter.py"
+		whatRun += "-l %s" % options.label
 		f.write("if ( python %s -i %s -n %d -j %d )\n "%(whatRun,tmpnam,int(options.nJobs),i))
 		f.write("then\n")
 		
@@ -238,7 +257,7 @@ if __name__  == "__main__":
 		f.write("cd scratch\n")
 		
 		f.write("cat > %s.dat << EOF\n" % jobbasename)
-		f.write((datfile % files[i]).replace("$histdir",""))
+		f.write(datfile.replace("$input_files",files[i]).replace("$histdir",""))
 		f.write("\nEOF\n")
 		
                 if not options.combine:
@@ -248,31 +267,61 @@ if __name__  == "__main__":
 		
 		f.write("ls\n")
 		whatRun = options.combine and "combiner.py" or "fitter.py"
+		jobfiles = ""
+		runopt = ""
+		if options.watchDutyCycle:
+			runopt += " --watchDutyCycle"
+		if options.mountEos:
+			runopt += " --mountEos"
 		if i < options.nJobs:
-			f.write("if ( python %s -i %s.dat -n %d -j %d ) "%(whatRun,jobbasename,int(options.nJobs),i))
+			runopt += " -n %d -j %d" % ( int(options.nJobs),i )
 			for fn in ["","histograms_"]+options.addfiles:
-				f.write("&& ( %s %s%s_%d.%s %s ) "        % ( cp, fn, cfg.histfile[0], i, cfg.histfile[1], cfg.histdir ) )
-			f.write("&& ( %s %s_%d.%s %s ) " % ( cp, cfg.outfile[0], i, cfg.outfile[1], cfg.histdir ) )
-                        if not options.combine:
-			  f.write("&& ( %s %s_%d.json %s ) "                % ( cp, cfg.histfile[0], i, cfg.histdir ) )
-			  f.write("&& ( %s histograms_%s_%d.csv %s ) " % ( cp, cfg.histfile[0], i, cfg.histdir ) )
+				jobfiles += "%s%s_%d.%s " % ( fn, cfg.histfile[0], i, cfg.histfile[1] )
+			jobfiles += "%s_%d.%s " % ( cfg.outfile[0], i, cfg.outfile[1] )
+			if not options.combine:
+				jobfiles += "%s_%d.json " % ( cfg.histfile[0], i )
+				jobfiles += "histograms_%s_%d.csv " % ( cfg.histfile[0], i )
 		else:
-			f.write("if ( python %s -i %s.dat ) "%(whatRun,jobbasename))
 			for fn in ["","histograms_"]+options.addfiles:
-				f.write("&& ( %s %s%s.%s %s/%s%s_%d.%s ) " % ( cp, fn, cfg.histfile[0], cfg.histfile[1], cfg.histdir, fn, cfg.histfile[0], i, cfg.histfile[1] ) )
-			f.write("&& ( %s %s.%s %s/%s_%d.%s ) " % ( cp, cfg.outfile[0], cfg.outfile[1], cfg.histdir, cfg.outfile[0], i, cfg.outfile[1]) )
-                        if not options.combine:
-			  f.write("&& ( %s %s.json %s/%s_%d.json ) " % ( cp, cfg.histfile[0], cfg.histdir, cfg.histfile[0], i ) )
-		  	  f.write("&& ( %s histograms_%s.csv %s/%s_%d.csv ) " % ( cp, cfg.histfile[0], cfg.histdir, cfg.histfile[0], i ) )
-			
-				
-		f.write("; then\n")
+				jobfiles += "%s%s.%s:%s%s_%d.%s " % ( fn, cfg.histfile[0], cfg.histfile[1], fn, cfg.histfile[0], i, cfg.histfile[1] )
+			jobfiles += "%s.%s:%s_%d.%s " % ( cfg.outfile[0], cfg.outfile[1], cfg.outfile[0], i, cfg.outfile[1] )
+			if not options.combine:
+				jobfiles += "%s.json:%s_%d.json " % ( cfg.histfile[0], cfg.histfile[0], i )
+				jobfiles += "histograms_%s.csv:histograms_%s_%d.csv " % ( cfg.histfile[0], cfg.histfile[0], i )
 		
-		f.write("   touch %s.sh.done\n" % os.path.join(mydir,jobname))
-		f.write("else\n")
-		f.write("   touch %s.sh.fail\n" % os.path.join(mydir,jobname))
-		f.write("fi\n")
-		
+		f.write("""
+filesToCopy=\"%(files)s\"
+dstFolder=\"%(histdir)s\"
+cp=\"%(cp)s\"
+
+python %(run)s -i %(job)s.dat %(runopt)s
+retval=$?
+
+if [[ $retval == 0 ]]; then
+    errors=\"\"
+    for f in $filesToCopy; do
+         set $(echo $f | tr ':' ' ')
+         $cp $1 $dstFolder/$2
+         if [[ $? != 0 ]]; then
+             errors=\"$errors $f($retval)\"
+         fi
+    done
+    if [[ -z \"$errors\" ]]; then
+        touch %(statfile)s.sh.done
+    else
+        echo 100 > %(statfile)s.sh.fail
+    fi
+else
+    echo $retval > %(statfile)s.sh.fail
+fi
+"""                 % { "run":whatRun,
+			"runopt":runopt,
+			"files": jobfiles,
+			"cp":cp,
+			"job":jobbasename,
+			"statfile": os.path.join(mydir,jobname),
+			"histdir":cfg.histdir
+			})
 		f.write("rm %s.sh.run\n" % os.path.join(mydir,jobname))
 		f.close()
 		os.system("chmod 755 %s.sh"%(jobname))
@@ -282,3 +331,11 @@ if __name__  == "__main__":
 #	if not options.runIC:
 	print "Written ", outnam
 	print "Combine workspace after running with python combiner.py -i ",outnam
+
+	cmdline=os.path.join(scriptdir, "cmdline.sh")
+	g = open(cmdline,"w+")
+	g.write("#!/bin/bash\n")
+	for a in sys.argv:
+		g.write("%s "%a)
+	g.write("@$\n")
+	g.close()

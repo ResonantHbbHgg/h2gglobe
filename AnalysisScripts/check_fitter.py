@@ -25,9 +25,9 @@ if len(sys.argv) == 1:
 
 
 taskdir = sys.argv[1]
-docombine=None
+postProc=None
 if( len(sys.argv) > 2 ):
-    docombine=sys.argv[2]
+    postProc=sys.argv[2]
 
 jobs = glob.glob( "%s/sub*.sh" % taskdir )
 status = {}
@@ -46,10 +46,29 @@ for g,jo in groups.iteritems():
     print
     print "%d jobs in status %s" % (len(jo), g)
     print "     ",
-    for j in jo: print "%s" % j,
+    for j in jo: print "%s" % os.path.basename(j).replace("sub","").replace(".sh",""),
     print
 
+autorestart = [20,21,152]
+restart = ""
+for j in groups["fail"]:
+    try:
+        st=open("%s.fail" % j)
+        errcode=int(st.read().split("\n")[0])
+        st.close()
+        if errcode in autorestart:
+            jobid = os.path.basename(j).split("sub")[1].split(".")[0]
+            restart += "%s," % jobid
+    except:
+        pass
 
+if restart != "":
+    print
+    print
+    print "Resubmitting jobs: %s " % restart
+    os.system("./submit_fitter.py -q 8nh -j %s -d %s" % (restart, taskdir))
+    print
+    
 if len(groups["done"]) == len(jobs):
     print "All jobs completed"
     filestocmb=glob.glob("%s/filestocombine_*.dat" % taskdir)
@@ -59,19 +78,19 @@ if len(groups["done"]) == len(jobs):
         cfile = open( filestocmb[0], "r" )
 
         for line in cfile.read().split("\n"):
+            if line[0] == '#':
+                continue
             if "histfile" in line:
-		cfg.read_histfile(line)
-		line = line.replace(cfg.histdir,"./")
+                cfg.read_histfile(line)
+                line = line.replace(cfg.histdir,"./")
                 break
         combinedws="%s.%s" % ( os.path.join(cfg.histdir,cfg.histfile[0]), cfg.histfile[1] )
         print combinedws
 
         if not os.path.isfile( combinedws  ):
-            ## sys.argv = [ "combiner.py", "-i", filestocmb[0] ]
-            ## import combiner
-            os.system("python combiner.py -i %s" % filestocmb[0] )
-            if docombine:
-                os.system("%s %s | tee -a %s/do_combine.log" % ( docombine, taskdir, taskdir ) )
+            os.system("python combiner.py --mountEos -i %s" % filestocmb[0] )
+            if postProc:
+                os.system("%s %s | tee -a %s/post_proc.log" % ( postProc, taskdir, taskdir ) )
 
     sys.exit(0)
             

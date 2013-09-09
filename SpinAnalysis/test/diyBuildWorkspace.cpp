@@ -1,7 +1,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <sstream>
 #include <map>
+#include <fstream>
 
 #include "boost/lexical_cast.hpp"
 
@@ -34,11 +36,20 @@
 using namespace std;
 using namespace RooFit;
 
+int GetCategory(std::vector<double> & v, float val)
+{
+    if( val == v[0] ) { return 0; }
+    std::vector<double>::iterator bound =  lower_bound( v.begin(), v.end(), val, std::greater<double>  ());
+    int cat = ( val >= *bound ? bound - v.begin() - 1 : bound - v.begin() );
+    if( cat >= int(v.size()) - 1 ) { cat = -1; }
+    return cat;
+}
+
 pair<int,int> getMassFacCategory(float diphoton_bdt, double costheta_cs){
-  
+
   // fabrice style
   int mycat=-1;
-  int costheta_csBin=-1; 
+  int costheta_csBin=-1;
   if (TMath::Abs(costheta_cs)>=0. && TMath::Abs(costheta_cs)<0.2) {
     costheta_csBin=0;
     if (diphoton_bdt >= 0.1 && diphoton_bdt < 0.7) mycat=0;
@@ -77,17 +88,18 @@ pair<int,int> getMassFacCategory(float diphoton_bdt, double costheta_cs){
   return pair<int,int>(mycat,costheta_csBin);
 }
 
-pair<int,int> getCutBasedCategory(double lead_eta, double sublead_eta, float lead_r9, float sublead_r9, double costheta_cs){
-  
+pair<int,int> getCutBasedCategory(double lead_eta, double sublead_eta, float lead_r9, float sublead_r9, double costheta_cs, std::vector<double> cosThetaBoundaries){
+
   // marco style
   int mycat=-1;
-  int costheta_csBin=-1; 
-  if (TMath::Abs(costheta_cs)>=0. && TMath::Abs(costheta_cs)<0.2) costheta_csBin=0;
+  int costheta_csBin=-1;
+  /*if (TMath::Abs(costheta_cs)>=0. && TMath::Abs(costheta_cs)<0.2) costheta_csBin=0;
   else if (TMath::Abs(costheta_cs)>=0.2 && TMath::Abs(costheta_cs)<0.4) costheta_csBin=1;
   else if (TMath::Abs(costheta_cs)>=0.4 && TMath::Abs(costheta_cs)<0.6) costheta_csBin=2;
   else if (TMath::Abs(costheta_cs)>=0.6 && TMath::Abs(costheta_cs)<0.8) costheta_csBin=3;
   else if (TMath::Abs(costheta_cs)>=0.8 && TMath::Abs(costheta_cs)<=1.0) costheta_csBin=4;
-  else costheta_csBin=-1;
+  else costheta_csBin=-1;*/
+  costheta_csBin=GetCategory(cosThetaBoundaries, 1-TMath::Abs(costheta_cs));
 
   if (TMath::Abs(lead_eta)<=1.4442 && TMath::Abs(sublead_eta)<=1.4442){
     if (lead_r9>=0.94 && sublead_r9>=0.94) mycat=0;
@@ -102,15 +114,15 @@ pair<int,int> getCutBasedCategory(double lead_eta, double sublead_eta, float lea
 }
 
 string getCatName(int cat, int scat){
-  return Form("cat%d_spin%d",cat,scat); 
+  return Form("cat%d_spin%d",cat,scat);
 }
 
 string getCatName(pair<int,int> cat){
-  return Form("cat%d_spin%d",cat.first,cat.second); 
+  return Form("cat%d_spin%d",cat.first,cat.second);
 }
 
-void fillDataSet(RooRealVar *mass, map<string,RooDataSet*> &dataMap, vector<TTree*> trees, bool isMassFac, double mlow, double mhigh){
-  
+void fillDataSet(RooRealVar *mass, map<string,RooDataSet*> &dataMap, vector<TTree*> trees, bool isMassFac, double mlow, double mhigh, std::vector<double> cosThetaBoundaries, std::map<string, double> JetVeto){
+
   int category;
   float evweight;
   double costheta_cs;
@@ -120,9 +132,13 @@ void fillDataSet(RooRealVar *mass, map<string,RooDataSet*> &dataMap, vector<TTre
   float sublead_r9;
   float diphoton_bdt;
   double higgs_mass;
+  std::vector<std::pair<double, double> > * Jets = 0;
+  Int_t totalEvents = 0;
+  Int_t initEvents = 0;
 
   for (vector<TTree*>::iterator treeIt=trees.begin(); treeIt!=trees.end(); treeIt++){
     TTree *tree = *treeIt;
+    cout << "Tree: " << tree << endl;
     tree->SetBranchAddress("category",&category);
     tree->SetBranchAddress("evweight",&evweight);
     tree->SetBranchAddress("costheta_cs",&costheta_cs);
@@ -132,27 +148,54 @@ void fillDataSet(RooRealVar *mass, map<string,RooDataSet*> &dataMap, vector<TTre
     tree->SetBranchAddress("sublead_r9",&sublead_r9);
     tree->SetBranchAddress("diphoton_bdt",&diphoton_bdt);
     tree->SetBranchAddress("higgs_mass",&higgs_mass);
+    //TBranch * temp = 0;
+    if(JetVeto["doJetVeto"] != 0)
+    {
+      tree->SetBranchAddress("jets", &Jets);//, &temp);
+    }
 
     cout << "Filling from " << tree->GetName() << endl;
+    //cout << "Max Eta: " << JetVeto["maxEta"] << "; Min PT: " << JetVeto["minPT"] << endl;
+    Int_t ini_Ev = tree->GetEntries();
+    Int_t end_Ev = 0;
     for (int e=0; e<tree->GetEntries(); e++){
       tree->GetEntry(e);
       if (e%10000==0) cout << "Entry " << e << " of " << tree->GetEntries() << endl;
       pair<int,int> mycat;
       if (isMassFac) mycat = getMassFacCategory(diphoton_bdt,costheta_cs);
-      else mycat = getCutBasedCategory(lead_calo_eta,sublead_calo_eta,lead_r9,sublead_r9,costheta_cs);
+      else mycat = getCutBasedCategory(lead_calo_eta,sublead_calo_eta,lead_r9,sublead_r9,costheta_cs,cosThetaBoundaries);
       if (mycat.first==-1 || mycat.second==-1) continue;
       if (higgs_mass<mlow || higgs_mass>mhigh) continue;
+      if (JetVeto["doJetVeto"] != 0)
+      {
+        bool veto = false;
+        for(UInt_t jet = 0; jet < Jets->size(); jet++)
+        {
+          if(abs((*Jets)[jet].first) < JetVeto["maxEta"] && (*Jets)[jet].second > JetVeto["minPT"])
+          {
+            veto = true;
+            break;
+          }
+        }
+        if(veto) continue;
+      }
       mass->setVal(higgs_mass);
       string catname = getCatName(mycat);
       dataMap[catname]->add(*mass,evweight);
+      end_Ev++;
     }
+
+    totalEvents += end_Ev;
+    initEvents += ini_Ev;
   }
+
+  cout << "Initial: " << initEvents << "; Final:" << totalEvents << endl;
 }
 
 void Plot(string name, RooRealVar *mass, RooDataSet* data, RooAbsPdf* pdf){
-  
+
   TCanvas *canv = new TCanvas();
-  RooPlot *plot = mass->frame();
+  RooPlot *plot = mass->frame(Title(Form("m_{#gamma#gamma} for %s",name.c_str())));
   data->plotOn(plot);
   pdf->plotOn(plot);
   plot->Draw();
@@ -163,63 +206,99 @@ void Plot(string name, RooRealVar *mass, RooDataSet* data, RooAbsPdf* pdf){
 }
 
 
-void makeBackgroundModel(string name, RooRealVar *mass, map<string,RooDataSet*> data, RooWorkspace *work, int nBDTCategories, int nCosThetaCategories, bool globePDFs, bool verbose=false){
+void makeBackgroundModel(string name, RooRealVar *mass, map<string,RooDataSet*> data, RooWorkspace *work, int nBDTCategories, int nCosThetaCategories, bool globePDFs, bool verbose=false, bool correlateCosThetaCategories=false){
 
-  string path="plots/"+name; 
+  string path="plots/"+name;
   system(Form("mkdir -p %s",path.c_str()));
 
-  for(int a=0; a<nBDTCategories; a++){
-    for(int b=0; b<nCosThetaCategories; b++){
-      
-      string catname = getCatName(a,b);
-      
-      RooAbsPdf *bkg;
-      if (globePDFs) {
-        RooRealVar *p0 = new RooRealVar(Form("CMS_hgg_quartic0_cat%d_spin%d",a,b),Form("CMS_hgg_quartic0_cat%d_spin%d",a,b),0.02,-5.0,5.0);
-        RooRealVar *p1 = new RooRealVar(Form("CMS_hgg_quartic1_cat%d_spin%d",a,b),Form("CMS_hgg_quartic0_cat%d_spin%d",a,b),0.02,-5.0,5.0);
-        RooRealVar *p2 = new RooRealVar(Form("CMS_hgg_quartic2_cat%d_spin%d",a,b),Form("CMS_hgg_quartic0_cat%d_spin%d",a,b),0.02,-5.0,5.0);
-        RooRealVar *p3 = new RooRealVar(Form("CMS_hgg_quartic3_cat%d_spin%d",a,b),Form("CMS_hgg_quartic0_cat%d_spin%d",a,b),0.02,-5.0,5.0);
-        
-        RooFormulaVar *f0 = new RooFormulaVar(Form("CMS_hgg_modquartic0_cat%d_spin%d",a,b),Form("CMS_hgg_modquartic0_cat%d_spin%d",a,b),"@0*@0",RooArgList(*p0));
-        RooFormulaVar *f1 = new RooFormulaVar(Form("CMS_hgg_modquartic1_cat%d_spin%d",a,b),Form("CMS_hgg_modquartic0_cat%d_spin%d",a,b),"@0*@0",RooArgList(*p1));
-        RooFormulaVar *f2 = new RooFormulaVar(Form("CMS_hgg_modquartic2_cat%d_spin%d",a,b),Form("CMS_hgg_modquartic0_cat%d_spin%d",a,b),"@0*@0",RooArgList(*p2));
-        RooFormulaVar *f3 = new RooFormulaVar(Form("CMS_hgg_modquartic3_cat%d_spin%d",a,b),Form("CMS_hgg_modquartic0_cat%d_spin%d",a,b),"@0*@0",RooArgList(*p3));
 
-        bkg = new RooBernstein(Form("data_pol_model_cat%d_spin%d",a,b),Form("data_pol_model_cat%d_spin%d",a,b),*mass,RooArgList(*f0,*f1,*f2,*f3));
+  for(int a=0; a<nBDTCategories; a++){
+
+    RooRealVar *p0, *p1, *p2, *p3, *pow0;
+    RooFormulaVar *f0, *f1, *f2, *f3;
+    RooAbsPdf *bkg;
+
+    if(correlateCosThetaCategories)
+    {
+      if(globePDFs)
+      {
+        p0 = new RooRealVar(Form("CMS_hgg_quartic0_cat%d",a),Form("CMS_hgg_quartic0_cat%d",a),0.02,-5.0,5.0);
+        p1 = new RooRealVar(Form("CMS_hgg_quartic1_cat%d",a),Form("CMS_hgg_quartic0_cat%d",a),0.02,-5.0,5.0);
+        p2 = new RooRealVar(Form("CMS_hgg_quartic2_cat%d",a),Form("CMS_hgg_quartic0_cat%d",a),0.02,-5.0,5.0);
+        p3 = new RooRealVar(Form("CMS_hgg_quartic3_cat%d",a),Form("CMS_hgg_quartic0_cat%d",a),0.02,-5.0,5.0);
+
+        f0 = new RooFormulaVar(Form("CMS_hgg_modquartic0_cat%d",a),Form("CMS_hgg_modquartic0_cat%d",a),"@0*@0",RooArgList(*p0));
+        f1 = new RooFormulaVar(Form("CMS_hgg_modquartic1_cat%d",a),Form("CMS_hgg_modquartic0_cat%d",a),"@0*@0",RooArgList(*p1));
+        f2 = new RooFormulaVar(Form("CMS_hgg_modquartic2_cat%d",a),Form("CMS_hgg_modquartic0_cat%d",a),"@0*@0",RooArgList(*p2));
+        f3 = new RooFormulaVar(Form("CMS_hgg_modquartic3_cat%d",a),Form("CMS_hgg_modquartic0_cat%d",a),"@0*@0",RooArgList(*p3));
+
+        bkg = new RooBernstein(Form("data_pol_model_cat%d",a),Form("data_pol_model_cat%d",a),*mass,RooArgList(*f0,*f1,*f2,*f3));
       }
-      else {
-        RooRealVar *pow0 = new RooRealVar(Form("CMS_hgg_pow0_cat%d_spin%d",a,b),Form("CMS_hgg_pow0_cat%d_spin%d",a,b),10.,2.,20.);
-        //RooRealVar *pow1 = new RooRealVar(Form("CMS_hgg_pow1_cat%d_spin%d",a,b),Form("CMS_hgg_pow1_cat%d_spin%d",a,b),10.,2.,20.);
-        //RooRealVar *f1 = new RooRealVar(Form("CMS_hgg_f1_cat%d_spin%d",a,b),Form("CMS_hgg_f1_cat%d_spin%d",a,b),0.6,0.5,1.);
-        //bkg = new RooGenericPdf(Form("data_pow_model_cat%d_spin%d",a,b),Form("data_pow_model_cat%d_spin%d",a,b),"@3*pow(@0,-@1)+(1.-@3)*pow(@01,-@2)",RooArgList(*mass,*pow0,*pow1,*f1));
-        bkg = new RooGenericPdf(Form("data_pow_model_cat%d_spin%d",a,b),Form("data_pow_model_cat%d_spin%d",a,b),"pow(@0,-@1)",RooArgList(*mass,*pow0));
+      else
+      {
+        pow0 = new RooRealVar(Form("CMS_hgg_pow0_cat%d",a),Form("CMS_hgg_pow0_cat%d",a),10.,2.,20.);
+        bkg = new RooGenericPdf(Form("data_pow_model_cat%d",a),Form("data_pow_model_cat%d",a),"pow(@0,-@1)",RooArgList(*mass,*pow0));
       }
-      
+    }
+
+    for(int b=0; b<nCosThetaCategories; b++){
+
+      string catname = getCatName(a,b);
+
+      if(!correlateCosThetaCategories)
+      {
+        if (globePDFs) {
+          p0 = new RooRealVar(Form("CMS_hgg_quartic0_cat%d_spin%d",a,b),Form("CMS_hgg_quartic0_cat%d_spin%d",a,b),0.02,-5.0,5.0);
+          p1 = new RooRealVar(Form("CMS_hgg_quartic1_cat%d_spin%d",a,b),Form("CMS_hgg_quartic0_cat%d_spin%d",a,b),0.02,-5.0,5.0);
+          p2 = new RooRealVar(Form("CMS_hgg_quartic2_cat%d_spin%d",a,b),Form("CMS_hgg_quartic0_cat%d_spin%d",a,b),0.02,-5.0,5.0);
+          p3 = new RooRealVar(Form("CMS_hgg_quartic3_cat%d_spin%d",a,b),Form("CMS_hgg_quartic0_cat%d_spin%d",a,b),0.02,-5.0,5.0);
+
+          f0 = new RooFormulaVar(Form("CMS_hgg_modquartic0_cat%d_spin%d",a,b),Form("CMS_hgg_modquartic0_cat%d_spin%d",a,b),"@0*@0",RooArgList(*p0));
+          f1 = new RooFormulaVar(Form("CMS_hgg_modquartic1_cat%d_spin%d",a,b),Form("CMS_hgg_modquartic0_cat%d_spin%d",a,b),"@0*@0",RooArgList(*p1));
+          f2 = new RooFormulaVar(Form("CMS_hgg_modquartic2_cat%d_spin%d",a,b),Form("CMS_hgg_modquartic0_cat%d_spin%d",a,b),"@0*@0",RooArgList(*p2));
+          f3 = new RooFormulaVar(Form("CMS_hgg_modquartic3_cat%d_spin%d",a,b),Form("CMS_hgg_modquartic0_cat%d_spin%d",a,b),"@0*@0",RooArgList(*p3));
+
+          if (b==nCosThetaCategories-1){
+            bkg = new RooBernstein(Form("data_pol_model_cat%d_spin%d",a,b),Form("data_pol_model_cat%d_spin%d",a,b),*mass,RooArgList(*f0,*f1,*f2));
+          }
+          else {
+            bkg = new RooBernstein(Form("data_pol_model_cat%d_spin%d",a,b),Form("data_pol_model_cat%d_spin%d",a,b),*mass,RooArgList(*f0,*f1,*f2,*f3));
+          }
+        }
+        else {
+          pow0 = new RooRealVar(Form("CMS_hgg_pow0_cat%d_spin%d",a,b),Form("CMS_hgg_pow0_cat%d_spin%d",a,b),10.,2.,20.);
+          //RooRealVar *pow1 = new RooRealVar(Form("CMS_hgg_pow1_cat%d_spin%d",a,b),Form("CMS_hgg_pow1_cat%d_spin%d",a,b),10.,2.,20.);
+          //RooRealVar *f1 = new RooRealVar(Form("CMS_hgg_f1_cat%d_spin%d",a,b),Form("CMS_hgg_f1_cat%d_spin%d",a,b),0.6,0.5,1.);
+          //bkg = new RooGenericPdf(Form("data_pow_model_cat%d_spin%d",a,b),Form("data_pow_model_cat%d_spin%d",a,b),"@3*pow(@0,-@1)+(1.-@3)*pow(@01,-@2)",RooArgList(*mass,*pow0,*pow1,*f1));
+          bkg = new RooGenericPdf(Form("data_pow_model_cat%d_spin%d",a,b),Form("data_pow_model_cat%d_spin%d",a,b),"pow(@0,-@1)",RooArgList(*mass,*pow0));
+        }
+      }
+
       RooRealVar *norm = new RooRealVar(Form("%s_norm",bkg->GetName()),Form("%s_norm",bkg->GetName()),10.,1.e6);
       RooExtendPdf *ext;
       if (globePDFs) ext = new RooExtendPdf(Form("pdf_data_pol_model_cat%d_spin%d",a,b),Form("pdf_data_pol_model_cat%d_spin%d",a,b),*bkg,*norm);
       else ext = new RooExtendPdf(Form("pdf_data_pow_model_cat%d_spin%d",a,b),Form("pdf_data_pow_model_cat%d_spin%d",a,b),*bkg,*norm);
 
       cout << data[catname]->GetName() << " : " << data[catname]->sumEntries() << endl;
-      
+
       bkg->fitTo(*data[catname]);//,PrintLevel(-1),Warnings(false),PrintEvalErrors(-1));
-      
+
       /*
       RooFitResult *fitRes;
-      verbose ? 
+      verbose ?
         fitRes = ext->fitTo(*data[catname],Save(true)) :
-        fitRes = ext->fitTo(*data[catname],Save(true),PrintLevel(-1),Warnings(false),PrintEvalErrors(-1)) 
+        fitRes = ext->fitTo(*data[catname],Save(true),PrintLevel(-1),Warnings(false),PrintEvalErrors(-1))
       ;
       fitRes->floatParsFinal().Print("v");
       delete fitRes;
       */
-      
+
       if (globePDFs) mass->setBins(320);
       else mass->setBins(200);
       RooDataHist *temp = data[catname]->binnedClone(Form("roohist_%s",data[catname]->GetName()));
       work->import(*temp);
       work->import(*data[catname]);
-      work->import(*ext);
+      work->import(*ext, RooFit::RecycleConflictNodes());
 
       Plot(Form("%s/bkg_cat%d_spin%d",path.c_str(),a,b),mass,data[catname],bkg);
     }
@@ -227,12 +306,12 @@ void makeBackgroundModel(string name, RooRealVar *mass, map<string,RooDataSet*> 
 }
 
 void makeSignalModel(string name, RooRealVar *mass, map<string,RooDataSet*> sigMC, RooWorkspace *work, int nBDTCategories, int nCosThetaCategories, bool globePDFs, bool isSM, bool verbose=false){
- 
-  string path="plots/"+name; 
+
+  string path="plots/"+name;
   system(Form("mkdir -p %s",path.c_str()));
   for(int a=0; a<nBDTCategories; a++){
     for(int b=0; b<nCosThetaCategories; b++){
-     
+
       string catname = getCatName(a,b);
 
       string postfix="";
@@ -262,17 +341,17 @@ void makeSignalModel(string name, RooRealVar *mass, map<string,RooDataSet*> sigM
       if (globePDFs) sigPdf = new RooAddPdf(Form("sigModel_%s_cat%d_spin%d",postfix.c_str(),a,b),Form("sigModel_%s_cat%d_spin%d",postfix.c_str(),a,b), RooArgList(*pdfGaussians[0],*pdfGaussians[1],*pdfGaussians[2],*pdfGaussians[3]),RooArgList(*fracs[0],*fracs[1],*fracs[2]));
       else sigPdf = new RooAddPdf(Form("sigModel_%s_cat%d_spin%d",postfix.c_str(),a,b),Form("sigModel_%s_cat%d_spin%d",postfix.c_str(),a,b), RooArgList(*pdfGaussians[0],*pdfGaussians[1],*pdfGaussians[2],*pdfGaussians[3]),RooArgList(*fracs[0],*fracs[1],*fracs[2]));
       //else sigPdf = new RooAddPdf(Form("sigModel_%s_cat%d_spin%d",postfix.c_str(),a,b),Form("sigModel_%s_cat%d_spin%d",postfix.c_str(),a,b), RooArgList(*pdfGaussians[0],*pdfGaussians[1]),RooArgList(*fracs[0]));
-     
+
       cout << sigMC[catname]->GetName() << " : " << sigMC[catname]->sumEntries() << endl;
 
       RooFitResult *fitRes;
-      verbose ? 
+      verbose ?
         fitRes = sigPdf->fitTo(*sigMC[catname],SumW2Error(true),Save(true)) :
         fitRes = sigPdf->fitTo(*sigMC[catname],SumW2Error(true),Save(true),PrintLevel(-1),Warnings(false),PrintEvalErrors(-1))
       ;
       fitRes->floatParsFinal().Print("v");
       delete fitRes;
-      
+
       for (vector<RooRealVar*>::iterator it=means.begin(); it!=means.end(); it++) (*it)->setConstant(true);
       for (vector<RooRealVar*>::iterator it=sigmas.begin(); it!=sigmas.end(); it++) (*it)->setConstant(true);
       for (vector<RooRealVar*>::iterator it=fracs.begin(); it!=fracs.end(); it++) (*it)->setConstant(true);
@@ -283,7 +362,7 @@ void makeSignalModel(string name, RooRealVar *mass, map<string,RooDataSet*> sigM
       RooExtendPdf *ext = new RooExtendPdf(Form("pdf_%s",sigPdf->GetName()),Form("pdf_%s",sigPdf->GetName()),*sigPdf,*norm);
       work->import(*sigMC[catname]);
       work->import(*ext);
-      
+
       if (isSM) Plot(Form("%s/sig_spin0_cat%d_spin%d",path.c_str(),a,b),mass,sigMC[catname],sigPdf);
       else Plot(Form("%s/sig_spin2_cat%d_spin%d",path.c_str(),a,b),mass,sigMC[catname],sigPdf);
     }
@@ -301,6 +380,15 @@ int main(int argc, char* argv[]){
   bool useSpin2LP=false;
   int nBDTCats=0;
   int nSpinCats=0;
+  std::vector<double> cosThetaBoundaries;
+  string boundaries="";
+  bool correlateCosThetaCategories = false;
+  bool useBackgroundMC = false;
+  std::map<string, double> JetVeto;
+  JetVeto.insert(std::pair<string, double>("doJetVeto", 0.));
+  JetVeto.insert(std::pair<string, double>("maxEta", 0.));
+  JetVeto.insert(std::pair<string, double>("minPT", 30000.));
+
   if (argc!=2){
     cout << "usage ./bin/diyBuildWorkspace <datfilename>" << endl;
     exit(1);
@@ -325,11 +413,72 @@ int main(int argc, char* argv[]){
       if (line.find("useSpin2LP=")!=string::npos) useSpin2LP = boost::lexical_cast<bool>(line.substr(line.find("=")+1,string::npos));
       if (line.find("nBDTCats=")!=string::npos) nBDTCats = boost::lexical_cast<int>(line.substr(line.find("=")+1,string::npos));
       if (line.find("nSpinCats=")!=string::npos) nSpinCats = boost::lexical_cast<int>(line.substr(line.find("=")+1,string::npos));
+      if (line.find("catBoundaries=")!=string::npos) boundaries = line.substr(line.find("=")+1,string::npos);
+      if (line.find("correlateCosThetaCategories=")!=string::npos) correlateCosThetaCategories = boost::lexical_cast<bool>(line.substr(line.find("=")+1,string::npos));
+      if (line.find("useBackgroundMC=")!=string::npos) useBackgroundMC = boost::lexical_cast<bool>(line.substr(line.find("=")+1,string::npos));
+      if (line.find("jetVeto=")!=string::npos)
+      {
+        string temp = line.substr(line.find("=")+1,string::npos);
+        size_t divider = temp.find(" ");
+
+        std::stringstream eta( temp.substr(0,divider) );
+        std::stringstream pt ( temp.substr(divider+1) );
+
+        eta >> JetVeto["maxEta"];
+        pt  >> JetVeto["minPT"];
+        JetVeto["doJetVeto"] = true;
+      }
     }
     datfile.close();
 
+    if(boundaries != "")
+    {
+      //cout << "Testing boundaries: " << boundaries << endl;
+
+      size_t position = boundaries.find(" ");
+      do
+      {
+        position = boundaries.find(" ");
+        string testnum = boundaries.substr(0,position);
+        boundaries = boundaries.substr(position+1);
+
+        //cout << testnum << endl;
+        std::stringstream os(testnum);
+
+        double temp;
+        os >> temp;
+        if(!os.fail())
+        {
+          cout << "Interpreted boundary '" << testnum << "' as: " << temp << endl;
+          cosThetaBoundaries.push_back(temp);
+          for(UInt_t i = cosThetaBoundaries.size()-1; i > 0; i--)
+          {
+            if(cosThetaBoundaries[i] > cosThetaBoundaries[i-1])
+              std::swap(cosThetaBoundaries[i], cosThetaBoundaries[i-1]);
+            else
+              break;
+          }
+        }
+        else
+          cout << "Was not able understand boundary '" << testnum << "', ignoring it." << endl;
+      }while(position!=string::npos);
+      nSpinCats = cosThetaBoundaries.size()-1;
+    }
+    else
+    {
+      if(nSpinCats == 0)
+        nSpinCats = 5;
+
+      cout << "Using " << nSpinCats << " cos(Theta*) categories." << endl;
+
+      //Boundaries are defined in (1-cosTheta) space
+      for(int i = 0; i <= nSpinCats; i++)
+      {
+        cosThetaBoundaries.push_back((nSpinCats-i)*1./nSpinCats);
+      }
+    }
   }
-  
+
   cout << "Reading from file - " << filename << endl;
   if (isMassFac) cout << "Running MassFac selection" << endl;
   else cout << "Running CutBased selection" << endl;
@@ -338,21 +487,32 @@ int main(int argc, char* argv[]){
 
   TFile *outFile = new TFile(outfilename.c_str(),"RECREATE");
   RooWorkspace *work = new RooWorkspace("HggSpinStudies");
-  
+
   double mlow=100.;
   double mhigh=150.;
   if (globePDFs) mhigh=180.;
 
   RooRealVar *mass = new RooRealVar("mass","mass",mlow,mhigh);
   RooRealVar *weight = new RooRealVar("weight","weight",0,100);
-  
+
   vector<TTree*> dataTrees;
   vector<TTree*> spin0Trees;
   vector<TTree*> spin2Trees;
 
-  dataTrees.push_back((TTree*)inFile->Get("spin_trees/Data"));
+  if(!useBackgroundMC)
+    dataTrees.push_back((TTree*)inFile->Get("spin_trees/Data"));
+  else
+  {
+    dataTrees.push_back((TTree*)inFile->Get("spin_trees/gjet_20_8TeV_pf"));
+    dataTrees.push_back((TTree*)inFile->Get("spin_trees/gjet_40_8TeV_pf"));
+    dataTrees.push_back((TTree*)inFile->Get("spin_trees/gjet_20_8TeV_pp"));
+    dataTrees.push_back((TTree*)inFile->Get("spin_trees/gjet_40_8TeV_pp"));
+    dataTrees.push_back((TTree*)inFile->Get("spin_trees/diphojet_8TeV"));
+    dataTrees.push_back((TTree*)inFile->Get("spin_trees/dipho_Box_25_8TeV"));
+  }
+
   if (useSpin2LP) spin2Trees.push_back((TTree*)inFile->Get("spin_trees/spin2lp_m125_8TeV"));
-  else spin2Trees.push_back((TTree*)inFile->Get("spin_trees/grav2pm_m125_8TeV"));
+  else spin2Trees.push_back((TTree*)inFile->Get("spin_trees/ggh_grav_m125_8TeV"));
   if (useSMpowheg){
     spin0Trees.push_back((TTree*)inFile->Get("spin_trees/ggh_m125_8TeV"));
     if (fullSMproc){
@@ -377,11 +537,11 @@ int main(int argc, char* argv[]){
       spin2DSet.insert(pair<string,RooDataSet*>(catname,new RooDataSet(Form("mcSigGraviton_bdt%d_cTh%d",c,s),Form("mcSigGraviton_bdt%d_cTh%d",c,s),RooArgSet(*mass,*weight),weight->GetName())));
     }
   }
+  cout << "BDTCats: " << nBDTCats << endl << "SpinCats: " << nSpinCats << endl;
+  fillDataSet(mass,dataDSet,dataTrees,isMassFac,mlow,mhigh,cosThetaBoundaries,JetVeto);
+  fillDataSet(mass,spin0DSet,spin0Trees,isMassFac,mlow,mhigh,cosThetaBoundaries,JetVeto);
+  fillDataSet(mass,spin2DSet,spin2Trees,isMassFac,mlow,mhigh,cosThetaBoundaries,JetVeto);
 
-  fillDataSet(mass,dataDSet,dataTrees,isMassFac,mlow,mhigh);
-  fillDataSet(mass,spin0DSet,spin0Trees,isMassFac,mlow,mhigh);
-  fillDataSet(mass,spin2DSet,spin2Trees,isMassFac,mlow,mhigh);
-  
   double totalSM=0.;
   double totalGRAV=0.;
   for (int c=0; c<nBDTCats; c++){
@@ -401,14 +561,14 @@ int main(int argc, char* argv[]){
   string dirname;
   if (isMassFac) dirname="massFac";
   else dirname="cutBased";
-  makeBackgroundModel(dirname,mass,dataDSet,work,nBDTCats,nSpinCats,globePDFs);
+  makeBackgroundModel(dirname,mass,dataDSet,work,nBDTCats,nSpinCats,globePDFs,false,correlateCosThetaCategories);
   makeSignalModel(dirname,mass,spin0DSet,work,nBDTCats,nSpinCats,globePDFs,true);
   makeSignalModel(dirname,mass,spin2DSet,work,nBDTCats,nSpinCats,globePDFs,false);
 
   for (map<string,RooDataSet*>::iterator it=dataDSet.begin(); it!=dataDSet.end(); it++) delete it->second;
   for (map<string,RooDataSet*>::iterator it=spin0DSet.begin(); it!=spin0DSet.end(); it++) delete it->second;
   for (map<string,RooDataSet*>::iterator it=spin2DSet.begin(); it!=spin2DSet.end(); it++) delete it->second;
-  
+
   inFile->Close();
   outFile->cd();
   work->Write();
@@ -417,7 +577,7 @@ int main(int argc, char* argv[]){
   delete inFile;
   delete work;
   delete outFile;
-  
+
   return 0;
 }
- 
+

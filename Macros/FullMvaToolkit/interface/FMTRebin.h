@@ -10,6 +10,7 @@ class FMTRebin : public FMTBase {
 	
 	public:
     FMTRebin();
+		FMTRebin(TFile *tF, TFile *oF);
 		FMTRebin(TFile *tF, TFile *oF, double intLumi, bool is2011, int mHMinimum, int mHMaximum, double mHStep, double massMin, double massMax, int nDataBins, double signalRegionWidth, double sidebandWidth, int numberOfSidebands, int numberOfSidebandsForAlgos, int numberOfSidebandGaps, double massSidebandMin, double massSidebandMax, int nIncCategories, bool includeVBF, int nVBFCategories, bool includeLEP, int nLEPCategories, vector<string> systematics, bool rederiveOptimizedBinEdges, vector<map<int,vector<double> > > AllBinEdges, bool verbose=false);
 		~FMTRebin();
 
@@ -25,6 +26,7 @@ class FMTRebin : public FMTBase {
     
 		// histogram methods
     void mergeHistograms(string,TH1F*,TH1F*);
+    void mergeHistograms(string,TH1F*);
     void makeSignalOutputHistogram(string,string,int);
     void makeOutputHistogram(string,string,int);
 		

@@ -21,6 +21,7 @@
 #include <TAxis.h>
 
 #include "TMVA/Reader.h"
+#include "TStopwatch.h"
 
 class BaseAnalysis;
 
@@ -104,6 +105,11 @@ class LoopAll {
 
   void Term(); 
 
+  void checkDuty(int n, float thr, float start) { checkBench=n; benchThr=thr; benchStart=start; }
+  
+  int checkBench;
+  TStopwatch stopWatch;
+  float benchThr, benchStart;
   bool is_subjob;
 
   std::vector<TMacro*> configFiles;
@@ -199,7 +205,26 @@ class LoopAll {
   // Cut down (flat) trees for MVA Training 
   void InitTrees(std::string);
   void BookTreeBranch(std::string name, int type, std::string dirName="");
-  void FillTreeContainer();
+  template <class T> void BookExternalTreeBranch(const char * name, T* addr, std::string dirName) {
+	  for(unsigned int ind=0; ind<treeContainer[dirName].size(); ind++) {
+		  treeContainer[dirName][ind].AddExternalBranch<T>(name,addr);
+	  }
+  }
+
+  template <class T> void BookExternalTreeBranch(const char * name, T* addr, const char * type, std::string dirName) {
+	  for(unsigned int ind=0; ind<treeContainer[dirName].size(); ind++) {
+		  treeContainer[dirName][ind].AddExternalBranch<T>(name,addr,type);
+	  }
+  }
+
+  template <class T> void BookExternalTreeBranch(const char * name, T* addr, int bufsize, int splitlevel, std::string dirName) {
+	  for(unsigned int ind=0; ind<treeContainer[dirName].size(); ind++) {
+		  treeContainer[dirName][ind].AddExternalBranch<T>(name,addr,bufsize,splitlevel);
+	  }
+  }
+    
+
+  void FillTreeContainer(std::string dir="");
 
   void FillTree(std::string name, float x, std::string dirName="");
   void FillTree(std::string name, double x, std::string dirName="");
@@ -296,8 +321,10 @@ class LoopAll {
   TMVA::Reader *tmvaReaderID_MIT_Barrel, *tmvaReaderID_MIT_Endcap;
   TMVA::Reader *tmvaReader_dipho_MIT;
   TMVA::Reader *tmvaReaderID_Single_Barrel, *tmvaReaderID_Single_Endcap;
+  TMVA::Reader *tmvaReaderID_2013_Barrel, *tmvaReaderID_2013_Endcap;
 
   Float_t photonIDMVANew(Int_t, Int_t, TLorentzVector &, const char*);
+  Float_t photonIDMVA2013(Int_t, Int_t, TLorentzVector &, const char*);
 
   Float_t tmva_photonid_pfchargedisogood03;
   Float_t tmva_photonid_pfchargedisobad03;
@@ -308,6 +335,7 @@ class LoopAll {
   Float_t tmva_photonid_etawidth;
   Float_t tmva_photonid_phiwidth;
   Float_t tmva_photonid_r9;
+  Float_t tmva_photonid_scrawe;
   Float_t tmva_photonid_s4ratio;
   Float_t tmva_photonid_lambdaratio;
   Float_t tmva_photonid_sceta;
@@ -1227,7 +1255,8 @@ void SetBranchAddress_pho_passcuts_lead(TTree * tree) { tree->SetBranchAddress("
 void SetBranchAddress_pho_cutlevel_sublead(TTree * tree) { tree->SetBranchAddress("pho_cutlevel_sublead", &pho_cutlevel_sublead, &b_pho_cutlevel_sublead ); };
 void SetBranchAddress_pho_passcuts_sublead(TTree * tree) { tree->SetBranchAddress("pho_passcuts_sublead", &pho_passcuts_sublead, &b_pho_passcuts_sublead ); };
 
-void doJetMatching(TClonesArray & reco, TClonesArray & gen, Bool_t * match_flag, Bool_t * match_vbf_flag, Float_t * match_pt, Float_t * match_dr, Float_t maxDr=0.4, Bool_t * match_radion_flag = 0);
+void doJetMatching(TClonesArray & reco, TClonesArray & gen, Bool_t * match_flag, Bool_t * match_vbf_flag, Bool_t * match_b_flag, 
+		   Float_t * match_pt, Float_t * match_dr, Float_t maxDr=0.4 );
 
 std::pair<int, int> Select2HighestPtJets(TLorentzVector& leadpho, TLorentzVector& subleadpho, Bool_t * jetid_flags=0);
 vector<int> SelectJets(const TLorentzVector& leadpho, const TLorentzVector& subleadpho, Bool_t * jetid_flags=0);
@@ -1256,7 +1285,7 @@ bool ElectronTightEGammaID(int electronindex, int vertexindex=-1);
 //HCP2012
 int ElectronSelectionMVA2012(float elptcut=20.);
 bool ElectronMVACuts(int el_ind, int vtx_ind=-1);
-bool ElectronPhotonCuts2012B(TLorentzVector& pho1, TLorentzVector& pho2, TLorentzVector& ele);
+bool ElectronPhotonCuts2012B(TLorentzVector& pho1, TLorentzVector& pho2, TLorentzVector& ele, bool includeVHlepPlusMet=false);
 int FindElectronVertex(int el_ind);
 void PhotonsToVeto(TLorentzVector* veto_p4, float drtoveto, std::vector<bool>& vetos, bool drtotkveto);
 
@@ -1294,12 +1323,16 @@ int IEta (double eta){
 void getIetaIPhi(int phoid, int & ieta, int & iphi ) const ;
 bool CheckSphericalPhoton(int ieta, int iphi) const;
 bool CheckSphericalPhoton(int phoind) const;
-Int_t GenParticleInfo(Int_t ipho, Int_t vtxind, float dRmax);
+void VHNewLeptonCategorization(bool & VHlep1event, bool & VHlep2event, int diphotonVHlep_id, int vertex, bool VHelevent_prov, bool VHmuevent_prov, int el_ind, int mu_ind, float* smeared_pho_energy, float METcut);
+void VHTwoMuonsEvents(bool & VHlep1event, bool & VHlep2event, int & diphotonVHlep_id, int & muVtx, float* smeared_pho_energy, float leadEtVHlepCut, float subleadEtVHlepCut, bool applyPtoverM);
+void VHTwoElectronsEvents(bool & VHlep1event, bool & VHlep2event, int & diphotonVHlep_id, int & elVtx, float* smeared_pho_energy, float leadEtVHlepCut, float subleadEtVHlepCut, bool applyPtoverM);
  
+
 #ifdef NewFeatures
 #include "Marco/plotInteractive_h.h"
 #endif
 
 };
+
 
 #endif
