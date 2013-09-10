@@ -420,21 +420,22 @@ jet_algoPF1_csvMvaBtag
 #jet_algoPF1_jetProbBtag
 #jet_algoPF1_tcheBtag
 #Variables for jet energy regression
-jet_algoPF1_ptD
 jet_algoPF1_nSecondaryVertices
 jet_algoPF1_secVtxPt
 jet_algoPF1_secVtx3dL
 jet_algoPF1_secVtx3deL
 jet_algoPF1_emfrac
 jet_algoPF1_hadfrac
+jet_algoPF1_ptD
 # extra
 #jet_algoPF1_ntk
 #jet_algoPF1_axis1
 #jet_algoPF1_axis2
 #jet_algoPF1_pull
-#jet_algoPF1_Rchg
-#jet_algoPF1_Rneutral
-#jet_algoPF1_R
+jet_algoPF1_Rchg
+jet_algoPF1_Rchg_QC
+jet_algoPF1_Rneutral
+jet_algoPF1_R
 
 # QG tagging variables
 jet_algoPF1_ptD_QC

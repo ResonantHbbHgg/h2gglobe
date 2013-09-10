@@ -133,6 +133,21 @@ jet_algoPF1_csvBtag
 jet_algoPF1_csvMvaBtag
 jet_algoPF1_jetProbBtag
 jet_algoPF1_tcheBtag
+jet_algoPF1_emfrac
+jet_algoPF1_hadfrac
+jet_algoPF1_area
+jet_algoPF1_erescale
+jet_algoPF1_nNeutrals
+jet_algoPF1_nNeutrals_ptCut
+jet_algoPF1_nCharged
+jet_algoPF1_nCharged_QC
+jet_algoPF1_ptD
+jet_algoPF1_ptD_QC
+jet_algoPF1_R
+jet_algoPF1_Rchg
+jet_algoPF1_Rchg_QC
+jet_algoPF1_Rneutral
+
 
 # QG tagging variables
 jet_algoPF1_ptD_QC
