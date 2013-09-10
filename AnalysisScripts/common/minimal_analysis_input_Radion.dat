@@ -53,7 +53,7 @@ jet_algoPF1_csvBtag
 jet_algoPF1_csvMvaBtag
 #jet_algoPF1_jetProbBtag
 #jet_algoPF1_tcheBtag
-jet_algoPF1_radionMatched
+jet_algoPF1_bgenMatched
 jet_algoPF1_genMatched
 jet_algoPF1_ptD
 jet_algoPF1_nSecondaryVertices

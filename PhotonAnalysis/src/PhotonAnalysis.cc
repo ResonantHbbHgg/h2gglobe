@@ -2190,7 +2190,6 @@ void PhotonAnalysis::ReducedOutputTree(LoopAll &l, TTree * outputTree)
 	l.Branch_pho_regr_energyerr_otf(outputTree);
 
 	l.Branch_jet_algoPF1_genMatched(outputTree);
-	l.Branch_jet_algoPF1_radionMatched(outputTree);
 	l.Branch_jet_algoPF1_bgenMatched(outputTree);
 	l.Branch_jet_algoPF1_vbfMatched(outputTree);
 	l.Branch_jet_algoPF1_genPt(outputTree);

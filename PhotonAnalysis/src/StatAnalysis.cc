@@ -364,7 +364,7 @@ void StatAnalysis::Init(LoopAll& l)
     }
     // build the model
     buildBkgModel(l, postfix);
-/* //FIXME: CHECK IF IT CRASHES
+/* //FIXME OLIVIER: CHECK IF IT CRASHES
     // -----------------------------------------------------
     // Make some data sets from the observables to fill in the event loop
     // Binning is for histograms (will also produce unbinned data sets)
@@ -2213,23 +2213,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	l.FillTree("dipho_pt", (float)diphoton.Pt());
 	l.FillTree("dipho_eta", (float)diphoton.Eta());
 	l.FillTree("dipho_phi", (float)diphoton.Phi());
-    // cosThetaStar computation with explicit Collin-Sopper Frame, from M. Peruzzi
-    // FIXME: Use the build-in costhetastar function
-    TLorentzVector b1,b2;
-    b1.SetPx(0); b1.SetPy(0); b1.SetPz( 4000); b1.SetE(4000);
-    b2.SetPx(0); b2.SetPy(0); b2.SetPz(-4000); b2.SetE(4000);
-    TLorentzVector boostedpho1 = lead_p4;
-    TLorentzVector boostedpho2 = sublead_p4;
-    TLorentzVector boostedb1 = b1;
-    TLorentzVector boostedb2 = b2;
-    TVector3 boost = (lead_p4+sublead_p4).BoostVector();
-    boostedpho1.Boost(-boost);
-    boostedpho2.Boost(-boost);
-    boostedb1.Boost(-boost);
-    boostedb2.Boost(-boost);
-    TVector3 direction_cs = (boostedb1.Vect().Unit()-boostedb2.Vect().Unit()).Unit();
-    float dipho_cosThetaStar_CS = fabs(TMath::Cos(direction_cs.Angle(boostedpho1.Vect())));
-	l.FillTree("dipho_cosThetaStar_CS", (float)dipho_cosThetaStar_CS);
+	l.FillTree("dipho_cosThetaStar_CS", (float)getCosThetaCS(lead_p4, sublead_p4));
     float dipho_tanhYStar = tanh(
         (float)(fabs(lead_p4.Rapidity() - sublead_p4.Rapidity()))/(float)(2.0)
     );
@@ -2297,7 +2281,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j1_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[0]]);
         l.FillTree("j1_jetProbBtag", (float)l.jet_algoPF1_jetProbBtag[jets[0]]);
         l.FillTree("j1_tcheBtag", (float)l.jet_algoPF1_tcheBtag[jets[0]]);
-        l.FillTree("j1_radionMatched", (float)l.jet_algoPF1_radionMatched[jets[0]]);
+        l.FillTree("j1_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[0]]);
 		l.FillTree("j1_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[0]]);
 		l.FillTree("j1_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[0]]);
 		l.FillTree("j1_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[0]]);
@@ -2321,7 +2305,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j1_csvMvaBtag", (float)-1001.);
         l.FillTree("j1_jetProbBtag", (float)-1001.);
         l.FillTree("j1_tcheBtag", (float)-1001.);
-        l.FillTree("j1_radionMatched", (float)-1001.);
+        l.FillTree("j1_bgenMatched", (float)-1001.);
 		l.FillTree("j1_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j1_secVtxPt", (float)-1001.);
 		l.FillTree("j1_secVtx3dL", (float)-1001.);
@@ -2348,7 +2332,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j2_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[1]]);
         l.FillTree("j2_jetProbBtag", (float)l.jet_algoPF1_jetProbBtag[jets[1]]);
         l.FillTree("j2_tcheBtag", (float)l.jet_algoPF1_tcheBtag[jets[1]]);
-        l.FillTree("j2_radionMatched", (float)l.jet_algoPF1_radionMatched[jets[1]]);
+        l.FillTree("j2_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[1]]);
 		l.FillTree("j2_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[1]]);
 		l.FillTree("j2_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[1]]);
 		l.FillTree("j2_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[1]]);
@@ -2372,7 +2356,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j2_csvMvaBtag", (float)-1001.);
         l.FillTree("j2_jetProbBtag", (float)-1001.);
         l.FillTree("j2_tcheBtag", (float)-1001.);
-        l.FillTree("j2_radionMatched", (float)-1001.);
+        l.FillTree("j2_bgenMatched", (float)-1001.);
 		l.FillTree("j2_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j2_secVtxPt", (float)-1001.);
 		l.FillTree("j2_secVtx3dL", (float)-1001.);
@@ -2437,7 +2421,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j3_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[2]]);
         l.FillTree("j3_jetProbBtag", (float)l.jet_algoPF1_jetProbBtag[jets[2]]);
         l.FillTree("j3_tcheBtag", (float)l.jet_algoPF1_tcheBtag[jets[2]]);
-        l.FillTree("j3_radionMatched", (float)l.jet_algoPF1_radionMatched[jets[2]]);
+        l.FillTree("j3_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[2]]);
 		l.FillTree("j3_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[2]]);
 		l.FillTree("j3_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[2]]);
 		l.FillTree("j3_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[2]]);
@@ -2461,7 +2445,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j3_csvMvaBtag", (float)-1001.);
         l.FillTree("j3_jetProbBtag", (float)-1001.);
         l.FillTree("j3_tcheBtag", (float)-1001.);
-        l.FillTree("j3_radionMatched", (float)-1001.);
+        l.FillTree("j3_bgenMatched", (float)-1001.);
 		l.FillTree("j3_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j3_secVtxPt", (float)-1001.);
 		l.FillTree("j3_secVtx3dL", (float)-1001.);
@@ -2488,7 +2472,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j4_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[3]]);
         l.FillTree("j4_jetProbBtag", (float)l.jet_algoPF1_jetProbBtag[jets[3]]);
         l.FillTree("j4_tcheBtag", (float)l.jet_algoPF1_tcheBtag[jets[3]]);
-        l.FillTree("j4_radionMatched", (float)l.jet_algoPF1_radionMatched[jets[3]]);
+        l.FillTree("j4_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[3]]);
 		l.FillTree("j4_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[3]]);
 		l.FillTree("j4_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[3]]);
 		l.FillTree("j4_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[3]]);
@@ -2512,7 +2496,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j4_csvMvaBtag", (float)-1001.);
         l.FillTree("j4_jetProbBtag", (float)-1001.);
         l.FillTree("j4_tcheBtag", (float)-1001.);
-        l.FillTree("j4_radionMatched", (float)-1001.);
+        l.FillTree("j4_bgenMatched", (float)-1001.);
 		l.FillTree("j4_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j4_secVtxPt", (float)-1001.);
 		l.FillTree("j4_secVtx3dL", (float)-1001.);

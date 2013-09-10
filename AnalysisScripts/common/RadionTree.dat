@@ -126,7 +126,7 @@ type=2 name=j1_csvBtag
 type=2 name=j1_csvMvaBtag
 type=2 name=j1_jetProbBtag
 type=2 name=j1_tcheBtag
-type=2 name=j1_radionMatched
+type=2 name=j1_bgenMatched
 type=2 name=j1_ptD
 type=2 name=j1_nSecondaryVertices
 type=2 name=j1_secVtxPt
@@ -153,7 +153,7 @@ type=2 name=j2_csvBtag
 type=2 name=j2_csvMvaBtag
 type=2 name=j2_jetProbBtag
 type=2 name=j2_tcheBtag
-type=2 name=j2_radionMatched
+type=2 name=j2_bgenMatched
 type=2 name=j2_ptD
 type=2 name=j2_nSecondaryVertices
 type=2 name=j2_secVtxPt
@@ -180,7 +180,7 @@ type=2 name=j3_csvBtag
 type=2 name=j3_csvMvaBtag
 type=2 name=j3_jetProbBtag
 type=2 name=j3_tcheBtag
-type=2 name=j3_radionMatched
+type=2 name=j3_bgenMatched
 type=2 name=j3_ptD
 type=2 name=j3_nSecondaryVertices
 type=2 name=j3_secVtxPt
@@ -207,7 +207,7 @@ type=2 name=j4_csvBtag
 type=2 name=j4_csvMvaBtag
 type=2 name=j4_jetProbBtag
 type=2 name=j4_tcheBtag
-type=2 name=j4_radionMatched
+type=2 name=j4_bgenMatched
 type=2 name=j4_ptD
 type=2 name=j4_nSecondaryVertices
 type=2 name=j4_secVtxPt
