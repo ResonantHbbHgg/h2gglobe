@@ -44,5 +44,5 @@ AnalysisScripts/baseline/tmp_*
 *.tar.gz
 
 # scratch dump files
-dump.*
+dump*
 
