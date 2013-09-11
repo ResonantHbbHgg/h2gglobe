@@ -577,6 +577,9 @@ void StatAnalysis::bookSignalModel(LoopAll& l, Int_t nDataBins)
 	if (!doSpinAnalysis){
             l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_ggh_mass_m%d",sig),nDataBins);
             l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_vbf_mass_m%d",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_Radion_m%d_8TeV_nm",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_Graviton_m%d_8TeV",sig),nDataBins);
+
             if(!splitwzh) l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wzh_mass_m%d",sig),nDataBins);
             else{
                 l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wh_mass_m%d",sig),nDataBins);
@@ -586,6 +589,8 @@ void StatAnalysis::bookSignalModel(LoopAll& l, Int_t nDataBins)
 
             l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_ggh_mass_m%d_rv",sig),nDataBins);
             l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_vbf_mass_m%d_rv",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_Radion_m%d_8TeV_nm_rv",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_Graviton_m%d_8TeV_rv",sig),nDataBins);
             if(!splitwzh) l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wzh_mass_m%d_rv",sig),nDataBins);
             else{
                 l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wh_mass_m%d_rv",sig),nDataBins);
@@ -595,6 +600,8 @@ void StatAnalysis::bookSignalModel(LoopAll& l, Int_t nDataBins)
 
             l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_ggh_mass_m%d_wv",sig),nDataBins);
             l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_vbf_mass_m%d_wv",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_Radion_m%d_8TeV_nm_wv",sig),nDataBins);
+            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_Graviton_m%d_8TeV_wv",sig),nDataBins);
             if(!splitwzh) l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wzh_mass_m%d_wv",sig),nDataBins);
             else{
                 l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wh_mass_m%d_wv",sig),nDataBins);
@@ -636,6 +643,8 @@ void StatAnalysis::bookSignalModel(LoopAll& l, Int_t nDataBins)
         if (!doSpinAnalysis){
             l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_ggh_mass_m%d",sig),-1);
             l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_vbf_mass_m%d",sig),-1);
+            l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_Radion_m%d_8TeV_nm",sig),-1);
+            l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_Graviton_m%d_8TeV",sig),-1);
             if(!splitwzh) l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_wzh_mass_m%d",sig),-1);
             else{
                 l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_wh_mass_m%d",sig),-1);
@@ -843,6 +852,7 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
 				float syst_shift, bool skipSelection,
 				BaseGenLevelSmearer *genSys, BaseSmearer *phoSys, BaseDiPhotonSmearer * diPhoSys)
 {
+    if(PADEBUG) cerr << "Entering StatAnalysis::AnalyseEvent" << endl;
     assert( isSyst || ! skipSelection );
 
     int cur_type = l.itype[l.current];
@@ -1062,8 +1072,9 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
 	    } else {
 	        fillDiphoton(lead_p4, sublead_p4, Higgs, lead_r9, sublead_r9, vtx, &smeared_pho_energy[0], l, diphoton_id);
 	    }
+	} else {
+	        fillDiphoton(lead_p4, sublead_p4, Higgs, lead_r9, sublead_r9, vtx, &smeared_pho_energy[0], l, diphoton_id);
 	}
-	
 	// apply beamspot reweighting if necessary
         if(reweighBeamspot && cur_type!=0) {
             evweight*=BeamspotReweight(vtx->Z(),((TVector3*)l.gv_pos->At(0))->Z());
@@ -1370,9 +1381,11 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
             eventListText << endl;
         }
 	    
+        if(PADEBUG) cerr << "Leaving PhotonAnalysis::FindRadionObjects" << endl;
         return (category >= 0 && mass>=massMin && mass<=massMax);
     }
 
+    if(PADEBUG) cerr << "Leaving PhotonAnalysis::FindRadionObjects" << endl;
     return false;
 }
 
@@ -2093,6 +2106,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         const TLorentzVector & Higgs, Float_t diphobdt_output, Int_t category, bool VBFevent, Float_t myVBF_Mjj, Float_t myVBFLeadJPt, 
         Float_t myVBFSubJPt, Int_t nVBFDijetJetCategories, bool isSyst, std::string name1) {
 
+    if(PADEBUG) cerr << "Entering StatAnalysis::fillOpTree" << endl;
+    if(PADEBUG) cerr << "StatAnalysis::fillOpTree: lead_p4.Pt()= " << lead_p4.Pt() << "\tsublead_p4.Pt()= " << sublead_p4.Pt() << endl;
 // event variables
     l.FillTree("itype", (int)l.itype[l.current]);
 	l.FillTree("run",(float)l.run);
@@ -2107,6 +2122,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	l.FillTree("rho", (float)l.rho_algo1);
     l.FillTree("category", (int)category);
 
+    if(PADEBUG) cerr << "StatAnalysis::fillOpTree: getting MET corrections" << endl;
     TLorentzVector myMet = l.METCorrection2012B(lead_p4, sublead_p4);
 
     l.FillTree("met_pfmet", (float)l.met_pfmet);
@@ -2116,6 +2132,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     l.FillTree("met_corr_eta_pfmet", (float)myMet.Eta());
     l.FillTree("met_corr_e_pfmet", (float)myMet.Energy());
 
+    if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling photon information" << endl;
 // photon variables
 	l.FillTree("ph1_e",(float)lead_p4.E());
 	l.FillTree("ph2_e",(float)sublead_p4.E());
@@ -2147,6 +2164,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	double pho2_pfchargedisobad03 = 0.;
 	int pho1_ivtxpfch04bad=-1;
 
+    if(PADEBUG) cerr << "StatAnalysis::fillOpTree: computing and storing isolations wrt chosen vertex" << endl;
 	for(int ivtx=0; ivtx<l.vtx_std_n; ivtx++){
         if ((*l.pho_pfiso_mycharged04)[diphoton_index.first][ivtx]>pho1_pfchargedisobad04){
             pho1_pfchargedisobad04=(*l.pho_pfiso_mycharged04)[diphoton_index.first][ivtx]>pho1_pfchargedisobad04;
@@ -2221,6 +2239,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	l.FillTree("dipho_Y", (float)diphoton.Rapidity());
     TVector3* vtx = (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]);
 
+    if(PADEBUG) cerr << "StatAnalysis::fillOpTree: vertex variables" << endl;
 // vertices variables
     l.FillTree("vtx_ind", (int)l.dipho_vtxind[diphoton_id]);
 	l.FillTree("vtx_x", (float)vtx->X());
@@ -2236,11 +2255,13 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     l.FillTree("vtx_pulltoconv", (float)vtxAna_.pulltoconv(0));
     l.FillTree("vtx_prob", (float)vtxAna_.vertexProbability(l.vtx_std_evt_mva->at(diphoton_id), l.vtx_std_n));
 
+    if(PADEBUG) cerr << "StatAnalysis::fillOpTree: select jets" << endl;
 // jet variables
     vector<int> jets;
     jets = l.SelectJets(lead_p4, sublead_p4);
     //cout<<"here"<<jets.size()<<endl;
 
+    if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling jet info" << endl;
     l.FillTree("njets_passing_kLooseID",(int)jets.size());
     int njets_passing_kLooseID_and_CSVL = 0;
     int njets_passing_kLooseID_and_CSVM = 0;
@@ -2595,6 +2616,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("gr_j2_p4_phi", (float)-1001.);
 		l.FillTree("gr_j2_p4_mass", (float)-1001.);
     } // end if type is signal
+    if(PADEBUG) cerr << "Leaving StatAnalysis::fillOpTree" << endl;
 };
 
 
