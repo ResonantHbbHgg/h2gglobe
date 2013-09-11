@@ -167,15 +167,15 @@ pho_genmatched
 ## 
 vtx_std_n
 vtx_std_xyz
-vtx_std_ndof
+#vtx_std_ndof
 
 ##
 ## PU correction
 ##
 ## rho
 rho_algo1
-rho_algo2
-rho_algo3
+#rho_algo2
+#rho_algo3
 
 ## 
 ## Beam spot
