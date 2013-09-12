@@ -2260,6 +2260,19 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     vector<int> jets;
     jets = l.SelectJets(lead_p4, sublead_p4);
     //cout<<"here"<<jets.size()<<endl;
+    cout << "((TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]))->Pt()= " << ((TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]))->Pt() << endl;
+//    bool recorrectJets(false), emulateJetResponse(false), applyJer(false), applyJecUnc(false);
+    cout << "apply jet corrections here" << endl;
+    float jecShift = -1.;
+    postProcessJets(l);
+    cout <<
+"\trecorrectJets= " << recorrectJets <<
+"\temulateJetResponse= " << emulateJetResponse <<
+"\tapplyJer= " << applyJer <<
+"\tapplyJecUnc= " << applyJecUnc << endl;
+
+//    jetHandler_->applyJerUncertainty(ijet, jerShift);
+//    jetHandler_->applyJecUncertainty(ijet, jecShift);
 
     if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling jet info" << endl;
     l.FillTree("njets_passing_kLooseID",(int)jets.size());

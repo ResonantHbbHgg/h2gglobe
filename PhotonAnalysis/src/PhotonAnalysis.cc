@@ -1711,6 +1711,7 @@ void PhotonAnalysis::FillReductionVariables(LoopAll& l, int jentry)
 // ----------------------------------------------------------------------------------------------------
 void PhotonAnalysis::postProcessJets(LoopAll & l, int vtx)
 {
+    cout << "Entering PhotonAnalysis::postProcessJets" << endl;
     int minv = 0, maxv = l.vtx_std_n;
     if( l.typerun == l.kFill && l.version > 14 && maxv >= l.jet_algoPF1_nvtx ) {
 	maxv = l.jet_algoPF1_nvtx-1;
@@ -1751,6 +1752,7 @@ void PhotonAnalysis::postProcessJets(LoopAll & l, int vtx)
 	    l.jet_algoPF1_nvtx = ivtx+1;
 	}
     }
+    cout << "Leaving PhotonAnalysis::postProcessJets" << endl;
 }
 
 // ----------------------------------------------------------------------------------------------------
