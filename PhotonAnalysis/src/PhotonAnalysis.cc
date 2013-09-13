@@ -1826,9 +1826,9 @@ void PhotonAnalysis::FillReductionVariables(LoopAll& l, int jentry)
 }
 
 // ----------------------------------------------------------------------------------------------------
-void PhotonAnalysis::postProcessJets(LoopAll & l, int vtx)
+TLorentzVector PhotonAnalysis::postProcessSingleJet(LoopAll & l, int ijet, int vtx)
 {
-    cout << "Entering PhotonAnalysis::postProcessJets" << endl;
+    TLorentzVector postjet;
     int minv = 0, maxv = l.vtx_std_n;
     if( l.typerun == l.kFill && l.version > 14 && maxv >= l.jet_algoPF1_nvtx ) {
 	maxv = l.jet_algoPF1_nvtx-1;
@@ -1838,6 +1838,33 @@ void PhotonAnalysis::postProcessJets(LoopAll & l, int vtx)
 	maxv = vtx+1;
     }
     if( vtx == -1 || vtx == 0 ) {
+    if( ijet < 0 || ijet >= l.jet_algoPF1_n ) cout << "WARNING, jet index out of range" << endl;
+	    if( applyJer ) {
+		postjet = jetHandler_->returnJerUncertainty(ijet, jerShift);
+	    }
+	    else if( applyJecUnc ) {
+		postjet = jetHandler_->returnJecUncertainty(ijet, jecShift);
+	    } else {
+        postjet = *((TLorentzVector*)l.jet_algoPF1_p4->At(ijet));
+        }
+	}
+    return postjet;
+}
+
+// ----------------------------------------------------------------------------------------------------
+void PhotonAnalysis::postProcessJets(LoopAll & l, int vtx)
+{
+    if(PADEBUG) cout << "Entering PhotonAnalysis::postProcessJets: jerShift= " << jerShift << "\tjecShift= " << jecShift << endl;
+    int minv = 0, maxv = l.vtx_std_n;
+    if( l.typerun == l.kFill && l.version > 14 && maxv >= l.jet_algoPF1_nvtx ) {
+	maxv = l.jet_algoPF1_nvtx-1;
+    }
+    if( vtx!=-1 ){
+	minv = vtx;
+	maxv = vtx+1;
+    }
+    if( vtx == -1 || vtx == 0 ) {
+    if(PADEBUG) cout << "PhotonAnalysis::postProcessJets: loop over jets" << endl;
 	for(int ijet=0; ijet<l.jet_algoPF1_n; ++ijet) {
 	    if( recorrectJets ) {
 		jetHandler_->recomputeJec(ijet, true);
@@ -1852,24 +1879,30 @@ void PhotonAnalysis::postProcessJets(LoopAll & l, int vtx)
 		jetHandler_->applyJecUncertainty(ijet, jecShift);
 	    }
 	}
+    if(PADEBUG) cout << "PhotonAnalysis::postProcessJets: end of loop over jets" << endl;
     }
     for(int ivtx=minv;ivtx<maxv; ++ivtx) {
+    if(PADEBUG) cout << "PhotonAnalysis::postProcessJets: loop over jets" << endl;
 	for(int ijet=0; ijet<l.jet_algoPF1_n; ++ijet) {
 	    if( recomputeBetas || (l.typerun != l.kFill && l.version > 14 && ivtx >= l.jet_algoPF1_nvtx) && 0 ) {
 		/// std::cout << "recomputeBetas " << ivtx << " " << l.jet_algoPF1_nvtx << std::endl;
+        if(PADEBUG) cout << "computeBetas" << endl;
 		jetHandler_->computeBetas(ijet, ivtx);
 	    }
 	    if( rerunJetMva ) {
+        if(PADEBUG) cout << "computeMva" << endl;
 		jetHandler_->computeMva(ijet, ivtx);
 	    } else if ( recomputeJetWp ) {
+        if(PADEBUG) cout << "computeWp" << endl;
 		jetHandler_->computeWp(ijet, ivtx);
 	    }
 	}
+    if(PADEBUG) cout << "PhotonAnalysis::postProcessJets: end of loop over jets" << endl;
 	if( ivtx >= l.jet_algoPF1_nvtx && l.typerun != l.kFill ) {
 	    l.jet_algoPF1_nvtx = ivtx+1;
 	}
     }
-    cout << "Leaving PhotonAnalysis::postProcessJets" << endl;
+    if(PADEBUG) cout << "Leaving PhotonAnalysis::postProcessJets" << endl;
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -5144,6 +5177,36 @@ void PhotonAnalysis::GetRegressionCorrections(LoopAll &l){
         l.pho_regr_energy[ipho] = ecor;
         l.pho_regr_energyerr[ipho] = ecorerr;
     }
+}
+
+TLorentzVector PhotonAnalysis::getJecJer(LoopAll &l, TLorentzVector *jet, int ijet, int applyJecUnc__, double jecShift__, int applyJer__, double jerShift__ )
+{
+    // save initial values to restore them afterwards
+    double jetPt = jet->Pt();
+    double jetEta = jet->Eta();
+    double jetPhi = jet->Phi();
+    double jetM = jet->M();
+    // get a clue what to do
+    applyJecUnc = applyJecUnc__;
+    jecShift = jecShift__;
+    applyJer = applyJer__;
+    jerShift = jerShift__;
+    // apply jec / jer uncertainties
+    if(PADEBUG) cerr << "PhotonAnalysis::getJecJer:\tijet= " << ijet << "\tapplyJecUnc= " << applyJecUnc << "\tjecShift= " << jecShift << "\tapplyJer= " << applyJer << "\tjerShift= " << jerShift << "\tl.jet_algoPF1_genPt[ijet]= " << l.jet_algoPF1_genPt[ijet] << endl;
+    if(PADEBUG) cerr << "PhotonAnalysis::getJecJer: before postProcessSingleJet: (pt, eta, phi, m)= ( " << jetPt << " , " << jetEta << " , " << jetPhi << " , " << jetM << " )" << endl;
+    TLorentzVector modJet;
+    // protecting jet energy resolution corrections:
+    // from https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution 
+    // "This method only works for jets that are well matched to a GEN jet (doing the matching from GEN to RECO) otherwise the method can lead to large response shifts."
+    if( applyJer && l.jet_algoPF1_genPt[ijet] == 0 )
+        modJet = *jet;
+    else
+        modJet = postProcessSingleJet(l, ijet);
+    if(PADEBUG) cerr << "PhotonAnalysis::getJecJer: after postProcessSingleJet: (pt, eta, phi, m)= ( " << modJet.Pt() << " , " << modJet.Eta() << " , " << modJet.Phi() << " , " << modJet.M() << " )" << endl;
+//    double modJetPt = modJet.Pt();
+//    cout << "modJetPt - jetPt= " << modJetPt << " - " << jetPt << " = " << modJetPt - jetPt << endl;
+    jet->SetPtEtaPhiM(jetPt, jetEta, jetPhi, jetM);
+    return modJet;
 }
 
 // Local Variables:

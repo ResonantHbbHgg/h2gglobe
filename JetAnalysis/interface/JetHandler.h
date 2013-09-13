@@ -43,6 +43,8 @@ public:
     void setJetResponseStep(float x) { lumiStep_ = x; };
     void applyJecUncertainty(int ijet, float shift);
     void applyJerUncertainty(int ijet, float shift);
+    TLorentzVector returnJecUncertainty(int ijet, float shift);
+    TLorentzVector returnJerUncertainty(int ijet, float shift);
 
     void bookFlatTree(TTree * tree);
     

@@ -2237,20 +2237,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 // jet variables
     vector<int> jets;
     jets = l.SelectJets(lead_p4, sublead_p4);
-    //cout<<"here"<<jets.size()<<endl;
-    cout << "((TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]))->Pt()= " << ((TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]))->Pt() << endl;
-//    bool recorrectJets(false), emulateJetResponse(false), applyJer(false), applyJecUnc(false);
-    cout << "apply jet corrections here" << endl;
-    float jecShift = -1.;
-    postProcessJets(l);
-    cout <<
-"\trecorrectJets= " << recorrectJets <<
-"\temulateJetResponse= " << emulateJetResponse <<
-"\tapplyJer= " << applyJer <<
-"\tapplyJecUnc= " << applyJecUnc << endl;
-
-//    jetHandler_->applyJerUncertainty(ijet, jerShift);
-//    jetHandler_->applyJecUncertainty(ijet, jecShift);
 
     if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling jet info" << endl;
     l.FillTree("njets_passing_kLooseID",(int)jets.size());
@@ -2264,6 +2250,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if( PADEBUG ) cout << "l.jet_algoPF1_ntk[jets[" << ijet << "]]= " << l.jet_algoPF1_ntk[jets[ijet]] << endl;
         if( PADEBUG ) cout << "l.jet_algoPF1_nNeutrals[jets[" << ijet << "]]= " << (int)l.jet_algoPF1_nNeutrals[jets[ijet]] << endl;
         if( PADEBUG ) cout << "l.jet_algoPF1_nCharged[jets[" << ijet << "]]= " << l.jet_algoPF1_nCharged[jets[ijet]] << endl;
+        if( PADEBUG ) cout << "l.jet_algoPF1_genPt[jets[" << ijet << "]]= " << l.jet_algoPF1_genPt[jets[ijet]] << endl;
         if( PADEBUG ) cout << "l.jet_algoPF1_csvBtag[jets[" << ijet << "]]= " << l.jet_algoPF1_csvBtag[jets[ijet]] << endl;
         float csv = l.jet_algoPF1_csvBtag[jets[ijet]];
         if( csv > 0.244 )
@@ -2277,13 +2264,38 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     l.FillTree("njets_passing_kLooseID_and_CSVM", (int)njets_passing_kLooseID_and_CSVM); 
     l.FillTree("njets_passing_kLooseID_and_CSVT", (int)njets_passing_kLooseID_and_CSVT); 
 
-
+    if( PADEBUG ) cout << "jets.size()= " << jets.size() << endl;
     if(jets.size()>0){
         TLorentzVector* jet1 = (TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]);
 	    l.FillTree("j1_e",(float)jet1->Energy());
     	l.FillTree("j1_pt",(float)jet1->Pt());
 	    l.FillTree("j1_phi",(float)jet1->Phi());
     	l.FillTree("j1_eta",(float)jet1->Eta());
+        TLorentzVector j1_jecD = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]), jets[0], 1, -1., 0,  0.);
+        TLorentzVector j1_jecU = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]), jets[0], 1, +1., 0,  0.);
+        TLorentzVector j1_jerD = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]), jets[0], 0,  0., 1, -1.);
+        TLorentzVector j1_jerC = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]), jets[0], 0,  0., 1,  0.);
+        TLorentzVector j1_jerU = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]), jets[0], 0,  0., 1, +1.);
+	    l.FillTree("j1_jecD_e",(float)j1_jecD.Energy());
+    	l.FillTree("j1_jecD_pt",(float)j1_jecD.Pt());
+	    l.FillTree("j1_jecD_phi",(float)j1_jecD.Phi());
+    	l.FillTree("j1_jecD_eta",(float)j1_jecD.Eta());
+	    l.FillTree("j1_jecU_e",(float)j1_jecU.Energy());
+    	l.FillTree("j1_jecU_pt",(float)j1_jecU.Pt());
+	    l.FillTree("j1_jecU_phi",(float)j1_jecU.Phi());
+    	l.FillTree("j1_jecU_eta",(float)j1_jecU.Eta());
+	    l.FillTree("j1_jerD_e",(float)j1_jerD.Energy());
+    	l.FillTree("j1_jerD_pt",(float)j1_jerD.Pt());
+	    l.FillTree("j1_jerD_phi",(float)j1_jerD.Phi());
+    	l.FillTree("j1_jerD_eta",(float)j1_jerD.Eta());
+	    l.FillTree("j1_jerC_e",(float)j1_jerC.Energy());
+    	l.FillTree("j1_jerC_pt",(float)j1_jerC.Pt());
+	    l.FillTree("j1_jerC_phi",(float)j1_jerC.Phi());
+    	l.FillTree("j1_jerC_eta",(float)j1_jerC.Eta());
+	    l.FillTree("j1_jerU_e",(float)j1_jerU.Energy());
+    	l.FillTree("j1_jerU_pt",(float)j1_jerU.Pt());
+	    l.FillTree("j1_jerU_phi",(float)j1_jerU.Phi());
+    	l.FillTree("j1_jerU_eta",(float)j1_jerU.Eta());
 	    //l.FillTree("j1_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[0]]);
     	l.FillTree("j1_beta", (float)l.jet_algoPF1_beta[jets[0]]);
 	    l.FillTree("j1_betaStar", (float)l.jet_algoPF1_betaStar[jets[0]]);
@@ -2303,11 +2315,32 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j1_ntk", (int)l.jet_algoPF1_ntk[jets[0]]);
 		l.FillTree("j1_nNeutrals", (int)l.jet_algoPF1_nNeutrals[jets[0]]);
 		l.FillTree("j1_nCharged", (int)l.jet_algoPF1_nCharged[jets[0]]);
+		l.FillTree("j1_genPt", (float)l.jet_algoPF1_genPt[jets[0]]);
     } else {
 	    l.FillTree("j1_e",(float)-1001.);
     	l.FillTree("j1_pt",(float)-1001.);
 	    l.FillTree("j1_phi",(float)-1001.);
     	l.FillTree("j1_eta",(float)-1001.);
+	    l.FillTree("j1_jecD_e",(float)-1001.);
+    	l.FillTree("j1_jecD_pt",(float)-1001.);
+	    l.FillTree("j1_jecD_phi",(float)-1001.);
+    	l.FillTree("j1_jecD_eta",(float)-1001.);
+	    l.FillTree("j1_jecU_e",(float)-1001.);
+    	l.FillTree("j1_jecU_pt",(float)-1001.);
+	    l.FillTree("j1_jecU_phi",(float)-1001.);
+    	l.FillTree("j1_jecU_eta",(float)-1001.);
+	    l.FillTree("j1_jerD_e",(float)-1001.);
+    	l.FillTree("j1_jerD_pt",(float)-1001.);
+	    l.FillTree("j1_jerD_phi",(float)-1001.);
+    	l.FillTree("j1_jerD_eta",(float)-1001.);
+	    l.FillTree("j1_jerC_e",(float)-1001.);
+    	l.FillTree("j1_jerC_pt",(float)-1001.);
+	    l.FillTree("j1_jerC_phi",(float)-1001.);
+    	l.FillTree("j1_jerC_eta",(float)-1001.);
+	    l.FillTree("j1_jerU_e",(float)-1001.);
+    	l.FillTree("j1_jerU_pt",(float)-1001.);
+	    l.FillTree("j1_jerU_phi",(float)-1001.);
+    	l.FillTree("j1_jerU_eta",(float)-1001.);
 	    //l.FillTree("j1_cutbased_wp_level", (float)-1001.);
     	l.FillTree("j1_beta", (float)-1001.);
 	    l.FillTree("j1_betaStar", (float)-1001.);
@@ -2327,6 +2360,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j1_ntk", (int)-1001);
 		l.FillTree("j1_nNeutrals", (int)-1001);
 		l.FillTree("j1_nCharged", (int)-1001);
+		l.FillTree("j1_genPt", (float)-1001);
     } // end if njets > 0
 
     if(jets.size()>1){
@@ -2335,6 +2369,31 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j2_pt",(float)jet2->Pt());
 	    l.FillTree("j2_phi",(float)jet2->Phi());
 	    l.FillTree("j2_eta",(float)jet2->Eta());
+        TLorentzVector j2_jecD = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[1]), jets[1], 1, -1., 0,  0.);
+        TLorentzVector j2_jecU = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[1]), jets[1], 1, +1., 0,  0.);
+        TLorentzVector j2_jerD = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[1]), jets[1], 0,  0., 1, -1.);
+        TLorentzVector j2_jerC = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[1]), jets[1], 0,  0., 1,  0.);
+        TLorentzVector j2_jerU = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[1]), jets[1], 0,  0., 1, +1.);
+	    l.FillTree("j2_jecD_e",(float)j2_jecD.Energy());
+    	l.FillTree("j2_jecD_pt",(float)j2_jecD.Pt());
+	    l.FillTree("j2_jecD_phi",(float)j2_jecD.Phi());
+    	l.FillTree("j2_jecD_eta",(float)j2_jecD.Eta());
+	    l.FillTree("j2_jecU_e",(float)j2_jecU.Energy());
+    	l.FillTree("j2_jecU_pt",(float)j2_jecU.Pt());
+	    l.FillTree("j2_jecU_phi",(float)j2_jecU.Phi());
+    	l.FillTree("j2_jecU_eta",(float)j2_jecU.Eta());
+	    l.FillTree("j2_jerD_e",(float)j2_jerD.Energy());
+    	l.FillTree("j2_jerD_pt",(float)j2_jerD.Pt());
+	    l.FillTree("j2_jerD_phi",(float)j2_jerD.Phi());
+    	l.FillTree("j2_jerD_eta",(float)j2_jerD.Eta());
+	    l.FillTree("j2_jerC_e",(float)j2_jerC.Energy());
+    	l.FillTree("j2_jerC_pt",(float)j2_jerC.Pt());
+	    l.FillTree("j2_jerC_phi",(float)j2_jerC.Phi());
+    	l.FillTree("j2_jerC_eta",(float)j2_jerC.Eta());
+	    l.FillTree("j2_jerU_e",(float)j2_jerU.Energy());
+    	l.FillTree("j2_jerU_pt",(float)j2_jerU.Pt());
+	    l.FillTree("j2_jerU_phi",(float)j2_jerU.Phi());
+    	l.FillTree("j2_jerU_eta",(float)j2_jerU.Eta());
 	    //l.FillTree("j2_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[1]]);
     	l.FillTree("j2_beta", (float)l.jet_algoPF1_beta[jets[1]]);
     	l.FillTree("j2_betaStar", (float)l.jet_algoPF1_betaStar[jets[1]]);
@@ -2354,11 +2413,32 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j2_ntk", (int)l.jet_algoPF1_ntk[jets[1]]);
 		l.FillTree("j2_nNeutrals", (int)l.jet_algoPF1_nNeutrals[jets[1]]);
 		l.FillTree("j2_nCharged", (int)l.jet_algoPF1_nCharged[jets[1]]);
+		l.FillTree("j2_genPt", (float)l.jet_algoPF1_genPt[jets[1]]);
     } else {
 	    l.FillTree("j2_e",(float)-1001.);
 	    l.FillTree("j2_pt",(float)-1001.);
 	    l.FillTree("j2_phi",(float)-1001.);
 	    l.FillTree("j2_eta",(float)-1001.);
+	    l.FillTree("j2_jecD_e",(float)-1001.);
+    	l.FillTree("j2_jecD_pt",(float)-1001.);
+	    l.FillTree("j2_jecD_phi",(float)-1001.);
+    	l.FillTree("j2_jecD_eta",(float)-1001.);
+	    l.FillTree("j2_jecU_e",(float)-1001.);
+    	l.FillTree("j2_jecU_pt",(float)-1001.);
+	    l.FillTree("j2_jecU_phi",(float)-1001.);
+    	l.FillTree("j2_jecU_eta",(float)-1001.);
+	    l.FillTree("j2_jerD_e",(float)-1001.);
+    	l.FillTree("j2_jerD_pt",(float)-1001.);
+	    l.FillTree("j2_jerD_phi",(float)-1001.);
+    	l.FillTree("j2_jerD_eta",(float)-1001.);
+	    l.FillTree("j2_jerC_e",(float)-1001.);
+    	l.FillTree("j2_jerC_pt",(float)-1001.);
+	    l.FillTree("j2_jerC_phi",(float)-1001.);
+    	l.FillTree("j2_jerC_eta",(float)-1001.);
+	    l.FillTree("j2_jerU_e",(float)-1001.);
+    	l.FillTree("j2_jerU_pt",(float)-1001.);
+	    l.FillTree("j2_jerU_phi",(float)-1001.);
+    	l.FillTree("j2_jerU_eta",(float)-1001.);
 	    //l.FillTree("j2_cutbased_wp_level", (float)-1001.);
     	l.FillTree("j2_beta", (float)-1001.);
     	l.FillTree("j2_betaStar", (float)-1001.);
@@ -2378,6 +2458,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j2_ntk", (int)-1001);
 		l.FillTree("j2_nNeutrals", (int)-1001);
 		l.FillTree("j2_nCharged", (int)-1001);
+		l.FillTree("j2_genPt", (float)-1001);
     } // end if njets > 1
 
     if(jets.size()>1){
@@ -2424,6 +2505,31 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j3_pt",(float)jet3->Pt());
     	l.FillTree("j3_phi",(float)jet3->Phi());
     	l.FillTree("j3_eta",(float)jet3->Eta());
+        TLorentzVector j3_jecD = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[2]), jets[2], 1, -1., 0,  0.);
+        TLorentzVector j3_jecU = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[2]), jets[2], 1, +1., 0,  0.);
+        TLorentzVector j3_jerD = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[2]), jets[2], 0,  0., 1, -1.);
+        TLorentzVector j3_jerC = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[2]), jets[2], 0,  0., 1,  0.);
+        TLorentzVector j3_jerU = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[2]), jets[2], 0,  0., 1, +1.);
+	    l.FillTree("j3_jecD_e",(float)j3_jecD.Energy());
+    	l.FillTree("j3_jecD_pt",(float)j3_jecD.Pt());
+	    l.FillTree("j3_jecD_phi",(float)j3_jecD.Phi());
+    	l.FillTree("j3_jecD_eta",(float)j3_jecD.Eta());
+	    l.FillTree("j3_jecU_e",(float)j3_jecU.Energy());
+    	l.FillTree("j3_jecU_pt",(float)j3_jecU.Pt());
+	    l.FillTree("j3_jecU_phi",(float)j3_jecU.Phi());
+    	l.FillTree("j3_jecU_eta",(float)j3_jecU.Eta());
+	    l.FillTree("j3_jerD_e",(float)j3_jerD.Energy());
+    	l.FillTree("j3_jerD_pt",(float)j3_jerD.Pt());
+	    l.FillTree("j3_jerD_phi",(float)j3_jerD.Phi());
+    	l.FillTree("j3_jerD_eta",(float)j3_jerD.Eta());
+	    l.FillTree("j3_jerC_e",(float)j3_jerC.Energy());
+    	l.FillTree("j3_jerC_pt",(float)j3_jerC.Pt());
+	    l.FillTree("j3_jerC_phi",(float)j3_jerC.Phi());
+    	l.FillTree("j3_jerC_eta",(float)j3_jerC.Eta());
+	    l.FillTree("j3_jerU_e",(float)j3_jerU.Energy());
+    	l.FillTree("j3_jerU_pt",(float)j3_jerU.Pt());
+	    l.FillTree("j3_jerU_phi",(float)j3_jerU.Phi());
+    	l.FillTree("j3_jerU_eta",(float)j3_jerU.Eta());
 	    //l.FillTree("j3_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[2]]);
 	    l.FillTree("j3_beta", (float)l.jet_algoPF1_beta[jets[2]]);
 	    l.FillTree("j3_betaStar", (float)l.jet_algoPF1_betaStar[jets[2]]);
@@ -2443,11 +2549,32 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j3_ntk", (int)l.jet_algoPF1_ntk[jets[2]]);
 		l.FillTree("j3_nNeutrals", (int)l.jet_algoPF1_nNeutrals[jets[2]]);
 		l.FillTree("j3_nCharged", (int)l.jet_algoPF1_nCharged[jets[2]]);
+		l.FillTree("j3_genPt", (float)l.jet_algoPF1_genPt[jets[2]]);
     } else {
     	l.FillTree("j3_e",(float)-1001.);
 	    l.FillTree("j3_pt",(float)-1001.);
     	l.FillTree("j3_phi",(float)-1001.);
     	l.FillTree("j3_eta",(float)-1001.);
+	    l.FillTree("j3_jecD_e",(float)-1001.);
+    	l.FillTree("j3_jecD_pt",(float)-1001.);
+	    l.FillTree("j3_jecD_phi",(float)-1001.);
+    	l.FillTree("j3_jecD_eta",(float)-1001.);
+	    l.FillTree("j3_jecU_e",(float)-1001.);
+    	l.FillTree("j3_jecU_pt",(float)-1001.);
+	    l.FillTree("j3_jecU_phi",(float)-1001.);
+    	l.FillTree("j3_jecU_eta",(float)-1001.);
+	    l.FillTree("j3_jerD_e",(float)-1001.);
+    	l.FillTree("j3_jerD_pt",(float)-1001.);
+	    l.FillTree("j3_jerD_phi",(float)-1001.);
+    	l.FillTree("j3_jerD_eta",(float)-1001.);
+	    l.FillTree("j3_jerC_e",(float)-1001.);
+    	l.FillTree("j3_jerC_pt",(float)-1001.);
+	    l.FillTree("j3_jerC_phi",(float)-1001.);
+    	l.FillTree("j3_jerC_eta",(float)-1001.);
+	    l.FillTree("j3_jerU_e",(float)-1001.);
+    	l.FillTree("j3_jerU_pt",(float)-1001.);
+	    l.FillTree("j3_jerU_phi",(float)-1001.);
+    	l.FillTree("j3_jerU_eta",(float)-1001.);
 	    //l.FillTree("j3_cutbased_wp_level", (float)-1001.);
 	    l.FillTree("j3_beta", (float)-1001.);
 	    l.FillTree("j3_betaStar", (float)-1001.);
@@ -2467,6 +2594,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j3_ntk", (int)-1001);
 		l.FillTree("j3_nNeutrals", (int)-1001);
 		l.FillTree("j3_nCharged", (int)-1001);
+		l.FillTree("j3_genPt", (float)-1001);
     } // if 3 jets
 
     if(jets.size() > 3){
@@ -2475,6 +2603,31 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j4_pt",(float)jet4->Pt());
 	    l.FillTree("j4_phi",(float)jet4->Phi());
 	    l.FillTree("j4_eta",(float)jet4->Eta());
+        TLorentzVector j4_jecD = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[3]), jets[3], 1, -1., 0,  0.);
+        TLorentzVector j4_jecU = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[3]), jets[3], 1, +1., 0,  0.);
+        TLorentzVector j4_jerD = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[3]), jets[3], 0,  0., 1, -1.);
+        TLorentzVector j4_jerC = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[3]), jets[3], 0,  0., 1,  0.);
+        TLorentzVector j4_jerU = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[3]), jets[3], 0,  0., 1, +1.);
+	    l.FillTree("j4_jecD_e",(float)j4_jecD.Energy());
+    	l.FillTree("j4_jecD_pt",(float)j4_jecD.Pt());
+	    l.FillTree("j4_jecD_phi",(float)j4_jecD.Phi());
+    	l.FillTree("j4_jecD_eta",(float)j4_jecD.Eta());
+	    l.FillTree("j4_jecU_e",(float)j4_jecU.Energy());
+    	l.FillTree("j4_jecU_pt",(float)j4_jecU.Pt());
+	    l.FillTree("j4_jecU_phi",(float)j4_jecU.Phi());
+    	l.FillTree("j4_jecU_eta",(float)j4_jecU.Eta());
+	    l.FillTree("j4_jerD_e",(float)j4_jerD.Energy());
+    	l.FillTree("j4_jerD_pt",(float)j4_jerD.Pt());
+	    l.FillTree("j4_jerD_phi",(float)j4_jerD.Phi());
+    	l.FillTree("j4_jerD_eta",(float)j4_jerD.Eta());
+	    l.FillTree("j4_jerC_e",(float)j4_jerC.Energy());
+    	l.FillTree("j4_jerC_pt",(float)j4_jerC.Pt());
+	    l.FillTree("j4_jerC_phi",(float)j4_jerC.Phi());
+    	l.FillTree("j4_jerC_eta",(float)j4_jerC.Eta());
+	    l.FillTree("j4_jerU_e",(float)j4_jerU.Energy());
+    	l.FillTree("j4_jerU_pt",(float)j4_jerU.Pt());
+	    l.FillTree("j4_jerU_phi",(float)j4_jerU.Phi());
+    	l.FillTree("j4_jerU_eta",(float)j4_jerU.Eta());
 	    //l.FillTree("j4_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[3]]);
 	    l.FillTree("j4_beta", (float)l.jet_algoPF1_beta[jets[3]]);
 	    l.FillTree("j4_betaStar", (float)l.jet_algoPF1_betaStar[jets[3]]);
@@ -2494,11 +2647,32 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j4_ntk", (int)l.jet_algoPF1_ntk[jets[3]]);
 		l.FillTree("j4_nNeutrals", (int)l.jet_algoPF1_nNeutrals[jets[3]]);
 		l.FillTree("j4_nCharged", (int)l.jet_algoPF1_nCharged[jets[3]]);
+		l.FillTree("j4_genPt", (float)l.jet_algoPF1_genPt[jets[3]]);
     } else {
     	l.FillTree("j4_e",(float)-1001.);
 	    l.FillTree("j4_pt",(float)-1001.);
 	    l.FillTree("j4_phi",(float)-1001.);
 	    l.FillTree("j4_eta",(float)-1001.);
+	    l.FillTree("j4_jecD_e",(float)-1001.);
+    	l.FillTree("j4_jecD_pt",(float)-1001.);
+	    l.FillTree("j4_jecD_phi",(float)-1001.);
+    	l.FillTree("j4_jecD_eta",(float)-1001.);
+	    l.FillTree("j4_jecU_e",(float)-1001.);
+    	l.FillTree("j4_jecU_pt",(float)-1001.);
+	    l.FillTree("j4_jecU_phi",(float)-1001.);
+    	l.FillTree("j4_jecU_eta",(float)-1001.);
+	    l.FillTree("j4_jerD_e",(float)-1001.);
+    	l.FillTree("j4_jerD_pt",(float)-1001.);
+	    l.FillTree("j4_jerD_phi",(float)-1001.);
+    	l.FillTree("j4_jerD_eta",(float)-1001.);
+	    l.FillTree("j4_jerC_e",(float)-1001.);
+    	l.FillTree("j4_jerC_pt",(float)-1001.);
+	    l.FillTree("j4_jerC_phi",(float)-1001.);
+    	l.FillTree("j4_jerC_eta",(float)-1001.);
+	    l.FillTree("j4_jerU_e",(float)-1001.);
+    	l.FillTree("j4_jerU_pt",(float)-1001.);
+	    l.FillTree("j4_jerU_phi",(float)-1001.);
+    	l.FillTree("j4_jerU_eta",(float)-1001.);
 	    //l.FillTree("j4_cutbased_wp_level", (float)-1001.);
 	    l.FillTree("j4_beta", (float)-1001.);
 	    l.FillTree("j4_betaStar", (float)-1001.);
@@ -2518,6 +2692,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j4_ntk", (int)-1001);
 		l.FillTree("j4_nNeutrals", (int)-1001);
 		l.FillTree("j4_nCharged", (int)-1001);
+		l.FillTree("j4_genPt", (float)-1001);
     } // if 4 jets
 
 // MC Truth radion signal information

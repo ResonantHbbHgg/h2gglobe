@@ -479,6 +479,8 @@ class PhotonAnalysis : public BaseAnalysis
     // Jets
     JetHandler * jetHandler_;
     void postProcessJets(LoopAll & l, int vtx=-1);
+    TLorentzVector postProcessSingleJet(LoopAll & l, int ijet, int vtx=-1);
+    TLorentzVector getJecJer(LoopAll &l, TLorentzVector *jet, int ijet, int applyJecUnc__, double jecShift__, int applyJer__, double jerShift__ );
     void switchJetIdVertex(LoopAll &l, int ivtx);
 
     std::map<int, vector<double> > weights;

@@ -322,6 +322,20 @@ void JetHandler::applyJecUncertainty(int ijet, float shift)
 }
 
 // ---------------------------------------------------------------------------------------------------------------
+TLorentzVector JetHandler::returnJecUncertainty(int ijet, float shift)
+{
+    TLorentzVector * p4 = (TLorentzVector*)l_.jet_algoPF1_p4->At(ijet);
+    double eta = p4->Eta();
+    double ptCor = p4->Pt();
+    
+    jecUnc_->setJetEta(eta);
+    jecUnc_->setJetPt(ptCor); // here you must use the CORRECTED jet pt
+    double unc = shift*fabs(jecUnc_->getUncertainty(shift > 0.));
+    *p4 *= 1. + unc;
+    return *p4;
+}
+
+// ---------------------------------------------------------------------------------------------------------------
 void JetHandler::applyJerUncertainty(int ijet, float shift)
 {
     TLorentzVector * p4 = (TLorentzVector*)l_.jet_algoPF1_p4->At(ijet);
@@ -335,6 +349,23 @@ void JetHandler::applyJerUncertainty(int ijet, float shift)
 
     double jetSf=max(0.,(genPt+resSf*(ptCor-genPt)))/ptCor;
     *p4 *= jetSf;
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+TLorentzVector JetHandler::returnJerUncertainty(int ijet, float shift)
+{
+    TLorentzVector * p4 = (TLorentzVector*)l_.jet_algoPF1_p4->At(ijet);
+    double eta = p4->Eta();
+    double ptCor = p4->Pt();
+    double genPt = l_.jet_algoPF1_genPt[ijet];
+
+    std::vector<double>::iterator bound =  std::lower_bound( jerEtaBins_.begin(), jerEtaBins_.end(), eta );
+    int bin = bound - jerEtaBins_.begin();
+    double resSf = jerResSf_[bin] + shift*jerResSfErr_[bin]; 
+
+    double jetSf=max(0.,(genPt+resSf*(ptCor-genPt)))/ptCor;
+    *p4 *= jetSf;
+    return *p4;
 }
 
 
