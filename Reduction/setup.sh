@@ -5,9 +5,10 @@
 [[ -z $version  ]] && [[ -f version.sh ]] && . version.sh
 
 base_storedir="./datastore"
-## storeremote="/castor/cern.ch/user/c/Resonant_HH/reduced"
+## storeremote="/castor/cern.ch/user/c/cmshgg/reduced"
 ## storeremote="/store/group/phys_higgs/Resonant_HH/reduced"
 storeremote="/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced"
+#storeremote="/store/group/phys_higgs/cmshgg/reduced/${group}"
 
 [[ -f $(whoami)_setup.sh ]] && . $(whoami)_setup.sh
 
