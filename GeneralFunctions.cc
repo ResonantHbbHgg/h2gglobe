@@ -2945,6 +2945,7 @@ int LoopAll::DiphotonCiCSelection( phoCiCIDLevel LEADCUTLEVEL, phoCiCIDLevel SUB
     
     float leadpt = lead_p4.Pt() > sublead_p4.Pt() ? lead_p4.Pt() : sublead_p4.Pt();
     float subleadpt = lead_p4.Pt() < sublead_p4.Pt() ? lead_p4.Pt() : sublead_p4.Pt();       
+		leadpt += 5.; subleadpt += 5.; // loosing of the pt cuts for later systematics study (Radion)
     // Exclusive modes cut smoothly on lead pt/M but on straight pt on sublead to save sig eff and avoid HLT turn-on  
     if(split){   
             if ( leadpt/m_gamgam < leadPtMin/120. || subleadpt< subleadPtMin ) { continue; }  
@@ -2956,6 +2957,7 @@ int LoopAll::DiphotonCiCSelection( phoCiCIDLevel LEADCUTLEVEL, phoCiCIDLevel SUB
 		    if ( leadpt < leadPtMin || subleadpt < subleadPtMin ) { continue; }
             }
     }
+		leadpt -= 5.; subleadpt -= 5.; // restoring pt values
 
     std::vector<std::vector<bool> > ph_passcut;
     if( ! cutsbycat.empty() ) {
