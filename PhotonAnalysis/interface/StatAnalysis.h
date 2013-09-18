@@ -71,7 +71,7 @@ class StatAnalysis : public PhotonAnalysis
     std::vector<float> cosThetaCatBoundaries;
 
     bool splitwzh;
-    void fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const TLorentzVector & sublead_p4, float *smeared_pho_energy, Float_t vtxProb,
+    void fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const TLorentzVector & sublead_p4, std::vector<float> & smeared_pho_energy, Float_t vtxProb,
 
 		     std::pair<int, int> diphoton_index, Int_t diphoton_id, Float_t phoid_mvaout_lead, Float_t phoid_mvaout_sublead,
 		     Float_t weight, Float_t evweight, Float_t mass, Float_t sigmaMrv, Float_t sigmaMwv,

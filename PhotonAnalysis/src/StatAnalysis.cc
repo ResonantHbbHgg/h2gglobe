@@ -764,7 +764,7 @@ bool StatAnalysis::Analysis(LoopAll& l, Int_t jentry)
     // Systematics uncertaities for the binned model
     // We re-analyse the event several times for different values of corrections and smearings
     if( cur_type < 0 && doMCSmearing && doSystematics ) {
-
+        
         // fill steps for syst uncertainty study
         float systStep = systRange / (float)nSystSteps;
 
@@ -822,7 +822,7 @@ bool StatAnalysis::Analysis(LoopAll& l, Int_t jentry)
         // single photon level systematics: several
         for(std::vector<BaseSmearer *>::iterator  si=systPhotonSmearers_.begin(); si!= systPhotonSmearers_.end(); ++si ) {
             mass_errors.clear(), weights.clear(), categories.clear(), mva_errors.clear();
-
+        
             for(float syst_shift=-systRange; syst_shift<=systRange; syst_shift+=systStep ) {
                 if( syst_shift == 0. ) { continue; } // skip the central value
                 syst_mass     =  0., syst_category = -1, syst_weight   =  0.;
@@ -890,6 +890,7 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
         smeared_pho_weight.clear(); smeared_pho_weight.resize(l.pho_n,1.);
         applySinglePhotonSmearings(smeared_pho_energy, smeared_pho_r9, smeared_pho_weight, cur_type, l, energyCorrected, energyCorrectedError,
                 phoSys, syst_shift);
+        
 
         // Fill CiC efficiency plots for ggH, mH=124
         //fillSignalEfficiencyPlots(weight, l);
@@ -1094,7 +1095,7 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
                     category, isCorrectVertex, evweight, vtx, l, muVtx, mu_ind, elVtx, el_ind );
 
             if (fillOptTree) {
-            fillOpTree(l, lead_p4, sublead_p4, &smeared_pho_energy[0], -2, diphoton_index, diphoton_id, -2, -2, weight, evweight, 
+            fillOpTree(l, lead_p4, sublead_p4, smeared_pho_energy, -2, diphoton_index, diphoton_id, -2, -2, weight, evweight, 
                 mass, -1, -1, Higgs, -2, category, VBFevent, myVBF_Mjj, myVBFLeadJPt, 
                 myVBFSubJPt, nVBFDijetJetCategories, isSyst, "no-syst");
             }
@@ -2078,7 +2079,7 @@ void dumpPhoton(std::ostream & eventListText, int lab,
 }
 
 
-void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const TLorentzVector & sublead_p4, float *smeared_pho_energy, Float_t vtxProb,
+void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const TLorentzVector & sublead_p4, /*float *smeared_pho_energy,*/ std::vector<float> & smeared_pho_energy, Float_t vtxProb,
         std::pair<int, int> diphoton_index, Int_t diphoton_id, Float_t phoid_mvaout_lead, Float_t phoid_mvaout_sublead,
         Float_t weight, Float_t evweight, Float_t mass, Float_t sigmaMrv, Float_t sigmaMwv,
         const TLorentzVector & Higgs, Float_t diphobdt_output, Int_t category, bool VBFevent, Float_t myVBF_Mjj, Float_t myVBFLeadJPt, 
@@ -2176,15 +2177,15 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	l.FillTree("ph2_ecaliso", (float)l.pho_pfiso_myphoton03[diphoton_index.second]);
 	l.FillTree("ph1_ecalisobad", (float)l.pho_pfiso_myphoton04[diphoton_index.first]);
 	l.FillTree("ph2_ecalisobad", (float)l.pho_pfiso_myphoton04[diphoton_index.second]);
-    TLorentzVector ph1_badvtx = l.get_pho_p4( diphoton_index.first, l.pho_tkiso_badvtx_id[diphoton_index.first], smeared_pho_energy );
+    TLorentzVector ph1_badvtx = l.get_pho_p4( diphoton_index.first, l.pho_tkiso_badvtx_id[diphoton_index.first], &smeared_pho_energy[0] );
 	l.FillTree("ph1_badvtx_Et", (float)ph1_badvtx.Et());
-    TLorentzVector ph2_badvtx = l.get_pho_p4( diphoton_index.second, l.pho_tkiso_badvtx_id[diphoton_index.second], smeared_pho_energy );
+    TLorentzVector ph2_badvtx = l.get_pho_p4( diphoton_index.second, l.pho_tkiso_badvtx_id[diphoton_index.second], &smeared_pho_energy[0] );
 	l.FillTree("ph2_badvtx_Et", (float)ph2_badvtx.Et());
 	l.FillTree("ph1_isconv", (float)l.pho_isconv[diphoton_index.first]);
 	l.FillTree("ph2_isconv", (float)l.pho_isconv[diphoton_index.second]);
     vector<vector<bool> > ph_passcut;
-    int ph1_ciclevel = l.PhotonCiCPFSelectionLevel(diphoton_index.first, l.dipho_vtxind[diphoton_id], ph_passcut, 4, 0, smeared_pho_energy);
-    int ph2_ciclevel = l.PhotonCiCPFSelectionLevel(diphoton_index.second, l.dipho_vtxind[diphoton_id], ph_passcut, 4, 0, smeared_pho_energy);
+    int ph1_ciclevel = l.PhotonCiCPFSelectionLevel(diphoton_index.first, l.dipho_vtxind[diphoton_id], ph_passcut, 4, 0, &smeared_pho_energy[0]);
+    int ph2_ciclevel = l.PhotonCiCPFSelectionLevel(diphoton_index.second, l.dipho_vtxind[diphoton_id], ph_passcut, 4, 0, &smeared_pho_energy[0]);
     l.FillTree("ph1_ciclevel", (int)ph1_ciclevel);
     l.FillTree("ph2_ciclevel", (int)ph2_ciclevel);
     l.FillTree("ph1_sigmaEoE", (float)l.pho_regr_energyerr[diphoton_index.first]/(float)l.pho_regr_energy[diphoton_index.first]);
@@ -2782,6 +2783,76 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("gr_j2_p4_phi", (float)-1001.);
 		l.FillTree("gr_j2_p4_mass", (float)-1001.);
     } // end if type is signal
+
+    // fill photon systematics
+
+    TLorentzVector lead_pesD, lead_pesU, lead_perD, lead_perU;
+    TLorentzVector sublead_pesD, sublead_pesU, sublead_perD, sublead_perU;
+    int cur_type = l.itype[l.current];
+        for(std::vector<BaseSmearer *>::iterator  si=systPhotonSmearers_.begin(); si!= systPhotonSmearers_.end(); ++si ) {
+            if( (*si)->name() != "E_scale" && (*si)->name() != "E_res") continue;
+            if(PADEBUG) cout << "(*si)->name()= " << (*si)->name() << "\t(*si)->nRegisteredSmerers()= " << (*si)->nRegisteredSmerers() << endl;
+            float systStep = 3.0;
+            for(float syst_shift=-systRange; syst_shift<=systRange; syst_shift+=systStep ) {
+                if( syst_shift == 0. ) { continue; } // skip the central value
+        applySinglePhotonSmearings(smeared_pho_energy, smeared_pho_r9, smeared_pho_weight, cur_type, l, energyCorrected, energyCorrectedError,
+                *si, syst_shift);
+        if(PADEBUG) cout << "smeared_pho_energy[" << diphoton_index.first << "]= " << smeared_pho_energy[diphoton_index.first] << endl;
+        if(PADEBUG) cout << "smeared_pho_energy[" << diphoton_index.second << "]= " << smeared_pho_energy[diphoton_index.second] << endl;
+        if( (*si)->name() == "E_scale" && syst_shift < 0.)
+        {
+            lead_pesD = l.get_pho_p4(diphoton_index.first, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
+            sublead_pesD = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
+        }
+        else if( (*si)->name() == "E_scale" && syst_shift > 0.)
+        {
+            lead_pesU = l.get_pho_p4(diphoton_index.first, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
+            sublead_pesU = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
+        }
+        else if( (*si)->name() == "E_res" && syst_shift < 0.)
+        {
+            lead_perD = l.get_pho_p4(diphoton_index.first, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
+            sublead_perD = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
+        }
+        else if( (*si)->name() == "E_res" && syst_shift > 0.)
+        {
+            lead_perU = l.get_pho_p4(diphoton_index.first, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
+            sublead_perU = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
+        }
+            }
+        }
+        if(PADEBUG)
+        {
+	        cout << "lead (pt, eta, phi, e)= ( " << lead_p4.Pt() << " , " << lead_p4.Eta() << " , " << lead_p4.Phi() << " , " << lead_p4.E() << " )" << endl;
+	        cout << "pesD (pt, eta, phi, e)= ( " << lead_pesD.Pt() << " , " << lead_pesD.Eta() << " , " << lead_pesD.Phi() << " , " << lead_pesD.E() << " )" << endl;
+	        cout << "pesU (pt, eta, phi, e)= ( " << lead_pesU.Pt() << " , " << lead_pesU.Eta() << " , " << lead_pesU.Phi() << " , " << lead_pesU.E() << " )" << endl;
+	        cout << "perD (pt, eta, phi, e)= ( " << lead_perD.Pt() << " , " << lead_perD.Eta() << " , " << lead_perD.Phi() << " , " << lead_perD.E() << " )" << endl;
+	        cout << "perU (pt, eta, phi, e)= ( " << lead_perU.Pt() << " , " << lead_perU.Eta() << " , " << lead_perU.Phi() << " , " << lead_perU.E() << " )" << endl;
+	        cout << "subl (pt, eta, phi, e)= ( " << sublead_p4.Pt() << " , " << sublead_p4.Eta() << " , " << sublead_p4.Phi() << " , " << sublead_p4.E() << " )" << endl;
+	        cout << "pesD (pt, eta, phi, e)= ( " << sublead_pesD.Pt() << " , " << sublead_pesD.Eta() << " , " << sublead_pesD.Phi() << " , " << sublead_pesD.E() << " )" << endl;
+	        cout << "pesU (pt, eta, phi, e)= ( " << sublead_pesU.Pt() << " , " << sublead_pesU.Eta() << " , " << sublead_pesU.Phi() << " , " << sublead_pesU.E() << " )" << endl;
+	        cout << "perD (pt, eta, phi, e)= ( " << sublead_perD.Pt() << " , " << sublead_perD.Eta() << " , " << sublead_perD.Phi() << " , " << sublead_perD.E() << " )" << endl;
+	        cout << "perU (pt, eta, phi, e)= ( " << sublead_perU.Pt() << " , " << sublead_perU.Eta() << " , " << sublead_perU.Phi() << " , " << sublead_perU.E() << " )" << endl;
+        }
+
+	    l.FillTree("ph1_pesD_pt",(float)lead_pesD.Pt());
+	    l.FillTree("ph2_pesD_pt",(float)sublead_pesD.Pt());
+	    l.FillTree("ph1_pesD_e",(float)lead_pesD.E());
+	    l.FillTree("ph2_pesD_e",(float)sublead_pesD.E());
+	    l.FillTree("ph1_pesU_pt",(float)lead_pesU.Pt());
+	    l.FillTree("ph2_pesU_pt",(float)sublead_pesU.Pt());
+	    l.FillTree("ph1_pesU_e",(float)lead_pesU.E());
+	    l.FillTree("ph2_pesU_e",(float)sublead_pesU.E());
+	    l.FillTree("ph1_perD_pt",(float)lead_perD.Pt());
+	    l.FillTree("ph2_perD_pt",(float)sublead_perD.Pt());
+	    l.FillTree("ph1_perD_e",(float)lead_perD.E());
+	    l.FillTree("ph2_perD_e",(float)sublead_perD.E());
+	    l.FillTree("ph1_perU_pt",(float)lead_perU.Pt());
+	    l.FillTree("ph2_perU_pt",(float)sublead_perU.Pt());
+	    l.FillTree("ph1_perU_e",(float)lead_perU.E());
+	    l.FillTree("ph2_perU_e",(float)sublead_perU.E());
+
+
     if(PADEBUG) cerr << "Leaving StatAnalysis::fillOpTree" << endl;
 };
 
