@@ -45,4 +45,5 @@ AnalysisScripts/baseline/tmp_*
 
 # scratch dump files
 dump*
+.__afs*
 
