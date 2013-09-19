@@ -1,10 +1,35 @@
 #!/bin/bash
 
+#####
+##### radion_reduction_v09
+#####
+
+#
+### SIGNAL RADION
+#
+
+#./submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-1000_TuneZ2star_8TeV-Madgraph_pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1
+#./submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-1500_TuneZ2star_8TeV-Madgraph_pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
+#./submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-300_TuneZ2star_8TeV-Madgraph_pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
+#./submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-500_TuneZ2star_8TeV-Madgraph_pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
+#./submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-700_TuneZ2star_8TeV-Madgraph_pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
+#./submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-1000_TuneZ2star_8TeV-nm-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
+#./submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-1500_TuneZ2star_8TeV-nm-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
+#./submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
+#./submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-500_TuneZ2star_8TeV-nm-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
+#./submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-700_TuneZ2star_8TeV-nm-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
+
+
+
+#####
+### OLD STUFF
+#####
+
 #
 ### DATA
 #
 
-bash submit_reduction.sh data_2012 DoublePhoton_Run2012B-22Jan2013-v1_AOD 500
+#bash submit_reduction.sh data_2012 DoublePhoton_Run2012B-22Jan2013-v1_AOD 500
 #bash submit_reduction.sh data_2012 DoublePhoton_Run2012C-22Jan2013-v2_AOD 250
 #bash submit_reduction.sh data_2012 DoublePhoton_Run2012D-22Jan2013-v1_v3  250
 #bash submit_reduction.sh data_2012 Photon_Run2012A_22Jan2013-v1_AOD       100
