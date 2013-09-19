@@ -2075,6 +2075,7 @@ bool PhotonAnalysis::SelectEventsReduction(LoopAll& l, int jentry)
     }
 
     // Radion analysis reduction: add a condition on minimal number of jets + loose bjet cut (to reduce used disk space....)
+    // JET PRESELECTION
     bool isThereEnoughJets = false;
     bool isThereEnoughBJets = false;
     TLorentzVector* j1p4;
@@ -2097,6 +2098,7 @@ bool PhotonAnalysis::SelectEventsReduction(LoopAll& l, int jentry)
             if(j1p4->Pt() < 10) continue;
             if( l.jet_algoPF1_betaStarClassic[j1_i] > 0.2 * log( l.vtx_std_n - 0.64) ) continue;
             if( l.jet_algoPF1_dR2Mean[j1_i] > 0.06 ) continue;
+            if( l.jet_algoPF1_pfloose[j1_i] > 0.) continue;
             prejets++;
             if( l.jet_algoPF1_csvBtag[j1_i] < 0.244 ) continue; // CSV Loose Working Point
             prebjets++;

@@ -3956,7 +3956,7 @@ vector<int> LoopAll::SelectJets(const TLorentzVector& leadpho, const TLorentzVec
     for(int j1_i=0; j1_i<jet_algoPF1_n; j1_i++){
         j1p4 = (TLorentzVector*) jet_algoPF1_p4->At(j1_i);
         if(GFDEBUG) std::cout<<"jet "<<j1_i<<std::endl;
-        if(GFDEBUG) std::cout<<"passing pu id?"<<std::endl;
+//        if(GFDEBUG) std::cout<<"passing pu id?"<<std::endl;
  //       if(jetid_flags != 0 && !jetid_flags[j1_i]) continue; 
         if(GFDEBUG) std::cout<<"within eta 2.5?"<<std::endl;
         if(fabs(j1p4->Eta()) > 2.5) continue;
@@ -3964,17 +3964,20 @@ vector<int> LoopAll::SelectJets(const TLorentzVector& leadpho, const TLorentzVec
         if(j1p4->DeltaR(leadpho) < dr2pho) continue;
         if(GFDEBUG) std::cout<<"close to subleadpho?"<<std::endl;
         if(j1p4->DeltaR(subleadpho) < dr2pho) continue;
+				if(GFDEBUG) std::cout<<"passing PF loose ID?"<<std::endl;
+				if( jet_algoPF1_pfloose[j1_i] > 0.) continue;
+				if(GFDEBUG) std::cout<<"passing pt cut?"<<std::endl;
         j1pt=j1p4->Pt();
-				if(j1pt < 25) continue;
-        if(GFDEBUG) std::cout<<"passing all single jet requirements with pt"<<j1pt<<std::endl;
+				if(j1pt < 20) continue;
 				// pu jet id rejection ### for eta < 2.5
-//				if( jet_algoPF1_betaStarClassic[j1_i] > 0.2 * log( vtx_std_n - 0.64) ) continue;
-//				if( jet_algoPF1_dR2Mean[j1_i] > 0.06 ) continue;
+				if(GFDEBUG) std::cout << "passing pu id rejection" << std::endl;
+				if( jet_algoPF1_betaStarClassic[j1_i] > 0.2 * log( vtx_std_n - 0.64) ) continue;
+				if( jet_algoPF1_dR2Mean[j1_i] > 0.06 ) continue;
 				// min csv value for application of bjet energy regression
-//				if(GFDEBUG) std::cout << "passing pu id rejection" << std::endl;
-//				if( jet_algoPF1_csvBtag[j1_i] < 0. ) continue;
-//				if(GFDEBUG) std::cout << "passing csv btagging preselection" << std::endl;
-			myJets.push_back(j1_i);
+				if(GFDEBUG) std::cout << "passing csv btagging preselection" << std::endl;
+				if( jet_algoPF1_csvBtag[j1_i] < 0. ) continue;
+        if(GFDEBUG) std::cout<<"passing all single jet requirements with pt"<<j1pt<<std::endl;
+				myJets.push_back(j1_i);
     }
 
 // now sort the vector by jet pt
