@@ -38,6 +38,7 @@ AnalysisScripts/baseline/tmp_*
 # editor temp files
 *.swp
 *~
+*.orig
 
 # batch .tgz
 *.tgz
