@@ -2,12 +2,21 @@
 
 . setup.sh
 
+### RADION SIGNAL
 rm mc_radion_signal/*.dat
 ./AnalysisScripts/mk_reduction_dat.py /store/group/phys_higgs/cmshgg/processed/V15_00_08/mc/Summer12_DR53X-PU_RD1_START53_V7N ${storedir}/mc mc_radion_signal.txt
 
-#rm mc_radion_signal_v2/*.dat
-#./AnalysisScripts/mk_reduction_dat.py /store/cmst3/user/obondu/H2GGLOBE/Radion/processed/V15_00_05 ${storedir} mc_radion_signal_v2.txt
+### DATA
+rm data2012_RERECO/*.dat
+./AnalysisScripts/mk_reduction_dat.py /store/group/phys_higgs/cmshgg/processed/V15_00_05/data ${storedir}/data data2012_RERECO.txt
 
+### SM HIGGS AND BACKGROUNDS
+rm mc_Summer12_RD1/*.dat
+./AnalysisScripts/mk_reduction_dat.py - ${storedir}/mc/Summer12_RD1 mc_Summer12_RD1.txt
+
+
+
+#### OTHER OLD STUFF
 #rm mc_radion_SMhiggs_summer12_rd1/*.dat
 #./AnalysisScripts/mk_reduction_dat.py /store/group/phys_higgs/cmshgg/processed/V15_00_08/mc/Summer12_RD1 ${storedir} mc_radion_SMhiggs_summer12_rd1.txt
 
@@ -60,11 +69,7 @@ rm mc_radion_signal/*.dat
 ##./AnalysisScripts/mk_reduction_dat.py /store/group/phys_higgs/cmshgg/processed/V15_00_08/mc/Summer12_DR53X-PU_RD1_START53_V7N ${storedir}/mc mc2012RD_v2_3.txt
 
 
-#rm mc_Summer12_RD1/*.dat
-#./AnalysisScripts/mk_reduction_dat.py - ${storedir}/mc/Summer12_RD1 mc_Summer12_RD1.txt
 
-#rm data2012_RERECO/*.dat
-#./AnalysisScripts/mk_reduction_dat.py /store/group/phys_higgs/cmshgg/processed/V15_00_05/data ${storedir}/data data2012_RERECO.txt
 
 
 wd=$PWD

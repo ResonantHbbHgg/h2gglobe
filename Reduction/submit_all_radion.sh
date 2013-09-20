@@ -4,20 +4,27 @@
 ##### radion_reduction_v09
 #####
 
-#
 ### SIGNAL RADION
-#
+./submit_reduction.sh mc_radion_signal RadionToHHTo2G2B\* 5
+#./submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b\* 5
 
-#./submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-1000_TuneZ2star_8TeV-Madgraph_pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1
-#./submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-1500_TuneZ2star_8TeV-Madgraph_pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
-#./submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-300_TuneZ2star_8TeV-Madgraph_pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
-#./submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-500_TuneZ2star_8TeV-Madgraph_pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
-#./submit_reduction.sh mc_radion_signal GravitonToHH_2Gamma_2b_M-700_TuneZ2star_8TeV-Madgraph_pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
-#./submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-1000_TuneZ2star_8TeV-nm-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
-#./submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-1500_TuneZ2star_8TeV-nm-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
-#./submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
-#./submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-500_TuneZ2star_8TeV-nm-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
-#./submit_reduction.sh mc_radion_signal RadionToHHTo2G2B_M-700_TuneZ2star_8TeV-nm-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1 5
+### DATA
+#./submit_reduction.sh data2012_RERECO DoublePhoton_Run2012B-22Jan2013-v1 125
+#./submit_reduction.sh data2012_RERECO DoublePhoton_Run2012D-22Jan2013-v1_v3 250
+#./submit_reduction.sh data2012_RERECO DoublePhoton_Run2012C-22Jan2013-v2 250
+#./submit_reduction.sh data2012_RERECO Photon_Run2012A_22Jan2013-v1 100
+
+### SM HIGGS
+#./submit_reduction.sh mc_Summer12_RD1 \*HToGG_M-125\* 5
+
+### BACKGROUNDS
+#./submit_reduction.sh mc_Summer12_RD1  GJet\*pythia6\*00
+#./submit_reduction.sh mc_Summer12_RD1  QCD\* 20
+#./submit_reduction.sh mc_Summer12_RD1  QCD\* 20
+#./submit_reduction.sh mc_Summer12_RD1 DY\* 200
+#./submit_reduction.sh mc_Summer12_RD1 DiPhoton\*sherpa\* 200
+#./submit_reduction.sh mc_Summer12_RD1 Diphoton\*EW4\* 50
+#./submit_reduction.sh mc_Summer12_RD1  GJet\*sherpa\* 200
 
 
 
