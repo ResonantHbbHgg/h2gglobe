@@ -3965,7 +3965,7 @@ vector<int> LoopAll::SelectJets(const TLorentzVector& leadpho, const TLorentzVec
         if(GFDEBUG) std::cout<<"close to subleadpho?"<<std::endl;
         if(j1p4->DeltaR(subleadpho) < dr2pho) continue;
 				if(GFDEBUG) std::cout<<"passing PF loose ID?"<<std::endl;
-				if( jet_algoPF1_pfloose[j1_i] > 0.) continue;
+				if( jet_algoPF1_pfloose[j1_i] < 0.1) continue;
 				if(GFDEBUG) std::cout<<"passing pt cut?"<<std::endl;
         j1pt=j1p4->Pt();
 				if(j1pt < 20) continue;

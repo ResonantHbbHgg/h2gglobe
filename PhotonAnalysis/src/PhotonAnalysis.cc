@@ -2098,7 +2098,7 @@ bool PhotonAnalysis::SelectEventsReduction(LoopAll& l, int jentry)
             if(j1p4->Pt() < 10) continue;
             if( l.jet_algoPF1_betaStarClassic[j1_i] > 0.2 * log( l.vtx_std_n - 0.64) ) continue;
             if( l.jet_algoPF1_dR2Mean[j1_i] > 0.06 ) continue;
-            if( l.jet_algoPF1_pfloose[j1_i] > 0.) continue;
+            if( l.jet_algoPF1_pfloose[j1_i] < 0.1) continue;
             prejets++;
             if( l.jet_algoPF1_csvBtag[j1_i] < 0.244 ) continue; // CSV Loose Working Point
             prebjets++;
