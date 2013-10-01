@@ -7,7 +7,7 @@
 
 ./submit_reduction.sh mc_Summer12_RD1 \*HToGG\* 5
 
-./submit_reduction.sh mc_Summer12_RD1  GJet\*pythia6\*00
+./submit_reduction.sh mc_Summer12_RD1  GJet\*pythia6\* 100
 
 ./submit_reduction.sh mc_Summer12_RD1  QCD\* 20
 ./submit_reduction.sh mc_Summer12_RD1  QCD\* 20

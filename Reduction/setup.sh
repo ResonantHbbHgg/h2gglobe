@@ -10,6 +10,8 @@ base_storedir="./datastore"
 storeremote="/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced"
 #storeremote="/store/group/phys_higgs/cmshgg/reduced/${group}"
 
+export storeremote
+
 [[ -f $(whoami)_setup.sh ]] && . $(whoami)_setup.sh
 
 if [ -n "${BATCH+x}" ]; then

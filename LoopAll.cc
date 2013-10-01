@@ -215,7 +215,7 @@ void LoopAll::MergeContainers(){
   // Loop Over the files and get the relevant pieces to Merge:
   for (;it!=files.end()
 	 ;it_file++,it++){
- 
+    
 	  *it_file = TFile::Open((*it).c_str());
     (*it_file)->cd();
     std::cout << "Combining Current File " << i << " / " << numberOfFiles << " - " << (*it) << std::endl;
@@ -300,12 +300,19 @@ void LoopAll::LoopAndFillHistos(TString treename) {
 
     cout<<"LoopAndFillHistos: opening file " << i+1 << " / " << numberOfFiles << " : " << files[i]<<endl;
     
-
-    *it_file = TFile::Open((*it).c_str(),"TIMEOUT=60");
+    for(int itry=0; itry<3; ++itry) {
+	    *it_file = TFile::Open((*it).c_str(),"TIMEOUT=60");
+	    if( *it_file == 0 ){
+		    std::cerr << "Error opening file " << (*it).c_str() << " attempt " << itry << std::endl;
+	    } else {
+		    break;
+	    }
+    }
     if( *it_file == 0 ){
 	    std::cerr << "Error opening file " << (*it).c_str() << std::endl;
 	    exit(H2GG_ERR_FILEOP);
     }
+    
     //Files[i] = TFile::Open(files[i]);
     tot_events=1;
     sel_events=1;
@@ -550,6 +557,9 @@ void LoopAll::TermReal(Int_t typerunpass) {
     outputTreePar->Write(0,TObject::kWriteDelete);
     outputTreeLumi->Write(0,TObject::kWriteDelete);
     pileup->Write(0,TObject::kWriteDelete);
+    for(int ii=0; ii<globalHistos.size(); ++ii) {
+	    globalHistos[ii]->Write(0,TObject::kWriteDelete);
+    }
   }
 }
 
@@ -576,6 +586,7 @@ void LoopAll::Init(Int_t typerunpass, TTree *tree) {
   }
   SetBranchAddresses(inputBranchNames);
   
+
   Notify();
 }
 
@@ -625,7 +636,8 @@ void LoopAll::Loop(Int_t a) {
   Int_t nentries = 0;
   if(fChain) 
     nentries = Int_t(fChain->GetEntriesFast());
-  
+
+
   Int_t nbytes = 0, nb = 0;
 
   outputEvents=0;
