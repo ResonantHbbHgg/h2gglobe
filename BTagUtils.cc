@@ -30,7 +30,7 @@ JetFlavourReader::~JetFlavourReader()
 //---------------------------------------------------------------------------------------------------------------------------
 int JetFlavourReader::getJetFlavour(const int& lumis, const int& event, const TLorentzVector* jetP4 )
 {
-    float jet_flavour;
+    float jet_flavour = -1001.;
 
     for(unsigned int ii = 0; ii < AODjet_p4_[lumis][event].size(); ii++){
         dR_.push_back(jetP4->DeltaR(AODjet_p4_[lumis][event].at(ii)));
@@ -106,7 +106,7 @@ BtagSFReader::~BtagSFReader()
 float BtagSFReader::getSF(const TLorentzVector* jetP4,const float& flavour, const float& cvs_Btag)
 {
       
-    float SF = 1.;
+    float SF = -1001.;
 
     if(fabs(flavour) == 5){
        if(cvs_Btag > 0.244){
@@ -181,9 +181,9 @@ float BtagSFReader::getSF(const TLorentzVector* jetP4,const float& flavour, cons
 float BtagSFReader::getSFErrorUp(const TLorentzVector* jetP4,const float& flavour, const float& cvs_Btag)
 {
       
-    float SFerr = 1.;
-    float SFMax = 1.;
-    float SF = 1.;
+    float SFerr = -1001.;
+    float SFMax = -1001.;
+    float SF = -1001.;
 
     if(fabs(flavour) == 5){
        if(cvs_Btag > 0.244){
@@ -362,9 +362,9 @@ float BtagSFReader::getSFErrorUp(const TLorentzVector* jetP4,const float& flavou
 float BtagSFReader::getSFErrorDown(const TLorentzVector* jetP4,const float& flavour, const float& cvs_Btag)
 {
       
-    float SFerr = 1.;
-    float SFmin = 1.;
-    float SF = 1.;
+    float SFerr = -1001.;
+    float SFmin = -1001.;
+    float SF = -1001.;
 
     if(fabs(flavour) == 5){
        if(cvs_Btag > 0.244){
@@ -571,7 +571,7 @@ BtagEfficiencyReader::~BtagEfficiencyReader()
 float BtagEfficiencyReader::getBtagEfficiency(const TLorentzVector* jetP4, const float& csv_Btag, const int& jet_flavour)
 {
 
-     float eff = 0.;
+     float eff = -1001.;
 
      if(fabs(jet_flavour) == 5){
         if(csv_Btag > 0.244) eff = h2_BTaggingEff_b_L_->GetBinContent(h2_BTaggingEff_b_L_->FindBin(jetP4->Pt(),jetP4->Eta()));
@@ -596,7 +596,7 @@ float BtagEfficiencyReader::getBtagEfficiency(const TLorentzVector* jetP4, const
 //---------------------------------------------------------------------------------------------------------------------------
 float BtagEfficiencyReader::getBtagEfficiencyError(const TLorentzVector* jetP4, const float& csv_Btag, const int& jet_flavour){
 
-     float eff_err = 1.;
+     float eff_err = -1001.;
 
      if(fabs(jet_flavour) == 5){
         if(csv_Btag > 0.244) eff_err = h2_BTaggingEff_b_L_->GetBinError(h2_BTaggingEff_b_L_->FindBin(jetP4->Pt(),jetP4->Eta()));

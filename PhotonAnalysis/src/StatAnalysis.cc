@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <stdio.h>
 
-#define PADEBUG 1
+#define PADEBUG 0
 
 using namespace std;
 
@@ -2494,6 +2494,12 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j1_csvMvaBtag", (float)-1001.);
         l.FillTree("j1_jetProbBtag", (float)-1001.);
         l.FillTree("j1_tcheBtag", (float)-1001.);
+        l.FillTree("j1_flavour",(int)-1001);
+        l.FillTree("j1_btagSF",(float)-1001.);
+        l.FillTree("j1_btagSFErrorUp",(float)-1001.);
+        l.FillTree("j1_btagSFErrorDown",(float)-1001.);
+        l.FillTree("j1_btagEff",(float)-1001.);
+        l.FillTree("j1_btagEffError",(float)-1001.);
         l.FillTree("j1_bgenMatched", (float)-1001.);
 		l.FillTree("j1_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j1_secVtxPt", (float)-1001.);
@@ -2615,6 +2621,12 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j2_csvMvaBtag", (float)-1001.);
         l.FillTree("j2_jetProbBtag", (float)-1001.);
         l.FillTree("j2_tcheBtag", (float)-1001.);
+        l.FillTree("j2_flavour",(int)-1001);
+        l.FillTree("j2_btagSF",(float)-1001.);
+        l.FillTree("j2_btagSFErrorUp",(float)-1001.);
+        l.FillTree("j2_btagSFErrorDown",(float)-1001.);
+        l.FillTree("j2_btagEff",(float)-1001.);
+        l.FillTree("j2_btagEffError",(float)-1001.);
         l.FillTree("j2_bgenMatched", (float)-1001.);
 		l.FillTree("j2_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j2_secVtxPt", (float)-1001.);
@@ -2706,6 +2718,29 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j3_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[2]]);
         l.FillTree("j3_jetProbBtag", (float)l.jet_algoPF1_jetProbBtag[jets[2]]);
         l.FillTree("j3_tcheBtag", (float)l.jet_algoPF1_tcheBtag[jets[2]]);
+        //BtagSF variables (Badder)
+        if(l.itype[l.current] == -301 || l.itype[l.current] == -501 || l.itype[l.current] == -701 || l.itype[l.current] == -1001 || l.itype[l.current] == -1501){
+           if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet3" << endl;
+           int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet3); 
+           float btagSF = SFReader->getSF(jet3,flavour,l.jet_algoPF1_csvBtag[jets[2]]);
+           float btagSFErrorUp = SFReader->getSFErrorUp(jet3,flavour,l.jet_algoPF1_csvBtag[jets[2]]);
+           float btagSFErrorDown = SFReader->getSFErrorDown(jet3,flavour,l.jet_algoPF1_csvBtag[jets[2]]);
+           float btagEff = EffReader->getBtagEfficiency(jet3,l.jet_algoPF1_csvBtag[jets[2]],flavour);
+           float btagEffError = EffReader->getBtagEfficiencyError(jet3,l.jet_algoPF1_csvBtag[jets[2]],flavour);
+           l.FillTree("j3_flavour",(int)flavour);
+           l.FillTree("j3_btagSF",(float)btagSF);
+           l.FillTree("j3_btagSFErrorUp",(float)btagSFErrorUp);
+           l.FillTree("j3_btagSFErrorDown",(float)btagSFErrorDown);
+           l.FillTree("j3_btagEff",(float)btagEff);
+           l.FillTree("j3_btagEffError",(float)btagEffError);
+        }else{
+           l.FillTree("j3_flavour",(int)-1001);
+           l.FillTree("j3_btagSF",(float)-1001.);
+           l.FillTree("j3_btagSFErrorUp",(float)-1001.);
+           l.FillTree("j3_btagSFErrorDown",(float)-1001.);
+           l.FillTree("j3_btagEff",(float)-1001.);
+           l.FillTree("j3_btagEffError",(float)-1001.);
+        }
         l.FillTree("j3_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[2]]);
 		l.FillTree("j3_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[2]]);
 		l.FillTree("j3_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[2]]);
@@ -2751,29 +2786,12 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j3_csvMvaBtag", (float)-1001.);
         l.FillTree("j3_jetProbBtag", (float)-1001.);
         l.FillTree("j3_tcheBtag", (float)-1001.);
-        //BtagSF variables (Badder)
-        if(l.itype[l.current] == -301 || l.itype[l.current] == -501 || l.itype[l.current] == -701 || l.itype[l.current] == -1001 || l.itype[l.current] == -1501){
-           if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet3" << endl;
-           int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet3); 
-           float btagSF = SFReader->getSF(jet3,flavour,l.jet_algoPF1_csvBtag[jets[2]]);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet3,flavour,l.jet_algoPF1_csvBtag[jets[2]]);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet3,flavour,l.jet_algoPF1_csvBtag[jets[2]]);
-           float btagEff = EffReader->getBtagEfficiency(jet3,l.jet_algoPF1_csvBtag[jets[2]],flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet3,l.jet_algoPF1_csvBtag[jets[2]],flavour);
-           l.FillTree("j3_flavour",(int)flavour);
-           l.FillTree("j3_btagSF",(float)btagSF);
-           l.FillTree("j3_btagSFErrorUp",(float)btagSFErrorUp);
-           l.FillTree("j3_btagSFErrorDown",(float)btagSFErrorDown);
-           l.FillTree("j3_btagEff",(float)btagEff);
-           l.FillTree("j3_btagEffError",(float)btagEffError);
-        }else{
-           l.FillTree("j3_flavour",(int)-1001);
-           l.FillTree("j3_btagSF",(float)-1001.);
-           l.FillTree("j3_btagSFErrorUp",(float)-1001.);
-           l.FillTree("j3_btagSFErrorDown",(float)-1001.);
-           l.FillTree("j3_btagEff",(float)-1001.);
-           l.FillTree("j3_btagEffError",(float)-1001.);
-        }
+        l.FillTree("j3_flavour",(int)-1001);
+        l.FillTree("j3_btagSF",(float)-1001.);
+        l.FillTree("j3_btagSFErrorUp",(float)-1001.);
+        l.FillTree("j3_btagSFErrorDown",(float)-1001.);
+        l.FillTree("j3_btagEff",(float)-1001.);
+        l.FillTree("j3_btagEffError",(float)-1001.);
         l.FillTree("j3_bgenMatched", (float)-1001.);
 		l.FillTree("j3_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j3_secVtxPt", (float)-1001.);
@@ -2895,6 +2913,12 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j4_csvMvaBtag", (float)-1001.);
         l.FillTree("j4_jetProbBtag", (float)-1001.);
         l.FillTree("j4_tcheBtag", (float)-1001.);
+        l.FillTree("j4_flavour",(int)-1001);
+        l.FillTree("j4_btagSF",(float)-1001.);
+        l.FillTree("j4_btagSFErrorUp",(float)-1001.);
+        l.FillTree("j4_btagSFErrorDown",(float)-1001.);
+        l.FillTree("j4_btagEff",(float)-1001.);
+        l.FillTree("j4_btagEffError",(float)-1001.);
         l.FillTree("j4_bgenMatched", (float)-1001.);
 		l.FillTree("j4_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j4_secVtxPt", (float)-1001.);
