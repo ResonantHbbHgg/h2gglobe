@@ -6,6 +6,7 @@
 #include "PhotonAnalysis.h"
 #include "RooContainer.h"
 #include "VertexAnalysis/interface/HggVertexAnalyzer.h"
+#include "BTagUtils.h"
 
 #include "EnergySmearer.h"
 #include "EfficiencySmearer.h"
@@ -172,6 +173,14 @@ class StatAnalysis : public PhotonAnalysis
     ofstream eventListText;
     //vector<double> weights;
     TFile *kfacFile;
+
+    //Add btagSF variables (Badder)
+    std::string name_JetFlavourFile;
+    std::string name_btagSFFile;
+    std::string name_btagEfficienciesFile;
+    JetFlavourReader* jetFlavReader;
+    BtagSFReader* SFReader;
+    BtagEfficiencyReader* EffReader;
     
 };
 

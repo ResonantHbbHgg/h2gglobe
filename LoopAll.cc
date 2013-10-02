@@ -680,8 +680,8 @@ void LoopAll::Loop(Int_t a) {
   if(checkBench > 0) {
 	  stopWatch.Start();
   }
-//  for (Int_t jentry=0; jentry<100;jentry++) { // DEBUG OLIVIER 
-  for (Int_t jentry=0; jentry<nentries;jentry++) {
+    for (Int_t jentry=0; jentry<100;jentry++) { // DEBUG OLIVIER 
+  //for (Int_t jentry=0; jentry<nentries;jentry++) {
     
     if(jentry%10000==0) {
       cout << "Entry: "<<jentry << " / "<<nentries <<  " "  ;

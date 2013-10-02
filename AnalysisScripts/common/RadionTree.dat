@@ -177,6 +177,13 @@ type=2 name=j1_genPt
 type=2 name=j1_axis1
 type=2 name=j1_axis2
 type=2 name=j1_pull
+type=0 name=j1_flavour
+type=2 name=j1_btagSF
+type=2 name=j1_btagSFErrorUp
+type=2 name=j1_btagSFErrorDown
+type=2 name=j1_btagEff
+type=2 name=j1_btagEffError
+
 
 type=2 name=j2_e
 type=2 name=j2_pt
@@ -225,6 +232,12 @@ type=2 name=j2_genPt
 type=2 name=j2_axis1
 type=2 name=j2_axis2
 type=2 name=j2_pull
+type=0 name=j2_flavour
+type=2 name=j2_btagSF
+type=2 name=j2_btagSFErrorUp
+type=2 name=j2_btagSFErrorDown
+type=2 name=j2_btagEff
+type=2 name=j2_btagEffError
 
 type=2 name=j3_e
 type=2 name=j3_pt
@@ -273,6 +286,12 @@ type=2 name=j3_genPt
 type=2 name=j3_axis1
 type=2 name=j3_axis2
 type=2 name=j3_pull
+type=0 name=j3_flavour
+type=2 name=j3_btagSF
+type=2 name=j3_btagSFErrorUp
+type=2 name=j3_btagSFErrorDown
+type=2 name=j3_btagEff
+type=2 name=j3_btagEffError
 
 type=2 name=j4_e
 type=2 name=j4_pt
@@ -321,6 +340,12 @@ type=2 name=j4_genPt
 type=2 name=j4_axis1
 type=2 name=j4_axis2
 type=2 name=j4_pull
+type=0 name=j4_flavour
+type=2 name=j4_btagSF
+type=2 name=j4_btagSFErrorUp
+type=2 name=j4_btagSFErrorDown
+type=2 name=j4_btagEff
+type=2 name=j4_btagEffError
 
 # dijet variables
 type=2 name=JetsMass
