@@ -2442,7 +2442,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j1_btagEff",(float)btagEff);
            l.FillTree("j1_btagEffError",(float)btagEffError);
         }else{
-           l.FillTree("j1_flavour",(int)-1001);
+           l.FillTree("j1_flavour",(int)0);
            l.FillTree("j1_btagSF",(float)-1001.);
            l.FillTree("j1_btagSFErrorUp",(float)-1001.);
            l.FillTree("j1_btagSFErrorDown",(float)-1001.);
@@ -2494,7 +2494,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j1_csvMvaBtag", (float)-1001.);
         l.FillTree("j1_jetProbBtag", (float)-1001.);
         l.FillTree("j1_tcheBtag", (float)-1001.);
-        l.FillTree("j1_flavour",(int)-1001);
+        l.FillTree("j1_flavour",(int)0);
         l.FillTree("j1_btagSF",(float)-1001.);
         l.FillTree("j1_btagSFErrorUp",(float)-1001.);
         l.FillTree("j1_btagSFErrorDown",(float)-1001.);
@@ -2569,7 +2569,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j2_btagEff",(float)btagEff);
            l.FillTree("j2_btagEffError",(float)btagEffError);
         }else{
-           l.FillTree("j2_flavour",(int)-1001);
+           l.FillTree("j2_flavour",(int)0);
            l.FillTree("j2_btagSF",(float)-1001.);
            l.FillTree("j2_btagSFErrorUp",(float)-1001.);
            l.FillTree("j2_btagSFErrorDown",(float)-1001.);
@@ -2621,7 +2621,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j2_csvMvaBtag", (float)-1001.);
         l.FillTree("j2_jetProbBtag", (float)-1001.);
         l.FillTree("j2_tcheBtag", (float)-1001.);
-        l.FillTree("j2_flavour",(int)-1001);
+        l.FillTree("j2_flavour",(int)0);
         l.FillTree("j2_btagSF",(float)-1001.);
         l.FillTree("j2_btagSFErrorUp",(float)-1001.);
         l.FillTree("j2_btagSFErrorDown",(float)-1001.);
@@ -2734,7 +2734,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j3_btagEff",(float)btagEff);
            l.FillTree("j3_btagEffError",(float)btagEffError);
         }else{
-           l.FillTree("j3_flavour",(int)-1001);
+           l.FillTree("j3_flavour",(int)0);
            l.FillTree("j3_btagSF",(float)-1001.);
            l.FillTree("j3_btagSFErrorUp",(float)-1001.);
            l.FillTree("j3_btagSFErrorDown",(float)-1001.);
@@ -2786,7 +2786,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j3_csvMvaBtag", (float)-1001.);
         l.FillTree("j3_jetProbBtag", (float)-1001.);
         l.FillTree("j3_tcheBtag", (float)-1001.);
-        l.FillTree("j3_flavour",(int)-1001);
+        l.FillTree("j3_flavour",(int)0);
         l.FillTree("j3_btagSF",(float)-1001.);
         l.FillTree("j3_btagSFErrorUp",(float)-1001.);
         l.FillTree("j3_btagSFErrorDown",(float)-1001.);
@@ -2861,7 +2861,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j4_btagEff",(float)btagEff);
            l.FillTree("j4_btagEffError",(float)btagEffError);
         }else{
-           l.FillTree("j4_flavour",(int)-1001);
+           l.FillTree("j4_flavour",(int)0);
            l.FillTree("j4_btagSF",(float)-1001.);
            l.FillTree("j4_btagSFErrorUp",(float)-1001.);
            l.FillTree("j4_btagSFErrorDown",(float)-1001.);
@@ -2913,7 +2913,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j4_csvMvaBtag", (float)-1001.);
         l.FillTree("j4_jetProbBtag", (float)-1001.);
         l.FillTree("j4_tcheBtag", (float)-1001.);
-        l.FillTree("j4_flavour",(int)-1001);
+        l.FillTree("j4_flavour",(int)0);
         l.FillTree("j4_btagSF",(float)-1001.);
         l.FillTree("j4_btagSFErrorUp",(float)-1001.);
         l.FillTree("j4_btagSFErrorDown",(float)-1001.);

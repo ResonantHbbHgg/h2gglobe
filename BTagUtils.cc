@@ -30,7 +30,7 @@ JetFlavourReader::~JetFlavourReader()
 //---------------------------------------------------------------------------------------------------------------------------
 int JetFlavourReader::getJetFlavour(const int& lumis, const int& event, const TLorentzVector* jetP4 )
 {
-    float jet_flavour = -1001.;
+    int jet_flavour = 0;
 
     for(unsigned int ii = 0; ii < AODjet_p4_[lumis][event].size(); ii++){
         dR_.push_back(jetP4->DeltaR(AODjet_p4_[lumis][event].at(ii)));
