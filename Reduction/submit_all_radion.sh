@@ -1,6 +1,38 @@
 #!/bin/bash
 
 #####
+##### radion_reduction_v09, second try (v2)
+#####
+
+### SIGNAL RADION
+#./submit_reduction.sh mc_radion_signal_v2 RadionToHHTo2G2B\* 5
+#./submit_reduction.sh mc_radion_signal_v2 GravitonToHH_2Gamma_2b\* 5
+
+### DATA
+#./submit_reduction.sh data2012_RERECO_v2 \*Run2012B\* 125
+#./submit_reduction.sh data2012_RERECO_v2 \*Run2012D\* 250
+#./submit_reduction.sh data2012_RERECO_v2 \*Run2012C\* 250
+#./submit_reduction.sh data2012_RERECO_v2 \*Run2012A\* 100
+## RESUB
+./submit_reduction.sh data2012_RERECO_v2 DoublePhoton_Run2012B-22Jan2013-v1 125 53 67
+./submit_reduction.sh data2012_RERECO_v2 DoublePhoton_Run2012D-22Jan2013-v1_v3 250 211 91 131 25 120 57
+
+### BACKGROUNDS
+#./submit_reduction.sh mc_Summer12_RD1_v2 \*HToGG_M-125\* 5
+#./submit_reduction.sh mc_Summer12_RD1_v2 DiPhoton\*sherpa\* 200
+#./submit_reduction.sh mc_Summer12_RD1_v2 GJet\*pythia6\* 100
+#./submit_reduction.sh mc_Summer12_RD1_v2 QCD_Pt-30\* 20
+#./submit_reduction.sh mc_Summer12_RD1_v2 QCD_Pt-40\* 20
+#./submit_reduction.sh mc_Summer12_RD1_v2 DY\* 200
+##./submit_reduction.sh mc_Summer12_RD1_proxy_v2 GJet\*sherpa\* 200 1
+##./submit_reduction.sh mc_Summer12_RD1_proxy_v2 GJet\*sherpa\* 200
+##./submit_reduction.sh mc_Summer12_RD1_proxy_v2 Diphoton\*EW4\* 50
+## RESUB
+./submit_reduction.sh mc_Summer12_RD1_proxy_v2 GJet_M80_doubleEMEnriched_8TeV-sherpa_Summer12_DR53X-PU_RD1_START53_V7N-v1 1 1
+./submit_reduction.sh mc_Summer12_RD1_v2 QCD_Pt-30to40_doubleEMEnriched_TuneZ2star_8TeV-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1_ff 20 10
+./submit_reduction.sh mc_Summer12_RD1_v2 QCD_Pt-40_doubleEMEnriched_TuneZ2star_8TeV-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1_ff 20 15 3
+
+#####
 ##### radion_reduction_v09
 #####
 
@@ -17,7 +49,7 @@
 #./submit_reduction.sh data2012_RERECO \*Run2012B\* 125 117
 #./submit_reduction.sh data2012_RERECO \*Run2012D\* 250 202
 #./submit_reduction.sh data2012_RERECO \*Run2012C\* 250 215
-.#/submit_reduction.sh data2012_RERECO \*Run2012A\* 100 52
+#./submit_reduction.sh data2012_RERECO \*Run2012A\* 100 52
 
 ### BACKGROUNDS
 #./submit_reduction.sh mc_Summer12_RD1 \*HToGG_M-125\* 5
@@ -32,7 +64,7 @@
 # resubmission
 #./submit_reduction.sh mc_Summer12_RD1 DY\* 200 128 127
 #./submit_reduction.sh mc_Summer12_RD1  QCD_Pt-40\* 20 12 11 5
-./submit_reduction.sh mc_Summer12_RD1_proxy  GJet\*sherpa\* 200 0
+#./submit_reduction.sh mc_Summer12_RD1_proxy  GJet\*sherpa\* 200 0
 
 
 #####
