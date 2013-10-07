@@ -63,8 +63,7 @@ fi
 
 if [[ -n $proxy ]]; then
     export X509_USER_PROXY=$(echo $proxy | awk -F: '{ print $2 }')
-#    rsync -avP $proxy ${X509_USER_PROXY}
-    rsync -e "ssh -o StrictHostKeyChecking=no" -avP $proxy ${X509_USER_PROXY}
+    rsync -avP $proxy ${X509_USER_PROXY}
 fi
 
 source version.sh
