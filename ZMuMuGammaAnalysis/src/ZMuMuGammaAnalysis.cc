@@ -23,16 +23,16 @@ void ZMuMuGammaAnalysis::Init(LoopAll& l)
     PhotonAnalysis::Init(l);
 
     l.SetAllMVA();
-    cout << "Weights file is: " << photonLevelNewIDMVA_EB.c_str() << endl;
-    l.tmvaReaderID_2013_Barrel->BookMVA("AdaBoost",photonLevelNewIDMVA_EB.c_str());
-    l.tmvaReaderID_2013_Endcap->BookMVA("AdaBoost",photonLevelNewIDMVA_EE.c_str());
+    cout << "Weights file is: " << photonLevel2012IDMVA_EB.c_str() << endl;
+    l.tmvaReaderID_2013_Barrel->BookMVA("AdaBoost",photonLevel2012IDMVA_EB.c_str());
+    l.tmvaReaderID_2013_Endcap->BookMVA("AdaBoost",photonLevel2012IDMVA_EE.c_str());
     
 }
 
 //----------------------------------------------------------------------------------------------------
 bool ZMuMuGammaAnalysis::SkimEvents(LoopAll& l, int jentry)
 {
-    if( dataIs2011 ) { l.version=12; }
+    if( run7TeV4Xanalysis ) { l.version=12; }
     else { l.version=13; }
 
     return true;
@@ -83,7 +83,7 @@ bool ZMuMuGammaAnalysis::SelectEventsReduction(LoopAll& l, int jentry)
       vector<float> MVAValues;
       for(int ivtx=0; ivtx<l.vtx_std_n; ++ivtx) {
         TLorentzVector pho_p4 = l.get_pho_p4(ipho, ivtx);
-        MVAValues.push_back(l.photonIDMVA2013(ipho, ivtx, pho_p4, "MIT"));
+        MVAValues.push_back(l.photonIDMVA(ipho, ivtx, pho_p4, bdtTrainingType.c_str()));
       }
       l.pho_mitmva->push_back(MVAValues);
     }

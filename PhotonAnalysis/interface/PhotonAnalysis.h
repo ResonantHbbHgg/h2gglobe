@@ -26,6 +26,7 @@
 #include "HiggsAnalysis/GBRLikelihood/interface/RooHybridBDTAutoPdf.h"
 #include "HiggsAnalysis/GBRLikelihood/interface/RooDoubleCBFast.h"
 #include "HiggsAnalysis/GBRLikelihood/interface/HybridGBRForest.h"
+#include "HiggsAnalysis/GBRLikelihood/interface/HybridGBRForestD.h"
 
 class JetHandler;
 
@@ -58,6 +59,11 @@ class PhotonAnalysis : public BaseAnalysis
 
     float zero_;
     void GetRegressionCorrections(LoopAll&);
+    void GetRegressionCorrectionsV5(LoopAll&); // 8 TeV
+    void GetRegressionCorrectionsV8(LoopAll&); // 7 TeV (V6-Barrel / V7-Endcap)
+    void GetSinglePhotonRegressionCorrectionV6(LoopAll&,int,double *,double *);
+    void GetSinglePhotonRegressionCorrectionV7(LoopAll&,int,double *,double *);
+
     //  void GetRegressionCorrections(LoopAll&);
     // Public parameters to be read from config file
     VertexAlgoParameters vtxAlgoParams;
@@ -81,7 +87,7 @@ class PhotonAnalysis : public BaseAnalysis
 
     // Options
     float phoidMvaCut;
-    bool dataIs2011;
+    bool run7TeV4Xanalysis;
     bool includeVBF;
     bool includeVHhad;
     bool includeVHhadBtag;
@@ -245,6 +251,7 @@ class PhotonAnalysis : public BaseAnalysis
     // PhotonFix
     std::string photonFixDat;
     std::string regressionFile;
+    int regressionVersion;
 
     int   nEtaCategories, nR9Categories, nPtCategories, nVtxCategories;
     float R9CatBoundary;
@@ -319,17 +326,14 @@ class PhotonAnalysis : public BaseAnalysis
 
     // Chris' extras
     std::string bdtTrainingPhilosophy;
+    std::string bdtTrainingType;
     std::string photonLevelMvaUCSD  ;
     std::string eventLevelMvaUCSD   ;
-    std::string photonLevelMvaMIT_EB;
-    std::string photonLevelMvaMIT_EE;
+    std::string photonLevel2011IDMVA_EB;
+    std::string photonLevel2011IDMVA_EE;
     std::string eventLevelMvaMIT    ;
-    std::string photonLevelNewIDMVA_EB;
-    std::string photonLevelNewIDMVA_EE;
-
-
-
-
+    std::string photonLevel2012IDMVA_EB;
+    std::string photonLevel2012IDMVA_EE;
 
     // n-1 plots for VH hadronic tag 2011
     float  myVHhadLeadJPt;
@@ -341,7 +345,7 @@ class PhotonAnalysis : public BaseAnalysis
     float  myVHhad_Mgg;
 
     float myVBFDIPHObdt;
-    float myVBFDIPHOdijet;
+    float myVBFcombined;
     
     // n-1 plots for VBF tag 2011
     float  myVBF_leadEta;
@@ -427,7 +431,6 @@ class PhotonAnalysis : public BaseAnalysis
 
  protected:
     void PreselectPhotons(LoopAll& l, int jentry);
-    float GetSmearSigma(float eta, float r9, int epoch=0);
 
     void SetNullRadion(LoopAll& l);
     void SetNullHiggs(LoopAll& l);
@@ -440,6 +443,11 @@ class PhotonAnalysis : public BaseAnalysis
     // Exclusive tags
     TMVA::Reader *tmvaVbfDiphoReader_;
 
+    int  categoryFromBoundaries(std::vector<float> & v, float val);
+    int  categoryFromBoundaries2D(std::vector<float> & v1, std::vector<float> & v2, std::vector<float> & v3, float val1, float val2, float val3);
+    
+    bool VBFTag2013(int & ijet1, int & ijet2, LoopAll& l, int& diphotonVBF_id, float* smeared_pho_energy=0, bool vetodipho=true, bool kinonly=true, bool mvaselection=true);
+    bool FillDijetVariables(int & ijet1, int & ijet2, LoopAll& l, int diphoton_id, float* smeared_pho_energy=0,bool* jetid_flag=0, bool getAngles=0);
     // ICHEP2012
     bool VBFTag2012(int & ijet1, int & ijet2, LoopAll& l, int diphoton_id,
 		    float* smeared_pho_energy=0, bool nm1=false, float eventweight=1, float myweight=1,bool * jetid_flags=0);
@@ -474,7 +482,7 @@ class PhotonAnalysis : public BaseAnalysis
     // ICHEP2012
     bool ElectronTag2012(LoopAll& l, int diphotonVHlep_id, float* smeared_pho_energy, ofstream& lep_sync, bool nm1=false, float eventweight=1, float myweight=1);
     // HCP 2012
-    bool ElectronTag2012B(LoopAll& l, int& diphotonVHlep_id, int& el_ind, int& elVtx, int& el_cat, float* smeared_pho_energy, ofstream& lep_sync, bool mvaselection=true, float phoidMvaCut=-0.2, float eventweight=1.0, std::vector<float>  smeared_pho_weight=std::vector<float>(), bool fillHist=false);
+    bool ElectronTag2012B(LoopAll& l, int& diphotonVHlep_id, int& el_ind, int& elVtx, int& el_cat, float* smeared_pho_energy, ofstream& lep_sync, bool mvaselection=true, float phoidMvaCut=-0.2, float eventweight=1.0, std::vector<float>  smeared_pho_weight=std::vector<float>(), bool fillHist=false, bool vetodipho=false, bool kinonly=false);
     bool ElectronStudies2012B(LoopAll& l, float* smeared_pho_energy, bool mvaselection, float phoidMvaCut, float eventweight=1, float myweight=1, int jentry=-1);
     bool ElectronTagStudies2012(LoopAll& l, int diphotonVHlep_id, float* smeared_pho_energy, bool nm1=true, float eventweight=1, float myweight=1, int jentry=-1);
     void ZWithFakeGammaCS(LoopAll& l, float* smeared_pho_energy);
@@ -486,7 +494,7 @@ class PhotonAnalysis : public BaseAnalysis
     // ~ ICHEP2012
     bool MuonTag2012(LoopAll& l, int diphotonVHlep_id, float* smeared_pho_energy, ofstream& lep_sync, bool nm1=false, float eventweight=1, float myweight=1);
     // HCP2012
-    bool MuonTag2012B(LoopAll& l, int& diphotonVHlep_id, int& mu_ind, int& muVtx, int& mu_cat, float* smeared_pho_energy, ofstream& lep_sync, bool mvaselection=true, float phoidMvaCut=-0.2, float eventweight=1.0, std::vector<float>  smeared_pho_weight=std::vector<float>(), bool fillHist=false);
+    bool MuonTag2012B(LoopAll& l, int& diphotonVHlep_id, int& mu_ind, int& muVtx, int& mu_cat, float* smeared_pho_energy, ofstream& lep_sync, bool mvaselection=true, float phoidMvaCut=-0.2, float eventweight=1.0, std::vector<float>  smeared_pho_weight=std::vector<float>(), bool fillHist=false, bool vetodipho=false, bool kinonly=false);
     void ControlPlotsMuonTag2012B(LoopAll& l, TLorentzVector lead_p4, TLorentzVector sublead_p4, int mu_ind, float bdtoutput, float evweight, std::string label);
 
 
@@ -528,7 +536,7 @@ class PhotonAnalysis : public BaseAnalysis
     float ComputeEventScaleError(LoopAll& l, int ipho1, int ipho2, float & scale1, float & scale1_err, float & scale2, float & scale2_err);
     float ComputeEventSmearError(LoopAll& l, int ipho1, int ipho2, float & smear1, float & smear1_err, float & smear2, float & smear2_err);
     pair<double,double> ComputeNewSigmaMs(LoopAll &l, int ipho1, int ipho2, int ivtx, float syst_shift);
-    void saveDatCardTree(LoopAll& l, int cur_type, int category, int inc_cat, float evweight, int ipho1, int ipho2, int ivtx, TLorentzVector lead_p4, TLorentzVector sublead_p4, bool isCutBased, string proc, double sigmaMrv=0., double sigmaMwv=0., double sigmaMeonly=0., float vtxProb=0., string trainPhi="", float lead_id_mva=0., float sublead_id_mva=0.);
+    void saveDatCardTree(LoopAll& l, int cur_type, int category, int inc_cat, float evweight, int ipho1, int ipho2, int ivtx, TLorentzVector lead_p4, TLorentzVector sublead_p4, bool isCutBased, string proc, double sigmaMrv=0., double sigmaMwv=0., double sigmaMeonly=0., float vtxProb=0., string trainPhi="", string bdtType="", float lead_id_mva=0., float sublead_id_mva=0.);
     
     // Save spin trees
     void saveSpinTree(LoopAll &l, int category, float evweight, TLorentzVector Higgs, TLorentzVector lead_p4, TLorentzVector sublead_p4, int ipho1, int ipho2, int diphoton_id, float vtxProb, bool isCorrectVertex);
@@ -572,12 +580,12 @@ class PhotonAnalysis : public BaseAnalysis
 				float & evweight, float & idmva1, float & idmva2,
 				BaseDiPhotonSmearer * sys=0, float syst_shift=0.);
 
-		std::pair<TLorentzVector, TLorentzVector> GetVBF_IntermediateBoson(TLorentzVector& Pho1, TLorentzVector& Pho2, TLorentzVector& Jet1, TLorentzVector& Jet2);
-		Double_t GetPerpendicularAngle(TLorentzVector& ref, TLorentzVector& v1, TLorentzVector& v2);
-		void VBFAngles(TLorentzVector& gamma1, TLorentzVector& gamma2, TLorentzVector& J1, TLorentzVector& J2);
-
-        double getCosThetaCS(TLorentzVector, TLorentzVector);
-        double getCosThetaHX(TLorentzVector, TLorentzVector);
+    std::pair<TLorentzVector, TLorentzVector> GetVBF_IntermediateBoson(TLorentzVector& Pho1, TLorentzVector& Pho2, TLorentzVector& Jet1, TLorentzVector& Jet2);
+    Double_t GetPerpendicularAngle(TLorentzVector& ref, TLorentzVector& v1, TLorentzVector& v2);
+    void VBFAngles(TLorentzVector& gamma1, TLorentzVector& gamma2, TLorentzVector& J1, TLorentzVector& J2);
+    
+    double getCosThetaCS(TLorentzVector, TLorentzVector,int);
+    double getCosThetaHX(TLorentzVector, TLorentzVector,int);
 
     std::vector<BaseSmearer *> photonSmearers_;
     std::vector<BaseSmearer *> systPhotonSmearers_;
@@ -606,13 +614,7 @@ class PhotonAnalysis : public BaseAnalysis
 
     MassResolution *massResolutionCalculator;
 
-    int DiphotonMVASelection(LoopAll &l, HggVertexAnalyzer & vtxAna, Float_t & diphoMVA,
-                             Float_t minLeadingMVA=-0.3, Float_t minSubleadingMVA=-0.3, Float_t leadPtMin=30,
-                             Float_t subleadPtMin=20, std::string type="UCSD", int ncategories=7,
-                             bool applyPtoverM=true, float *pho_energy_array=0, bool split=false);
-    int DiphotonMVAEventClass(LoopAll &l, float diphoMVA, int nCat, std::string type, int EBEB=1);
-
-
+    void VHLepTag2013(LoopAll& l, int & diphotonVHlep_id, bool & VHlep1event, bool & VHlep2event, bool mvaselection, int & mu_ind, int & muVtx, int VHmuevent_cat, int & el_ind, int & elVtx, int VHelevent_cat, float* smeared_pho_energy, float phoidMvaCut, float eventweight, std::vector<float> smeared_pho_weight, bool isSyst, bool vetodipho = false, bool kinonly = false);
     int VHNumberOfJets(LoopAll& l, int diphotonVHlep_id, int vertex, bool VHelevent_prov, bool VHmuevent_prov, int el_ind, int mu_ind, float* smeared_pho_energy);
 
 
@@ -622,6 +624,9 @@ class PhotonAnalysis : public BaseAnalysis
     
     HybridGBRForest *_foresteb;
     HybridGBRForest *_forestee;
+
+    HybridGBRForestD *_forestDeb;
+    HybridGBRForestD *_forestDee;
 
     RooRealVar *_mean;
     RooRealVar *_tgt;
@@ -633,10 +638,13 @@ class PhotonAnalysis : public BaseAnalysis
     RooAbsReal *_sigmalim;
     RooAbsReal *_n1lim;
     RooAbsReal *_n2lim;        
+    RooAbsReal *alpha1;
+    RooAbsReal *alpha2;        
     
     RooAbsPdf *_pdf;
     
     RooArgList _args;
+    
 
     //TFile *fgbr;
     //GBRForest *fReadereb;
