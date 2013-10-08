@@ -2242,7 +2242,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	l.FillTree("dipho_pt", (float)diphoton.Pt());
 	l.FillTree("dipho_eta", (float)diphoton.Eta());
 	l.FillTree("dipho_phi", (float)diphoton.Phi());
-	l.FillTree("dipho_cosThetaStar_CS", (float)getCosThetaCS(lead_p4, sublead_p4));
+	l.FillTree("dipho_cosThetaStar_CS", (float)getCosThetaCS(lead_p4, sublead_p4, l.sqrtS));
     float dipho_tanhYStar = tanh(
         (float)(fabs(lead_p4.Rapidity() - sublead_p4.Rapidity()))/(float)(2.0)
     );
