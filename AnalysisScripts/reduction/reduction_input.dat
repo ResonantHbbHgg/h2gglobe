@@ -143,10 +143,10 @@ jet_algoPF1_nCharged
 jet_algoPF1_nCharged_QC
 jet_algoPF1_ptD
 jet_algoPF1_ptD_QC
-jet_algoPF1_R
-jet_algoPF1_Rchg
-jet_algoPF1_Rchg_QC
-jet_algoPF1_Rneutral
+#jet_algoPF1_R
+#jet_algoPF1_Rchg
+#jet_algoPF1_Rchg_QC
+#jet_algoPF1_Rneutral
 
 
 # QG tagging variables
