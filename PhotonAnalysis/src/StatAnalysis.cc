@@ -96,7 +96,7 @@ void StatAnalysis::Init(LoopAll& l)
 
     met_sync.open ("met_sync.txt");
 
-    //Add btagSF variables (Badder)
+    //Add btagSF variables taking them from database (Badder)
     if(l.itype[l.current] == -301 || l.itype[l.current] == -501 || l.itype[l.current] == -701 || l.itype[l.current] == -1001 || l.itype[l.current] == -1501){  
      
        int mass_point = abs(l.itype[l.current])-1;

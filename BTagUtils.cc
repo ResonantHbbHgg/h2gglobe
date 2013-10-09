@@ -623,6 +623,8 @@ float BtagEfficiencyReader::getBtagEfficiencyError(const TLorentzVector* jetP4, 
 
 //---------------------------------------------------------------------------------------------------------------------------
 
+// Functions to calculate the final event weight and error
+
 float jetWeight(const float jet_SF, const float jet_eff, const float jet_csvBtag){
       
       float weight = 1.;

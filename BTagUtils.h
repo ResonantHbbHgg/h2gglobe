@@ -122,6 +122,8 @@ protected:
     
 };
 
+// Functions to calculate the final event weight and error
+
 float jetWeight(const float jet_SF, const float jet_eff, const float jet_csvBtag);
 
 float jetWeight_err(const float jet_SF,const float jet_SF_err, const float jet_eff,const float jet_eff_err, const float jet_csvBtag);
