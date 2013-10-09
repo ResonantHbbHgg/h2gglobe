@@ -138,33 +138,33 @@ float BtagSFReader::getSF(const TLorentzVector* jetP4,const float& flavour, cons
     }
     if(fabs(flavour) != 0 && fabs(flavour) != 5 && fabs(flavour) != 4){
        if(cvs_Btag > 0.244){
-          if(jetP4->Eta() > 0. && jetP4->Eta() < 0.5){
+          if(fabs(jetP4->Eta()) > 0. && fabs(jetP4->Eta()) < 0.5){
              SF = SFudsg_CSVL_00_05_mean_->Eval(jetP4->Pt());
              if(jetP4->Pt() > SFudsg_CSVL_00_05_mean_->GetXmax()) SF = SFudsg_CSVL_00_05_mean_->Eval(SFudsg_CSVL_00_05_mean_->GetXmax());
           }
-          if(jetP4->Eta() >= 0.5 && jetP4->Eta() < 1.){
+          if(fabs(jetP4->Eta()) >= 0.5 && fabs(jetP4->Eta()) < 1.){
              SF = SFudsg_CSVL_05_10_mean_->Eval(jetP4->Pt());
              if(jetP4->Pt() > SFudsg_CSVL_05_10_mean_->GetXmax()) SF = SFudsg_CSVL_05_10_mean_->Eval(SFudsg_CSVL_05_10_mean_->GetXmax());
           }
-          if(jetP4->Eta() >= 1. && jetP4->Eta() < 1.5){
+          if(fabs(jetP4->Eta()) >= 1. && fabs(jetP4->Eta()) < 1.5){
              SF = SFudsg_CSVL_10_15_mean_->Eval(jetP4->Pt());
              if(jetP4->Pt() > SFudsg_CSVL_10_15_mean_->GetXmax()) SF = SFudsg_CSVL_10_15_mean_->Eval(SFudsg_CSVL_10_15_mean_->GetXmax());
           }
-          if(jetP4->Eta() >= 1.5){
+          if(fabs(jetP4->Eta()) >= 1.5){
              SF = SFudsg_CSVL_15_24_mean_->Eval(jetP4->Pt());
              if(jetP4->Pt() > SFudsg_CSVL_15_24_mean_->GetXmax()) SF = SFudsg_CSVL_15_24_mean_->Eval(SFudsg_CSVL_15_24_mean_->GetXmax());
           }
        }
        if(cvs_Btag > 0.679){
-          if(jetP4->Eta() > 0. && jetP4->Eta() < 0.8){
+          if(fabs(jetP4->Eta()) > 0. && fabs(jetP4->Eta()) < 0.8){
              SF = SFudsg_CSVM_00_08_mean_->Eval(jetP4->Pt());
              if(jetP4->Pt() > SFudsg_CSVM_00_08_mean_->GetXmax()) SF = SFudsg_CSVM_00_08_mean_->Eval(SFudsg_CSVM_00_08_mean_->GetXmax());
           }
-          if(jetP4->Eta() >= 0.8 && jetP4->Eta() < 1.6){
+          if(fabs(jetP4->Eta()) >= 0.8 && fabs(jetP4->Eta()) < 1.6){
              SF = SFudsg_CSVM_08_16_mean_->Eval(jetP4->Pt());
              if(jetP4->Pt() > SFudsg_CSVM_08_16_mean_->GetXmax()) SF = SFudsg_CSVM_08_16_mean_->Eval(SFudsg_CSVM_08_16_mean_->GetXmax());
           }
-          if(jetP4->Eta() >= 1.6){
+          if(fabs(jetP4->Eta()) >= 1.6){
              SF = SFudsg_CSVM_16_24_mean_->Eval(jetP4->Pt());
              if(jetP4->Pt() > SFudsg_CSVM_16_24_mean_->GetXmax()) SF = SFudsg_CSVM_16_24_mean_->Eval(SFudsg_CSVM_16_24_mean_->GetXmax());
           }
@@ -239,7 +239,7 @@ float BtagSFReader::getSFErrorUp(const TLorentzVector* jetP4,const float& flavou
     }
     if(fabs(flavour) != 0 && fabs(flavour) != 5 && fabs(flavour) != 4){
        if(cvs_Btag > 0.244){
-          if(jetP4->Eta() > 0. && jetP4->Eta() < 0.5){
+          if(fabs(jetP4->Eta()) > 0. && fabs(jetP4->Eta()) < 0.5){
              SF = SFudsg_CSVL_00_05_mean_->Eval(jetP4->Pt());
              SFMax = SFudsg_CSVL_00_05_max_->Eval(jetP4->Pt());
              SFerr = fabs(SF-SFMax);
@@ -249,7 +249,7 @@ float BtagSFReader::getSFErrorUp(const TLorentzVector* jetP4,const float& flavou
                 SFerr = 2*fabs(SF-SFMax);
              } 
           }
-          if(jetP4->Eta() > 0.5 && jetP4->Eta() < 1.){
+          if(fabs(jetP4->Eta()) > 0.5 && fabs(jetP4->Eta()) < 1.){
              SF = SFudsg_CSVL_05_10_mean_->Eval(jetP4->Pt());
              SFMax = SFudsg_CSVL_05_10_max_->Eval(jetP4->Pt());
              SFerr = fabs(SF-SFMax);
@@ -259,7 +259,7 @@ float BtagSFReader::getSFErrorUp(const TLorentzVector* jetP4,const float& flavou
                 SFerr = 2*fabs(SF-SFMax);
              } 
           }
-          if(jetP4->Eta() > 1. && jetP4->Eta() < 1.5){
+          if(fabs(jetP4->Eta()) > 1. && fabs(jetP4->Eta()) < 1.5){
              SF = SFudsg_CSVL_10_15_mean_->Eval(jetP4->Pt());
              SFMax = SFudsg_CSVL_10_15_max_->Eval(jetP4->Pt());
              SFerr = fabs(SF-SFMax);
@@ -269,7 +269,7 @@ float BtagSFReader::getSFErrorUp(const TLorentzVector* jetP4,const float& flavou
                 SFerr = 2*fabs(SF-SFMax);
              } 
           }
-          if(jetP4->Eta() > 1.5 && jetP4->Eta() < 2.4){
+          if(fabs(jetP4->Eta()) > 1.5 && fabs(jetP4->Eta()) < 2.4){
              SF = SFudsg_CSVL_15_24_mean_->Eval(jetP4->Pt());
              SFMax = SFudsg_CSVL_15_24_max_->Eval(jetP4->Pt());
              SFerr = fabs(SF-SFMax);
@@ -279,7 +279,7 @@ float BtagSFReader::getSFErrorUp(const TLorentzVector* jetP4,const float& flavou
                 SFerr = 2*fabs(SF-SFMax);
              } 
           }
-          if(jetP4->Eta() >= 2.4){
+          if(fabs(jetP4->Eta()) >= 2.4){
              SF = SFudsg_CSVL_15_24_mean_->Eval(jetP4->Pt());
              SFMax = SFudsg_CSVL_15_24_max_->Eval(jetP4->Pt());
              SFerr = 2*fabs(SF-SFMax);
@@ -291,7 +291,7 @@ float BtagSFReader::getSFErrorUp(const TLorentzVector* jetP4,const float& flavou
           }  
        }
        if(cvs_Btag > 0.679){
-          if(jetP4->Eta() > 0. && jetP4->Eta() < 0.8){
+          if(fabs(jetP4->Eta()) > 0. && fabs(jetP4->Eta()) < 0.8){
              SF = SFudsg_CSVM_00_08_mean_->Eval(jetP4->Pt());
              SFMax = SFudsg_CSVM_00_08_max_->Eval(jetP4->Pt());
              SFerr = fabs(SF-SFMax);
@@ -301,7 +301,7 @@ float BtagSFReader::getSFErrorUp(const TLorentzVector* jetP4,const float& flavou
                 SFerr = 2*fabs(SF-SFMax);
              } 
           }
-          if(jetP4->Eta() >= 0.8 && jetP4->Eta() < 1.6){
+          if(fabs(jetP4->Eta()) >= 0.8 && fabs(jetP4->Eta()) < 1.6){
              SF = SFudsg_CSVM_08_16_mean_->Eval(jetP4->Pt());
              SFMax = SFudsg_CSVM_08_16_max_->Eval(jetP4->Pt());
              SFerr = fabs(SF-SFMax);
@@ -311,7 +311,7 @@ float BtagSFReader::getSFErrorUp(const TLorentzVector* jetP4,const float& flavou
                 SFerr = 2*fabs(SF-SFMax);
              } 
           }
-          if(jetP4->Eta() >= 1.6 && jetP4->Eta() < 2.4){
+          if(fabs(jetP4->Eta()) >= 1.6 && fabs(jetP4->Eta()) < 2.4){
              SF = SFudsg_CSVM_16_24_mean_->Eval(jetP4->Pt());
              SFMax = SFudsg_CSVM_16_24_max_->Eval(jetP4->Pt());
              SFerr = fabs(SF-SFMax);
@@ -321,7 +321,7 @@ float BtagSFReader::getSFErrorUp(const TLorentzVector* jetP4,const float& flavou
                 SFerr = 2*fabs(SF-SFMax);
              } 
           }
-          if(jetP4->Eta() >= 2.4){
+          if(fabs(jetP4->Eta()) >= 2.4){
              SF = SFudsg_CSVM_16_24_mean_->Eval(jetP4->Pt());
              SFMax = SFudsg_CSVM_16_24_max_->Eval(jetP4->Pt());
              SFerr = 2*fabs(SF-SFMax);
@@ -333,7 +333,7 @@ float BtagSFReader::getSFErrorUp(const TLorentzVector* jetP4,const float& flavou
           }
        }
        if(cvs_Btag > 0.898){
-          if(jetP4->Eta() < 2.4){
+          if(fabs(jetP4->Eta()) < 2.4){
              SF = SFudsg_CSVT_00_24_mean_->Eval(jetP4->Pt());
              SFMax = SFudsg_CSVT_00_24_max_->Eval(jetP4->Pt());
              SFerr = fabs(SF-SFMax);
@@ -343,7 +343,7 @@ float BtagSFReader::getSFErrorUp(const TLorentzVector* jetP4,const float& flavou
                 SFerr = 2*fabs(SF-SFMax);
              } 
           }
-          if(jetP4->Eta() >= 2.4){
+          if(fabs(jetP4->Eta()) >= 2.4){
              SF = SFudsg_CSVT_00_24_mean_->Eval(jetP4->Pt());
              SFMax = SFudsg_CSVT_00_24_max_->Eval(jetP4->Pt());
              SFerr = 2*fabs(SF-SFMax);
@@ -420,7 +420,7 @@ float BtagSFReader::getSFErrorDown(const TLorentzVector* jetP4,const float& flav
     }
     if(fabs(flavour) != 0 && fabs(flavour) != 5 && fabs(flavour) != 4){
        if(cvs_Btag > 0.244){
-          if(jetP4->Eta() > 0. && jetP4->Eta() < 0.5){
+          if(fabs(jetP4->Eta()) > 0. && fabs(jetP4->Eta()) < 0.5){
              SF = SFudsg_CSVL_00_05_mean_->Eval(jetP4->Pt());
              SFmin = SFudsg_CSVL_00_05_min_->Eval(jetP4->Pt());
              SFerr = fabs(SF-SFmin);
@@ -430,7 +430,7 @@ float BtagSFReader::getSFErrorDown(const TLorentzVector* jetP4,const float& flav
                 SFerr = 2*fabs(SF-SFmin);
              } 
           }
-          if(jetP4->Eta() > 0.5 && jetP4->Eta() < 1.){
+          if(fabs(jetP4->Eta()) > 0.5 && fabs(jetP4->Eta()) < 1.){
              SF = SFudsg_CSVL_05_10_mean_->Eval(jetP4->Pt());
              SFmin = SFudsg_CSVL_05_10_min_->Eval(jetP4->Pt());
              SFerr = fabs(SF-SFmin);
@@ -440,7 +440,7 @@ float BtagSFReader::getSFErrorDown(const TLorentzVector* jetP4,const float& flav
                 SFerr = 2*fabs(SF-SFmin);
              } 
           }
-          if(jetP4->Eta() > 1. && jetP4->Eta() < 1.5){
+          if(fabs(jetP4->Eta()) > 1. && fabs(jetP4->Eta()) < 1.5){
              SF = SFudsg_CSVL_10_15_mean_->Eval(jetP4->Pt());
              SFmin = SFudsg_CSVL_10_15_min_->Eval(jetP4->Pt());
              SFerr = fabs(SF-SFmin);
@@ -450,7 +450,7 @@ float BtagSFReader::getSFErrorDown(const TLorentzVector* jetP4,const float& flav
                 SFerr = 2*fabs(SF-SFmin);
              } 
           }
-          if(jetP4->Eta() > 1.5 && jetP4->Eta() < 2.4){
+          if(fabs(jetP4->Eta()) > 1.5 && fabs(jetP4->Eta()) < 2.4){
              SF = SFudsg_CSVL_15_24_mean_->Eval(jetP4->Pt());
              SFmin = SFudsg_CSVL_15_24_min_->Eval(jetP4->Pt());
              SFerr = fabs(SF-SFmin);
@@ -460,7 +460,7 @@ float BtagSFReader::getSFErrorDown(const TLorentzVector* jetP4,const float& flav
                 SFerr = 2*fabs(SF-SFmin);
              } 
           }
-          if(jetP4->Eta() >= 2.4){
+          if(fabs(jetP4->Eta()) >= 2.4){
              SF = SFudsg_CSVL_15_24_mean_->Eval(jetP4->Pt());
              SFmin = SFudsg_CSVL_15_24_min_->Eval(jetP4->Pt());
              SFerr = 2*fabs(SF-SFmin);
@@ -472,7 +472,7 @@ float BtagSFReader::getSFErrorDown(const TLorentzVector* jetP4,const float& flav
           }  
        }
        if(cvs_Btag > 0.679){
-          if(jetP4->Eta() > 0. && jetP4->Eta() < 0.8){
+          if(fabs(jetP4->Eta()) > 0. && fabs(jetP4->Eta()) < 0.8){
              SF = SFudsg_CSVM_00_08_mean_->Eval(jetP4->Pt());
              SFmin = SFudsg_CSVM_00_08_min_->Eval(jetP4->Pt());
              SFerr = fabs(SF-SFmin);
@@ -482,7 +482,7 @@ float BtagSFReader::getSFErrorDown(const TLorentzVector* jetP4,const float& flav
                 SFerr = 2*fabs(SF-SFmin);
              } 
           }
-          if(jetP4->Eta() >= 0.8 && jetP4->Eta() < 1.6){
+          if(fabs(jetP4->Eta()) >= 0.8 && fabs(jetP4->Eta()) < 1.6){
              SF = SFudsg_CSVM_08_16_mean_->Eval(jetP4->Pt());
              SFmin = SFudsg_CSVM_08_16_min_->Eval(jetP4->Pt());
              SFerr = fabs(SF-SFmin);
@@ -492,7 +492,7 @@ float BtagSFReader::getSFErrorDown(const TLorentzVector* jetP4,const float& flav
                 SFerr = 2*fabs(SF-SFmin);
              } 
           }
-          if(jetP4->Eta() >= 1.6 && jetP4->Eta() < 2.4){
+          if(fabs(jetP4->Eta()) >= 1.6 && fabs(jetP4->Eta()) < 2.4){
              SF = SFudsg_CSVM_16_24_mean_->Eval(jetP4->Pt());
              SFmin = SFudsg_CSVM_16_24_min_->Eval(jetP4->Pt());
              SFerr = fabs(SF-SFmin);
@@ -502,7 +502,7 @@ float BtagSFReader::getSFErrorDown(const TLorentzVector* jetP4,const float& flav
                 SFerr = 2*fabs(SF-SFmin);
              } 
           }
-          if(jetP4->Eta() >= 2.4){
+          if(fabs(jetP4->Eta()) >= 2.4){
              SF = SFudsg_CSVM_16_24_mean_->Eval(jetP4->Pt());
              SFmin = SFudsg_CSVM_16_24_min_->Eval(jetP4->Pt());
              SFerr = 2*fabs(SF-SFmin);
@@ -514,7 +514,7 @@ float BtagSFReader::getSFErrorDown(const TLorentzVector* jetP4,const float& flav
           }
        }
        if(cvs_Btag > 0.898){
-          if(jetP4->Eta() < 2.4){
+          if(fabs(jetP4->Eta()) < 2.4){
              SF = SFudsg_CSVT_00_24_mean_->Eval(jetP4->Pt());
              SFmin = SFudsg_CSVT_00_24_min_->Eval(jetP4->Pt());
              SFerr = fabs(SF-SFmin);
@@ -524,7 +524,7 @@ float BtagSFReader::getSFErrorDown(const TLorentzVector* jetP4,const float& flav
                 SFerr = 2*fabs(SF-SFmin);
              } 
           }
-          if(jetP4->Eta() >= 2.4){
+          if(fabs(jetP4->Eta()) >= 2.4){
              SF = SFudsg_CSVT_00_24_mean_->Eval(jetP4->Pt());
              SFmin = SFudsg_CSVT_00_24_min_->Eval(jetP4->Pt());
              SFerr = 2*fabs(SF-SFmin);
@@ -574,23 +574,24 @@ float BtagEfficiencyReader::getBtagEfficiency(const TLorentzVector* jetP4, const
      float eff = -1001.;
 
      if(fabs(jet_flavour) == 5){
-        if(csv_Btag > 0.244) eff = h2_BTaggingEff_b_L_->GetBinContent(h2_BTaggingEff_b_L_->FindBin(jetP4->Pt(),jetP4->Eta()));
-        if(csv_Btag > 0.679) eff = h2_BTaggingEff_b_M_->GetBinContent(h2_BTaggingEff_b_M_->FindBin(jetP4->Pt(),jetP4->Eta()));
-        if(csv_Btag > 0.898) eff = h2_BTaggingEff_b_T_->GetBinContent(h2_BTaggingEff_b_T_->FindBin(jetP4->Pt(),jetP4->Eta()));
+        if(csv_Btag > 0.244) eff = h2_BTaggingEff_b_L_->GetBinContent(h2_BTaggingEff_b_L_->FindBin(jetP4->Pt(),fabs(jetP4->Eta())));
+        if(csv_Btag > 0.679) eff = h2_BTaggingEff_b_M_->GetBinContent(h2_BTaggingEff_b_M_->FindBin(jetP4->Pt(),fabs(jetP4->Eta())));
+        if(csv_Btag > 0.898) eff = h2_BTaggingEff_b_T_->GetBinContent(h2_BTaggingEff_b_T_->FindBin(jetP4->Pt(),fabs(jetP4->Eta())));
      }
      
      if(fabs(jet_flavour) == 4){
-        if(csv_Btag > 0.244) eff = h2_BTaggingEff_c_L_->GetBinContent(h2_BTaggingEff_c_L_->FindBin(jetP4->Pt(),jetP4->Eta()));
-        if(csv_Btag > 0.679) eff = h2_BTaggingEff_c_M_->GetBinContent(h2_BTaggingEff_c_M_->FindBin(jetP4->Pt(),jetP4->Eta()));
-        if(csv_Btag > 0.898) eff = h2_BTaggingEff_c_T_->GetBinContent(h2_BTaggingEff_c_T_->FindBin(jetP4->Pt(),jetP4->Eta()));
+        if(csv_Btag > 0.244) eff = h2_BTaggingEff_c_L_->GetBinContent(h2_BTaggingEff_c_L_->FindBin(jetP4->Pt(),fabs(jetP4->Eta())));
+        if(csv_Btag > 0.679) eff = h2_BTaggingEff_c_M_->GetBinContent(h2_BTaggingEff_c_M_->FindBin(jetP4->Pt(),fabs(jetP4->Eta())));
+        if(csv_Btag > 0.898) eff = h2_BTaggingEff_c_T_->GetBinContent(h2_BTaggingEff_c_T_->FindBin(jetP4->Pt(),fabs(jetP4->Eta())));
      }
      
      if(fabs(jet_flavour) != 0 && fabs(jet_flavour) != 4 && fabs(jet_flavour) != 5){
-        if(csv_Btag > 0.244) eff = h2_BTaggingEff_udsg_L_->GetBinContent(h2_BTaggingEff_udsg_L_->FindBin(jetP4->Pt(),jetP4->Eta()));
-        if(csv_Btag > 0.679) eff = h2_BTaggingEff_udsg_M_->GetBinContent(h2_BTaggingEff_udsg_M_->FindBin(jetP4->Pt(),jetP4->Eta()));
-        if(csv_Btag > 0.898) eff = h2_BTaggingEff_udsg_T_->GetBinContent(h2_BTaggingEff_udsg_T_->FindBin(jetP4->Pt(),jetP4->Eta()));
+        if(csv_Btag > 0.244) eff = h2_BTaggingEff_udsg_L_->GetBinContent(h2_BTaggingEff_udsg_L_->FindBin(jetP4->Pt(),fabs(jetP4->Eta())));
+        if(csv_Btag > 0.679) eff = h2_BTaggingEff_udsg_M_->GetBinContent(h2_BTaggingEff_udsg_M_->FindBin(jetP4->Pt(),fabs(jetP4->Eta())));
+        if(csv_Btag > 0.898) eff = h2_BTaggingEff_udsg_T_->GetBinContent(h2_BTaggingEff_udsg_T_->FindBin(jetP4->Pt(),fabs(jetP4->Eta())));
      }
-
+     
+     if(eff == 0) eff = -1001.;
      return eff;
 }
 //---------------------------------------------------------------------------------------------------------------------------
@@ -599,23 +600,136 @@ float BtagEfficiencyReader::getBtagEfficiencyError(const TLorentzVector* jetP4, 
      float eff_err = -1001.;
 
      if(fabs(jet_flavour) == 5){
-        if(csv_Btag > 0.244) eff_err = h2_BTaggingEff_b_L_->GetBinError(h2_BTaggingEff_b_L_->FindBin(jetP4->Pt(),jetP4->Eta()));
-        if(csv_Btag > 0.679) eff_err = h2_BTaggingEff_b_M_->GetBinError(h2_BTaggingEff_b_M_->FindBin(jetP4->Pt(),jetP4->Eta()));
-        if(csv_Btag > 0.898) eff_err = h2_BTaggingEff_b_T_->GetBinError(h2_BTaggingEff_b_T_->FindBin(jetP4->Pt(),jetP4->Eta()));
+        if(csv_Btag > 0.244) eff_err = h2_BTaggingEff_b_L_->GetBinError(h2_BTaggingEff_b_L_->FindBin(jetP4->Pt(),fabs(jetP4->Eta())));
+        if(csv_Btag > 0.679) eff_err = h2_BTaggingEff_b_M_->GetBinError(h2_BTaggingEff_b_M_->FindBin(jetP4->Pt(),fabs(jetP4->Eta())));
+        if(csv_Btag > 0.898) eff_err = h2_BTaggingEff_b_T_->GetBinError(h2_BTaggingEff_b_T_->FindBin(jetP4->Pt(),fabs(jetP4->Eta())));
      }
      
      if(fabs(jet_flavour) == 4){
-        if(csv_Btag > 0.244) eff_err = h2_BTaggingEff_c_L_->GetBinError(h2_BTaggingEff_c_L_->FindBin(jetP4->Pt(),jetP4->Eta()));
-        if(csv_Btag > 0.679) eff_err = h2_BTaggingEff_c_M_->GetBinError(h2_BTaggingEff_c_M_->FindBin(jetP4->Pt(),jetP4->Eta()));
-        if(csv_Btag > 0.898) eff_err = h2_BTaggingEff_c_T_->GetBinError(h2_BTaggingEff_c_T_->FindBin(jetP4->Pt(),jetP4->Eta()));
+        if(csv_Btag > 0.244) eff_err = h2_BTaggingEff_c_L_->GetBinError(h2_BTaggingEff_c_L_->FindBin(jetP4->Pt(),fabs(jetP4->Eta())));
+        if(csv_Btag > 0.679) eff_err = h2_BTaggingEff_c_M_->GetBinError(h2_BTaggingEff_c_M_->FindBin(jetP4->Pt(),fabs(jetP4->Eta())));
+        if(csv_Btag > 0.898) eff_err = h2_BTaggingEff_c_T_->GetBinError(h2_BTaggingEff_c_T_->FindBin(jetP4->Pt(),fabs(jetP4->Eta())));
      }
      
      if(fabs(jet_flavour) != 0 && fabs(jet_flavour) != 4 && fabs(jet_flavour) != 5){
-        if(csv_Btag > 0.244) eff_err = h2_BTaggingEff_udsg_L_->GetBinError(h2_BTaggingEff_udsg_L_->FindBin(jetP4->Pt(),jetP4->Eta()));
-        if(csv_Btag > 0.679) eff_err = h2_BTaggingEff_udsg_M_->GetBinError(h2_BTaggingEff_udsg_M_->FindBin(jetP4->Pt(),jetP4->Eta()));
-        if(csv_Btag > 0.898) eff_err = h2_BTaggingEff_udsg_T_->GetBinError(h2_BTaggingEff_udsg_T_->FindBin(jetP4->Pt(),jetP4->Eta()));
+        if(csv_Btag > 0.244) eff_err = h2_BTaggingEff_udsg_L_->GetBinError(h2_BTaggingEff_udsg_L_->FindBin(jetP4->Pt(),fabs(jetP4->Eta())));
+        if(csv_Btag > 0.679) eff_err = h2_BTaggingEff_udsg_M_->GetBinError(h2_BTaggingEff_udsg_M_->FindBin(jetP4->Pt(),fabs(jetP4->Eta())));
+        if(csv_Btag > 0.898) eff_err = h2_BTaggingEff_udsg_T_->GetBinError(h2_BTaggingEff_udsg_T_->FindBin(jetP4->Pt(),fabs(jetP4->Eta())));
      }
 
+     if(eff_err == 0) eff_err == -1001.;
      return eff_err;
 }
+
 //---------------------------------------------------------------------------------------------------------------------------
+
+// Functions to calculate the final event weight and error
+
+float jetWeight(const float jet_SF, const float jet_eff, const float jet_csvBtag){
+      
+      float weight = 1.;
+      
+      if(jet_csvBtag > 0.679) weight = jet_SF;
+      else weight = (1-jet_SF*jet_eff)/(1-jet_eff);
+
+      if(jet_csvBtag <= 0.679 && (1-jet_eff) == 0) weight = 0.;
+      
+      return weight;
+}
+
+//---------------------------------------------------------------------------------------------------------------------------
+
+float jetWeight_err(const float jet_SF,const float jet_SF_err, const float jet_eff,const float jet_eff_err, const float jet_csvBtag){
+      
+      float error = 0.;
+
+      if(jet_csvBtag > 0.679) error = jet_SF_err;
+      else{
+         float first = jet_eff/(1-jet_eff);
+         float second = (1-jet_SF)/((1-jet_eff)*(1-jet_eff));
+         error = sqrt(first*first*jet_SF_err*jet_SF_err+second*second*jet_eff_err*jet_eff_err);
+      }
+      
+      return error;
+}
+
+//---------------------------------------------------------------------------------------------------------------------------
+
+float eventWeight(const float j1_SF, const float j2_SF, const float j1_eff, const float j2_eff, const float j1_csvBtag, const float j2_csvBtag){
+      
+      float weight1 = 1.;
+      float weight2 = 1.;
+
+      if(j1_csvBtag > 0.679) weight1 = j1_SF;
+      else weight1 = (1-j1_SF*j1_eff)/(1-j1_eff);
+
+      if(j2_csvBtag > 0.679) weight2 = j2_SF;
+      else weight2 = (1-j2_SF*j2_eff)/(1-j2_eff);
+
+      if(j1_csvBtag <= 0.679 && (1-j1_eff) == 0) weight1 = 0.;
+      if(j2_csvBtag <= 0.679 && (1-j2_eff) == 0) weight2 = 0.;
+
+      return weight1*weight2;
+}
+
+//---------------------------------------------------------------------------------------------------------------------------
+
+float eventWeight_error(const float j1_SF, const float j1_SF_error, const float j2_SF, const float j2_SF_error , const float j1_eff, const float j1_eff_err, const float j2_eff, const float j2_eff_err , const float j1_csvBtag, const float j2_csvBtag, const float j1_flavour, const float j2_flavour){
+       
+      float rho = 1.;
+       
+      if(fabs(j1_flavour) == 5 && fabs(j2_flavour) != 5 && fabs(j2_flavour) != 4) rho = 0.;
+      if(fabs(j1_flavour) == 4 && fabs(j2_flavour) != 5 && fabs(j2_flavour) != 4) rho = 0.;
+      if(fabs(j2_flavour) == 5 && fabs(j1_flavour) != 5 && fabs(j1_flavour) != 4) rho = 0.;
+      if(fabs(j2_flavour) == 4 && fabs(j1_flavour) != 5 && fabs(j1_flavour) != 4) rho = 0.;
+      
+      float dWodSF1 = 0.;
+      float dWodSF2 = 0.;
+      float dWodEff = 0.;
+      float Efferr = 0.;
+
+      if(j1_csvBtag > 0.679 && j2_csvBtag > 0.679){
+         
+         dWodSF1 = j2_SF;  
+         dWodSF2 = j1_SF; 
+         dWodEff = 0.;   
+         Efferr = 0.; 
+         
+      } 
+
+      if(j1_csvBtag > 0.679 && j2_csvBtag < 0.679){
+         
+         dWodSF1 = (1-j2_SF*j2_eff)/(1-j2_eff);  
+         dWodSF2 = -j1_SF*j2_eff/(1-j2_eff);
+         dWodEff = j1_SF*(1-j2_SF)/((1-j2_eff)*(1-j2_eff));
+         Efferr = j2_eff_err;
+              
+         if(1-j2_eff == 0){
+            dWodSF1 = 0;
+            dWodSF2 = 0;
+            Efferr = 0;
+         }
+      } 
+      
+      if(j1_csvBtag < 0.679 && j2_csvBtag > 0.679){
+         
+         dWodSF1 = -j2_SF*j1_eff/(1-j1_eff);
+         dWodSF2 = (1-j1_SF*j1_eff)/(1-j1_eff);
+         dWodEff = j2_SF*(1-j1_SF)/((1-j1_eff)*(1-j1_eff));
+         Efferr = j1_eff_err;
+
+         if(1-j1_eff == 0){
+            dWodSF1 = 0;
+            dWodSF2 = 0;
+            Efferr = 0;
+         }
+      } 
+     
+      float err2 = dWodSF1*dWodSF1*j1_SF_error*j1_SF_error + dWodSF2*dWodSF2*j2_SF_error*j2_SF_error + dWodEff*dWodEff*Efferr*Efferr + 2*dWodSF1*dWodSF2*rho*j1_SF_error*j2_SF_error;
+      
+      return sqrt(err2);
+}
+
+//---------------------------------------------------------------------------------------------------------------------------
+
+
