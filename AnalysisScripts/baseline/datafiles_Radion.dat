@@ -94,4 +94,4 @@ cuts jetanalysis/cuts_vbfcutb.dat
 ##   analyzer <class_name> <config_file>
 ##
 ## analyzer PhotonAnalysis photonanalysis.dat
-analyzer StatAnalysis photonanalysis.dat analysis_settings_Radion.dat statanalysis_Radion.dat jetanalysis/cutbvbftag.dat escale_and_smearing_jan22rereco_8TeV_std_mc.dat bkgPolOrderByCat=5,5,5,5 saveDatacardTrees_=0 dumpAscii=0 dumpMcAscii=0 scaleR9Only=0 fillOptTree=1 useDefaultVertex=1 doPtSpinSmear=0
+analyzer StatAnalysis photonanalysis.dat analysis_settings_Radion.dat statanalysis_Radion.dat jetanalysis/cutbvbftag.dat escale_and_smearing_jan22rereco_8TeV_std_mc.dat bkgPolOrderByCat=5,5,5,5 saveDatacardTrees_=0 dumpAscii=0 dumpMcAscii=0 scaleR9Only=0 fillOptTree=1 useDefaultVertex=1 doPtSpinSmear=0 puTargets=aux/AB.json.69400.observed.pileup.root,aux/C.json.69400.observed.pileup.root,aux/D.json.69400.observed.pileup.root
