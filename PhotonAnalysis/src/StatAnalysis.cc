@@ -104,13 +104,13 @@ void StatAnalysis::Init(LoopAll& l)
        if(PADEBUG) cerr << "Loading btagSF variables for mass-point: " << mass_point << endl;
 
        char Name[1000];
-       sprintf(Name, "/afs/cern.ch/work/b/bmarzocc/Analyses/jettxt_Radion%d_RD.txt", mass_point);
+       sprintf(Name, "/afs/cern.ch/work/b/bmarzocc/public/RadionAnalysis_DONOTREMOVE/jettxt_Radion%d_RD.txt", mass_point);
        std::string name_JetFlavourFile = std::string(Name);
    
-       sprintf(Name, "/afs/cern.ch/work/b/bmarzocc/Analyses/output/btagEfficiencies_Radion%d_RD.root", mass_point);
+       sprintf(Name, "/afs/cern.ch/work/b/bmarzocc/public/RadionAnalysis_DONOTREMOVE/btagEfficiencies_Radion%d_RD.root", mass_point);
        std::string name_btagEfficienciesFile = std::string(Name);
 
-       std::string name_btagSFFile = std::string("/afs/cern.ch/work/b/bmarzocc/Analyses/output/btagSF_22Jan2013Rereco.root");
+       std::string name_btagSFFile = std::string("/afs/cern.ch/work/b/bmarzocc/public/RadionAnalysis_DONOTREMOVE/btagSF_22Jan2013Rereco.root");
 
        jetFlavReader = new JetFlavourReader(name_JetFlavourFile.c_str());
        SFReader = new BtagSFReader(name_btagSFFile.c_str());

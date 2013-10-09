@@ -22,7 +22,7 @@ intL=19785. histfile=CMS-HGG.root output=eventsList.txt
 # Cross sections taken from https://twiki.cern.ch/twiki/bin/viewauth/CMS/HHtoGammaGammabb#MC_signal_simulation for radion and prep (http://cms.cern.ch/iCMS/jsp/mcprod/admin/requestmanagement.jsp?dsn=GravitonToHH_2Gamma_2b_M-*&campid=Summer12) for graviton
 
 # 0.000271
-typ=-301 ind=1 draw=1   Nam=Radion_m300_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v09/mc/RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=19785.   xsec=-1   kfac=1.000000   scal=1.000000 
+typ=-301 ind=1 draw=1   Nam=Radion_m300_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=19785.   xsec=-1   kfac=1.000000   scal=1.000000 
 #typ=-501 ind=1 draw=1   Nam=Radion_m500_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v08/mc/RadionToHHTo2G2B_M-500_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19785.   xsec=-1   kfac=1.000000   scal=1.000000 # 0.0000471
 #typ=-701 ind=1 draw=1   Nam=Radion_m700_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v08/mc/RadionToHHTo2G2B_M-700_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19785.   xsec=-1   kfac=1.000000   scal=1.000000 # 0.0000158
 #typ=-1001 ind=1 draw=1   Nam=Radion_m1000_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v08/mc/RadionToHHTo2G2B_M-1000_TuneZ2star_8TeV-nm-madgraph   red=0 lum=19785.   xsec=-1   kfac=1.000000   scal=1.000000 # 0.00000263
