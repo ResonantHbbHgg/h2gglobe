@@ -8,6 +8,7 @@ base_storedir="./datastore"
 ## storeremote="/castor/cern.ch/user/c/cmshgg/reduced"
 ## storeremote="/store/group/phys_higgs/Resonant_HH/reduced"
 storeremote="/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced"
+#storeremote="/store/cmst3/user/mgouzevi/Radion/reduced"
 #storeremote="/store/group/phys_higgs/cmshgg/reduced/${group}"
 
 export storeremote
