@@ -28,11 +28,19 @@ datastore/
 # ignore Reduction stuff
 Reduction/pileup/
 Reduction/*summary.txt
+Reduction/*status.txt
+Reduction/python
+Reduction/*.log*
 Reduction/AnalysisScripts
 Reduction/Macros
+Reduction/to_resubmit.sh
 
 # ignore AnalysisScripts stuff
 AnalysisScripts/baseline/tmp_*
+AnalysisScripts/dirList*txt
+AnalysisScripts/fileList*txt
+AnalysisScripts/lumi*txt
+AnalysisScripts/run*json.txt
 *.pevents
 
 # editor temp files
