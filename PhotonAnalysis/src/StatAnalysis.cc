@@ -2299,16 +2299,21 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 
     if( PADEBUG ) cout << "jets.size()= " << jets.size() << endl;
     if(jets.size()>0){
+        if(PADEBUG) cout << "processing jet 0" << endl;
+        if(PADEBUG) cout << "4-momentum of the jet" << endl;
         TLorentzVector* jet1 = (TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]);
 	    l.FillTree("j1_e",(float)jet1->Energy());
     	l.FillTree("j1_pt",(float)jet1->Pt());
 	    l.FillTree("j1_phi",(float)jet1->Phi());
     	l.FillTree("j1_eta",(float)jet1->Eta());
+        if(PADEBUG) cout << "jet1->Energy()= " << jet1->Energy() << "\tjet1->Pt()= " << jet1->Pt() << "\tjet1->Phi()= " << jet1->Phi() << "\tjet1->Eta()= " << jet1->Eta() << "\tjets[0]= " << jets[0] << endl;
+        if(PADEBUG) cout << "trying accesses: " << endl;
         TLorentzVector j1_jecD = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]), jets[0], 1, -1., 0,  0.);
-        TLorentzVector j1_jecU = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]), jets[0], 1, +1., 0,  0.);
+        TLorentzVector j1_jecU = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]), jets[0], 1, 1., 0,  0.);
         TLorentzVector j1_jerD = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]), jets[0], 0,  0., 1, -1.);
         TLorentzVector j1_jerC = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]), jets[0], 0,  0., 1,  0.);
-        TLorentzVector j1_jerU = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]), jets[0], 0,  0., 1, +1.);
+        TLorentzVector j1_jerU = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]), jets[0], 0,  0., 1, 1.);
+        if(PADEBUG) cout << "Now that we have JEC and JER, store it" << endl;
 	    l.FillTree("j1_jecD_e",(float)j1_jecD.Energy());
     	l.FillTree("j1_jecD_pt",(float)j1_jecD.Pt());
 	    l.FillTree("j1_jecD_phi",(float)j1_jecD.Phi());
@@ -2553,6 +2558,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     } // end if njets > 1
 
     if(jets.size()>1){
+        if(PADEBUG) cout << "processing jet 1" << endl;
         TLorentzVector* jet1 = (TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]);
         TLorentzVector* jet2 = (TLorentzVector*)l.jet_algoPF1_p4->At(jets[1]);
         // dijet variables
@@ -2591,6 +2597,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 
 
     if(jets.size() > 2){
+        if(PADEBUG) cout << "processing jet 2" << endl;
         jet3 = (TLorentzVector*)l.jet_algoPF1_p4->At(jets[2]);
     	l.FillTree("j3_e",(float)jet3->Energy());
 	    l.FillTree("j3_pt",(float)jet3->Pt());
@@ -2718,6 +2725,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     } // if 3 jets
 
     if(jets.size() > 3){
+        if(PADEBUG) cout << "processing jet 3" << endl;
         jet4 = (TLorentzVector*)l.jet_algoPF1_p4->At(jets[3]);
     	l.FillTree("j4_e",(float)jet4->Energy());
 	    l.FillTree("j4_pt",(float)jet4->Pt());
