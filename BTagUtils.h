@@ -122,4 +122,14 @@ protected:
     
 };
 
+// Functions to calculate the final event weight and error
+
+float jetWeight(const float jet_SF, const float jet_eff, const float jet_csvBtag);
+
+float jetWeight_err(const float jet_SF,const float jet_SF_err, const float jet_eff,const float jet_eff_err, const float jet_csvBtag);
+
+float eventWeight(const float j1_SF, const float j2_SF, const float j1_eff, const float j2_eff, const float j1_csvBtag, const float j2_csvBtag);
+
+float eventWeight_error(const float j1_SF, const float j1_SF_error, const float j2_SF, const float j2_SF_error , const float j1_eff, const float j1_eff_err, const float j2_eff, const float j2_eff_err , const float j1_csvBtag, const float j2_csvBtag, const float j1_flavour, const float j2_flavour);
+
 #endif
