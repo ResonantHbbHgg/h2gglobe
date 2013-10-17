@@ -401,69 +401,6 @@ void StatAnalysis::Init(LoopAll& l)
     }
     // build the model
     buildBkgModel(l, postfix);
-/* //FIXME OLIVIER: CHECK IF IT CRASHES
-    // -----------------------------------------------------
-    // Make some data sets from the observables to fill in the event loop
-    // Binning is for histograms (will also produce unbinned data sets)
-    l.rooContainer->CreateDataSet("CMS_hgg_mass","data_mass"    ,nDataBins); // (100,110,150) -> for a window, else full obs range is taken
-    l.rooContainer->CreateDataSet("CMS_hgg_mass","bkg_mass"     ,nDataBins);
-
-    // Create Signal DataSets:
-    for(size_t isig=0; isig<sigPointsToBook.size(); ++isig) {
-	int sig = sigPointsToBook[isig];
-        l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_ggh_mass_m%d",sig),nDataBins);
-        l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_vbf_mass_m%d",sig),nDataBins);
-        if(!splitwzh) l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wzh_mass_m%d",sig),nDataBins);
-        else{
-            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wh_mass_m%d",sig),nDataBins);
-            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_zh_mass_m%d",sig),nDataBins);
-        }
-        l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_tth_mass_m%d",sig),nDataBins);
-        l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_Radion_m%d_8TeV", sig),nDataBins);
-        l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_Radion_m%d_8TeV_nm", sig),nDataBins);
-        l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_Graviton_m%d_8TeV", sig),nDataBins);
-
-        l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_ggh_mass_m%d_rv",sig),nDataBins);
-        l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_vbf_mass_m%d_rv",sig),nDataBins);
-        if(!splitwzh) l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wzh_mass_m%d_rv",sig),nDataBins);
-        else{
-            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wh_mass_m%d_rv",sig),nDataBins);
-            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_zh_mass_m%d_rv",sig),nDataBins);
-        }
-        l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_tth_mass_m%d_rv",sig),nDataBins);
-        l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_Radion_m%d_8TeV_rv", sig),nDataBins);
-        l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_Radion_m%d_8TeV_nm_rv", sig),nDataBins);
-        l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_Graviton_m%d_8TeV_rv", sig),nDataBins);
-
-        l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_ggh_mass_m%d_wv",sig),nDataBins);
-        l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_vbf_mass_m%d_wv",sig),nDataBins);
-        if(!splitwzh) l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wzh_mass_m%d_wv",sig),nDataBins);
-        else{
-            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_wh_mass_m%d_wv",sig),nDataBins);
-            l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_zh_mass_m%d_wv",sig),nDataBins);
-        }
-        l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_tth_mass_m%d_wv",sig),nDataBins);
-        l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_Radion_m%d_8TeV_wv", sig),nDataBins);
-        l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_Radion_m%d_8TeV_nm_wv", sig),nDataBins);
-        l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_Graviton_m%d_8TeV_wv", sig),nDataBins);
-    }
-
-    // Make more datasets representing Systematic Shifts of various quantities
-    for(size_t isig=0; isig<sigPointsToBook.size(); ++isig) {
-	int sig = sigPointsToBook[isig];
-        l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_ggh_mass_m%d",sig),-1);
-        l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_vbf_mass_m%d",sig),-1);
-        if(!splitwzh) l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_wzh_mass_m%d",sig),-1);
-        else{
-            l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_wh_mass_m%d",sig),-1);
-            l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_zh_mass_m%d",sig),-1);
-        }
-        l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_tth_mass_m%d",sig),-1);
-        l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_Radion_m%d_8TeV", sig),-1);
-        l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_Radion_m%d_8TeV_nm", sig),-1);
-        l.rooContainer->MakeSystematics("CMS_hgg_mass",Form("sig_Graviton_m%d_8TeV", sig),-1);
-    }
-*/
     bookSignalModel(l,nDataBins);
 
     // Make sure the Map is filled
@@ -1464,7 +1401,6 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
         return (category >= 0 && mass>=massMin && mass<=massMax);
     }
 
-    if(PADEBUG) cerr << "Leaving PhotonAnalysis::FindRadionObjects" << endl;
     return false;
 }
 
@@ -2853,7 +2789,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     } // if 4 jets
 
 // MC Truth radion signal information
-    if(l.itype[l.current] < -250)
+    if( (l.itype[l.current] < -250) && (l.itype[l.current] > -2000) )
     {
 	    TLorentzVector * radion = (TLorentzVector *)l.gr_radion_p4->At(0);
 	    TLorentzVector * hgg = (TLorentzVector *)l.gr_hgg_p4->At(0);
