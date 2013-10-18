@@ -49,6 +49,7 @@ histograms_*root
 CMS-HGG*root
 CMS-HGG*json
 eventsList*txt
+AnalysisScripts/baseline/datafiles_Radion_*dat
 
 # editor temp files
 *.swp
