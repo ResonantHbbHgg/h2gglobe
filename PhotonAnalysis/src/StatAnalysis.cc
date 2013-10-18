@@ -2270,16 +2270,19 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j1_jerU_pt",(float)j1_jerU.Pt());
 	    l.FillTree("j1_jerU_phi",(float)j1_jerU.Phi());
     	l.FillTree("j1_jerU_eta",(float)j1_jerU.Eta());
+        if(PADEBUG) cout << "PU ID variables" << endl;
 	    //l.FillTree("j1_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[0]]);
     	l.FillTree("j1_beta", (float)l.jet_algoPF1_beta[jets[0]]);
 	    l.FillTree("j1_betaStar", (float)l.jet_algoPF1_betaStar[jets[0]]);
     	l.FillTree("j1_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[0]]);
 	    l.FillTree("j1_dR2Mean", (float)l.jet_algoPF1_dR2Mean[jets[0]]);
+        if(PADEBUG) cout << "B-tagging variables" << endl;
         l.FillTree("j1_csvBtag", (float)l.jet_algoPF1_csvBtag[jets[0]]);
         l.FillTree("j1_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[0]]);
         l.FillTree("j1_jetProbBtag", (float)l.jet_algoPF1_jetProbBtag[jets[0]]);
         l.FillTree("j1_tcheBtag", (float)l.jet_algoPF1_tcheBtag[jets[0]]);
         //BtagSF variables (Badder)
+        if(PADEBUG) cout << "BtagSF variables" << endl;
         if(l.itype[l.current] == -301 || l.itype[l.current] == -501 || l.itype[l.current] == -701 || l.itype[l.current] == -1001 || l.itype[l.current] == -1501){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet1" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet1); 
@@ -2303,15 +2306,18 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j1_btagEffError",(float)-1001.);
         }
         l.FillTree("j1_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[0]]);
+        if(PADEBUG) cout << "Secondary vertices" << endl;
 		l.FillTree("j1_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[0]]);
 		l.FillTree("j1_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[0]]);
 		l.FillTree("j1_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[0]]);
 		l.FillTree("j1_secVtx3deL", (float)l.jet_algoPF1_secVtx3deL[jets[0]]);
+        if(PADEBUG) cout << "PF energy fractions" << endl;
 		l.FillTree("j1_emfrac", (float)l.jet_algoPF1_emfrac[jets[0]]);
 		l.FillTree("j1_hadfrac", (float)l.jet_algoPF1_hadfrac[jets[0]]);
 		l.FillTree("j1_ntk", (int)l.jet_algoPF1_ntk[jets[0]]);
 		l.FillTree("j1_nNeutrals", (int)l.jet_algoPF1_nNeutrals[jets[0]]);
 		l.FillTree("j1_nCharged", (int)l.jet_algoPF1_nCharged[jets[0]]);
+        if(PADEBUG) cout << "genPt info" << endl;
 		l.FillTree("j1_genPt", (float)l.jet_algoPF1_genPt[jets[0]]);
     } else {
 	    l.FillTree("j1_e",(float)-1001.);
@@ -2367,16 +2373,20 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     } // end if njets > 0
 
     if(jets.size()>1){
+        if(PADEBUG) cout << "processing jet 1" << endl;
+        if(PADEBUG) cout << "4-momentum of the jet" << endl;
         TLorentzVector* jet2 = (TLorentzVector*)l.jet_algoPF1_p4->At(jets[1]);
 	    l.FillTree("j2_e",(float)jet2->Energy());
 	    l.FillTree("j2_pt",(float)jet2->Pt());
 	    l.FillTree("j2_phi",(float)jet2->Phi());
 	    l.FillTree("j2_eta",(float)jet2->Eta());
+        if(PADEBUG) cout << "jet2->Energy()= " << jet2->Energy() << "\tjet2->Pt()= " << jet2->Pt() << "\tjet2->Phi()= " << jet2->Phi() << "\tjet2->Eta()= " << jet2->Eta() << "\tjets[0]= " << jets[0] << endl;
         TLorentzVector j2_jecD = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[1]), jets[1], 1, -1., 0,  0.);
         TLorentzVector j2_jecU = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[1]), jets[1], 1, +1., 0,  0.);
         TLorentzVector j2_jerD = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[1]), jets[1], 0,  0., 1, -1.);
         TLorentzVector j2_jerC = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[1]), jets[1], 0,  0., 1,  0.);
         TLorentzVector j2_jerU = getJecJer(l, (TLorentzVector*)l.jet_algoPF1_p4->At(jets[1]), jets[1], 0,  0., 1, +1.);
+        if(PADEBUG) cout << "Now that we have JEC and JER, store it" << endl;
 	    l.FillTree("j2_jecD_e",(float)j2_jecD.Energy());
     	l.FillTree("j2_jecD_pt",(float)j2_jecD.Pt());
 	    l.FillTree("j2_jecD_phi",(float)j2_jecD.Phi());
@@ -2398,14 +2408,17 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j2_jerU_phi",(float)j2_jerU.Phi());
     	l.FillTree("j2_jerU_eta",(float)j2_jerU.Eta());
 	    //l.FillTree("j2_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[1]]);
+        if(PADEBUG) cout << "PU ID variables" << endl;
     	l.FillTree("j2_beta", (float)l.jet_algoPF1_beta[jets[1]]);
     	l.FillTree("j2_betaStar", (float)l.jet_algoPF1_betaStar[jets[1]]);
     	l.FillTree("j2_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[1]]);
     	l.FillTree("j2_dR2Mean", (float)l.jet_algoPF1_dR2Mean[jets[1]]);
+        if(PADEBUG) cout << "B-tagging variables" << endl;
         l.FillTree("j2_csvBtag", (float)l.jet_algoPF1_csvBtag[jets[1]]);
         l.FillTree("j2_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[1]]);
         l.FillTree("j2_jetProbBtag", (float)l.jet_algoPF1_jetProbBtag[jets[1]]);
         l.FillTree("j2_tcheBtag", (float)l.jet_algoPF1_tcheBtag[jets[1]]);
+        if(PADEBUG) cout << "BtagSF variables" << endl;
         //BtagSF variables (Badder)
         if(l.itype[l.current] == -301 || l.itype[l.current] == -501 || l.itype[l.current] == -701 || l.itype[l.current] == -1001 || l.itype[l.current] == -1501){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet2" << endl;
@@ -2430,15 +2443,18 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j2_btagEffError",(float)-1001.);
         }
         l.FillTree("j2_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[1]]);
+        if(PADEBUG) cout << "Secondary vertices" << endl;
 		l.FillTree("j2_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[1]]);
 		l.FillTree("j2_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[1]]);
 		l.FillTree("j2_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[1]]);
 		l.FillTree("j2_secVtx3deL", (float)l.jet_algoPF1_secVtx3deL[jets[1]]);
+        if(PADEBUG) cout << "PF energy fractions" << endl;
 		l.FillTree("j2_emfrac", (float)l.jet_algoPF1_emfrac[jets[1]]);
 		l.FillTree("j2_hadfrac", (float)l.jet_algoPF1_hadfrac[jets[1]]);
 		l.FillTree("j2_ntk", (int)l.jet_algoPF1_ntk[jets[1]]);
 		l.FillTree("j2_nNeutrals", (int)l.jet_algoPF1_nNeutrals[jets[1]]);
 		l.FillTree("j2_nCharged", (int)l.jet_algoPF1_nCharged[jets[1]]);
+        if(PADEBUG) cout << "genPt info" << endl;
 		l.FillTree("j2_genPt", (float)l.jet_algoPF1_genPt[jets[1]]);
     } else {
 	    l.FillTree("j2_e",(float)-1001.);
@@ -2494,7 +2510,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     } // end if njets > 1
 
     if(jets.size()>1){
-        if(PADEBUG) cout << "processing jet 1" << endl;
+        if(PADEBUG) cout << "processing signal candidate info" << endl;
+        if(PADEBUG) cout << "dijet system" << endl;
         TLorentzVector* jet1 = (TLorentzVector*)l.jet_algoPF1_p4->At(jets[0]);
         TLorentzVector* jet2 = (TLorentzVector*)l.jet_algoPF1_p4->At(jets[1]);
         // dijet variables
@@ -2505,6 +2522,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("dijet_Eta", (float)dijet.Eta());
         l.FillTree("dijet_Phi", (float)dijet.Phi());
 
+        if(PADEBUG) cout << "dijet+diphoton system" << endl;
         // radion variables
         TLorentzVector radion = dijet + diphoton;
 	    l.FillTree("RadMass",(float)radion.M());
