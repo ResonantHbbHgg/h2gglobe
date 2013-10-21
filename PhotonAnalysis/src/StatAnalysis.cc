@@ -97,6 +97,9 @@ void StatAnalysis::Init(LoopAll& l)
     met_sync.open ("met_sync.txt");
 
     //Add btagSF variables taking them from database (Badder)
+
+    BtagWP = "medium";
+
     if(l.itype[l.current] == -301 || l.itype[l.current] == -501 || l.itype[l.current] == -701 || l.itype[l.current] == -1001 || l.itype[l.current] == -1501){  
      
        int mass_point = abs(l.itype[l.current])-1;
@@ -2286,11 +2289,11 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(l.itype[l.current] == -301 || l.itype[l.current] == -501 || l.itype[l.current] == -701 || l.itype[l.current] == -1001 || l.itype[l.current] == -1501){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet1" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet1); 
-           float btagSF = SFReader->getSF(jet1,flavour,l.jet_algoPF1_csvBtag[jets[0]]);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet1,flavour,l.jet_algoPF1_csvBtag[jets[0]]);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet1,flavour,l.jet_algoPF1_csvBtag[jets[0]]);
-           float btagEff = EffReader->getBtagEfficiency(jet1,l.jet_algoPF1_csvBtag[jets[0]],flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet1,l.jet_algoPF1_csvBtag[jets[0]],flavour);
+           float btagSF = SFReader->getSF(jet1,flavour,BtagWP);
+           float btagSFErrorUp = SFReader->getSFErrorUp(jet1,flavour,BtagWP);
+           float btagSFErrorDown = SFReader->getSFErrorDown(jet1,flavour,BtagWP);
+           float btagEff = EffReader->getBtagEfficiency(jet1,BtagWP,flavour);
+           float btagEffError = EffReader->getBtagEfficiencyError(jet1,BtagWP,flavour);
            l.FillTree("j1_flavour",(int)flavour);
            l.FillTree("j1_btagSF",(float)btagSF);
            l.FillTree("j1_btagSFErrorUp",(float)btagSFErrorUp);
@@ -2423,11 +2426,11 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(l.itype[l.current] == -301 || l.itype[l.current] == -501 || l.itype[l.current] == -701 || l.itype[l.current] == -1001 || l.itype[l.current] == -1501){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet2" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet2); 
-           float btagSF = SFReader->getSF(jet2,flavour,l.jet_algoPF1_csvBtag[jets[1]]);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet2,flavour,l.jet_algoPF1_csvBtag[jets[1]]);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet2,flavour,l.jet_algoPF1_csvBtag[jets[1]]);
-           float btagEff = EffReader->getBtagEfficiency(jet2,l.jet_algoPF1_csvBtag[jets[1]],flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet2,l.jet_algoPF1_csvBtag[jets[1]],flavour);
+           float btagSF = SFReader->getSF(jet2,flavour,BtagWP);
+           float btagSFErrorUp = SFReader->getSFErrorUp(jet2,flavour,BtagWP);
+           float btagSFErrorDown = SFReader->getSFErrorDown(jet2,flavour,BtagWP);
+           float btagEff = EffReader->getBtagEfficiency(jet2,BtagWP,flavour);
+           float btagEffError = EffReader->getBtagEfficiencyError(jet2,BtagWP,flavour);
            l.FillTree("j2_flavour",(int)flavour);
            l.FillTree("j2_btagSF",(float)btagSF);
            l.FillTree("j2_btagSFErrorUp",(float)btagSFErrorUp);
@@ -2595,11 +2598,11 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(l.itype[l.current] == -301 || l.itype[l.current] == -501 || l.itype[l.current] == -701 || l.itype[l.current] == -1001 || l.itype[l.current] == -1501){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet3" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet3); 
-           float btagSF = SFReader->getSF(jet3,flavour,l.jet_algoPF1_csvBtag[jets[2]]);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet3,flavour,l.jet_algoPF1_csvBtag[jets[2]]);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet3,flavour,l.jet_algoPF1_csvBtag[jets[2]]);
-           float btagEff = EffReader->getBtagEfficiency(jet3,l.jet_algoPF1_csvBtag[jets[2]],flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet3,l.jet_algoPF1_csvBtag[jets[2]],flavour);
+           float btagSF = SFReader->getSF(jet3,flavour,BtagWP);
+           float btagSFErrorUp = SFReader->getSFErrorUp(jet3,flavour,BtagWP);
+           float btagSFErrorDown = SFReader->getSFErrorDown(jet3,flavour,BtagWP);
+           float btagEff = EffReader->getBtagEfficiency(jet3,BtagWP,flavour);
+           float btagEffError = EffReader->getBtagEfficiencyError(jet3,BtagWP,flavour);
            l.FillTree("j3_flavour",(int)flavour);
            l.FillTree("j3_btagSF",(float)btagSF);
            l.FillTree("j3_btagSFErrorUp",(float)btagSFErrorUp);
@@ -2723,11 +2726,11 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(l.itype[l.current] == -301 || l.itype[l.current] == -501 || l.itype[l.current] == -701 || l.itype[l.current] == -1001 || l.itype[l.current] == -1501){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet4" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet4); 
-           float btagSF = SFReader->getSF(jet4,flavour,l.jet_algoPF1_csvBtag[jets[3]]);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet4,flavour,l.jet_algoPF1_csvBtag[jets[3]]);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet4,flavour,l.jet_algoPF1_csvBtag[jets[3]]);
-           float btagEff = EffReader->getBtagEfficiency(jet4,l.jet_algoPF1_csvBtag[jets[3]],flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet4,l.jet_algoPF1_csvBtag[jets[3]],flavour);
+           float btagSF = SFReader->getSF(jet4,flavour,BtagWP);
+           float btagSFErrorUp = SFReader->getSFErrorUp(jet4,flavour,BtagWP);
+           float btagSFErrorDown = SFReader->getSFErrorDown(jet4,flavour,BtagWP);
+           float btagEff = EffReader->getBtagEfficiency(jet4,BtagWP,flavour);
+           float btagEffError = EffReader->getBtagEfficiencyError(jet4,BtagWP,flavour);
            l.FillTree("j4_flavour",(int)flavour);
            l.FillTree("j4_btagSF",(float)btagSF);
            l.FillTree("j4_btagSFErrorUp",(float)btagSFErrorUp);
