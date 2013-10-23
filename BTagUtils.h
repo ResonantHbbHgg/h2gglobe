@@ -43,9 +43,9 @@ public:
 	
     BtagSFReader(const std::string name_btagSFFile); 
     virtual ~BtagSFReader();
-    float getSF(const TLorentzVector* jetP4,const float& flavour, const float& cvs_Btag);
-    float getSFErrorUp(const TLorentzVector* jetP4,const float& flavour, const float& cvs_Btag);	
-    float getSFErrorDown(const TLorentzVector* jetP4,const float& flavour, const float& cvs_Btag);
+    float getSF(const TLorentzVector* jetP4,const float& flavour, std::string WP);
+    float getSFErrorUp(const TLorentzVector* jetP4,const float& flavour, std::string WP);	
+    float getSFErrorDown(const TLorentzVector* jetP4,const float& flavour, std::string WP);
 	
 protected:
     
@@ -100,8 +100,8 @@ public:
 	
     BtagEfficiencyReader(const std::string name_btagEfficienciesFile); 
     virtual ~BtagEfficiencyReader();
-    float getBtagEfficiency(const TLorentzVector* jetP4, const float& csv_Btag, const int& jet_flavour);
-    float getBtagEfficiencyError(const TLorentzVector* jetP4, const float& csv_Btag, const int& jet_flavour);
+    float getBtagEfficiency(const TLorentzVector* jetP4, std::string WP, const int& jet_flavour);
+    float getBtagEfficiencyError(const TLorentzVector* jetP4, std::string WP, const int& jet_flavour);
     
 	
 protected:
@@ -124,12 +124,12 @@ protected:
 
 // Functions to calculate the final event weight and error
 
-float jetWeight(const float jet_SF, const float jet_eff, const float jet_csvBtag);
+float jetWeight(std::string WP, const float jet_SF, const float jet_eff, const float& jet_csvBtag);
 
-float jetWeight_err(const float jet_SF,const float jet_SF_err, const float jet_eff,const float jet_eff_err, const float jet_csvBtag);
+float jetWeight_err(std::string WP, const float jet_SF,const float jet_SF_err, const float jet_eff,const float jet_eff_err, const float& jet_csvBtag);
 
-float eventWeight(const float j1_SF, const float j2_SF, const float j1_eff, const float j2_eff, const float j1_csvBtag, const float j2_csvBtag);
+float eventWeight(std::string WP, const float j1_SF, const float j2_SF, const float j1_eff, const float j2_eff, const float& j1_csvBtag, const float& j2_csvBtag);
 
-float eventWeight_error(const float j1_SF, const float j1_SF_error, const float j2_SF, const float j2_SF_error , const float j1_eff, const float j1_eff_err, const float j2_eff, const float j2_eff_err , const float j1_csvBtag, const float j2_csvBtag, const float j1_flavour, const float j2_flavour);
+float eventWeight_error(std::string WP, const float j1_SF, const float j1_SF_error, const float j2_SF, const float j2_SF_error , const float j1_eff, const float j1_eff_err, const float j2_eff, const float j2_eff_err , const float j1_flavour, const float j2_flavour, const float& j1_csvBtag, const float& j2_csvBtag);
 
 #endif
