@@ -1920,9 +1920,9 @@ std::string StatAnalysis::GetSignalLabel(int id, LoopAll &l){
         } else {
             std::string returnstr = it->second;
             if (l.process_id==26){   // wh event
-                returnstr.replace(0, 3, "wh");
+                returnstr.replace(0, 3, "wh_");
             } else if (l.process_id==24){   // zh event
-                returnstr.replace(0, 3, "zh");
+                returnstr.replace(0, 3, "zh_");
             }
             return returnstr;
         }
