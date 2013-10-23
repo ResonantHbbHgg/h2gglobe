@@ -2065,7 +2065,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     l.FillTree("event",(float)l.event);
 	l.FillTree("weight",(float)weight);
 	l.FillTree("evweight",(float)evweight); // evweight = weight * smeared_pho_weight[diphoton_index.first] * smeared_pho_weight[diphoton_index.second] * genLevWeight * BeamspotReweight(vtx->Z(),((TVector3*)l.gv_pos->At(0))->Z()) * applyDiPhotonSmearings;
-        }
     float pu_weight = weight/l.sampleContainer[l.current_sample_index].weight(); // contains also the smearings, not only pu
 	l.FillTree("pu_weight",(float)pu_weight);
 	l.FillTree("pu_n",(float)l.pu_n);
