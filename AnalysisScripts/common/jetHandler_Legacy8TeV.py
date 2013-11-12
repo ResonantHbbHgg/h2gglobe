@@ -18,7 +18,7 @@ jec = cms.PSet(
     )
 
 jer = cms.PSet(
-    etaBins  = cms.vdouble(0,0.5,1.1,1.7,2.3),
+    etaBins  = cms.vdouble(0,0.5,1.1,1.7,2.3,5.2),
     resSf    = cms.vdouble(1.052,1.057,1.096,1.134,1.288),
     resSfErr = cms.vdouble(0.063,0.057,0.065,0.093,0.200)
     )

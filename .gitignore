@@ -1,13 +1,68 @@
-dict.cc
-dict.h
+# Compiled Object files
+*.slo
+*.lo
 *.o
-*.d
+
+# Compiled Dynamic libraries
 *.so
-*pyc
-*~
-__init__*
-.extraTags
-LoopAllDict.cc
-LoopAllDict.h
+*.dylib
+*.d
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# executables
+*.exe
+*.pyc
+
+# h2gglobe specifics
+LoopAllDict.*
+dict.*
 TmpLinkDef.h
+.extraTags
+__init__*
+datastore/
+
+# ignore Reduction stuff
+Reduction/pileup/
+Reduction/*summary.txt
+Reduction/*status.txt
+Reduction/python
+Reduction/*.log*
+Reduction/AnalysisScripts
+Reduction/Macros
+Reduction/to_resubmit.sh
+
+# ignore AnalysisScripts stuff
+AnalysisScripts/baseline/tmp_*
+AnalysisScripts/dirList*txt
+AnalysisScripts/fileList*txt
+AnalysisScripts/lumi*txt
+AnalysisScripts/run*json.txt
+*.pevents
+lep_sync.txt
+met_sync.txt
+histograms_*csv
+histograms_*root
+CMS-HGG*root
+CMS-HGG*json
+eventsList*txt
+AnalysisScripts/baseline/datafiles_Radion_*dat
+
+# editor temp files
+*.swp
+*~
+*.orig
+
+# batch .tgz
+*.tgz
+*.tar.gz
+LSFJOB*
+
+# scratch dump files
+dump*
+.__afs*
+core.[0-9]*
 

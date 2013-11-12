@@ -6,6 +6,7 @@
 #include "PhotonAnalysis.h"
 #include "RooContainer.h"
 #include "VertexAnalysis/interface/HggVertexAnalyzer.h"
+#include "BTagUtils.h"
 
 #include "EnergySmearer.h"
 #include "EfficiencySmearer.h"
@@ -75,10 +76,9 @@ class StatAnalysis : public PhotonAnalysis
     double cosTheta;
 
     bool splitwzh;
-
-    void fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const TLorentzVector & sublead_p4, Float_t vtxProb,
+    void fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const TLorentzVector & sublead_p4, std::vector<float> & smeared_pho_energy, Float_t vtxProb,
 		     std::pair<int, int> diphoton_index, Int_t diphoton_id, Float_t phoid_mvaout_lead, Float_t phoid_mvaout_sublead,
-		     Float_t weight, Float_t mass, Float_t sigmaMrv, Float_t sigmaMwv,
+		     Float_t weight, Float_t evweight, Float_t mass, Float_t sigmaMrv, Float_t sigmaMwv,
 		     const TLorentzVector & Higgs, Float_t diphobdt_output, Int_t category, bool VBFevent, Float_t myVBF_Mjj, Float_t myVBFLeadJPt, 
 		     Float_t myVBFSubJPt, Int_t nVBFDijetJetCategories, bool isSyst, std::string name1);
 
@@ -180,6 +180,15 @@ class StatAnalysis : public PhotonAnalysis
     ofstream eventListText;
     //vector<double> weights;
     TFile *kfacFile;
+
+    //Add btagSF variables (Badder)
+    std::string BtagWP;
+    std::string name_JetFlavourFile;
+    std::string name_btagSFFile;
+    std::string name_btagEfficienciesFile;
+    JetFlavourReader* jetFlavReader;
+    BtagSFReader* SFReader;
+    BtagEfficiencyReader* EffReader;
     
 };
 

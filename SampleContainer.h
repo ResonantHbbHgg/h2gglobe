@@ -27,7 +27,8 @@ class SampleContainer {
   void addEventToList(int run, int lumi, int event );
   
   bool isdata() const { return itype == 0; };
-  float weight() const { return ( (extweight!=0 && *extweight > 0 && ! isdata()) ? (*extweight)*intweight : intweight); };
+	bool isminlo() const { return itype == -125050; };
+  float weight() const { return ( (extweight!=0 && *extweight > 0 && ! isdata() && ! isminlo()) ? (*extweight)*intweight : intweight); };
   
   int itype;
   int ind;

@@ -1,0 +1,1 @@
+GluGluToHHTo2B2G_mH-125_8TeV-madgraph-pythia6-tauola_Summer12_DR53X-PU_RD1_START53_V7N-v1_AODSIM:GluGluToHHTo2B2G_mH-125_8TeV-madgraph-pythia6-tauola -300 version=150011 analyzer PhotonAnalysis photonanalysis.dat useDefaultVertex=1 common/reduction_settings_jan22rereco_rd_mc.dat

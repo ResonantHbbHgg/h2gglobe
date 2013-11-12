@@ -2034,8 +2034,42 @@ void PhotonAnalysis::FillReductionVariables(LoopAll& l, int jentry)
 }
 
 // ----------------------------------------------------------------------------------------------------
+TLorentzVector PhotonAnalysis::postProcessSingleJet(LoopAll & l, int ijet, int vtx/*, int applyJer_, int applyJecUnc_*/)
+{
+    if(PADEBUG) cout << "PhotonAnalysis::postProcessSingleJet: entering" << endl;
+    TLorentzVector postjet /*= *((TLorentzVector*)l.jet_algoPF1_p4->At(ijet))*/;
+    int minv = 0, maxv = l.vtx_std_n;
+    if(PADEBUG) cout << "l.typerun= " << l.typerun << "\tl.kFill= " << l.kFill << "\tl.version= " << l.version << "\tmaxv= " << maxv << "\tl.jet_algoPF1_nvtx= " << l.jet_algoPF1_nvtx << endl;
+    if( l.typerun == l.kFill && l.version > 14 && maxv >= l.jet_algoPF1_nvtx ) {
+	maxv = l.jet_algoPF1_nvtx-1;
+    }
+    if( vtx!=-1 ){
+	minv = vtx;
+	maxv = vtx+1;
+    }
+    if( vtx == -1 || vtx == 0 ) {
+    if( ijet < 0 || ijet >= l.jet_algoPF1_n ) cout << "WARNING, jet index out of range" << endl;
+        if(PADEBUG) cout << "applyJer= " << applyJer << "\tapplyJecUnc= " << applyJecUnc << endl;
+        if(PADEBUG) cout << "jetHandler_= " << jetHandler_ << "\trecorrectJets= " << recorrectJets << endl;
+	    if( recorrectJets && applyJer ) {
+            if(PADEBUG) cout << "returnJerUncertainty(" << ijet << ", " << jerShift << ")" << endl;
+		    postjet = jetHandler_->returnJerUncertainty(ijet, jerShift);
+	    } else if( recorrectJets && applyJecUnc ) {
+            if(PADEBUG) cout << "returnJecUncertainty(" << ijet << ", " << jecShift << ")" << endl;
+		    postjet = jetHandler_->returnJecUncertainty(ijet, jecShift);
+	    } else {
+            if(!recorrectJets) cout << "PhotonAnalysis::postProcessSingleJet: WARNING, if you see this, then you probably meant to switch recorrectJets to 1...." << endl;
+            postjet = *((TLorentzVector*)l.jet_algoPF1_p4->At(ijet));
+        }
+	}
+    if(PADEBUG) cout << "PhotonAnalysis::postProcessSingleJet: leaving" << endl;
+    return postjet;
+}
+
+// ----------------------------------------------------------------------------------------------------
 void PhotonAnalysis::postProcessJets(LoopAll & l, int vtx)
 {
+    if(PADEBUG) cout << "Entering PhotonAnalysis::postProcessJets: jerShift= " << jerShift << "\tjecShift= " << jecShift << endl;
     int minv = 0, maxv = l.vtx_std_n;
     if( l.typerun == l.kFill && l.version > 14 && maxv >= l.jet_algoPF1_nvtx ) {
 	maxv = l.jet_algoPF1_nvtx-1;
@@ -2045,6 +2079,7 @@ void PhotonAnalysis::postProcessJets(LoopAll & l, int vtx)
 	maxv = vtx+1;
     }
     if( vtx == -1 || vtx == 0 ) {
+    if(PADEBUG) cout << "PhotonAnalysis::postProcessJets: loop over jets" << endl;
 	for(int ijet=0; ijet<l.jet_algoPF1_n; ++ijet) {
 	    if( recorrectJets ) {
 		jetHandler_->recomputeJec(ijet, true);
@@ -2059,23 +2094,30 @@ void PhotonAnalysis::postProcessJets(LoopAll & l, int vtx)
 		jetHandler_->applyJecUncertainty(ijet, jecShift);
 	    }
 	}
+    if(PADEBUG) cout << "PhotonAnalysis::postProcessJets: end of loop over jets" << endl;
     }
     for(int ivtx=minv;ivtx<maxv; ++ivtx) {
+    if(PADEBUG) cout << "PhotonAnalysis::postProcessJets: loop over jets" << endl;
 	for(int ijet=0; ijet<l.jet_algoPF1_n; ++ijet) {
 	    if( recomputeBetas || (l.typerun != l.kFill && l.version > 14 && ivtx >= l.jet_algoPF1_nvtx) ) {
 		/// std::cout << "recomputeBetas " << ivtx << " " << l.jet_algoPF1_nvtx << std::endl;
+        if(PADEBUG) cout << "computeBetas" << endl;
 		jetHandler_->computeBetas(ijet, ivtx);
 	    }
 	    if( rerunJetMva ) {
+        if(PADEBUG) cout << "computeMva" << endl;
 		jetHandler_->computeMva(ijet, ivtx);
 	    } else if ( recomputeJetWp ) {
+        if(PADEBUG) cout << "computeWp" << endl;
 		jetHandler_->computeWp(ijet, ivtx);
 	    }
 	}
+    if(PADEBUG) cout << "PhotonAnalysis::postProcessJets: end of loop over jets" << endl;
 	if( ivtx >= l.jet_algoPF1_nvtx && l.typerun != l.kFill ) {
 	    l.jet_algoPF1_nvtx = ivtx+1;
 	}
     }
+    if(PADEBUG) cout << "Leaving PhotonAnalysis::postProcessJets" << endl;
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -2113,6 +2155,9 @@ bool PhotonAnalysis::SelectEventsReduction(LoopAll& l, int jentry)
 
     if( pho_acc.size() < 2 ) { return false; }
 
+
+
+
     vtxAna_.clear();
     l.vtx_std_ranked_list->clear();
     l.dipho_vtx_std_sel->clear();
@@ -2137,9 +2182,15 @@ bool PhotonAnalysis::SelectEventsReduction(LoopAll& l, int jentry)
 
     if(l.itype[l.current]<0) {
         bool foundHiggs=FindHiggsObjects(l);
+        bool foundRadion=false;
+        if(l.itype[l.current]<-250) foundRadion=FindRadionObjects(l);
+        else SetNullRadion(l);    
         if(PADEBUG)  cout << " foundHiggs? "<<foundHiggs<<std::endl;
+        if(PADEBUG)  cout << " foundRadion? "<<foundRadion<<std::endl;
+        if(PADEBUG)  cout << " l.itype[l.current] "<<l.itype[l.current]<<std::endl;
     } else {
         SetNullHiggs(l);
+        SetNullRadion(l);
     }
     /// Jet matching
     // pfJets ak5
@@ -2208,7 +2259,7 @@ bool PhotonAnalysis::SelectEventsReduction(LoopAll& l, int jentry)
                 l.dipho_vtx_std_sel->push_back( (l.vtx_std_ranked_list)->back()[0] );
             } else {
                 l.dipho_vtx_std_sel->push_back(0);
-                std::cerr << "NO VERTEX SELECTED " << l.event << " " << l.run << " " << diphotons[id].first << " " << diphotons[id].second << std::endl;
+                if(PADEBUG) std::cerr << "NO VERTEX SELECTED " << l.event << " " << l.run << " " << diphotons[id].first << " " << diphotons[id].second << std::endl;
             }
 
             l.dipho_leadind[l.dipho_n] = diphotons[id].first;
@@ -2238,9 +2289,50 @@ bool PhotonAnalysis::SelectEventsReduction(LoopAll& l, int jentry)
     for(int ivtx = 0; ivtx<highestVtx; ++ivtx ) {
         postProcessJets(l,ivtx);
     }
-    
+
+    // Radion analysis reduction: add a condition on minimal number of jets + loose bjet cut (to reduce used disk space....)
+    // JET PRESELECTION
+    bool isThereEnoughJets = false;
+    bool isThereEnoughBJets = false;
+    TLorentzVector* j1p4;
+    float dr2pho = 0.3;
+    TLorentzVector* pho1, pho2;
+    int prejets;
+    int prebjets;
+    for(int idipho = 0 ; idipho < l.dipho_n ; idipho++)
+    {
+        prejets = 0;
+        prebjets = 0;
+        for(int j1_i=0; j1_i<l.jet_algoPF1_n; j1_i++)
+        {
+            j1p4 = (TLorentzVector*) l.jet_algoPF1_p4->At(j1_i);
+            TLorentzVector lead_p4 = l.get_pho_p4( l.dipho_leadind[idipho], l.dipho_vtxind[idipho], &corrected_pho_energy[0] );
+            TLorentzVector sublead_p4 = l.get_pho_p4( l.dipho_subleadind[idipho], l.dipho_vtxind[idipho], &corrected_pho_energy[0] );
+            if( lead_p4.DeltaR(*j1p4) < dr2pho ) continue;
+            if( sublead_p4.DeltaR(*j1p4) < dr2pho ) continue;
+            if(fabs(j1p4->Eta()) > 2.5) continue;
+            if(j1p4->Pt() < 10) continue;
+            if( l.jet_algoPF1_betaStarClassic[j1_i] > 0.2 * log( l.vtx_std_n - 0.64) ) continue;
+            if( l.jet_algoPF1_dR2Mean[j1_i] > 0.06 ) continue;
+            if( l.jet_algoPF1_pfloose[j1_i] < 0.1) continue;
+            prejets++;
+            if( l.jet_algoPF1_csvBtag[j1_i] < 0.244 ) continue; // CSV Loose Working Point
+            prebjets++;
+        }
+        isThereEnoughJets = (isThereEnoughJets) || (prejets >= 2);
+        isThereEnoughBJets = (isThereEnoughBJets) || (prebjets >= 1);
+        
+        if(isThereEnoughJets && isThereEnoughBJets) break; 
+    }
+    if(! isThereEnoughJets ) return false;
+    if(! isThereEnoughBJets ) return false;
+
+
+
     return oneKinSelected;
+
 }
+
 
 // ----------------------------------------------------------------------------------------------------
 
@@ -2535,6 +2627,42 @@ void PhotonAnalysis::ReducedOutputTree(LoopAll &l, TTree * outputTree)
 	l.Branch_shiftscaleMET_e(outputTree);
     }
 
+    l.gr_radion_p4 = new TClonesArray("TLorentzVector", 1);
+    l.gr_radion_p4->Clear();
+    ((*l.gr_radion_p4)[0]) = new TLorentzVector();
+
+    l.gr_hgg_p4 = new TClonesArray("TLorentzVector", 1);
+    l.gr_hgg_p4->Clear();
+    ((*l.gr_hgg_p4)[0]) = new TLorentzVector();
+
+    l.gr_hbb_p4 = new TClonesArray("TLorentzVector", 1);
+    l.gr_hbb_p4->Clear();
+    ((*l.gr_hbb_p4)[0]) = new TLorentzVector();
+
+    l.gr_g1_p4 = new TClonesArray("TLorentzVector", 1);
+    l.gr_g1_p4->Clear();
+    ((*l.gr_g1_p4)[0]) = new TLorentzVector();
+
+    l.gr_g2_p4 = new TClonesArray("TLorentzVector", 1);
+    l.gr_g2_p4->Clear();
+    ((*l.gr_g2_p4)[0]) = new TLorentzVector();
+
+    l.gr_b1_p4 = new TClonesArray("TLorentzVector", 1);
+    l.gr_b1_p4->Clear();
+    ((*l.gr_b1_p4)[0]) = new TLorentzVector();
+
+    l.gr_b2_p4 = new TClonesArray("TLorentzVector", 1);
+    l.gr_b2_p4->Clear();
+    ((*l.gr_b2_p4)[0]) = new TLorentzVector();
+
+    l.gr_j1_p4 = new TClonesArray("TLorentzVector", 1);
+    l.gr_j1_p4->Clear();
+    ((*l.gr_j1_p4)[0]) = new TLorentzVector();
+
+    l.gr_j2_p4 = new TClonesArray("TLorentzVector", 1);
+    l.gr_j2_p4->Clear();
+    ((*l.gr_j2_p4)[0]) = new TLorentzVector();
+
     l.gh_higgs_p4 = new TClonesArray("TLorentzVector", 1);
     l.gh_higgs_p4->Clear();
     ((*l.gh_higgs_p4)[0]) = new TLorentzVector();
@@ -2577,6 +2705,23 @@ void PhotonAnalysis::ReducedOutputTree(LoopAll &l, TTree * outputTree)
     l.Branch_gh_vh1_pdgid( outputTree );
     l.Branch_gh_vh2_pdgid( outputTree );
 //    l.Branch_METcorrected( outputTree );  //met at analysis step
+	l.Branch_gr_mcg1( outputTree );
+	l.Branch_gr_mcg2( outputTree );
+	l.Branch_gr_mcb1( outputTree );
+	l.Branch_gr_mcb2( outputTree );
+	l.Branch_gr_gen2reco_g1( outputTree );
+	l.Branch_gr_gen2reco_g2( outputTree );
+	l.Branch_gr_gen2reco_b1( outputTree );
+	l.Branch_gr_gen2reco_b2( outputTree );
+	l.Branch_gr_radion_p4( outputTree );
+	l.Branch_gr_hgg_p4( outputTree );
+	l.Branch_gr_hbb_p4( outputTree );
+	l.Branch_gr_g1_p4( outputTree );
+	l.Branch_gr_g2_p4( outputTree );
+	l.Branch_gr_b1_p4( outputTree );
+	l.Branch_gr_b2_p4( outputTree );
+	l.Branch_gr_j1_p4( outputTree );
+	l.Branch_gr_j2_p4( outputTree );
     l.Branch_gh_higgs_p4( outputTree );
     l.Branch_gh_pho1_p4( outputTree );
     l.Branch_gh_pho2_p4( outputTree );
@@ -2589,6 +2734,18 @@ void PhotonAnalysis::ReducedOutputTree(LoopAll &l, TTree * outputTree)
 }
 
 void PhotonAnalysis::ResetAnalysis(){
+}
+
+void PhotonAnalysis::SetNullRadion(LoopAll& l){
+    ((TLorentzVector *)l.gr_radion_p4->At(0))->SetXYZT(0,0,0,0);
+    ((TLorentzVector *)l.gr_hgg_p4->At(0))->SetXYZT(0,0,0,0);
+    ((TLorentzVector *)l.gr_hbb_p4->At(0))->SetXYZT(0,0,0,0);
+    ((TLorentzVector *)l.gr_g1_p4->At(0))->SetXYZT(0,0,0,0);
+    ((TLorentzVector *)l.gr_g2_p4->At(0))->SetXYZT(0,0,0,0);
+    ((TLorentzVector *)l.gr_b1_p4->At(0))->SetXYZT(0,0,0,0);
+    ((TLorentzVector *)l.gr_b2_p4->At(0))->SetXYZT(0,0,0,0);
+    ((TLorentzVector *)l.gr_j1_p4->At(0))->SetXYZT(0,0,0,0);
+    ((TLorentzVector *)l.gr_j2_p4->At(0))->SetXYZT(0,0,0,0);
 }
 
 void PhotonAnalysis::SetNullHiggs(LoopAll& l){
@@ -2611,6 +2768,99 @@ void PhotonAnalysis::SetNullHiggs(LoopAll& l){
 
 }
 
+
+bool PhotonAnalysis::FindRadionObjects(LoopAll& l)
+{
+    int radionInd, ggHiggsInd, bbHiggsInd, mcg1, mcg2, mcb1, mcb2, mcj1, mcj2, g1, g2, j1, j2;
+    radionInd=ggHiggsInd=bbHiggsInd=mcg1=mcg2=mcb1=mcb2=mcj1=mcj2=g1=g2=j1=j2 = -1;
+  
+    l.FindMCRadion(radionInd, ggHiggsInd, bbHiggsInd, mcg1, mcg2, mcb1, mcb2, mcj1, mcj2, g1, g2, j1, j2);
+
+    // Fill Radion
+    if(radionInd != -1)
+    {
+        TLorentzVector *TheRadion = (TLorentzVector*) l.gp_p4->At(radionInd);
+        ((TLorentzVector*)l.gr_radion_p4->At(0))->SetPxPyPzE(TheRadion->Px(),TheRadion->Py(),TheRadion->Pz(),TheRadion->E());
+    } else {
+        ((TLorentzVector *)l.gr_radion_p4->At(0))->SetXYZT(0,0,0,0);
+    }
+    // Fill Hgg
+    if(ggHiggsInd != -1)
+    {
+        TLorentzVector *TheHgg = (TLorentzVector*) l.gp_p4->At(ggHiggsInd);
+        ((TLorentzVector*)l.gr_hgg_p4->At(0))->SetPxPyPzE(TheHgg->Px(),TheHgg->Py(),TheHgg->Pz(),TheHgg->E());
+    } else {
+        ((TLorentzVector *)l.gr_hgg_p4->At(0))->SetXYZT(0,0,0,0);
+    }
+    // Fill Hbb
+    if(bbHiggsInd != -1)
+    {
+        TLorentzVector *TheHbb = (TLorentzVector*) l.gp_p4->At(bbHiggsInd);
+        ((TLorentzVector*)l.gr_hbb_p4->At(0))->SetPxPyPzE(TheHbb->Px(),TheHbb->Py(),TheHbb->Pz(),TheHbb->E());
+    } else {
+        ((TLorentzVector *)l.gr_hbb_p4->At(0))->SetXYZT(0,0,0,0);
+    }
+
+	l.gr_gen2reco_g1=g1;
+	l.gr_gen2reco_g2=g2;
+	l.gr_gen2reco_b1=j1;
+	l.gr_gen2reco_b2=j2;
+    l.gr_mcg1=mcg1;
+    l.gr_mcg2=mcg2;
+    l.gr_mcb1=mcb1;
+    l.gr_mcb2=mcb2;
+
+    // Fill g1
+    if(mcg1 != -1)
+    {
+        TLorentzVector *Theg1 = (TLorentzVector*) l.gp_p4->At(mcg1);
+        ((TLorentzVector*)l.gr_g1_p4->At(0))->SetPxPyPzE(Theg1->Px(),Theg1->Py(),Theg1->Pz(),Theg1->E());
+    } else {
+        ((TLorentzVector *)l.gr_g1_p4->At(0))->SetXYZT(0,0,0,0);
+    }
+    // Fill g2
+    if(mcg2 != -1)
+    {
+        TLorentzVector *Theg2 = (TLorentzVector*) l.gp_p4->At(mcg2);
+        ((TLorentzVector*)l.gr_g2_p4->At(0))->SetPxPyPzE(Theg2->Px(),Theg2->Py(),Theg2->Pz(),Theg2->E());
+    } else {
+        ((TLorentzVector *)l.gr_g2_p4->At(0))->SetXYZT(0,0,0,0);
+    }
+    // Fill b1
+    if(mcb1 != -1)
+    {
+        TLorentzVector *Theb1 = (TLorentzVector*) l.gp_p4->At(mcb1);
+        ((TLorentzVector*)l.gr_b1_p4->At(0))->SetPxPyPzE(Theb1->Px(),Theb1->Py(),Theb1->Pz(),Theb1->E());
+    } else {
+        ((TLorentzVector *)l.gr_b1_p4->At(0))->SetXYZT(0,0,0,0);
+    }
+    // Fill b2
+    if(mcb2 != -1)
+    {
+        TLorentzVector *Theb2 = (TLorentzVector*) l.gp_p4->At(mcb2);
+        ((TLorentzVector*)l.gr_b2_p4->At(0))->SetPxPyPzE(Theb2->Px(),Theb2->Py(),Theb2->Pz(),Theb2->E());
+    } else {
+        ((TLorentzVector *)l.gr_b2_p4->At(0))->SetXYZT(0,0,0,0);
+    }
+    // Fill j1
+    if(mcj1 != -1)
+    {
+        TLorentzVector *Thej1 = (TLorentzVector*) l.genjet_algo1_p4->At(mcj1);
+        ((TLorentzVector*)l.gr_j1_p4->At(0))->SetPxPyPzE(Thej1->Px(),Thej1->Py(),Thej1->Pz(),Thej1->E());
+    } else {
+        ((TLorentzVector *)l.gr_j1_p4->At(0))->SetXYZT(0,0,0,0);
+    }
+    // Fill j2
+    if(mcj2 != -1)
+    {
+        TLorentzVector *Thej2 = (TLorentzVector*) l.genjet_algo1_p4->At(mcj2);
+        ((TLorentzVector*)l.gr_j2_p4->At(0))->SetPxPyPzE(Thej2->Px(),Thej2->Py(),Thej2->Pz(),Thej2->E());
+    } else {
+        ((TLorentzVector *)l.gr_j2_p4->At(0))->SetXYZT(0,0,0,0);
+    }
+
+    return (radionInd != -1);
+}
 
 bool PhotonAnalysis::FindHiggsObjects(LoopAll& l){
 
@@ -6470,8 +6720,39 @@ std::pair<int, int> PhotonAnalysis::SelectBtaggedAndHighestPtJets(LoopAll& l,int
 
 }
 
-
-
+TLorentzVector PhotonAnalysis::getJecJer(LoopAll &l, TLorentzVector *jet, int ijet, int applyJecUnc__, double jecShift__, int applyJer__, double jerShift__ )
+{
+    if(PADEBUG) cerr << "PhotonAnalysis::getJecJer: entering" << endl;
+    // save initial values to restore them afterwards
+    double jetPt = jet->Pt();
+    double jetEta = jet->Eta();
+    double jetPhi = jet->Phi();
+    double jetM = jet->M();
+    // get a clue what to do
+    applyJecUnc = applyJecUnc__;
+    jecShift = jecShift__;
+    applyJer = applyJer__;
+    jerShift = jerShift__;
+    // apply jec / jer uncertainties
+    if(PADEBUG) cerr << "PhotonAnalysis::getJecJer:\tijet= " << ijet << "\tapplyJecUnc= " << applyJecUnc << "\tjecShift= " << jecShift << "\tapplyJer= " << applyJer << "\tjerShift= " << jerShift << "\tl.jet_algoPF1_genPt[ijet]= " << l.jet_algoPF1_genPt[ijet] << endl;
+    if(PADEBUG) cerr << "PhotonAnalysis::getJecJer: before postProcessSingleJet: (pt, eta, phi, m)= ( " << jetPt << " , " << jetEta << " , " << jetPhi << " , " << jetM << " )" << endl;
+    TLorentzVector modJet;
+    // protecting jet energy resolution corrections:
+    // from https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution 
+    // "This method only works for jets that are well matched to a GEN jet (doing the matching from GEN to RECO) otherwise the method can lead to large response shifts."
+    if(PADEBUG) cout << "applyJer= " << applyJer << endl;
+    if(PADEBUG) cout << "l.jet_algoPF1_genPt[ijet]= " << l.jet_algoPF1_genPt[ijet] << endl;
+    if( applyJer && l.jet_algoPF1_genPt[ijet] == 0 )
+        modJet = *jet;
+    else
+        modJet = postProcessSingleJet(l, ijet);
+    if(PADEBUG) cerr << "PhotonAnalysis::getJecJer: after postProcessSingleJet: (pt, eta, phi, m)= ( " << modJet.Pt() << " , " << modJet.Eta() << " , " << modJet.Phi() << " , " << modJet.M() << " )" << endl;
+//    double modJetPt = modJet.Pt();
+//    cout << "modJetPt - jetPt= " << modJetPt << " - " << jetPt << " = " << modJetPt - jetPt << endl;
+    jet->SetPtEtaPhiM(jetPt, jetEta, jetPhi, jetM);
+    if(PADEBUG) cerr << "PhotonAnalysis::getJecJer: leaving" << endl;
+    return modJet;
+}
 // Local Variables:
 // mode: c++
 // c-basic-offset: 4

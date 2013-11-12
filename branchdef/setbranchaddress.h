@@ -207,23 +207,14 @@ void SetBranchAddress_ht_4lpt35(TTree * tree) { tree->SetBranchAddress("ht_4lpt3
 void SetBranchAddress_ht_4lpt50(TTree * tree) { tree->SetBranchAddress("ht_4lpt50", ht_4lpt50, &b_ht_4lpt50); }; 
 void SetBranchAddress_jet_algo1_n(TTree * tree) { tree->SetBranchAddress("jet_algo1_n", &jet_algo1_n, &b_jet_algo1_n); }; 
 void SetBranchAddress_jet_algo1_p4(TTree * tree) { tree->SetBranchAddress("jet_algo1_p4", &jet_algo1_p4, &b_jet_algo1_p4); }; 
-void SetBranchAddress_jet_algo1_emfrac(TTree * tree) { tree->SetBranchAddress("jet_algo1_emfrac", jet_algo1_emfrac, &b_jet_algo1_emfrac); }; 
-void SetBranchAddress_jet_algo1_hadfrac(TTree * tree) { tree->SetBranchAddress("jet_algo1_hadfrac", jet_algo1_hadfrac, &b_jet_algo1_hadfrac); }; 
-void SetBranchAddress_jet_algo1_ntk(TTree * tree) { tree->SetBranchAddress("jet_algo1_ntk", jet_algo1_ntk, &b_jet_algo1_ntk); }; 
 void SetBranchAddress_jet_algo1_tkind(TTree * tree) { tree->SetBranchAddress("jet_algo1_tkind", &jet_algo1_tkind, &b_jet_algo1_tkind); }; 
 void SetBranchAddress_jet_algo1_calotwind(TTree * tree) { tree->SetBranchAddress("jet_algo1_calotwind", &jet_algo1_calotwind, &b_jet_algo1_calotwind); }; 
 void SetBranchAddress_jet_algo2_n(TTree * tree) { tree->SetBranchAddress("jet_algo2_n", &jet_algo2_n, &b_jet_algo2_n); }; 
 void SetBranchAddress_jet_algo2_p4(TTree * tree) { tree->SetBranchAddress("jet_algo2_p4", &jet_algo2_p4, &b_jet_algo2_p4); }; 
-void SetBranchAddress_jet_algo2_emfrac(TTree * tree) { tree->SetBranchAddress("jet_algo2_emfrac", jet_algo2_emfrac, &b_jet_algo2_emfrac); }; 
-void SetBranchAddress_jet_algo2_hadfrac(TTree * tree) { tree->SetBranchAddress("jet_algo2_hadfrac", jet_algo2_hadfrac, &b_jet_algo2_hadfrac); }; 
-void SetBranchAddress_jet_algo2_ntk(TTree * tree) { tree->SetBranchAddress("jet_algo2_ntk", jet_algo2_ntk, &b_jet_algo2_ntk); }; 
 void SetBranchAddress_jet_algo2_tkind(TTree * tree) { tree->SetBranchAddress("jet_algo2_tkind", &jet_algo2_tkind, &b_jet_algo2_tkind); }; 
 void SetBranchAddress_jet_algo2_calotwind(TTree * tree) { tree->SetBranchAddress("jet_algo2_calotwind", &jet_algo2_calotwind, &b_jet_algo2_calotwind); }; 
 void SetBranchAddress_jet_algo3_n(TTree * tree) { tree->SetBranchAddress("jet_algo3_n", &jet_algo3_n, &b_jet_algo3_n); }; 
 void SetBranchAddress_jet_algo3_p4(TTree * tree) { tree->SetBranchAddress("jet_algo3_p4", &jet_algo3_p4, &b_jet_algo3_p4); }; 
-void SetBranchAddress_jet_algo3_emfrac(TTree * tree) { tree->SetBranchAddress("jet_algo3_emfrac", jet_algo3_emfrac, &b_jet_algo3_emfrac); }; 
-void SetBranchAddress_jet_algo3_hadfrac(TTree * tree) { tree->SetBranchAddress("jet_algo3_hadfrac", jet_algo3_hadfrac, &b_jet_algo3_hadfrac); }; 
-void SetBranchAddress_jet_algo3_ntk(TTree * tree) { tree->SetBranchAddress("jet_algo3_ntk", jet_algo3_ntk, &b_jet_algo3_ntk); }; 
 void SetBranchAddress_jet_algo3_tkind(TTree * tree) { tree->SetBranchAddress("jet_algo3_tkind", &jet_algo3_tkind, &b_jet_algo3_tkind); }; 
 void SetBranchAddress_jet_algo3_calotwind(TTree * tree) { tree->SetBranchAddress("jet_algo3_calotwind", &jet_algo3_calotwind, &b_jet_algo3_calotwind); }; 
 void SetBranchAddress_jet_algoPF1_n(TTree * tree) { tree->SetBranchAddress("jet_algoPF1_n", &jet_algoPF1_n, &b_jet_algoPF1_n); }; 
@@ -240,6 +231,10 @@ void SetBranchAddress_jet_algoPF1_betaStar(TTree * tree) { tree->SetBranchAddres
 void SetBranchAddress_jet_algoPF1_betaStarClassic(TTree * tree) { tree->SetBranchAddress("jet_algoPF1_betaStarClassic", jet_algoPF1_betaStarClassic, &b_jet_algoPF1_betaStarClassic); };
 void SetBranchAddress_jet_algoPF1_dR2Mean(TTree * tree) { tree->SetBranchAddress("jet_algoPF1_dR2Mean", jet_algoPF1_dR2Mean, &b_jet_algoPF1_dR2Mean); };
 void SetBranchAddress_jet_algoPF1_dRMean(TTree * tree) { tree->SetBranchAddress("jet_algoPF1_dRMean", jet_algoPF1_dRMean, &b_jet_algoPF1_dRMean); };
+void SetBranchAddress_jet_algoPF1_R(TTree * tree) { tree->SetBranchAddress("jet_algoPF1_R", jet_algoPF1_R, &b_jet_algoPF1_R); };
+void SetBranchAddress_jet_algoPF1_Rneutral(TTree * tree) { tree->SetBranchAddress("jet_algoPF1_Rneutral", jet_algoPF1_Rneutral, &b_jet_algoPF1_Rneutral); };
+void SetBranchAddress_jet_algoPF1_Rchg(TTree * tree) { tree->SetBranchAddress("jet_algoPF1_Rchg", jet_algoPF1_Rchg, &b_jet_algoPF1_Rchg); };
+void SetBranchAddress_jet_algoPF1_Rchg_QC(TTree * tree) { tree->SetBranchAddress("jet_algoPF1_Rchg_QC", jet_algoPF1_Rchg_QC, &b_jet_algoPF1_Rchg_QC); };
 void SetBranchAddress_jet_algoPF1_dZ(TTree * tree) { tree->SetBranchAddress("jet_algoPF1_dZ", jet_algoPF1_dZ, &b_jet_algoPF1_dZ); };
 void SetBranchAddress_jet_algoPF1_frac01(TTree * tree) { tree->SetBranchAddress("jet_algoPF1_frac01", jet_algoPF1_frac01, &b_jet_algoPF1_frac01); };
 void SetBranchAddress_jet_algoPF1_frac02(TTree * tree) { tree->SetBranchAddress("jet_algoPF1_frac02", jet_algoPF1_frac02, &b_jet_algoPF1_frac02); };
@@ -841,6 +836,7 @@ void SetBranchAddress_jet_algoPF3_secVtxPt(TTree* tree) { tree->SetBranchAddress
 void SetBranchAddress_jet_algoPF3_secVtx3dL(TTree* tree) { tree->SetBranchAddress("jet_algoPF3_secVtx3dL", &jet_algoPF3_secVtx3dL, &b_jet_algoPF3_secVtx3dL); };
 void SetBranchAddress_jet_algoPF3_secVtx3deL(TTree* tree) { tree->SetBranchAddress("jet_algoPF3_secVtx3deL", &jet_algoPF3_secVtx3deL, &b_jet_algoPF3_secVtx3deL); };
 
+void SetBranchAddress_jet_algoPF1_ptD(TTree* tree) { tree->SetBranchAddress("jet_algoPF1_ptD", &jet_algoPF1_ptD, &b_jet_algoPF1_ptD); };
 void SetBranchAddress_jet_algoPF1_ptD_QC(TTree* tree) { tree->SetBranchAddress("jet_algoPF1_ptD_QC", &jet_algoPF1_ptD_QC, &b_jet_algoPF1_ptD_QC); };
 void SetBranchAddress_jet_algoPF1_axis1_QC(TTree* tree) { tree->SetBranchAddress("jet_algoPF1_axis1_QC", &jet_algoPF1_axis1_QC, &b_jet_algoPF1_axis1_QC); };
 void SetBranchAddress_jet_algoPF1_axis2_QC(TTree* tree) { tree->SetBranchAddress("jet_algoPF1_axis2_QC", &jet_algoPF1_axis2_QC, &b_jet_algoPF1_axis2_QC); };

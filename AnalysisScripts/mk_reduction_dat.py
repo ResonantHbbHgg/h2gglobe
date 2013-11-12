@@ -48,7 +48,7 @@ for d in ds.read().split("\n"):
     else:
         iname = dname
         dname = dname.replace("_AODSIM","").replace("_AOD","")
-    analyzer = "analyzer PhotonAnalysis photonanalysis.dat"
+    analyzer = "analyzer PhotonAnalysis photonanalysis.dat useDefaultVertex=1"
     getanalyzer = False
     for s in sl:
         if "append" in s:

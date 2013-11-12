@@ -446,7 +446,9 @@ class PhotonAnalysis : public BaseAnalysis
  protected:
     void PreselectPhotons(LoopAll& l, int jentry);
 
+    void SetNullRadion(LoopAll& l);
     void SetNullHiggs(LoopAll& l);
+    bool FindRadionObjects(LoopAll& l);
     bool FindHiggsObjects(LoopAll& l);
     Bool_t GenMatchedPhoton(LoopAll& l, int ipho);
 
@@ -573,6 +575,8 @@ class PhotonAnalysis : public BaseAnalysis
     // Jets
     JetHandler * jetHandler_;
     void postProcessJets(LoopAll & l, int vtx=-1);
+    TLorentzVector postProcessSingleJet(LoopAll & l, int ijet, int vtx=-1);
+    TLorentzVector getJecJer(LoopAll &l, TLorentzVector *jet, int ijet, int applyJecUnc__, double jecShift__, int applyJer__, double jerShift__ );
     void switchJetIdVertex(LoopAll &l, int ivtx);
 
     std::map<int, vector<double> > weights;

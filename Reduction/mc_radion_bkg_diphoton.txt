@@ -1,0 +1,12 @@
+DiPhotonBorn_Pt-10To25_8TeV_ext-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1:DiPhotonBorn_Pt-10To25_8TeV       3
+DiPhotonBorn_Pt-250ToInf_8TeV_ext-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1:DiPhotonBorn_Pt-250ToInf_8TeV   3
+DiPhotonBorn_Pt-25To250_8TeV_ext-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1:DiPhotonBorn_Pt-25To250_8TeV     3
+
+DiPhotonBox_Pt-250ToInf_8TeV_ext-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1:DiPhotonBox_Pt-250ToInf_8TeV     3
+DiPhotonBox_Pt-25To250_8TeV_ext-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1:DiPhotonBox_Pt-25To250_8TeV       3
+
+DiPhotonJetsBox_M60_8TeV-sherpa_Summer12_DR53X-PU_S10_START53_V7C-v1_v2:DiPhotonJetsBox_M60_8TeV_v2            3
+DiPhotonJetsBox_M60_8TeV-sherpa_Summer12_DR53X-PU_S10_START53_V7C-v1_v3:DiPhotonJetsBox_M60_8TeV_v3            3
+
+GJet_Pt40_doubleEMEnriched_TuneZ2star_8TeV_ext-pythia6_Summer12_DR53X-PU_S10_START53_V7C-v1:GJet_Pt40          2 append=_pp analyzer PhotonAnalysis photonanalysis.dat keep_pp.dat
+GJet_Pt40_doubleEMEnriched_TuneZ2star_8TeV_ext-pythia6_Summer12_DR53X-PU_S10_START53_V7C-v1:GJet_Pt40          2 append=_pf analyzer PhotonAnalysis photonanalysis.dat keep_pf.dat

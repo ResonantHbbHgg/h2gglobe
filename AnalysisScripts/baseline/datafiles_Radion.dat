@@ -1,0 +1,89 @@
+intL=19706. histfile=CMS-HGG.root output=eventsList.txt
+
+#
+# Data
+#
+typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/data/Photon_Run2012A_22Jan2013-v1 json=aux/Cert_190456-208686_8TeV_22Jan2013ReReco_Collisions12_JSON.txt
+typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/data/DoublePhoton_Run2012B-22Jan2013-v1 json=aux/Cert_190456-208686_8TeV_22Jan2013ReReco_Collisions12_JSON.txt
+typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/data/DoublePhoton_Run2012C-22Jan2013-v2 json=aux/Cert_190456-208686_8TeV_22Jan2013ReReco_Collisions12_JSON.txt
+typ=0   ind=0 draw=1   Nam=Data tot=1 red=1 lum=1.0e10   xsec=1. kfac=1.0   scal=1.   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/data/DoublePhoton_Run2012D-22Jan2013-v1_v3 json=aux/Cert_190456-208686_8TeV_22Jan2013ReReco_Collisions12_JSON.txt
+
+#
+# SM Higgs
+#
+
+typ=-125050 ind=1 draw=1   Nam=ggh_m125_minlo_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/GluGluToHToGG_M-125_8TeV-minloHJJ-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=1000000.0   xsec=0.04014   kfac=1.000000   scal=1.000000
+typ=-1 ind=1 draw=1   Nam=ggh_m125_powheg_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/GluGluToHToGG_M-125_8TeV-powheg-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-1 ind=2 draw=1   Nam=vbf_m125_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/VBF_HToGG_M-125_8TeV-powheg-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-125200 ind=4 draw=1   Nam=wzh_m125_8TeV_wh   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/WH_ZH_HToGG_M-125_8TeV-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v2_wh   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-125300 ind=4 draw=1   Nam=wzh_m125_8TeV_zh   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/WH_ZH_HToGG_M-125_8TeV-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v2_zh   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-1 ind=3 draw=1   Nam=tth_m125_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/TTH_HToGG_M-125_8TeV-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+
+typ=-1 ind=1 draw=1   Nam=ggh_m124_8TeV_powheg   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/GluGluToHToGG_M-124_8TeV-powheg-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-1 ind=2 draw=1   Nam=vbf_m124_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/VBF_HToGG_M-124_8TeV-powheg-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-124200 ind=4 draw=1   Nam=wzh_m124_8TeV_wh   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/WH_ZH_HToGG_M-124_8TeV-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v2_wh   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-124300 ind=4 draw=1   Nam=wzh_m124_8TeV_zh   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/WH_ZH_HToGG_M-124_8TeV-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v2_zh   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-1 ind=3 draw=1   Nam=tth_m124_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/TTH_HToGG_M-124_8TeV-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+
+typ=-1 ind=1 draw=1   Nam=ggh_m126_8TeV_powheg   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/GluGluToHToGG_M-126_8TeV-powheg-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-1 ind=2 draw=1   Nam=vbf_m126_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/VBF_HToGG_M-126_8TeV-powheg-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-126200 ind=4 draw=1   Nam=wzh_m126_8TeV_wh   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/WH_ZH_HToGG_M-126_8TeV-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v2_wh   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-126300 ind=4 draw=1   Nam=wzh_m126_8TeV_zh   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/WH_ZH_HToGG_M-126_8TeV-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v2_zh   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-1 ind=3 draw=1   Nam=tth_m126_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/TTH_HToGG_M-126_8TeV-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+
+#
+# Radion Signal
+# Cross sections taken from https://twiki.cern.ch/twiki/bin/viewauth/CMS/HHtoGammaGammabb#MC_signal_simulation for radion and prep (http://cms.cern.ch/iCMS/jsp/mcprod/admin/requestmanagement.jsp?dsn=GravitonToHH_2Gamma_2b_M-*&campid=Summer12) for graviton
+
+typ=-301 ind=1 draw=1   Nam=Radion_m300_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
+typ=-501 ind=1 draw=1   Nam=Radion_m500_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/RadionToHHTo2G2B_M-500_TuneZ2star_8TeV-nm-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
+typ=-701 ind=1 draw=1   Nam=Radion_m700_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/RadionToHHTo2G2B_M-700_TuneZ2star_8TeV-nm-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-1001 ind=1 draw=1   Nam=Radion_m1000_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/RadionToHHTo2G2B_M-1000_TuneZ2star_8TeV-nm-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
+typ=-1501 ind=1 draw=1   Nam=Radion_m1500_8TeV_nm   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/RadionToHHTo2G2B_M-1500_TuneZ2star_8TeV-nm-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
+
+typ=-302 ind=1 draw=1   Nam=Graviton_m300_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/GravitonToHH_2Gamma_2b_M-300_TuneZ2star_8TeV-Madgraph_pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
+typ=-502 ind=1 draw=1   Nam=Graviton_m500_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/GravitonToHH_2Gamma_2b_M-500_TuneZ2star_8TeV-Madgraph_pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
+typ=-702 ind=1 draw=1   Nam=Graviton_m700_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/GravitonToHH_2Gamma_2b_M-700_TuneZ2star_8TeV-Madgraph_pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
+typ=-1002 ind=1 draw=1   Nam=Graviton_m1000_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/GravitonToHH_2Gamma_2b_M-1000_TuneZ2star_8TeV-Madgraph_pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
+typ=-1502 ind=1 draw=1   Nam=Graviton_m1500_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/GravitonToHH_2Gamma_2b_M-1500_TuneZ2star_8TeV-Madgraph_pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
+
+#
+# Background
+#
+typ=+11   ind=92 draw=1  Nam=qcd_30_8TeV_ff CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/QCD_Pt-30to40_doubleEMEnriched_TuneZ2star_8TeV-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1_ff    red=0   lum=1.e10 xsec=12208.   kfac=1.3  scal=1.
+typ=+21   ind=94 draw=1  Nam=qcd_40_8TeV_ff CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/QCD_Pt-40_doubleEMEnriched_TuneZ2star_8TeV-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1_ff    red=0   lum=1.e10 xsec=51439.   kfac=1.3  scal=1.
+
+typ=+12   ind=92 draw=1  Nam=qcd_30_8TeV_pf CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/QCD_Pt-30to40_doubleEMEnriched_TuneZ2star_8TeV-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1_pf    red=0   lum=1.e10 xsec=12208.   kfac=1.3  scal=1.
+typ=+22   ind=94 draw=1  Nam=qcd_40_8TeV_pf CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/QCD_Pt-40_doubleEMEnriched_TuneZ2star_8TeV-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1_pf    red=0   lum=1.e10 xsec=51439.   kfac=1.3  scal=1.
+
+typ=+32    ind=101 draw=1  Nam=gjet_20_8TeV_pf    CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/GJet_Pt-20to40_doubleEMEnriched_TuneZ2star_8TeV-pythia6_pf  red=0 lum=1.e10 xsec=150.34 kfac=1.3  scal=1.
+typ=+42    ind=104 draw=1  Nam=gjet_40_8TeV_pf    CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/GJet_Pt40_doubleEMEnriched_TuneZ2star_8TeV_ext-pythia6_pf  red=0 lum=1.e10 xsec=478.58 kfac=1.3  scal=1.
+
+typ=+4    ind=96 draw=1  Nam=diphojet_sherpa_8TeV CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/DiPhotonJetsBox_M60_8TeV-sherpa_Summer12_DR53X-PU_RD1_START53_V7N-v1    red=0   lum=1.e10  xsec=765.14   kfac=0.85  scal=1.676
+
+
+#
+# DY MC
+#
+typ=+5    ind=98 draw=1  Nam=DYJetsToLL   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/DYJetsToLL_M-50_TuneZ2Star_8TeV    red=0   lum=1.e10  xsec=2950.0   kfac=1.15  scal=1.
+
+
+#
+# Branches to use
+#
+inputBranches minimal_analysis_input_Radion.dat
+inputBranches minimal_statanalysis_input.dat
+inputBranches minimal_leptmetanalysis_input.dat
+
+#treevariables massfac_mva_binned/unbinned_datacard_trees.dat
+treevariables RadionTree.dat
+cuts jetanalysis/cuts_vbfcutb.dat
+
+## define analyses to run
+##   a library containing the class dictionary has loaded before parsing the
+##   configuration file
+## syntax:
+##   analyzer <class_name> <config_file>
+##
+## analyzer PhotonAnalysis photonanalysis.dat
+analyzer StatAnalysis photonanalysis.dat analysis_settings_Radion.dat statanalysis_Radion.dat jetanalysis/cutbvbftag.dat escale_and_smearing_jan22rereco_8TeV_std_mc.dat bkgPolOrderByCat=5,5,5,5 saveDatacardTrees_=0 dumpAscii=0 dumpMcAscii=0 scaleR9Only=0 fillOptTree=1 useDefaultVertex=1 doPtSpinSmear=0
