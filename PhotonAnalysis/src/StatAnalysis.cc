@@ -2111,7 +2111,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     l.FillTree("category", (int)category);
 
     if(PADEBUG) cerr << "StatAnalysis::fillOpTree: getting MET corrections" << endl;
-    TLorentzVector myMet = l.METCorrection2012B(lead_p4, sublead_p4);
+    TLorentzVector myMet = l.METCorrection2012B(lead_p4, sublead_p4, moriond2013MetCorrection);
 
     l.FillTree("met_pfmet", (float)l.met_pfmet);
     l.FillTree("met_phi_pfmet", (float)l.met_phi_pfmet);
@@ -3005,7 +3005,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 
 
     if(PADEBUG) cerr << "Leaving StatAnalysis::fillOpTree" << endl;
-
+}
 
 // Local Variables:
 // mode: c++
