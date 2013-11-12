@@ -2,7 +2,7 @@
 doTriggerSelection=1
 
 ## Di-jet tag
-includeVBF=1
+includeVBF=0
 usePUjetveto=1
 
 ## 2-categories cut-based
@@ -24,7 +24,7 @@ mvaVbfCatBoundaries=1.,0.985,0.93
 sigPointsToBook=105,110,115,120,125,130,135,140,145,150,124,126
 
 ## Hadronic TTH tag
-includeTTHhad=1
+includeTTHhad=0
 leadEtTTHhadCut=60
 subleadEtTTHhadCut=25
 diphobdt_output_Cut_TTHhad=-0.3
@@ -36,7 +36,7 @@ applyBtagSF=1
 
 
 ## Leptonic TTH tag
-includeTTHlep=1
+includeTTHlep=0
 leadEtTTHlepCut=60
 subleadEtTTHlepCut=25
 diphobdt_output_Cut_TTHlep=-0.6
@@ -49,7 +49,7 @@ doApplyEleVeto=0
 
 	
 ## Hadronic V tag
-includeVHhad=1
+includeVHhad=0
 nVHhadEtaCategories=1
 leadEtVHhadCut=60
 subleadEtVHhadCut=25
@@ -71,7 +71,7 @@ ptjet_btag_cut=25.
 
 ## Lepton tag
 includeVHlep=0
-includeVHlepPlusMet=1
+includeVHlepPlusMet=0
 leadEtVHlepCut=45
 #subleadEtVHlepCut=30
 nElectronCategories=1 
@@ -79,7 +79,7 @@ nMuonCategories=1
 diphobdt_output_Cut_VHLep=-0.6
 
 ## MET tag
-includeVHmet=1
+includeVHmet=0
 leadEtVHmetCut=45
 #subleadEtVHmetCut=30
 nMetCategories=1 
