@@ -50,6 +50,8 @@ CMS-HGG*root
 CMS-HGG*json
 eventsList*txt
 AnalysisScripts/baseline/datafiles_Radion_*dat
+*DEBUG.dat
+eos_log*
 
 # editor temp files
 *.swp
