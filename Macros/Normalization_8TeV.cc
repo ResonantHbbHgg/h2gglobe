@@ -250,7 +250,7 @@ double Normalization_8TeV::GetVBFCorrection(double mass) {
 TString Normalization_8TeV::GetProcess(int ty){
   if (ty < -7999){  // We dont go below 80 GeV and Spin samples in the 100 range 
     int process = -ty % 1000;
-    if (process == 0 ) return "ggh";
+		if (process == 0 || process == 50) return "ggh";
     else if (process == 10 ) return "ggh_minlo";
     else if (process == 100) return "vbf";
     else if (process == 200) return "wh";
