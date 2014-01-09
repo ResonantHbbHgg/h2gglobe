@@ -104,22 +104,38 @@ void StatAnalysis::Init(LoopAll& l)
 
     //Add btagSF variables taking them from database (Badder)
 
-    BtagWP = "medium";
+    BtagWP = "medium"; //other possibilities are: loose, tight
+    SignalType = "new"; // other possibilities are: old 
 
-    if(l.itype[l.current] == -301 || l.itype[l.current] == -501 || l.itype[l.current] == -701 || l.itype[l.current] == -1001 || l.itype[l.current] == -1501){  
+    if(l.itype[l.current] <= -100){ 
      
-       int mass_point = abs(l.itype[l.current])-1;
+       char Number[1000];
+       sprintf(Number,"%d",l.itype[l.current]);
+       std::string massNumber = std::string(Number);
+       //if(PADEBUG) std::cout << "massNumber: " << massNumber << " - " << massNumber.at(massNumber.size()-1) << std::endl;
+       
+       int mass_point = 0;
+       if(massNumber.at(massNumber.size()-1) == std::string("1")) mass_point = abs(l.itype[l.current])-1;
+       if(massNumber.at(massNumber.size()-1) == std::string("2")) mass_point = abs(l.itype[l.current])-2;
+       if(massNumber.at(massNumber.size()-1) == std::string("3")) mass_point = abs(l.itype[l.current])-3;
 
        if(PADEBUG) cerr << "Loading btagSF variables for mass-point: " << mass_point << endl;
-
+       
        char Name[1000];
-       sprintf(Name, "/afs/cern.ch/work/b/bmarzocc/public/RadionAnalysis_DONOTREMOVE/jettxt_Radion%d_RD.txt", mass_point);
+
+       sprintf(Name, "/afs/cern.ch/work/b/bmarzocc/public/RadionAnalysis_DONOTREMOVE/jettxt_Radion%d_RD_%s.txt", mass_point,SignalType.c_str());
+       if(massNumber.at(massNumber.size()-1) == std::string("3")) sprintf(Name, "/afs/cern.ch/work/b/bmarzocc/public/RadionAnalysis_DONOTREMOVE/jettxt_GluGluToHTohhTo2Gam2B_mH-%d_RD.txt", mass_point); 
        std::string name_JetFlavourFile = std::string(Name);
+
+       if(PADEBUG) cerr << "jettxt: " << Name << endl;
    
-       sprintf(Name, "/afs/cern.ch/work/b/bmarzocc/public/RadionAnalysis_DONOTREMOVE/btagEfficiencies_Radion%d_RD.root", mass_point);
+       sprintf(Name, "/afs/cern.ch/work/b/bmarzocc/public/RadionAnalysis_DONOTREMOVE/btagEfficiencies_Radion%d_RD_%s.root", mass_point,SignalType.c_str());
+       if(massNumber.at(massNumber.size()-1) == std::string("3")) sprintf(Name, "/afs/cern.ch/work/b/bmarzocc/public/RadionAnalysis_DONOTREMOVE/btagEfficiencies_GluGluToHTohhTo2Gam2B_mH-%d_RD.root",mass_point);
        std::string name_btagEfficienciesFile = std::string(Name);
 
        std::string name_btagSFFile = std::string("/afs/cern.ch/work/b/bmarzocc/public/RadionAnalysis_DONOTREMOVE/btagSF_22Jan2013Rereco.root");
+
+       if(PADEBUG) cerr << "btagEfficiencies file: " << Name << endl;
 
        jetFlavReader = new JetFlavourReader(name_JetFlavourFile.c_str());
        SFReader = new BtagSFReader(name_btagSFFile.c_str());
@@ -2737,7 +2753,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j1_tcheBtag", (float)l.jet_algoPF1_tcheBtag[jets[0]]);
         //BtagSF variables (Badder)
         if(PADEBUG) cout << "BtagSF variables" << endl;
-        if(l.itype[l.current] == -301 || l.itype[l.current] == -501 || l.itype[l.current] == -701 || l.itype[l.current] == -1001 || l.itype[l.current] == -1501){
+        if(l.itype[l.current] <= -100){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet1" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet1); 
            float btagSF = SFReader->getSF(jet1,flavour,BtagWP);
@@ -2874,7 +2890,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j2_tcheBtag", (float)l.jet_algoPF1_tcheBtag[jets[1]]);
         if(PADEBUG) cout << "BtagSF variables" << endl;
         //BtagSF variables (Badder)
-        if(l.itype[l.current] == -301 || l.itype[l.current] == -501 || l.itype[l.current] == -701 || l.itype[l.current] == -1001 || l.itype[l.current] == -1501){
+        if(l.itype[l.current] <= -100){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet2" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet2); 
            float btagSF = SFReader->getSF(jet2,flavour,BtagWP);
@@ -3046,7 +3062,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j3_jetProbBtag", (float)l.jet_algoPF1_jetProbBtag[jets[2]]);
         l.FillTree("j3_tcheBtag", (float)l.jet_algoPF1_tcheBtag[jets[2]]);
         //BtagSF variables (Badder)
-        if(l.itype[l.current] == -301 || l.itype[l.current] == -501 || l.itype[l.current] == -701 || l.itype[l.current] == -1001 || l.itype[l.current] == -1501){
+        if(l.itype[l.current] <= -100){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet3" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet3); 
            float btagSF = SFReader->getSF(jet3,flavour,BtagWP);
@@ -3174,7 +3190,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j4_jetProbBtag", (float)l.jet_algoPF1_jetProbBtag[jets[3]]);
         l.FillTree("j4_tcheBtag", (float)l.jet_algoPF1_tcheBtag[jets[3]]);
         //BtagSF variables (Badder)
-        if(l.itype[l.current] == -301 || l.itype[l.current] == -501 || l.itype[l.current] == -701 || l.itype[l.current] == -1001 || l.itype[l.current] == -1501){
+        if(l.itype[l.current] <= -100){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet4" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet4); 
            float btagSF = SFReader->getSF(jet4,flavour,BtagWP);
@@ -3261,7 +3277,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     } // if 4 jets
 
 // MC Truth radion signal information
-    if( (l.itype[l.current] < -250) && (l.itype[l.current] > -2000) )
+    if( (l.itype[l.current] <= -100) && (l.itype[l.current] > -2000) )
     {
 	    TLorentzVector * radion = (TLorentzVector *)l.gr_radion_p4->At(0);
 	    TLorentzVector * hgg = (TLorentzVector *)l.gr_hgg_p4->At(0);
