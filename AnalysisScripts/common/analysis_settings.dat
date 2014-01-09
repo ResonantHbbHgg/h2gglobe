@@ -21,7 +21,7 @@ subleadEtVBFCut=30
 mvaVbfCatBoundaries=1.,0.985,0.93 
 
 ## Singal mass points to book
-sigPointsToBook=105,110,115,120,125,130,135,140,145,150,124,126
+sigPointsToBook=105,110,115,120,125,130,135,140,145,150,123,124,126
 
 ## Hadronic TTH tag
 includeTTHhad=1
@@ -43,7 +43,8 @@ diphobdt_output_Cut_TTHlep=-0.6
 deltaRPholep_cut=0
 doMinvCut=0
 doDrGsfTrackCut=1
-drSC_lep=0.5
+drSC_ele=1.
+drSC_muon=0.5
 drGsf_lep=1.
 doApplyEleVeto=0 
 
@@ -100,6 +101,7 @@ puHist=auto
 ## puTarget=aux/HCP2012_preapproval_red_v1.json.69400.observed.pileup.root
 ## puTarget=aux/Moriond_pileup_190456-208686_minBiasXsec69400_corr_observed.root
 puTargets=aux/AB.json.69400.observed.pileup.root,aux/C.json.69400.observed.pileup.root,aux/D.json.69400.observed.pileup.root
+puLumis=5.288,7.055,7.369
 
 ## energy regression
 energyCorrectionMethod=BendavidOTF
@@ -107,15 +109,18 @@ doEcorrectionSmear=1
 doEcorrectionSyst=1
 
 ## energy scale adjustement and errors
-scale_offset_file=jan22rereco_8TeV/energy_scale_offsets_rd_mc.dat
-scale_offset_error_file=energy_scale_errors.dat
+#scale_offset_file=jan22rereco_8TeV/energy_scale_offsets_rd_mc.dat
+# Et Dependent
+scale_offset_file=jan22rereco_8TeV/energy_scale_offsets_rd_mc_etdep.dat
+scale_offset_error_file=jan22rereco_8TeV/energy_scale_errors.dat
 
 ## uncorrelated part of the uncertainties
 splitEscaleSyst=0
 scale_offset_corr_error_file=energy_scale_corr_errors.dat
 
 ## additional MC smearing
-smearing_file=jan22rereco_8TeV/smearing_sigma_and_errors_rd_mc.dat
+## smearing_file=jan22rereco_8TeV/smearing_sigma_and_errors_rd_mc.dat
+smearing_file=jan22rereco_8TeV/smearing_sigma_and_errors_stocastic_rd_mc.dat
 ## smearing correction for BDT input
 mass_resol_file=jan22rereco_8TeV/smearing_sigma_and_errors_rd_mc.dat
 

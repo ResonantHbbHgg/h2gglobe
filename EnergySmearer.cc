@@ -11,31 +11,6 @@ EnergySmearer::EnergySmearer(const energySmearingParameters& par, const std::vec
   baseSeed_ = 0;
   forceShift_ = false;
   name_="EnergySmearer_"+ par.categoryType + "_" + par.parameterSetName;
-  //Checking consistency of input parameters
-  std::cerr << myParameters_.categoryType << " " <<  myParameters_.n_categories << std::endl;
-  assert( myParameters_.byRun || myParameters_.n_categories == myParameters_.smearing_sigma.size() );
-  assert( myParameters_.byRun || myParameters_.n_categories == myParameters_.smearing_sigma_error.size() );
-  assert( ( myParameters_.categoryType == "EBEE" && myParameters_.n_categories == 2 ) ||
-	  ( myParameters_.categoryType == "2CatR9_EBEE" && myParameters_.n_categories == 4 ) ||
-	  ( myParameters_.categoryType == "2CatR9_EBEE_ByRun" && myParameters_.n_categories == 4 ) ||
-	  ( myParameters_.categoryType == "2CatR9_EBEBm4EE" && myParameters_.n_categories == 6 ) ||
-	  ( myParameters_.categoryType == "2CatR9_EBEBm4EE_ByRun" && myParameters_.n_categories == 6 ) || 
-	  ( myParameters_.categoryType == "Automagic" && 
-	    ( myParameters_.byRun || myParameters_.n_categories == myParameters_.photon_categories.size() ) )
-	  );
-  if( myParameters_.categoryType == "Automagic" ) {
-	  myParameters_.n_categories = myParameters_.photon_categories.size();
-  }
-  if( myParameters_.byRun ) {
-    for(energySmearingParameters::eScaleVectorIt it=myParameters_.scale_offset_byrun.begin(); it!=myParameters_.scale_offset_byrun.end();
-	++it ) {
-	    assert( myParameters_.n_categories == it->scale_offset.size() );
-	    assert( myParameters_.n_categories == it->scale_offset_error.size() );
-    }
-  } else {
-    assert( myParameters_.n_categories == myParameters_.scale_offset.size() );
-    assert( myParameters_.n_categories == myParameters_.scale_offset_error.size() );
-  }
   
   registerMe();
 }
@@ -68,7 +43,7 @@ std::string EnergySmearer::photonCategory(const energySmearingParameters & myPar
 			     aPho.isSphericalPhoton())
 			);
 	    if( vit ==  myParameters.photon_categories.end() ) {
-		    std::cerr << "Could not find energy categoty for this photon " << 
+		    std::cerr << "Could not find energy category for this photon " << 
 		      aPho.isSphericalPhoton() << " " << (float)aPho.caloPosition().PseudoRapidity() << " " <<  (float)aPho.r9() << std::endl;
 		    assert( 0 );
 	    }
@@ -129,11 +104,11 @@ float EnergySmearer::getSmearingSigma(const energySmearingParameters & myParamet
   }
   smearing_sigma           += syst_shift * err_sigma;
   smearing_stocastic_sigma += syst_shift * smearing_stocastic_sigma_error;
-  if( ipivot != myParameters.smearing_stocastic_pivot.end() ) {
+  if( ipivot != myParameters.smearing_stocastic_pivot.end() && ipivot->second > 0. ) {
 	  float phi = std::max((float)0.,std::min((float)(TMath::Pi()*0.5),smearing_stocastic_sigma));
 	  float rho = smearing_sigma;
-	  smearing_stocastic_sigma = rho*sqrt(ipivot->second)*sin(phi);
-	  smearing_sigma = rho * cos(phi);
+	  smearing_stocastic_sigma = rho*ipivot->second*cos(phi);
+	  smearing_sigma = rho*sin(phi);
   }
   smearing_stocastic_sigma = (smearing_stocastic_sigma * smearing_stocastic_sigma) / energy;
   smearing_sigma           = sqrt( smearing_sigma*smearing_sigma + smearing_stocastic_sigma );
@@ -161,7 +136,7 @@ float EnergySmearer::getScaleOffset(int run, const std::string & category) const
   
   if ( it == scale_offset->end())
     {
-      std::cout << "Category was not found in the configuration. Giving Up" << std::endl;
+	    std::cout << "Category was not found in the configuration. Giving Up" << " " << category << " " << myParameters_.byRun << " " << this->name() << std::endl;
       return false;
     }
   
@@ -172,12 +147,14 @@ float EnergySmearer::getScaleOffset(int run, const std::string & category) const
 bool EnergySmearer::smearPhoton(PhotonReducedInfo & aPho, float & weight, int run, float syst_shift) const
 {
     if( syst_only_ && syst_shift == 0. ) { return true; }
+    //// std::cout << "EnergySmearer::smearPhoton " << name() << " " << aPho.iPho() << " " << aPho.iDet() << " " << aPho.r9() << std::endl;
     if( ! forceShift_ && ! doEfficiencies_ && ! doCorrections_ && ! doRegressionSmear_ && syst_shift == 0. ) {
 	    int myId = smearerId();
 	    if( aPho.hasCachedVal(myId) ) {
 		    const std::pair<const BaseSmearer *, float> & cachedVal = aPho.cachedVal(myId);
 		    assert( cachedVal.first == this );
 		    aPho.setEnergy(aPho.energy() * cachedVal.second );
+		    //// std::cout << "Using cached value " << cachedVal.second << std::endl;
 		    return true;
 	    }
     }
@@ -189,6 +166,7 @@ bool EnergySmearer::smearPhoton(PhotonReducedInfo & aPho, float & weight, int ru
 			     fabs((float)aPho.caloPosition().PseudoRapidity()),(float)aPho.r9(),
 			     aPho.isSphericalPhoton())
 		    ) ==  preselCategories_.end() ) { 
+		    //// std::cout << "Outside of this domain " << std::endl;
 		    return true; 
 	    }
     }
@@ -210,11 +188,11 @@ bool EnergySmearer::smearPhoton(PhotonReducedInfo & aPho, float & weight, int ru
 	newEnergy = aPho.corrEnergy() + syst_shift * myParameters_.corrRelErr * (aPho.corrEnergy() - aPho.energy());
     } else if ( doRegressionSmear_){
 	// leave energy alone, bus change resolution (10% uncertainty on sigmaE/E scaling)
-	float newSigma;
+        float newSigma;
 	if (fabs(aPho.caloPosition().Eta())<1.5){
-	    newSigma = aPho.corrEnergyErr()*(1.+syst_shift*0.1);
+	    newSigma = aPho.rawCorrEnergyErr()*(1.+syst_shift*0.1);
 	} else {
-	    newSigma = aPho.corrEnergyErr()*(1.+syst_shift*0.1);
+	    newSigma = aPho.rawCorrEnergyErr()*(1.+syst_shift*0.1);
 	}
 	aPho.setCorrEnergyErr(newSigma);
     } else {
@@ -365,7 +343,7 @@ double EnergySmearer::getWeight(double pt, std::string theCategory, float syst_s
 
 EnergySmearerExtrapolation::EnergySmearerExtrapolation(EnergySmearer * smearer) : 
 	target_(smearer),
-	name_(smearer->name()+"_extra"),
+	name_(smearer->name()+"Phi"),
 	myParameters_(smearer->myParameters_),
 	needed_(false)
 {

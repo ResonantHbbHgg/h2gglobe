@@ -25,7 +25,7 @@ class FinalModelConstruction {
 
   public:
     
-    FinalModelConstruction(RooRealVar *massVar, RooRealVar *MHvar, RooRealVar *intL, int mhLow, int mhHigh, std::string proc, int cat, bool doSecMods, std::string systematicsFileName, int verbosity, bool isCB=false, bool is2011=false);
+    FinalModelConstruction(RooRealVar *massVar, RooRealVar *MHvar, RooRealVar *intL, int mhLow, int mhHigh, std::string proc, int cat, bool doSecMods, std::string systematicsFileName, std::vector<int> skipMasses, int verbosity, bool isCB=false, bool is2011=false, bool quadraticSigmaSum=false);
     ~FinalModelConstruction();
 
 		void loadSignalSystematics(std::string filename);
@@ -40,7 +40,7 @@ class FinalModelConstruction {
     void setupSystematics();
     void getNormalization();
 
-		RooAbsReal *getMeanWithPhotonSyst(RooAbsReal *dm, string name);
+		RooAbsReal *getMeanWithPhotonSyst(RooAbsReal *dm, string name, bool isMH2=false, bool isMHSM=false);
 		RooAbsReal *getSigmaWithPhotonSyst(RooAbsReal *sig_fit, string name);
 		RooAbsReal *getRateWithPhotonSyst(string name);
     
@@ -52,6 +52,9 @@ class FinalModelConstruction {
     void setWVdatasets(std::map<int,RooDataSet*> data);
     void setSTDdatasets(std::map<int,RooDataSet*> data);
 		void makeSTDdatasets();
+
+		void setHighR9cats(std::string catString);
+		void setLowR9cats(std::string catString);
 
     void plotPdf(std::string outDir);
 
@@ -72,8 +75,11 @@ class FinalModelConstruction {
     bool isCutBased_;
 		bool is2011_;
 		int sqrts_;
+		bool quadraticSigmaSum_;
+		std::vector<int> skipMasses_;
     std::vector<int> allMH_;
     std::vector<int> getAllMH();
+		bool skipMass(int mh);
     int verbosity_;
     Normalization_8TeV *norm;
 
@@ -83,17 +89,17 @@ class FinalModelConstruction {
     std::map<int,RooDataSet*> rvDatasets;
     std::map<int,RooDataSet*> wvDatasets;
     std::map<int,RooDataSet*> stdDatasets;
-    
+   
+	 	// vertex and r9 nuisances
     RooRealVar *vertexNuisance;
-    RooSpline1D *rvFracFunc;
-    RooRealVar *globalScale;
 		RooRealVar *r9barrelNuisance;
 		RooRealVar *r9mixedNuisance;
-		// these are for the old fashioned way
-    //RooRealVar *categoryScale;
-    //RooConstVar *categorySmear;
-    //RooRealVar *categoryResolution;
-    //vector<double> constSmearVals;
+		std::vector<int> highR9cats;
+		std::vector<int> lowR9cats;
+    RooSpline1D *rvFracFunc;
+    RooSpline1D *rvFracFunc_SM;
+    RooSpline1D *rvFracFunc_2;
+    RooSpline1D *rvFracFunc_NW;
 
     RooAddPdf *finalPdf;
     RooAbsReal *finalNorm;
@@ -130,15 +136,32 @@ class FinalModelConstruction {
     RooRealVar *higgsDecayWidth;
 
 		// photon systematic stuff
+		std::vector<std::string> photonCatScales;
+		std::vector<std::string> photonCatScalesCorr;
+		std::vector<std::string> photonCatSmears;
+		std::vector<std::string> photonCatSmearsCorr;
+		std::vector<std::string> globalScales;
+		std::vector<std::string> globalScalesCorr;
+		// these are required to know specific options about further scaling 
+		std::map<std::string,std::vector<std::pair<int,float> > > globalScalesOpts;
+		std::map<std::string,std::vector<std::pair<int,float> > > globalScalesCorrOpts;
+		std::vector<std::string> systematicsList;
+
 		std::vector<std::string> photonCats;
 		std::map<std::string,std::map<int,std::map<std::string,double> > > meanSysts;
 		std::map<std::string,std::map<int,std::map<std::string,double> > > sigmaSysts;
 		std::map<std::string,std::map<int,std::map<std::string,double> > > rateSysts;
 
 		std::map<string,RooRealVar*> photonSystematics;
-		std::map<string,RooRealVar*> photonSystematicConsts;
+		std::map<string,RooConstVar*> photonSystematicConsts;
 
 		// utility funcs
+		void addToSystematicsList(std::vector<std::string> systs);
+		bool isGlobalSyst(std::string name);
+		bool isPerCatSyst(std::string name);
+		bool isHighR9cat();
+		bool isLowR9cat();
+		float getRequiredAddtionalGlobalScaleFactor(std::string syst);
 		void stripSpace(std::string &line);
 		void printVec(std::vector<std::string> vec);
 		void printSystMap(std::map<std::string,std::map<int,std::map<std::string,double> > > &theMap);

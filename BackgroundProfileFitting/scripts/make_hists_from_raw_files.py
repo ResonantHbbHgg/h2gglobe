@@ -6,7 +6,7 @@
 import os
 import sys
 import fnmatch
-
+import math
 from optparse import OptionParser
 parser=OptionParser()
 parser.add_option("-D","--dir")
@@ -52,7 +52,19 @@ def makeHists(cat=0,meanB=50,meanL=-4.,meanH=4.,errB=50,errL=0.5,errH=1.5,pullB=
 
   truth_models = set()
 
-  test_file = r.TFile.Open(dir+'/'+list_of_files[0])
+  TestFileFound = False
+  test_file=0
+  TFi = 0
+  print  dir+'/'+list_of_files[TFi]
+  while not TestFileFound:
+    test_file = r.TFile.Open(dir+'/'+list_of_files[TFi])
+    try :
+	test_file.GetName()
+	TestFileFound=True
+    except:
+	TFi+=1
+	TestFileFound=False
+  
   for key in test_file.GetListOfKeys():
     if 'truth' not in key.GetName(): continue
     if 'hybrid' in key.GetName():
@@ -84,6 +96,8 @@ def makeHists(cat=0,meanB=50,meanL=-4.,meanH=4.,errB=50,errL=0.5,errH=1.5,pullB=
   histMap={}
   histErrMap={}
   histPullMap={}
+  histPullTruthMap={}
+  histTypeMap={}
   graphCovMap={}
   counterCovMap={}
 
@@ -91,12 +105,19 @@ def makeHists(cat=0,meanB=50,meanL=-4.,meanH=4.,errB=50,errL=0.5,errH=1.5,pullB=
     histMap[type] = {}
     histErrMap[type] = {}
     histPullMap[type] = {}
+    histPullTruthMap[type] = {}
+    histTypeMap[type] = {}
     graphCovMap[type] = {}
     counterCovMap[type] = {}
     for mod in truth_models:
       histMap[type][mod] = r.TH1F('%s_mu%s'%(mod,type),'%s_mu%s'%(mod,type),meanB,meanL,meanH)
       histErrMap[type][mod] = r.TH1F('%s_mu%sErr'%(mod,type),'%s_mu%sErr'%(mod,type),errB,errL,errH)
-      histPullMap[type][mod] = r.TH1F('%s_mu%sPull'%(mod,type),'%s_mu%sPull'%(mod,type),pullB,pullL,pullH)
+      bWidth = (pullH-pullL)/pullB # so we can center at 0
+      histPullMap[type][mod] = r.TH1F('%s_mu%sPull'%(mod,type),'%s_mu%sPull'%(mod,type),pullB,pullL-bWidth/2,pullH-bWidth/2)
+      histPullTruthMap[type][mod] = {}
+      for mod1 in truth_models:
+	histPullTruthMap[type][mod][mod1] = r.TH1F('%s_mu%sPull_bfit_%s_only'%(mod,type,mod1),'%s_mu%sPull_bfit_%s_only'%(mod,type,mod1),pullB,pullL-bWidth/2,pullH-bWidth/2)
+      histTypeMap[type][mod] = {}
       graphCovMap[type][mod] = []
       counterCovMap[type][mod] = []
       for c, cov in enumerate(coverageValues):
@@ -109,6 +130,10 @@ def makeHists(cat=0,meanB=50,meanL=-4.,meanH=4.,errB=50,errL=0.5,errH=1.5,pullB=
     print '\tJob', i+1,'/',len(list_of_files), '\r',
     sys.stdout.flush()
     file = r.TFile.Open(dir+'/'+f)
+    try :
+	file.GetName()
+    except:
+	continue
     for key in file.GetListOfKeys():
       graph = key.ReadObj()
       if 'Envelope' not in graph.GetName(): continue
@@ -123,20 +148,48 @@ def makeHists(cat=0,meanB=50,meanL=-4.,meanH=4.,errB=50,errL=0.5,errH=1.5,pullB=
       type = graph.GetName().split('Envelope')[0]
       mytype = util[type]
      
-      muInfo = profiler.getMinAndErrorAsymmVec(graph,1.)
+        
+      #muInfo = profiler.getMinAndErrorAsymmVec(graph,1.)
+      muInfo = profiler.getMinAndErrorLinearAsymmVec(graph,1.)
       muVal = muInfo.at(0)
       err_low = muInfo.at(1)
-      err_high = muInfo.at(2)
-      sym_err = (err_low+err_high)/2.
-      pull = profiler.getPull(graph,options.expectSignal)
+      err_high  = muInfo.at(2)
 
-      #print truth, mytype, '%4.2f  %4.2f  %4.2f  %4.2f'%(muVal,err_low,err_high,sym_err)
-      
-      if muVal>=999. or sym_err>=999. or sym_err<0.001: continue
+      # symmetric error
+      if abs(err_low)<99 and abs(err_high) <99 : sym_err = (err_low+err_high)/2.
+      elif abs(err_low)<99 : sym_err = err_low
+      elif abs(err_high)<99 : sym_err = err_high
+      else: sym_err = 9999
+
+      #if  sym_err <0.01 or ( abs(muVal-options.expectSignal) > 2*sym_err):
+      pull = profiler.getPull(graph,options.expectSignal) ## need to fit best fit and truth for this
+      if math.isnan(pull) : continue
+      """
+      if abs(pull)<0.25 :# doesnt work so well
+      #else: taken from L.Lyons but "seems odd" since distribution of mu should follow assymmetry of LH curve
+      if muVal<options.expectSignal : err = err_high 
+      else : err =  err_low
+      if err > 0: pull = (muVal-options.expectSignal)/err
+      else: pull=0
+      """
+	
+      if muVal>=99. or sym_err>=99.: continue# or abs(err_low)>99. or abs(err_high)>99.: continue
+
+      # first find which pdf gave the best fit
+      bfname = graph.GetTitle()
+      family = ""
+      for fam in truth_models: 
+	if fam in bfname : family = fam
+
+      if bfname in histTypeMap[mytype][truth].keys():
+	histTypeMap[mytype][truth][bfname]+=1
+      elif bfname:
+	histTypeMap[mytype][truth][bfname]=1
 
       histMap[mytype][truth].Fill(muVal)
       histErrMap[mytype][truth].Fill(sym_err)
       histPullMap[mytype][truth].Fill(pull)
+      if family!="": histPullTruthMap[mytype][truth][family].Fill(pull)
       
       for c, cov in enumerate(coverageValues):
         counterCovMap[mytype][truth][c][1] += 1
@@ -155,13 +208,31 @@ def makeHists(cat=0,meanB=50,meanL=-4.,meanH=4.,errB=50,errL=0.5,errH=1.5,pullB=
   for type, item in histPullMap.items():
     for truth, hist in item.items():
       hist.Write()
+  for type, item in histPullTruthMap.items():
+    for truth, hists in item.items():
+	for tr,hist in hists.items():
+          hist.Write()
+  for type, item in histTypeMap.items():
+    for truth, hist in item.items():
+      ntypes = len(hist.keys())
+      htmp = r.TH1I('%s_mu%sType'%(truth,type),'%s_mu%sType'%(truth,type),ntypes,0,ntypes)
+      pdfbin = 0
+      for pdf in hist.keys(): 
+	htmp.SetBinContent(pdfbin+1,hist[pdf])
+	htmp.SetBinError(pdfbin+1,hist[pdf]**0.5)
+	htmp.GetXaxis().SetBinLabel(pdfbin+1,pdf)
+	pdfbin+=1
+      htmp.Write()
+     
   for type, item in counterCovMap.items():
     for truth, covArray in item.items():
       for c, covCounter in enumerate(covArray):
         nPass = float(covCounter[0])
         nTotal = float(covCounter[1])
-        covVal = nPass/nTotal
-        covErr = r.TMath.Sqrt((covVal*(1.-covVal))/nTotal)
+	if nTotal!=0:        covVal = nPass/nTotal
+	else: covVal = 0
+        if nTotal!=0: covErr = r.TMath.Sqrt((covVal*(1.-covVal))/nTotal)
+	else :covErr = 0
         graphCovMap[type][truth][c].SetPoint(0,options.expectSignal,covVal)
         graphCovMap[type][truth][c].SetPointError(0,0.5,covErr)
         graphCovMap[type][truth][c].Write()

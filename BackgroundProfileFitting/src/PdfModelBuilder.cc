@@ -3,6 +3,7 @@
 #include "RooPlot.h"
 #include "RooBernstein.h"
 #include "RooChebychev.h"
+#include "RooPolynomial.h"
 #include "RooGenericPdf.h"
 #include "RooExponential.h"
 #include "RooPowerLaw.h"
@@ -83,7 +84,8 @@ RooAbsPdf* PdfModelBuilder::getChebychev(string prefix, int order){
     //prods.insert(pair<string,RooFormulaVar*>(name,form));
     coeffList->add(*params[name]);
   }
-  RooChebychev *cheb = new RooChebychev(prefix.c_str(),prefix.c_str(),*obs_var,*coeffList);
+  //RooChebychev *cheb = new RooChebychev(prefix.c_str(),prefix.c_str(),*obs_var,*coeffList);
+  RooPolynomial *cheb = new RooPolynomial(prefix.c_str(),prefix.c_str(),*obs_var,*coeffList);
   return cheb;
   //bkgPdfs.insert(pair<string,RooAbsPdf*>(bern->GetName(),bern));
 
@@ -96,13 +98,13 @@ RooAbsPdf* PdfModelBuilder::getBernstein(string prefix, int order){
   for (int i=0; i<order; i++){
     string name = Form("%s_p%d",prefix.c_str(),i);
     //params.insert(pair<string,RooRealVar*>(name, new RooRealVar(name.c_str(),name.c_str(),1.0,0.,5.)));
-    RooRealVar *param = new RooRealVar(name.c_str(),name.c_str(),0.01*(i+1),-5.,5.);
+    RooRealVar *param = new RooRealVar(name.c_str(),name.c_str(),0.1*(i+1),-5.,5.);
     RooFormulaVar *form = new RooFormulaVar(Form("%s_sq",name.c_str()),Form("%s_sq",name.c_str()),"@0*@0",RooArgList(*param));
     params.insert(pair<string,RooRealVar*>(name,param));
     prods.insert(pair<string,RooFormulaVar*>(name,form));
     coeffList->add(*prods[name]);
   }
-  //RooBernsteinFast<(const int) order > *bern = new RooBernsteinFast<(const int) order >(prefix.c_str(),prefix.c_str(),*obs_var,*coeffList);
+  //RooBernstein *bern = new RooBernstein(prefix.c_str(),prefix.c_str(),*obs_var,*coeffList);
   if (order==1) {
 	RooBernsteinFast<1> *bern = new RooBernsteinFast<1>(prefix.c_str(),prefix.c_str(),*obs_var,*coeffList);
   	return bern;
@@ -127,6 +129,7 @@ RooAbsPdf* PdfModelBuilder::getBernstein(string prefix, int order){
   } else {
 	return NULL;
   }
+  //return bern;
   //bkgPdfs.insert(pair<string,RooAbsPdf*>(bern->GetName(),bern));
 
 }
@@ -234,13 +237,15 @@ RooAbsPdf* PdfModelBuilder::getPowerLawSingle(string prefix, int order){
     RooArgList *pows = new RooArgList();
     for (int i=1; i<=nfracs; i++){
       string name =  Form("%s_f%d",prefix.c_str(),i);
-      params.insert(pair<string,RooRealVar*>(name, new RooRealVar(name.c_str(),name.c_str(),0.9,0.000001,0.999999)));
+      params.insert(pair<string,RooRealVar*>(name, new RooRealVar(name.c_str(),name.c_str(),0.9-float(i-1)*1./nfracs,0.,1.)));
+      //params[name]->removeRange();
       fracs->add(*params[name]);
     }
     for (int i=1; i<=npows; i++){
       string name =  Form("%s_p%d",prefix.c_str(),i);
       string ename =  Form("%s_e%d",prefix.c_str(),i);
-      params.insert(pair<string,RooRealVar*>(name, new RooRealVar(name.c_str(),name.c_str(),TMath::Max(-10.,-1.*(i+1)),-10.,0.1)));
+      params.insert(pair<string,RooRealVar*>(name, new RooRealVar(name.c_str(),name.c_str(),TMath::Max(-9.,-1.*(i+1)),-9.,1.)));
+      //params[name]->removeRange();
       utilities.insert(pair<string,RooAbsPdf*>(ename, new RooPower(ename.c_str(),ename.c_str(),*obs_var,*params[name])));
       pows->add(*utilities[ename]);
     }
@@ -341,19 +346,19 @@ RooAbsPdf* PdfModelBuilder::getExponentialSingle(string prefix, int order){
     RooArgList *exps = new RooArgList();
     for (int i=1; i<=nfracs; i++){
       string name =  Form("%s_f%d",prefix.c_str(),i);
-      params.insert(pair<string,RooRealVar*>(name, new RooRealVar(name.c_str(),name.c_str(),0.5/nfracs,0.000001,0.999999)));
+      params.insert(pair<string,RooRealVar*>(name, new RooRealVar(name.c_str(),name.c_str(),0.9-float(i-1)*1./nfracs,0.0001,0.9999)));
       fracs->add(*params[name]);
     }
     for (int i=1; i<=nexps; i++){
       string name =  Form("%s_p%d",prefix.c_str(),i);
       string ename =  Form("%s_e%d",prefix.c_str(),i);
-      params.insert(pair<string,RooRealVar*>(name, new RooRealVar(name.c_str(),name.c_str(),TMath::Max(-2.,-0.04*(i+1)),-2.,-0.001)));
+      params.insert(pair<string,RooRealVar*>(name, new RooRealVar(name.c_str(),name.c_str(),TMath::Max(-1.,-0.04*(i+1)),-1.,0.)));
       utilities.insert(pair<string,RooAbsPdf*>(ename, new RooExponential(ename.c_str(),ename.c_str(),*obs_var,*params[name])));
       exps->add(*utilities[ename]);
     }
     //fracs->Print("v");
     //exps->Print("v");
-    RooAddPdf *exp = new RooAddPdf(prefix.c_str(),prefix.c_str(),*exps,*fracs,true);
+    RooAbsPdf *exp = new RooAddPdf(prefix.c_str(),prefix.c_str(),*exps,*fracs,true);
     //exp->Print("v");
     cout << "--------------------------" << endl;
     return exp;
@@ -475,9 +480,13 @@ void PdfModelBuilder::plotPdfsToData(RooAbsData *data, int binning, string name,
     if (specPdf && it->first!=specificPdfName && specificPdfName!="NONE") continue;
     RooPlot *plot = obs_var->frame();
     data->plotOn(plot,Binning(binning));
-    if (specificPdfName!="NONE") it->second->plotOn(plot);
+    if (specificPdfName!="NONE") {
+	 it->second->plotOn(plot);
+	 it->second->paramOn(plot,RooFit::Layout(0.34,0.96,0.89),RooFit::Format("NEA",AutoPrecision(1)));
+    }	
     plot->Draw();
     canv->Print(Form("%s_%s.pdf",name.c_str(),it->first.c_str()));
+    canv->Print(Form("%s_%s.png",name.c_str(),it->first.c_str()));
   }
   delete canv;
 }
@@ -498,6 +507,8 @@ void PdfModelBuilder::fitToData(RooAbsData *data, bool bkgOnly, bool cache, bool
     }
     if (cache) {
       RooArgSet *fitargs = (RooArgSet*)it->second->getParameters(*obs_var);
+      // remove the signal strength since this will be set AFTER fitting the background 
+      fitargs->remove(*signalModifier); 
       wsCache->defineSet(Form("%s_params",it->first.c_str()),*fitargs);
       wsCache->defineSet(Form("%s_observs",it->first.c_str()),*obs_var);
       wsCache->saveSnapshot(it->first.c_str(),*fitargs,true);
@@ -596,7 +607,7 @@ void PdfModelBuilder::throwToy(string postfix, int nEvents, bool bkgOnly, bool b
   for (map<string,RooAbsPdf*>::iterator it=pdfSet.begin(); it!=pdfSet.end(); it++){
     if (cache) {
       wsCache->loadSnapshot(it->first.c_str());
-      cout << "Loading snapshot.." << endl;
+      cout << "Loaded snapshot, params at.." << endl;
       it->second->getVariables()->Print("v");
     }
     RooAbsData *toy;
@@ -694,8 +705,10 @@ void PdfModelBuilder::plotToysWithPdfs(string prefix, int binning, bool bkgOnly)
         RooPlot *plot = obs_var->frame();
         toyIt->second->plotOn(plot,Binning(binning));
         pdfIt->second->plotOn(plot,LineColor(kRed));
+        pdfIt->second->paramOn(plot,LineColor(kRed),RooFit::Layout(0.34,0.96,0.89),RooFit::Format("NEA",AutoPrecision(1)));
         plot->Draw();
         canv->Print(Form("%s_%s.pdf",prefix.c_str(),pdfIt->first.c_str()));
+        canv->Print(Form("%s_%s.png",prefix.c_str(),pdfIt->first.c_str()));
       }
     }
   }

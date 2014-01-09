@@ -12,11 +12,12 @@
 using namespace std;
 using namespace RooFit;
 
-InitialFit::InitialFit(RooRealVar *massVar, RooRealVar *MHvar, int mhLow, int mhHigh):
+InitialFit::InitialFit(RooRealVar *massVar, RooRealVar *MHvar, int mhLow, int mhHigh, vector<int> skipMasses):
   mass(massVar),
   MH(MHvar),
   mhLow_(mhLow),
   mhHigh_(mhHigh),
+	skipMasses_(skipMasses),
   verbosity_(0)
 {
   allMH_ = getAllMH();
@@ -24,9 +25,17 @@ InitialFit::InitialFit(RooRealVar *massVar, RooRealVar *MHvar, int mhLow, int mh
 
 InitialFit::~InitialFit(){}
 
+bool InitialFit::skipMass(int mh){
+	for (vector<int>::iterator it=skipMasses_.begin(); it!=skipMasses_.end(); it++) {
+		if (*it==mh) return true;
+	}
+	return false;
+}
+
 vector<int> InitialFit::getAllMH(){
   vector<int> result;
   for (int m=mhLow_; m<=mhHigh_; m+=5){
+		if (skipMass(m)) continue;
     if (verbosity_>=1) cout << "LinearInterp - Adding mass: " << m << endl;
     result.push_back(m);
   }
@@ -34,7 +43,7 @@ vector<int> InitialFit::getAllMH(){
 }
 
 void InitialFit::setVerbosity(int v){
-  if (v<1) {
+  if (v<2) {
     RooMsgService::instance().setGlobalKillBelow(RooFit::ERROR);
     RooMsgService::instance().setSilentMode(true);
   }
@@ -159,9 +168,9 @@ void InitialFit::runFits(int ncpu){
     RooAddPdf *fitModel = sumOfGaussians[mh];
     RooDataSet *data = datasets[mh];
 		// help when dataset has no entries
-		if (data->sumEntries()<1.e-6) {
+		if (data->sumEntries()<1.e-5) {
 			mass->setVal(mh);
-			data->add(RooArgSet(*mass),1.e-6);
+			data->add(RooArgSet(*mass),1.e-5);
 		}
     fitModel->Print();
     data->Print();

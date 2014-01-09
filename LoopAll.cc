@@ -13,6 +13,10 @@ using namespace std;
 
 #include "BaseAnalysis.h"
 
+#include "TSystem.h"
+#include "TBenchmark.h"
+#include "EventFilterFromListStandAlone.h"
+
 // ------------------------------------------------------------------------------------
 BaseAnalysis* LoopAll::AddAnalysis(BaseAnalysis* baseAnalysis) {
   
@@ -214,46 +218,39 @@ void LoopAll::MergeContainers(){
   std::vector<std::string> datasetNames = rooContainer->GetDataSetNames();
 		
   // Loop Over the files and get the relevant pieces to Merge:
-  for (;it!=files.end()
-	 ;it_file++,it++){
-    
+  for (;it!=files.end();it_file++,it++){
+	  
 	  *it_file = TFile::Open((*it).c_str());
-    (*it_file)->cd();
-    std::cout << "Combining Current File " << i << " / " << numberOfFiles << " - " << (*it) << std::endl;
-
-    for (std::vector<std::string>::iterator it_hist=histogramNames.begin()
-	   ;it_hist!=histogramNames.end()
-	   ;it_hist++) {
-			
-      TH1F *histExtra = (TH1F*) (*it_file)->Get(Form("th1f_%s",it_hist->c_str()));
-      rooContainer->AppendTH1F(*it_hist,histExtra);	
-      //delete histExtra;
-    }
-		
-    RooWorkspace *work = (RooWorkspace*) (*it_file)->Get("cms_hgg_workspace");
-    for (std::vector<std::string>::iterator it_data=datasetNames.begin()
-	   ;it_data!=datasetNames.end()
-	   ;it_data++) {
-
-      RooDataSet *dataExtra = (RooDataSet*) work->data(Form("%s",it_data->c_str()));
-      if( dataExtra == 0 ) {
-	      std::cout << "skipping "<< it_data->c_str() << " " << dataExtra << std::endl;
-	      continue;
-      }
-      rooContainer->AppendDataSet(*it_data,dataExtra);	
-      //delete dataExtra;
-    }
-
-    delete work;
-    //std::cout << "Finished Combining File - " << (*it) << std::endl;
-
-    (*it_file)->Close();
-    i++;
-    //delete tmpFile;			
+	  (*it_file)->cd();
+	  
+	  std::cout << "Combining Current File " << i << " / " << numberOfFiles << " - " << (*it) << std::endl;
+	  
+	  RooWorkspace *work = (RooWorkspace*) (*it_file)->Get("cms_hgg_workspace");
+	  std::list<RooAbsData *> allData = work->allData();
+	  for(std::list<RooAbsData *>::iterator it=allData.begin(); it!=allData.end(); ++it) {
+		  if( (*it)->sumEntries() == 0 ) { continue; }
+		  RooDataSet * data = dynamic_cast<RooDataSet *>(*it);
+		  if( data ) {
+			  TString name = data->GetName();
+			  rooContainer->AppendDataSet(name.Data(),data);
+		  } else {
+			  RooDataHist * hist = dynamic_cast<RooDataHist *>(*it);
+			  TString name = hist->GetName();
+			  name.ReplaceAll("roohist_","");
+			  TH1F *histExtra = (TH1F*) (*it_file)->Get(Form("th1f_%s",name.Data()));
+			  rooContainer->AppendTH1F(name.Data(),histExtra);	
+		  }
+	  }
+	  delete work;
+	  /// std::cout << "Finished Combining File - " << (*it) << std::endl;
+	  
+	  (*it_file)->Close();
+	  i++;
+	  //delete tmpFile;			
   } 
   TermReal(typerun);
   Term();
-   
+  
 }
 // ------------------------------------------------------------------------------------
 void LoopAll::LoopAndFillHistos(TString treename) {
@@ -695,19 +692,19 @@ void LoopAll::Loop(Int_t a) {
     }
     if(makeDummyTrees) continue;
     
-    if(checkBench > 0 && jentry%checkBench == 0 ) {
-	    stopWatch.Stop();
-	    float cputime  = stopWatch.CpuTime();
-	    float realtime = stopWatch.RealTime();
-	    stopWatch.Start(false);
-	    if( realtime > benchStart*60. && cputime / realtime < benchThr ) {
-		    std::cout << 
-			    "\n\n\n\nAbourting exection.\n"
-			    "Sorry: too inefficient to continue (cputime " << cputime << " realtime " << realtime << ")" 
-			      << std::endl;
-		    exit(H2GG_ERR_DUTYC);
-	    }
-    }
+    //if(checkBench > 0 && jentry%checkBench == 0 ) {
+    //  stopWatch.Stop();
+    //  float cputime  = stopWatch.CpuTime();
+    //  float realtime = stopWatch.RealTime();
+    //  stopWatch.Start(false);
+    //  if( realtime > benchStart*100. && cputime / realtime < benchThr ) {
+    //	std::cout << 
+    //	  "\n\n\n\nAbourting exection.\n"
+    //	  "Sorry: too inefficient to continue (cputime " << cputime << " realtime " << realtime << ")" 
+    //		  << std::endl;
+    //	exit(H2GG_ERR_DUTYC);
+    //  }
+    //}
 
     if(LDEBUG) 
       cout<<"call LoadTree"<<endl;
@@ -1077,8 +1074,20 @@ int LoopAll::FillAndReduce(int jentry) {
   //
   // read all inputs 
   //
+  bool keep = true;
+  /*this is really useful for fast checks for synchronization 
+  bool keep=false;
+  b_run->GetEntry(jentry);
+  b_lumis->GetEntry(jentry);
+  b_event->GetEntry(jentry);
+
+  if(event == 210601324) keep = true;*/
   if(!makeDummyTrees){
-    GetEntry(inputBranches, jentry);
+    if(keep){
+      GetEntry(inputBranches, jentry);
+    }else{
+      return hasoutputfile;
+    }
   }
 
   //b_run->GetEntry(jentry);
@@ -1479,7 +1488,14 @@ void LoopAll::FillCounter(std::string name, float weight, int category )
 
 // ----------------------------------------------------------------------------------------------------------------------
 bool LoopAll::CheckLumiSelection( int run, int lumi )
-{
+{ 
+  static const char * env = gSystem->Getenv("H2GGLOBE_RUNTIME");
+  static std::string globeRt = ( env != 0 ? env : H2GGLOBE_BASE "/AnalysisScripts");
+  static EventFilterFromListStandAlone hcalFilter(globeRt+"/aux/HCALLaser2012AllDatasets.txt.gz");
+  if( itype[current] == 0 && ! hcalFilter.filter(this->run,this->lumis,this->event) ) {
+	  return false;
+  }
+  
   if( (typerun == kReduce && current_sample_index > sampleContainer.size() ) ||
       ! sampleContainer[current_sample_index].hasLumiSelection ) {
     return true;
@@ -1635,11 +1651,10 @@ int LoopAll::ApplyCutsFill(int icat, int cutset, int & ncutsapplied, int & ncuts
   int passcuts=1;
   for (unsigned int i=0; i<cutContainer.size(); i++) {
     if(cutContainer[i].finalcut==cutset) {
-      //MARCO if(cutContainer[i].useit) 
       {
-
-	//cout<<"ApplyCutsFill "<<cutContainer[i].finalcut<<" "<<cutContainer[i].useit<<" "<<endl;
-
+	
+	//cout<<"ApplyCutsFill "<<cutContainer[i].finalcut<<" "<<cutContainer[i].useit<<" "<<cutContainer[i].name<<endl;
+	
 	if(cutContainer[i].ncat>1) {
 	  if(ncats==0) ncats=cutContainer[i].ncat;
 	  if(cutContainer[i].ncat!=ncats) {
@@ -1654,6 +1669,8 @@ int LoopAll::ApplyCutsFill(int icat, int cutset, int & ncutsapplied, int & ncuts
 	if(cutContainer[i].ncat<=1) {
 	  icatuse=0;
 	}
+	//std::cout << i << " " << icatuse << std::endl;
+	//std::cout << cutContainer[i].name << std::endl;
 	if(ApplyCut(i,icatuse)) {
 	  ncutspassed++;
 	  tmppasscut[ntmpcuts]=1;
