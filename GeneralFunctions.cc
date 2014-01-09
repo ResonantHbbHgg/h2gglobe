@@ -4040,8 +4040,8 @@ vector<int> LoopAll::SelectJets(const TLorentzVector& leadpho, const TLorentzVec
 				if( jet_algoPF1_betaStarClassic[j1_i] > 0.2 * log( vtx_std_n - 0.64) ) continue;
 				if( jet_algoPF1_dR2Mean[j1_i] > 0.06 ) continue;
 				// min csv value for application of bjet energy regression
-				if(GFDEBUG) std::cout << "passing csv btagging preselection" << std::endl;
-				if( jet_algoPF1_csvBtag[j1_i] < 0. ) continue;
+//				if(GFDEBUG) std::cout << "passing csv btagging preselection" << std::endl;
+//				if( jet_algoPF1_csvBtag[j1_i] < 0. ) continue;
         if(GFDEBUG) std::cout<<"passing all single jet requirements with pt"<<j1pt<<std::endl;
 				myJets.push_back(j1_i);
     }
