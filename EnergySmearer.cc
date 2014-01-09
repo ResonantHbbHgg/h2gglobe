@@ -2,6 +2,8 @@
 #include "PhotonReducedInfo.h"
 #include <assert.h>
 
+#define ESDEBUG 0
+
 EnergySmearer::EnergySmearer(const energySmearingParameters& par, const std::vector<PhotonCategory> & presel) : 
 	myParameters_(par), scaleOrSmear_(true), doCorrections_(false), doRegressionSmear_(false),
 	preselCategories_(presel)
@@ -238,7 +240,9 @@ bool EnergySmearer::smearPhoton(PhotonReducedInfo & aPho, float & weight, int ru
 	    if( nsigmas < aPho.nSmearingSeeds() ) {
 	      rgen_->SetSeed( baseSeed_+aPho.smearingSeed(nsigmas) );
 	    }
-	    smear = rgen_->Gaus(1.,smearing_sigma) ;
+			if(ESDEBUG) std::cout << "ESDEBUG:: seed= " << rgen_->GetSeed() << endl;
+	    smear = 1. + rgen_->Gaus(0.,smearing_sigma) ;
+			if(ESDEBUG) std::cout << "ESDEBUG:: smearing_sigma= " << smearing_sigma << "\tsmear= " << smear << std::endl;
 	  }
 	  if( syst_shift == 0. ) {
 	    aPho.cacheVal( smearerId(), this, smear );
