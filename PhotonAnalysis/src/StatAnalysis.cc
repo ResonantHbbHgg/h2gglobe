@@ -932,7 +932,7 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
         float syst_shift, bool skipSelection,
         BaseGenLevelSmearer *genSys, BaseSmearer *phoSys, BaseDiPhotonSmearer * diPhoSys)
 {
-    if(PADEBUG) cerr << "Entering StatAnalysis::AnalyseEvent" << endl;
+    if(PADEBUG) cout << "Entering StatAnalysis::AnalyseEvent\tisSyst= " << isSyst << "\tsyst_shift= " << syst_shift << endl;
     assert( isSyst || ! skipSelection );
 
     l.createCS_=createCS;
@@ -963,6 +963,7 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
     int subleadpho_ind=-1;
 
     if( ! skipSelection ) {
+//    if( (! skipSelection ) /*&& (l.event == 1536 && PADEBUG)*/ ) { // OLIVIER
 
         // first apply corrections and smearing on the single photons
         smeared_pho_energy.clear(); smeared_pho_energy.resize(l.pho_n,0.);
@@ -1159,6 +1160,7 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
 
         // bring all the weights together: lumi & Xsection, single gammas, pt kfactor
         evweight = weight * smeared_pho_weight[diphoton_index.first] * smeared_pho_weight[diphoton_index.second] * genLevWeight;
+        if(PADEBUG) std::cout << "weight= " << weight << "\tsmeared_pho_weight[diphoton_index.first]= " << smeared_pho_weight[diphoton_index.first] << "\tsmeared_pho_weight[diphoton_index.second]= " << smeared_pho_weight[diphoton_index.second] << "\tsmeared_product= " << smeared_pho_weight[diphoton_index.first] * smeared_pho_weight[diphoton_index.second] << "\tgenLevWeight= " << genLevWeight << std::endl; // OLIVIER
         if( ! isSyst ) {
             l.countersred[diPhoCounter_]++;
         }
@@ -1170,10 +1172,12 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
         // should call this guy once by setting vertex above
         fillDiphoton(lead_p4, sublead_p4, Higgs, lead_r9, sublead_r9, vtx, &smeared_pho_energy[0], l, diphoton_id);
 
+        if(PADEBUG) std::cout << "l.sampleContainer[l.current_sample_index].weight()= " << l.sampleContainer[l.current_sample_index].weight() << std::endl;
 	
         // apply beamspot reweighting if necessary
         if(reweighBeamspot && cur_type!=0) {
             evweight*=BeamspotReweight(vtx->Z(),((TVector3*)l.gv_pos->At(0))->Z());
+            if(PADEBUG) std::cout << "BeamspotReweight(vtx->Z(),((TVector3*)l.gv_pos->At(0))->Z())= " << BeamspotReweight(vtx->Z(),((TVector3*)l.gv_pos->At(0))->Z()) << endl;
         }
         // for spin study
         if (reweighPt && cur_type!=0){
@@ -1188,6 +1192,7 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
         // apply di-photon level smearings and corrections
         int selectioncategory = l.DiphotonCategory(diphoton_index.first,diphoton_index.second,Higgs.Pt(),Higgs.Pt()/Higgs.M(),nEtaCategories,nR9Categories,R9CatBoundary,0,0,nVtxCategories,l.vtx_std_n);
         if( cur_type != 0 && doMCSmearing ) {
+        if(PADEBUG) std::cout << "PADEBUG::l.event= " << l.event << std::endl; // OLIVIER
             applyDiPhotonSmearings(Higgs, *vtx, selectioncategory, cur_type, *((TVector3*)l.gv_pos->At(0)), evweight, zero_, zero_,
                     diPhoSys, syst_shift);
             isCorrectVertex=(*vtx- *((TVector3*)l.gv_pos->At(0))).Mag() < 1.;
