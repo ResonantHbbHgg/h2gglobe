@@ -493,6 +493,7 @@ void PhotonAnalysis::applySinglePhotonSmearings(std::vector<float> & smeared_pho
     }
 
     /// if( sys ) std::cout << "applySinglePhotonSmearings " << fillInfo << " " << syst_shift << " " << ( sys != 0 ? sys->name() : " " ) <<std::endl;
+    if(PADEBUG) std::cout << "OLIVIER:: applySinglePhotonSmearings " << fillInfo << " " << syst_shift << " " << ( sys != 0 ? sys->name() : " " ) <<std::endl;
 
     if( fillInfo ) {
         photonInfoCollection.clear();
@@ -514,6 +515,7 @@ void PhotonAnalysis::applySinglePhotonSmearings(std::vector<float> & smeared_pho
                 (energyCorrectedError!=0?energyCorrectedError[ipho]:0)
                 );
             photonInfoCollection.push_back(info);
+            if(PADEBUG) info.dump(); // OLIVIER
         } else {
             photonInfoCollection[ipho].reset();
         }
@@ -522,7 +524,8 @@ void PhotonAnalysis::applySinglePhotonSmearings(std::vector<float> & smeared_pho
         
         int ieta, iphi;
         l.getIetaIPhi(ipho,ieta,iphi);
-        phoInfo.addSmearingSeed( (unsigned int)l.sc_raw[l.pho_scind[ipho]] + abs(ieta) + abs(iphi) + l.run + l.event + l.lumis );
+//        phoInfo.addSmearingSeed( (unsigned int)l.sc_raw[l.pho_scind[ipho]] + abs(ieta) + abs(iphi) + l.run + l.event + l.lumis );
+        phoInfo.addSmearingSeed( (unsigned int)l.sc_raw[l.pho_scind[ipho]] + l.run + l.event + l.lumis ); // OLIVIER
         phoInfo.setSphericalPhoton(l.CheckSphericalPhoton(ieta,iphi));
         
         // FIXME add seed to syst smearings
@@ -561,6 +564,7 @@ void PhotonAnalysis::applySinglePhotonSmearings(std::vector<float> & smeared_pho
             pweight *= sweight;
         }
         //// phoInfo.dump();
+        if(fillInfo && PADEBUG) phoInfo.dump(); // OLIVIER
         smeared_pho_energy[ipho] = phoInfo.energy();
         smeared_pho_r9[ipho]     = phoInfo.r9();
         smeared_pho_weight[ipho] = pweight;
@@ -642,6 +646,7 @@ void PhotonAnalysis::applyDiPhotonSmearings(TLorentzVector & Higgs, TVector3 & v
     float pth = Higgs.Pt();
     for(std::vector<BaseDiPhotonSmearer *>::iterator si=diPhotonSmearers_.begin(); si!= diPhotonSmearers_.end(); ++si ) {
         float rewei=1.;
+        if(PADEBUG) std::cout << "(*si)->name()= " << (*si)->name() << std::endl;
 	if( sys != 0 && *si == *sys ) {
 	    (*si)->smearDiPhoton( Higgs, vtx, rewei, category, cur_type, truevtx, idmva1, idmva2, syst_shift );
 	} else {
@@ -658,6 +663,7 @@ void PhotonAnalysis::applyDiPhotonSmearings(TLorentzVector & Higgs, TVector3 & v
 		rewei = 0.;
 	    }
 	}
+    if(PADEBUG) std::cout << "WEIGHTS::evweight= " << evweight << "\trewei= " << rewei << std::endl; // OLIVIER
 	evweight *= rewei;
     }
 }
@@ -1934,6 +1940,7 @@ void PhotonAnalysis::GetBranches(TTree *t, std::set<TBranch *>& s )
 // ----------------------------------------------------------------------------------------------------
 void PhotonAnalysis::PreselectPhotons(LoopAll& l, int jentry)
 {
+    if(PADEBUG) std::cerr << "entering PreselectPhotons" << std::endl;
     // Photon preselection
     pho_acc.clear();
     pho_presel.clear();
