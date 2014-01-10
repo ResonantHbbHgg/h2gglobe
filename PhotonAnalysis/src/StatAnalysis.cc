@@ -104,7 +104,7 @@ void StatAnalysis::Init(LoopAll& l)
 
     //Add btagSF variables taking them from database (Badder)
 
-    BtagWP = "medium"; //other possibilities are: loose, tight
+    //BtagWP = "medium"; //other possibilities are: loose, tight
     SignalType = "new"; // other possibilities are: old 
 
     if(l.itype[l.current] <= -100){ 
@@ -2761,24 +2761,54 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(l.itype[l.current] <= -100){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet1" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet1); 
-           float btagSF = SFReader->getSF(jet1,flavour,BtagWP);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet1,flavour,BtagWP);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet1,flavour,BtagWP);
-           float btagEff = EffReader->getBtagEfficiency(jet1,BtagWP,flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet1,BtagWP,flavour);
+           float btagSF_L = SFReader->getSF(jet1,flavour,"loose");
+           float btagSFErrorUp_L = SFReader->getSFErrorUp(jet1,flavour,"loose");
+           float btagSFErrorDown_L = SFReader->getSFErrorDown(jet1,flavour,"loose");
+           float btagSF_M = SFReader->getSF(jet1,flavour,"medium");
+           float btagSFErrorUp_M = SFReader->getSFErrorUp(jet1,flavour,"medium");
+           float btagSFErrorDown_M = SFReader->getSFErrorDown(jet1,flavour,"medium");
+           float btagSF_T = SFReader->getSF(jet1,flavour,"tight");
+           float btagSFErrorUp_T = SFReader->getSFErrorUp(jet1,flavour,"tight");
+           float btagSFErrorDown_T = SFReader->getSFErrorDown(jet1,flavour,"tight");
+           float btagEff_L = EffReader->getBtagEfficiency(jet1,"loose",flavour);
+           float btagEffError_L = EffReader->getBtagEfficiencyError(jet1,"loose",flavour);
+           float btagEff_M = EffReader->getBtagEfficiency(jet1,"medium",flavour);
+           float btagEffError_M = EffReader->getBtagEfficiencyError(jet1,"medium",flavour);
+           float btagEff_T = EffReader->getBtagEfficiency(jet1,"tight",flavour);
+           float btagEffError_T = EffReader->getBtagEfficiencyError(jet1,"tight",flavour);
            l.FillTree("j1_flavour",(int)flavour);
-           l.FillTree("j1_btagSF",(float)btagSF);
-           l.FillTree("j1_btagSFErrorUp",(float)btagSFErrorUp);
-           l.FillTree("j1_btagSFErrorDown",(float)btagSFErrorDown);
-           l.FillTree("j1_btagEff",(float)btagEff);
-           l.FillTree("j1_btagEffError",(float)btagEffError);
+           l.FillTree("j1_btagSF_L",(float)btagSF_L);
+           l.FillTree("j1_btagSFErrorUp_L",(float)btagSFErrorUp_L);
+           l.FillTree("j1_btagSFErrorDown_L",(float)btagSFErrorDown_L);
+           l.FillTree("j1_btagSF_M",(float)btagSF_M);
+           l.FillTree("j1_btagSFErrorUp_M",(float)btagSFErrorUp_M);
+           l.FillTree("j1_btagSFErrorDown_M",(float)btagSFErrorDown_M);
+           l.FillTree("j1_btagSF_T",(float)btagSF_T);
+           l.FillTree("j1_btagSFErrorUp_T",(float)btagSFErrorUp_T);
+           l.FillTree("j1_btagSFErrorDown_T",(float)btagSFErrorDown_T);
+           l.FillTree("j1_btagEff_L",(float)btagEff_L);
+           l.FillTree("j1_btagEffError_L",(float)btagEffError_L);
+           l.FillTree("j1_btagEff_M",(float)btagEff_M);
+           l.FillTree("j1_btagEffError_M",(float)btagEffError_M);
+           l.FillTree("j1_btagEff_T",(float)btagEff_T);
+           l.FillTree("j1_btagEffError_T",(float)btagEffError_T);
         }else{
            l.FillTree("j1_flavour",(int)0);
-           l.FillTree("j1_btagSF",(float)-1001.);
-           l.FillTree("j1_btagSFErrorUp",(float)-1001.);
-           l.FillTree("j1_btagSFErrorDown",(float)-1001.);
-           l.FillTree("j1_btagEff",(float)-1001.);
-           l.FillTree("j1_btagEffError",(float)-1001.);
+           l.FillTree("j1_btagSF_L",(float)-1001.);
+           l.FillTree("j1_btagSFErrorUp_L",(float)-1001.);
+           l.FillTree("j1_btagSFErrorDown_L",(float)-1001.);
+           l.FillTree("j1_btagSF_M",(float)-1001.);
+           l.FillTree("j1_btagSFErrorUp_M",(float)-1001.);
+           l.FillTree("j1_btagSFErrorDown_M",(float)-1001.);
+           l.FillTree("j1_btagSF_T",(float)-1001.);
+           l.FillTree("j1_btagSFErrorUp_T",(float)-1001.);
+           l.FillTree("j1_btagSFErrorDown_T",(float)-1001.);
+           l.FillTree("j1_btagEff_L",(float)-1001.);
+           l.FillTree("j1_btagEffError_L",(float)-1001.);
+           l.FillTree("j1_btagEff_M",(float)-1001.);
+           l.FillTree("j1_btagEffError_M",(float)-1001.);
+           l.FillTree("j1_btagEff_T",(float)-1001.);
+           l.FillTree("j1_btagEffError_T",(float)-1001.);
         }
         l.FillTree("j1_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[0]]);
         if(PADEBUG) cout << "Secondary vertices" << endl;
@@ -2898,24 +2928,54 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(l.itype[l.current] <= -100){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet2" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet2); 
-           float btagSF = SFReader->getSF(jet2,flavour,BtagWP);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet2,flavour,BtagWP);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet2,flavour,BtagWP);
-           float btagEff = EffReader->getBtagEfficiency(jet2,BtagWP,flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet2,BtagWP,flavour);
+           float btagSF_L = SFReader->getSF(jet2,flavour,"loose");
+           float btagSFErrorUp_L = SFReader->getSFErrorUp(jet2,flavour,"loose");
+           float btagSFErrorDown_L = SFReader->getSFErrorDown(jet2,flavour,"loose");
+           float btagSF_M = SFReader->getSF(jet2,flavour,"medium");
+           float btagSFErrorUp_M = SFReader->getSFErrorUp(jet2,flavour,"medium");
+           float btagSFErrorDown_M = SFReader->getSFErrorDown(jet2,flavour,"medium");
+           float btagSF_T = SFReader->getSF(jet2,flavour,"tight");
+           float btagSFErrorUp_T = SFReader->getSFErrorUp(jet2,flavour,"tight");
+           float btagSFErrorDown_T = SFReader->getSFErrorDown(jet2,flavour,"tight");
+           float btagEff_L = EffReader->getBtagEfficiency(jet2,"loose",flavour);
+           float btagEffError_L = EffReader->getBtagEfficiencyError(jet2,"loose",flavour);
+           float btagEff_M = EffReader->getBtagEfficiency(jet2,"medium",flavour);
+           float btagEffError_M = EffReader->getBtagEfficiencyError(jet2,"medium",flavour);
+           float btagEff_T = EffReader->getBtagEfficiency(jet2,"tight",flavour);
+           float btagEffError_T = EffReader->getBtagEfficiencyError(jet2,"tight",flavour);
            l.FillTree("j2_flavour",(int)flavour);
-           l.FillTree("j2_btagSF",(float)btagSF);
-           l.FillTree("j2_btagSFErrorUp",(float)btagSFErrorUp);
-           l.FillTree("j2_btagSFErrorDown",(float)btagSFErrorDown);
-           l.FillTree("j2_btagEff",(float)btagEff);
-           l.FillTree("j2_btagEffError",(float)btagEffError);
+           l.FillTree("j2_btagSF_L",(float)btagSF_L);
+           l.FillTree("j2_btagSFErrorUp_L",(float)btagSFErrorUp_L);
+           l.FillTree("j2_btagSFErrorDown_L",(float)btagSFErrorDown_L);
+           l.FillTree("j2_btagSF_M",(float)btagSF_M);
+           l.FillTree("j2_btagSFErrorUp_M",(float)btagSFErrorUp_M);
+           l.FillTree("j2_btagSFErrorDown_M",(float)btagSFErrorDown_M);
+           l.FillTree("j2_btagSF_T",(float)btagSF_T);
+           l.FillTree("j2_btagSFErrorUp_T",(float)btagSFErrorUp_T);
+           l.FillTree("j2_btagSFErrorDown_T",(float)btagSFErrorDown_T);
+           l.FillTree("j2_btagEff_L",(float)btagEff_L);
+           l.FillTree("j2_btagEffError_L",(float)btagEffError_L);
+           l.FillTree("j2_btagEff_M",(float)btagEff_M);
+           l.FillTree("j2_btagEffError_M",(float)btagEffError_M);
+           l.FillTree("j2_btagEff_T",(float)btagEff_T);
+           l.FillTree("j2_btagEffError_T",(float)btagEffError_T);
         }else{
            l.FillTree("j2_flavour",(int)0);
-           l.FillTree("j2_btagSF",(float)-1001.);
-           l.FillTree("j2_btagSFErrorUp",(float)-1001.);
-           l.FillTree("j2_btagSFErrorDown",(float)-1001.);
-           l.FillTree("j2_btagEff",(float)-1001.);
-           l.FillTree("j2_btagEffError",(float)-1001.);
+           l.FillTree("j2_btagSF_L",(float)-1001.);
+           l.FillTree("j2_btagSFErrorUp_L",(float)-1001.);
+           l.FillTree("j2_btagSFErrorDown_L",(float)-1001.);
+           l.FillTree("j2_btagSF_M",(float)-1001.);
+           l.FillTree("j2_btagSFErrorUp_M",(float)-1001.);
+           l.FillTree("j2_btagSFErrorDown_M",(float)-1001.);
+           l.FillTree("j2_btagSF_T",(float)-1001.);
+           l.FillTree("j2_btagSFErrorUp_T",(float)-1001.);
+           l.FillTree("j2_btagSFErrorDown_T",(float)-1001.);
+           l.FillTree("j2_btagEff_L",(float)-1001.);
+           l.FillTree("j2_btagEffError_L",(float)-1001.);
+           l.FillTree("j2_btagEff_M",(float)-1001.);
+           l.FillTree("j2_btagEffError_M",(float)-1001.);
+           l.FillTree("j2_btagEff_T",(float)-1001.);
+           l.FillTree("j2_btagEffError_T",(float)-1001.);
         }
         l.FillTree("j2_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[1]]);
         if(PADEBUG) cout << "Secondary vertices" << endl;
@@ -3081,24 +3141,54 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(l.itype[l.current] <= -100){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet3" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet3); 
-           float btagSF = SFReader->getSF(jet3,flavour,BtagWP);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet3,flavour,BtagWP);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet3,flavour,BtagWP);
-           float btagEff = EffReader->getBtagEfficiency(jet3,BtagWP,flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet3,BtagWP,flavour);
+           float btagSF_L = SFReader->getSF(jet3,flavour,"loose");
+           float btagSFErrorUp_L = SFReader->getSFErrorUp(jet3,flavour,"loose");
+           float btagSFErrorDown_L = SFReader->getSFErrorDown(jet3,flavour,"loose");
+           float btagSF_M = SFReader->getSF(jet3,flavour,"medium");
+           float btagSFErrorUp_M = SFReader->getSFErrorUp(jet3,flavour,"medium");
+           float btagSFErrorDown_M = SFReader->getSFErrorDown(jet3,flavour,"medium");
+           float btagSF_T = SFReader->getSF(jet3,flavour,"tight");
+           float btagSFErrorUp_T = SFReader->getSFErrorUp(jet3,flavour,"tight");
+           float btagSFErrorDown_T = SFReader->getSFErrorDown(jet3,flavour,"tight");
+           float btagEff_L = EffReader->getBtagEfficiency(jet3,"loose",flavour);
+           float btagEffError_L = EffReader->getBtagEfficiencyError(jet3,"loose",flavour);
+           float btagEff_M = EffReader->getBtagEfficiency(jet3,"medium",flavour);
+           float btagEffError_M = EffReader->getBtagEfficiencyError(jet3,"medium",flavour);
+           float btagEff_T = EffReader->getBtagEfficiency(jet3,"tight",flavour);
+           float btagEffError_T = EffReader->getBtagEfficiencyError(jet3,"tight",flavour);
            l.FillTree("j3_flavour",(int)flavour);
-           l.FillTree("j3_btagSF",(float)btagSF);
-           l.FillTree("j3_btagSFErrorUp",(float)btagSFErrorUp);
-           l.FillTree("j3_btagSFErrorDown",(float)btagSFErrorDown);
-           l.FillTree("j3_btagEff",(float)btagEff);
-           l.FillTree("j3_btagEffError",(float)btagEffError);
+           l.FillTree("j3_btagSF_L",(float)btagSF_L);
+           l.FillTree("j3_btagSFErrorUp_L",(float)btagSFErrorUp_L);
+           l.FillTree("j3_btagSFErrorDown_L",(float)btagSFErrorDown_L);
+           l.FillTree("j3_btagSF_M",(float)btagSF_M);
+           l.FillTree("j3_btagSFErrorUp_M",(float)btagSFErrorUp_M);
+           l.FillTree("j3_btagSFErrorDown_M",(float)btagSFErrorDown_M);
+           l.FillTree("j3_btagSF_T",(float)btagSF_T);
+           l.FillTree("j3_btagSFErrorUp_T",(float)btagSFErrorUp_T);
+           l.FillTree("j3_btagSFErrorDown_T",(float)btagSFErrorDown_T);
+           l.FillTree("j3_btagEff_L",(float)btagEff_L);
+           l.FillTree("j3_btagEffError_L",(float)btagEffError_L);
+           l.FillTree("j3_btagEff_M",(float)btagEff_M);
+           l.FillTree("j3_btagEffError_M",(float)btagEffError_M);
+           l.FillTree("j3_btagEff_T",(float)btagEff_T);
+           l.FillTree("j3_btagEffError_T",(float)btagEffError_T);
         }else{
            l.FillTree("j3_flavour",(int)0);
-           l.FillTree("j3_btagSF",(float)-1001.);
-           l.FillTree("j3_btagSFErrorUp",(float)-1001.);
-           l.FillTree("j3_btagSFErrorDown",(float)-1001.);
-           l.FillTree("j3_btagEff",(float)-1001.);
-           l.FillTree("j3_btagEffError",(float)-1001.);
+           l.FillTree("j3_btagSF_L",(float)-1001.);
+           l.FillTree("j3_btagSFErrorUp_L",(float)-1001.);
+           l.FillTree("j3_btagSFErrorDown_L",(float)-1001.);
+           l.FillTree("j3_btagSF_M",(float)-1001.);
+           l.FillTree("j3_btagSFErrorUp_M",(float)-1001.);
+           l.FillTree("j3_btagSFErrorDown_M",(float)-1001.);
+           l.FillTree("j3_btagSF_T",(float)-1001.);
+           l.FillTree("j3_btagSFErrorUp_T",(float)-1001.);
+           l.FillTree("j3_btagSFErrorDown_T",(float)-1001.);
+           l.FillTree("j3_btagEff_L",(float)-1001.);
+           l.FillTree("j3_btagEffError_L",(float)-1001.);
+           l.FillTree("j3_btagEff_M",(float)-1001.);
+           l.FillTree("j3_btagEffError_M",(float)-1001.);
+           l.FillTree("j3_btagEff_T",(float)-1001.);
+           l.FillTree("j3_btagEffError_T",(float)-1001.);
         }
         l.FillTree("j3_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[2]]);
 		l.FillTree("j3_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[2]]);
@@ -3209,24 +3299,54 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(l.itype[l.current] <= -100){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet4" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet4); 
-           float btagSF = SFReader->getSF(jet4,flavour,BtagWP);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet4,flavour,BtagWP);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet4,flavour,BtagWP);
-           float btagEff = EffReader->getBtagEfficiency(jet4,BtagWP,flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet4,BtagWP,flavour);
+           float btagSF_L = SFReader->getSF(jet4,flavour,"loose");
+           float btagSFErrorUp_L = SFReader->getSFErrorUp(jet4,flavour,"loose");
+           float btagSFErrorDown_L = SFReader->getSFErrorDown(jet4,flavour,"loose");
+           float btagSF_M = SFReader->getSF(jet4,flavour,"medium");
+           float btagSFErrorUp_M = SFReader->getSFErrorUp(jet4,flavour,"medium");
+           float btagSFErrorDown_M = SFReader->getSFErrorDown(jet4,flavour,"medium");
+           float btagSF_T = SFReader->getSF(jet4,flavour,"tight");
+           float btagSFErrorUp_T = SFReader->getSFErrorUp(jet4,flavour,"tight");
+           float btagSFErrorDown_T = SFReader->getSFErrorDown(jet4,flavour,"tight");
+           float btagEff_L = EffReader->getBtagEfficiency(jet4,"loose",flavour);
+           float btagEffError_L = EffReader->getBtagEfficiencyError(jet4,"loose",flavour);
+           float btagEff_M = EffReader->getBtagEfficiency(jet4,"medium",flavour);
+           float btagEffError_M = EffReader->getBtagEfficiencyError(jet4,"medium",flavour);
+           float btagEff_T = EffReader->getBtagEfficiency(jet4,"tight",flavour);
+           float btagEffError_T = EffReader->getBtagEfficiencyError(jet4,"tight",flavour);
            l.FillTree("j4_flavour",(int)flavour);
-           l.FillTree("j4_btagSF",(float)btagSF);
-           l.FillTree("j4_btagSFErrorUp",(float)btagSFErrorUp);
-           l.FillTree("j4_btagSFErrorDown",(float)btagSFErrorDown);
-           l.FillTree("j4_btagEff",(float)btagEff);
-           l.FillTree("j4_btagEffError",(float)btagEffError);
+           l.FillTree("j4_btagSF_L",(float)btagSF_L);
+           l.FillTree("j4_btagSFErrorUp_L",(float)btagSFErrorUp_L);
+           l.FillTree("j4_btagSFErrorDown_L",(float)btagSFErrorDown_L);
+           l.FillTree("j4_btagSF_M",(float)btagSF_M);
+           l.FillTree("j4_btagSFErrorUp_M",(float)btagSFErrorUp_M);
+           l.FillTree("j4_btagSFErrorDown_M",(float)btagSFErrorDown_M);
+           l.FillTree("j4_btagSF_T",(float)btagSF_T);
+           l.FillTree("j4_btagSFErrorUp_T",(float)btagSFErrorUp_T);
+           l.FillTree("j4_btagSFErrorDown_T",(float)btagSFErrorDown_T);
+           l.FillTree("j4_btagEff_L",(float)btagEff_L);
+           l.FillTree("j4_btagEffError_L",(float)btagEffError_L);
+           l.FillTree("j4_btagEff_M",(float)btagEff_M);
+           l.FillTree("j4_btagEffError_M",(float)btagEffError_M);
+           l.FillTree("j4_btagEff_T",(float)btagEff_T);
+           l.FillTree("j4_btagEffError_T",(float)btagEffError_T);
         }else{
            l.FillTree("j4_flavour",(int)0);
-           l.FillTree("j4_btagSF",(float)-1001.);
-           l.FillTree("j4_btagSFErrorUp",(float)-1001.);
-           l.FillTree("j4_btagSFErrorDown",(float)-1001.);
-           l.FillTree("j4_btagEff",(float)-1001.);
-           l.FillTree("j4_btagEffError",(float)-1001.);
+           l.FillTree("j4_btagSF_L",(float)-1001.);
+           l.FillTree("j4_btagSFErrorUp_L",(float)-1001.);
+           l.FillTree("j4_btagSFErrorDown_L",(float)-1001.);
+           l.FillTree("j4_btagSF_M",(float)-1001.);
+           l.FillTree("j4_btagSFErrorUp_M",(float)-1001.);
+           l.FillTree("j4_btagSFErrorDown_M",(float)-1001.);
+           l.FillTree("j4_btagSF_T",(float)-1001.);
+           l.FillTree("j4_btagSFErrorUp_T",(float)-1001.);
+           l.FillTree("j4_btagSFErrorDown_T",(float)-1001.);
+           l.FillTree("j4_btagEff_L",(float)-1001.);
+           l.FillTree("j4_btagEffError_L",(float)-1001.);
+           l.FillTree("j4_btagEff_M",(float)-1001.);
+           l.FillTree("j4_btagEffError_M",(float)-1001.);
+           l.FillTree("j4_btagEff_T",(float)-1001.);
+           l.FillTree("j4_btagEffError_T",(float)-1001.);
         }
         l.FillTree("j4_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[3]]);
 		l.FillTree("j4_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[3]]);
@@ -3337,24 +3457,54 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(l.itype[l.current] <= -100){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet5" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet5); 
-           float btagSF = SFReader->getSF(jet5,flavour,BtagWP);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet5,flavour,BtagWP);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet5,flavour,BtagWP);
-           float btagEff = EffReader->getBtagEfficiency(jet5,BtagWP,flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet5,BtagWP,flavour);
+           float btagSF_L = SFReader->getSF(jet5,flavour,"loose");
+           float btagSFErrorUp_L = SFReader->getSFErrorUp(jet5,flavour,"loose");
+           float btagSFErrorDown_L = SFReader->getSFErrorDown(jet5,flavour,"loose");
+           float btagSF_M = SFReader->getSF(jet5,flavour,"medium");
+           float btagSFErrorUp_M = SFReader->getSFErrorUp(jet5,flavour,"medium");
+           float btagSFErrorDown_M = SFReader->getSFErrorDown(jet5,flavour,"medium");
+           float btagSF_T = SFReader->getSF(jet5,flavour,"tight");
+           float btagSFErrorUp_T = SFReader->getSFErrorUp(jet5,flavour,"tight");
+           float btagSFErrorDown_T = SFReader->getSFErrorDown(jet5,flavour,"tight");
+           float btagEff_L = EffReader->getBtagEfficiency(jet5,"loose",flavour);
+           float btagEffError_L = EffReader->getBtagEfficiencyError(jet5,"loose",flavour);
+           float btagEff_M = EffReader->getBtagEfficiency(jet5,"medium",flavour);
+           float btagEffError_M = EffReader->getBtagEfficiencyError(jet5,"medium",flavour);
+           float btagEff_T = EffReader->getBtagEfficiency(jet5,"tight",flavour);
+           float btagEffError_T = EffReader->getBtagEfficiencyError(jet5,"tight",flavour);
            l.FillTree("j5_flavour",(int)flavour);
-           l.FillTree("j5_btagSF",(float)btagSF);
-           l.FillTree("j5_btagSFErrorUp",(float)btagSFErrorUp);
-           l.FillTree("j5_btagSFErrorDown",(float)btagSFErrorDown);
-           l.FillTree("j5_btagEff",(float)btagEff);
-           l.FillTree("j5_btagEffError",(float)btagEffError);
+           l.FillTree("j5_btagSF_L",(float)btagSF_L);
+           l.FillTree("j5_btagSFErrorUp_L",(float)btagSFErrorUp_L);
+           l.FillTree("j5_btagSFErrorDown_L",(float)btagSFErrorDown_L);
+           l.FillTree("j5_btagSF_M",(float)btagSF_M);
+           l.FillTree("j5_btagSFErrorUp_M",(float)btagSFErrorUp_M);
+           l.FillTree("j5_btagSFErrorDown_M",(float)btagSFErrorDown_M);
+           l.FillTree("j5_btagSF_T",(float)btagSF_T);
+           l.FillTree("j5_btagSFErrorUp_T",(float)btagSFErrorUp_T);
+           l.FillTree("j5_btagSFErrorDown_T",(float)btagSFErrorDown_T);
+           l.FillTree("j5_btagEff_L",(float)btagEff_L);
+           l.FillTree("j5_btagEffError_L",(float)btagEffError_L);
+           l.FillTree("j5_btagEff_M",(float)btagEff_M);
+           l.FillTree("j5_btagEffError_M",(float)btagEffError_M);
+           l.FillTree("j5_btagEff_T",(float)btagEff_T);
+           l.FillTree("j5_btagEffError_T",(float)btagEffError_T);
         }else{
            l.FillTree("j5_flavour",(int)0);
-           l.FillTree("j5_btagSF",(float)-1001.);
-           l.FillTree("j5_btagSFErrorUp",(float)-1001.);
-           l.FillTree("j5_btagSFErrorDown",(float)-1001.);
-           l.FillTree("j5_btagEff",(float)-1001.);
-           l.FillTree("j5_btagEffError",(float)-1001.);
+           l.FillTree("j5_btagSF_L",(float)-1001.);
+           l.FillTree("j5_btagSFErrorUp_L",(float)-1001.);
+           l.FillTree("j5_btagSFErrorDown_L",(float)-1001.);
+           l.FillTree("j5_btagSF_M",(float)-1001.);
+           l.FillTree("j5_btagSFErrorUp_M",(float)-1001.);
+           l.FillTree("j5_btagSFErrorDown_M",(float)-1001.);
+           l.FillTree("j5_btagSF_T",(float)-1001.);
+           l.FillTree("j5_btagSFErrorUp_T",(float)-1001.);
+           l.FillTree("j5_btagSFErrorDown_T",(float)-1001.);
+           l.FillTree("j5_btagEff_L",(float)-1001.);
+           l.FillTree("j5_btagEffError_L",(float)-1001.);
+           l.FillTree("j5_btagEff_M",(float)-1001.);
+           l.FillTree("j5_btagEffError_M",(float)-1001.);
+           l.FillTree("j5_btagEff_T",(float)-1001.);
+           l.FillTree("j5_btagEffError_T",(float)-1001.);
         }
         l.FillTree("j5_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[4]]);
 		l.FillTree("j5_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[4]]);
@@ -3465,24 +3615,54 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(l.itype[l.current] <= -100){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet6" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet6); 
-           float btagSF = SFReader->getSF(jet6,flavour,BtagWP);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet6,flavour,BtagWP);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet6,flavour,BtagWP);
-           float btagEff = EffReader->getBtagEfficiency(jet6,BtagWP,flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet6,BtagWP,flavour);
+           float btagSF_L = SFReader->getSF(jet6,flavour,"loose");
+           float btagSFErrorUp_L = SFReader->getSFErrorUp(jet6,flavour,"loose");
+           float btagSFErrorDown_L = SFReader->getSFErrorDown(jet6,flavour,"loose");
+           float btagSF_M = SFReader->getSF(jet6,flavour,"medium");
+           float btagSFErrorUp_M = SFReader->getSFErrorUp(jet6,flavour,"medium");
+           float btagSFErrorDown_M = SFReader->getSFErrorDown(jet6,flavour,"medium");
+           float btagSF_T = SFReader->getSF(jet6,flavour,"tight");
+           float btagSFErrorUp_T = SFReader->getSFErrorUp(jet6,flavour,"tight");
+           float btagSFErrorDown_T = SFReader->getSFErrorDown(jet6,flavour,"tight");
+           float btagEff_L = EffReader->getBtagEfficiency(jet6,"loose",flavour);
+           float btagEffError_L = EffReader->getBtagEfficiencyError(jet6,"loose",flavour);
+           float btagEff_M = EffReader->getBtagEfficiency(jet6,"medium",flavour);
+           float btagEffError_M = EffReader->getBtagEfficiencyError(jet6,"medium",flavour);
+           float btagEff_T = EffReader->getBtagEfficiency(jet6,"tight",flavour);
+           float btagEffError_T = EffReader->getBtagEfficiencyError(jet6,"tight",flavour);
            l.FillTree("j6_flavour",(int)flavour);
-           l.FillTree("j6_btagSF",(float)btagSF);
-           l.FillTree("j6_btagSFErrorUp",(float)btagSFErrorUp);
-           l.FillTree("j6_btagSFErrorDown",(float)btagSFErrorDown);
-           l.FillTree("j6_btagEff",(float)btagEff);
-           l.FillTree("j6_btagEffError",(float)btagEffError);
+           l.FillTree("j6_btagSF_L",(float)btagSF_L);
+           l.FillTree("j6_btagSFErrorUp_L",(float)btagSFErrorUp_L);
+           l.FillTree("j6_btagSFErrorDown_L",(float)btagSFErrorDown_L);
+           l.FillTree("j6_btagSF_M",(float)btagSF_M);
+           l.FillTree("j6_btagSFErrorUp_M",(float)btagSFErrorUp_M);
+           l.FillTree("j6_btagSFErrorDown_M",(float)btagSFErrorDown_M);
+           l.FillTree("j6_btagSF_T",(float)btagSF_T);
+           l.FillTree("j6_btagSFErrorUp_T",(float)btagSFErrorUp_T);
+           l.FillTree("j6_btagSFErrorDown_T",(float)btagSFErrorDown_T);
+           l.FillTree("j6_btagEff_L",(float)btagEff_L);
+           l.FillTree("j6_btagEffError_L",(float)btagEffError_L);
+           l.FillTree("j6_btagEff_M",(float)btagEff_M);
+           l.FillTree("j6_btagEffError_M",(float)btagEffError_M);
+           l.FillTree("j6_btagEff_T",(float)btagEff_T);
+           l.FillTree("j6_btagEffError_T",(float)btagEffError_T);
         }else{
            l.FillTree("j6_flavour",(int)0);
-           l.FillTree("j6_btagSF",(float)-1001.);
-           l.FillTree("j6_btagSFErrorUp",(float)-1001.);
-           l.FillTree("j6_btagSFErrorDown",(float)-1001.);
-           l.FillTree("j6_btagEff",(float)-1001.);
-           l.FillTree("j6_btagEffError",(float)-1001.);
+           l.FillTree("j6_btagSF_L",(float)-1001.);
+           l.FillTree("j6_btagSFErrorUp_L",(float)-1001.);
+           l.FillTree("j6_btagSFErrorDown_L",(float)-1001.);
+           l.FillTree("j6_btagSF_M",(float)-1001.);
+           l.FillTree("j6_btagSFErrorUp_M",(float)-1001.);
+           l.FillTree("j6_btagSFErrorDown_M",(float)-1001.);
+           l.FillTree("j6_btagSF_T",(float)-1001.);
+           l.FillTree("j6_btagSFErrorUp_T",(float)-1001.);
+           l.FillTree("j6_btagSFErrorDown_T",(float)-1001.);
+           l.FillTree("j6_btagEff_L",(float)-1001.);
+           l.FillTree("j6_btagEffError_L",(float)-1001.);
+           l.FillTree("j6_btagEff_M",(float)-1001.);
+           l.FillTree("j6_btagEffError_M",(float)-1001.);
+           l.FillTree("j6_btagEff_T",(float)-1001.);
+           l.FillTree("j6_btagEffError_T",(float)-1001.);
         }
         l.FillTree("j6_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[5]]);
 		l.FillTree("j6_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[5]]);
@@ -3593,24 +3773,54 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(l.itype[l.current] <= -100){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet7" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet7); 
-           float btagSF = SFReader->getSF(jet7,flavour,BtagWP);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet7,flavour,BtagWP);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet7,flavour,BtagWP);
-           float btagEff = EffReader->getBtagEfficiency(jet7,BtagWP,flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet7,BtagWP,flavour);
+           float btagSF_L = SFReader->getSF(jet7,flavour,"loose");
+           float btagSFErrorUp_L = SFReader->getSFErrorUp(jet7,flavour,"loose");
+           float btagSFErrorDown_L = SFReader->getSFErrorDown(jet7,flavour,"loose");
+           float btagSF_M = SFReader->getSF(jet7,flavour,"medium");
+           float btagSFErrorUp_M = SFReader->getSFErrorUp(jet7,flavour,"medium");
+           float btagSFErrorDown_M = SFReader->getSFErrorDown(jet7,flavour,"medium");
+           float btagSF_T = SFReader->getSF(jet7,flavour,"tight");
+           float btagSFErrorUp_T = SFReader->getSFErrorUp(jet7,flavour,"tight");
+           float btagSFErrorDown_T = SFReader->getSFErrorDown(jet7,flavour,"tight");
+           float btagEff_L = EffReader->getBtagEfficiency(jet7,"loose",flavour);
+           float btagEffError_L = EffReader->getBtagEfficiencyError(jet7,"loose",flavour);
+           float btagEff_M = EffReader->getBtagEfficiency(jet7,"medium",flavour);
+           float btagEffError_M = EffReader->getBtagEfficiencyError(jet7,"medium",flavour);
+           float btagEff_T = EffReader->getBtagEfficiency(jet7,"tight",flavour);
+           float btagEffError_T = EffReader->getBtagEfficiencyError(jet7,"tight",flavour);
            l.FillTree("j7_flavour",(int)flavour);
-           l.FillTree("j7_btagSF",(float)btagSF);
-           l.FillTree("j7_btagSFErrorUp",(float)btagSFErrorUp);
-           l.FillTree("j7_btagSFErrorDown",(float)btagSFErrorDown);
-           l.FillTree("j7_btagEff",(float)btagEff);
-           l.FillTree("j7_btagEffError",(float)btagEffError);
+           l.FillTree("j7_btagSF_L",(float)btagSF_L);
+           l.FillTree("j7_btagSFErrorUp_L",(float)btagSFErrorUp_L);
+           l.FillTree("j7_btagSFErrorDown_L",(float)btagSFErrorDown_L);
+           l.FillTree("j7_btagSF_M",(float)btagSF_M);
+           l.FillTree("j7_btagSFErrorUp_M",(float)btagSFErrorUp_M);
+           l.FillTree("j7_btagSFErrorDown_M",(float)btagSFErrorDown_M);
+           l.FillTree("j7_btagSF_T",(float)btagSF_T);
+           l.FillTree("j7_btagSFErrorUp_T",(float)btagSFErrorUp_T);
+           l.FillTree("j7_btagSFErrorDown_T",(float)btagSFErrorDown_T);
+           l.FillTree("j7_btagEff_L",(float)btagEff_L);
+           l.FillTree("j7_btagEffError_L",(float)btagEffError_L);
+           l.FillTree("j7_btagEff_M",(float)btagEff_M);
+           l.FillTree("j7_btagEffError_M",(float)btagEffError_M);
+           l.FillTree("j7_btagEff_T",(float)btagEff_T);
+           l.FillTree("j7_btagEffError_T",(float)btagEffError_T);
         }else{
            l.FillTree("j7_flavour",(int)0);
-           l.FillTree("j7_btagSF",(float)-1001.);
-           l.FillTree("j7_btagSFErrorUp",(float)-1001.);
-           l.FillTree("j7_btagSFErrorDown",(float)-1001.);
-           l.FillTree("j7_btagEff",(float)-1001.);
-           l.FillTree("j7_btagEffError",(float)-1001.);
+           l.FillTree("j7_btagSF_L",(float)-1001.);
+           l.FillTree("j7_btagSFErrorUp_L",(float)-1001.);
+           l.FillTree("j7_btagSFErrorDown_L",(float)-1001.);
+           l.FillTree("j7_btagSF_M",(float)-1001.);
+           l.FillTree("j7_btagSFErrorUp_M",(float)-1001.);
+           l.FillTree("j7_btagSFErrorDown_M",(float)-1001.);
+           l.FillTree("j7_btagSF_T",(float)-1001.);
+           l.FillTree("j7_btagSFErrorUp_T",(float)-1001.);
+           l.FillTree("j7_btagSFErrorDown_T",(float)-1001.);
+           l.FillTree("j7_btagEff_L",(float)-1001.);
+           l.FillTree("j7_btagEffError_L",(float)-1001.);
+           l.FillTree("j7_btagEff_M",(float)-1001.);
+           l.FillTree("j7_btagEffError_M",(float)-1001.);
+           l.FillTree("j7_btagEff_T",(float)-1001.);
+           l.FillTree("j7_btagEffError_T",(float)-1001.);
         }
         l.FillTree("j7_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[6]]);
 		l.FillTree("j7_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[6]]);
@@ -3721,24 +3931,54 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(l.itype[l.current] <= -100){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet8" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet8); 
-           float btagSF = SFReader->getSF(jet8,flavour,BtagWP);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet8,flavour,BtagWP);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet8,flavour,BtagWP);
-           float btagEff = EffReader->getBtagEfficiency(jet8,BtagWP,flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet8,BtagWP,flavour);
+           float btagSF_L = SFReader->getSF(jet8,flavour,"loose");
+           float btagSFErrorUp_L = SFReader->getSFErrorUp(jet8,flavour,"loose");
+           float btagSFErrorDown_L = SFReader->getSFErrorDown(jet8,flavour,"loose");
+           float btagSF_M = SFReader->getSF(jet8,flavour,"medium");
+           float btagSFErrorUp_M = SFReader->getSFErrorUp(jet8,flavour,"medium");
+           float btagSFErrorDown_M = SFReader->getSFErrorDown(jet8,flavour,"medium");
+           float btagSF_T = SFReader->getSF(jet8,flavour,"tight");
+           float btagSFErrorUp_T = SFReader->getSFErrorUp(jet8,flavour,"tight");
+           float btagSFErrorDown_T = SFReader->getSFErrorDown(jet8,flavour,"tight");
+           float btagEff_L = EffReader->getBtagEfficiency(jet8,"loose",flavour);
+           float btagEffError_L = EffReader->getBtagEfficiencyError(jet8,"loose",flavour);
+           float btagEff_M = EffReader->getBtagEfficiency(jet8,"medium",flavour);
+           float btagEffError_M = EffReader->getBtagEfficiencyError(jet8,"medium",flavour);
+           float btagEff_T = EffReader->getBtagEfficiency(jet8,"tight",flavour);
+           float btagEffError_T = EffReader->getBtagEfficiencyError(jet8,"tight",flavour);
            l.FillTree("j8_flavour",(int)flavour);
-           l.FillTree("j8_btagSF",(float)btagSF);
-           l.FillTree("j8_btagSFErrorUp",(float)btagSFErrorUp);
-           l.FillTree("j8_btagSFErrorDown",(float)btagSFErrorDown);
-           l.FillTree("j8_btagEff",(float)btagEff);
-           l.FillTree("j8_btagEffError",(float)btagEffError);
+           l.FillTree("j8_btagSF_L",(float)btagSF_L);
+           l.FillTree("j8_btagSFErrorUp_L",(float)btagSFErrorUp_L);
+           l.FillTree("j8_btagSFErrorDown_L",(float)btagSFErrorDown_L);
+           l.FillTree("j8_btagSF_M",(float)btagSF_M);
+           l.FillTree("j8_btagSFErrorUp_M",(float)btagSFErrorUp_M);
+           l.FillTree("j8_btagSFErrorDown_M",(float)btagSFErrorDown_M);
+           l.FillTree("j8_btagSF_T",(float)btagSF_T);
+           l.FillTree("j8_btagSFErrorUp_T",(float)btagSFErrorUp_T);
+           l.FillTree("j8_btagSFErrorDown_T",(float)btagSFErrorDown_T);
+           l.FillTree("j8_btagEff_L",(float)btagEff_L);
+           l.FillTree("j8_btagEffError_L",(float)btagEffError_L);
+           l.FillTree("j8_btagEff_M",(float)btagEff_M);
+           l.FillTree("j8_btagEffError_M",(float)btagEffError_M);
+           l.FillTree("j8_btagEff_T",(float)btagEff_T);
+           l.FillTree("j8_btagEffError_T",(float)btagEffError_T);
         }else{
            l.FillTree("j8_flavour",(int)0);
-           l.FillTree("j8_btagSF",(float)-1001.);
-           l.FillTree("j8_btagSFErrorUp",(float)-1001.);
-           l.FillTree("j8_btagSFErrorDown",(float)-1001.);
-           l.FillTree("j8_btagEff",(float)-1001.);
-           l.FillTree("j8_btagEffError",(float)-1001.);
+           l.FillTree("j8_btagSF_L",(float)-1001.);
+           l.FillTree("j8_btagSFErrorUp_L",(float)-1001.);
+           l.FillTree("j8_btagSFErrorDown_L",(float)-1001.);
+           l.FillTree("j8_btagSF_M",(float)-1001.);
+           l.FillTree("j8_btagSFErrorUp_M",(float)-1001.);
+           l.FillTree("j8_btagSFErrorDown_M",(float)-1001.);
+           l.FillTree("j8_btagSF_T",(float)-1001.);
+           l.FillTree("j8_btagSFErrorUp_T",(float)-1001.);
+           l.FillTree("j8_btagSFErrorDown_T",(float)-1001.);
+           l.FillTree("j8_btagEff_L",(float)-1001.);
+           l.FillTree("j8_btagEffError_L",(float)-1001.);
+           l.FillTree("j8_btagEff_M",(float)-1001.);
+           l.FillTree("j8_btagEffError_M",(float)-1001.);
+           l.FillTree("j8_btagEff_T",(float)-1001.);
+           l.FillTree("j8_btagEffError_T",(float)-1001.);
         }
         l.FillTree("j8_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[7]]);
 		l.FillTree("j8_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[7]]);
@@ -3849,24 +4089,54 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(l.itype[l.current] <= -100){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet9" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet9); 
-           float btagSF = SFReader->getSF(jet9,flavour,BtagWP);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet9,flavour,BtagWP);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet9,flavour,BtagWP);
-           float btagEff = EffReader->getBtagEfficiency(jet9,BtagWP,flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet9,BtagWP,flavour);
+           float btagSF_L = SFReader->getSF(jet9,flavour,"loose");
+           float btagSFErrorUp_L = SFReader->getSFErrorUp(jet9,flavour,"loose");
+           float btagSFErrorDown_L = SFReader->getSFErrorDown(jet9,flavour,"loose");
+           float btagSF_M = SFReader->getSF(jet9,flavour,"medium");
+           float btagSFErrorUp_M = SFReader->getSFErrorUp(jet9,flavour,"medium");
+           float btagSFErrorDown_M = SFReader->getSFErrorDown(jet9,flavour,"medium");
+           float btagSF_T = SFReader->getSF(jet9,flavour,"tight");
+           float btagSFErrorUp_T = SFReader->getSFErrorUp(jet9,flavour,"tight");
+           float btagSFErrorDown_T = SFReader->getSFErrorDown(jet9,flavour,"tight");
+           float btagEff_L = EffReader->getBtagEfficiency(jet9,"loose",flavour);
+           float btagEffError_L = EffReader->getBtagEfficiencyError(jet9,"loose",flavour);
+           float btagEff_M = EffReader->getBtagEfficiency(jet9,"medium",flavour);
+           float btagEffError_M = EffReader->getBtagEfficiencyError(jet9,"medium",flavour);
+           float btagEff_T = EffReader->getBtagEfficiency(jet9,"tight",flavour);
+           float btagEffError_T = EffReader->getBtagEfficiencyError(jet9,"tight",flavour);
            l.FillTree("j9_flavour",(int)flavour);
-           l.FillTree("j9_btagSF",(float)btagSF);
-           l.FillTree("j9_btagSFErrorUp",(float)btagSFErrorUp);
-           l.FillTree("j9_btagSFErrorDown",(float)btagSFErrorDown);
-           l.FillTree("j9_btagEff",(float)btagEff);
-           l.FillTree("j9_btagEffError",(float)btagEffError);
+           l.FillTree("j9_btagSF_L",(float)btagSF_L);
+           l.FillTree("j9_btagSFErrorUp_L",(float)btagSFErrorUp_L);
+           l.FillTree("j9_btagSFErrorDown_L",(float)btagSFErrorDown_L);
+           l.FillTree("j9_btagSF_M",(float)btagSF_M);
+           l.FillTree("j9_btagSFErrorUp_M",(float)btagSFErrorUp_M);
+           l.FillTree("j9_btagSFErrorDown_M",(float)btagSFErrorDown_M);
+           l.FillTree("j9_btagSF_T",(float)btagSF_T);
+           l.FillTree("j9_btagSFErrorUp_T",(float)btagSFErrorUp_T);
+           l.FillTree("j9_btagSFErrorDown_T",(float)btagSFErrorDown_T);
+           l.FillTree("j9_btagEff_L",(float)btagEff_L);
+           l.FillTree("j9_btagEffError_L",(float)btagEffError_L);
+           l.FillTree("j9_btagEff_M",(float)btagEff_M);
+           l.FillTree("j9_btagEffError_M",(float)btagEffError_M);
+           l.FillTree("j9_btagEff_T",(float)btagEff_T);
+           l.FillTree("j9_btagEffError_T",(float)btagEffError_T);
         }else{
            l.FillTree("j9_flavour",(int)0);
-           l.FillTree("j9_btagSF",(float)-1001.);
-           l.FillTree("j9_btagSFErrorUp",(float)-1001.);
-           l.FillTree("j9_btagSFErrorDown",(float)-1001.);
-           l.FillTree("j9_btagEff",(float)-1001.);
-           l.FillTree("j9_btagEffError",(float)-1001.);
+           l.FillTree("j9_btagSF_L",(float)-1001.);
+           l.FillTree("j9_btagSFErrorUp_L",(float)-1001.);
+           l.FillTree("j9_btagSFErrorDown_L",(float)-1001.);
+           l.FillTree("j9_btagSF_M",(float)-1001.);
+           l.FillTree("j9_btagSFErrorUp_M",(float)-1001.);
+           l.FillTree("j9_btagSFErrorDown_M",(float)-1001.);
+           l.FillTree("j9_btagSF_T",(float)-1001.);
+           l.FillTree("j9_btagSFErrorUp_T",(float)-1001.);
+           l.FillTree("j9_btagSFErrorDown_T",(float)-1001.);
+           l.FillTree("j9_btagEff_L",(float)-1001.);
+           l.FillTree("j9_btagEffError_L",(float)-1001.);
+           l.FillTree("j9_btagEff_M",(float)-1001.);
+           l.FillTree("j9_btagEffError_M",(float)-1001.);
+           l.FillTree("j9_btagEff_T",(float)-1001.);
+           l.FillTree("j9_btagEffError_T",(float)-1001.);
         }
         l.FillTree("j9_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[8]]);
 		l.FillTree("j9_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[8]]);
@@ -3977,24 +4247,54 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(l.itype[l.current] <= -100){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet10" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet10); 
-           float btagSF = SFReader->getSF(jet10,flavour,BtagWP);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet10,flavour,BtagWP);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet10,flavour,BtagWP);
-           float btagEff = EffReader->getBtagEfficiency(jet10,BtagWP,flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet10,BtagWP,flavour);
+           float btagSF_L = SFReader->getSF(jet10,flavour,"loose");
+           float btagSFErrorUp_L = SFReader->getSFErrorUp(jet10,flavour,"loose");
+           float btagSFErrorDown_L = SFReader->getSFErrorDown(jet10,flavour,"loose");
+           float btagSF_M = SFReader->getSF(jet10,flavour,"medium");
+           float btagSFErrorUp_M = SFReader->getSFErrorUp(jet10,flavour,"medium");
+           float btagSFErrorDown_M = SFReader->getSFErrorDown(jet10,flavour,"medium");
+           float btagSF_T = SFReader->getSF(jet10,flavour,"tight");
+           float btagSFErrorUp_T = SFReader->getSFErrorUp(jet10,flavour,"tight");
+           float btagSFErrorDown_T = SFReader->getSFErrorDown(jet10,flavour,"tight");
+           float btagEff_L = EffReader->getBtagEfficiency(jet10,"loose",flavour);
+           float btagEffError_L = EffReader->getBtagEfficiencyError(jet10,"loose",flavour);
+           float btagEff_M = EffReader->getBtagEfficiency(jet10,"medium",flavour);
+           float btagEffError_M = EffReader->getBtagEfficiencyError(jet10,"medium",flavour);
+           float btagEff_T = EffReader->getBtagEfficiency(jet10,"tight",flavour);
+           float btagEffError_T = EffReader->getBtagEfficiencyError(jet10,"tight",flavour);
            l.FillTree("j10_flavour",(int)flavour);
-           l.FillTree("j10_btagSF",(float)btagSF);
-           l.FillTree("j10_btagSFErrorUp",(float)btagSFErrorUp);
-           l.FillTree("j10_btagSFErrorDown",(float)btagSFErrorDown);
-           l.FillTree("j10_btagEff",(float)btagEff);
-           l.FillTree("j10_btagEffError",(float)btagEffError);
+           l.FillTree("j10_btagSF_L",(float)btagSF_L);
+           l.FillTree("j10_btagSFErrorUp_L",(float)btagSFErrorUp_L);
+           l.FillTree("j10_btagSFErrorDown_L",(float)btagSFErrorDown_L);
+           l.FillTree("j10_btagSF_M",(float)btagSF_M);
+           l.FillTree("j10_btagSFErrorUp_M",(float)btagSFErrorUp_M);
+           l.FillTree("j10_btagSFErrorDown_M",(float)btagSFErrorDown_M);
+           l.FillTree("j10_btagSF_T",(float)btagSF_T);
+           l.FillTree("j10_btagSFErrorUp_T",(float)btagSFErrorUp_T);
+           l.FillTree("j10_btagSFErrorDown_T",(float)btagSFErrorDown_T);
+           l.FillTree("j10_btagEff_L",(float)btagEff_L);
+           l.FillTree("j10_btagEffError_L",(float)btagEffError_L);
+           l.FillTree("j10_btagEff_M",(float)btagEff_M);
+           l.FillTree("j10_btagEffError_M",(float)btagEffError_M);
+           l.FillTree("j10_btagEff_T",(float)btagEff_T);
+           l.FillTree("j10_btagEffError_T",(float)btagEffError_T);
         }else{
            l.FillTree("j10_flavour",(int)0);
-           l.FillTree("j10_btagSF",(float)-1001.);
-           l.FillTree("j10_btagSFErrorUp",(float)-1001.);
-           l.FillTree("j10_btagSFErrorDown",(float)-1001.);
-           l.FillTree("j10_btagEff",(float)-1001.);
-           l.FillTree("j10_btagEffError",(float)-1001.);
+           l.FillTree("j10_btagSF_L",(float)-1001.);
+           l.FillTree("j10_btagSFErrorUp_L",(float)-1001.);
+           l.FillTree("j10_btagSFErrorDown_L",(float)-1001.);
+           l.FillTree("j10_btagSF_M",(float)-1001.);
+           l.FillTree("j10_btagSFErrorUp_M",(float)-1001.);
+           l.FillTree("j10_btagSFErrorDown_M",(float)-1001.);
+           l.FillTree("j10_btagSF_T",(float)-1001.);
+           l.FillTree("j10_btagSFErrorUp_T",(float)-1001.);
+           l.FillTree("j10_btagSFErrorDown_T",(float)-1001.);
+           l.FillTree("j10_btagEff_L",(float)-1001.);
+           l.FillTree("j10_btagEffError_L",(float)-1001.);
+           l.FillTree("j10_btagEff_M",(float)-1001.);
+           l.FillTree("j10_btagEffError_M",(float)-1001.);
+           l.FillTree("j10_btagEff_T",(float)-1001.);
+           l.FillTree("j10_btagEffError_T",(float)-1001.);
         }
         l.FillTree("j10_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[9]]);
 		l.FillTree("j10_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[9]]);
@@ -4105,24 +4405,54 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(l.itype[l.current] <= -100){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet11" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet11); 
-           float btagSF = SFReader->getSF(jet11,flavour,BtagWP);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet11,flavour,BtagWP);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet11,flavour,BtagWP);
-           float btagEff = EffReader->getBtagEfficiency(jet11,BtagWP,flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet11,BtagWP,flavour);
+           float btagSF_L = SFReader->getSF(jet11,flavour,"loose");
+           float btagSFErrorUp_L = SFReader->getSFErrorUp(jet11,flavour,"loose");
+           float btagSFErrorDown_L = SFReader->getSFErrorDown(jet11,flavour,"loose");
+           float btagSF_M = SFReader->getSF(jet11,flavour,"medium");
+           float btagSFErrorUp_M = SFReader->getSFErrorUp(jet11,flavour,"medium");
+           float btagSFErrorDown_M = SFReader->getSFErrorDown(jet11,flavour,"medium");
+           float btagSF_T = SFReader->getSF(jet11,flavour,"tight");
+           float btagSFErrorUp_T = SFReader->getSFErrorUp(jet11,flavour,"tight");
+           float btagSFErrorDown_T = SFReader->getSFErrorDown(jet11,flavour,"tight");
+           float btagEff_L = EffReader->getBtagEfficiency(jet11,"loose",flavour);
+           float btagEffError_L = EffReader->getBtagEfficiencyError(jet11,"loose",flavour);
+           float btagEff_M = EffReader->getBtagEfficiency(jet11,"medium",flavour);
+           float btagEffError_M = EffReader->getBtagEfficiencyError(jet11,"medium",flavour);
+           float btagEff_T = EffReader->getBtagEfficiency(jet11,"tight",flavour);
+           float btagEffError_T = EffReader->getBtagEfficiencyError(jet11,"tight",flavour);
            l.FillTree("j11_flavour",(int)flavour);
-           l.FillTree("j11_btagSF",(float)btagSF);
-           l.FillTree("j11_btagSFErrorUp",(float)btagSFErrorUp);
-           l.FillTree("j11_btagSFErrorDown",(float)btagSFErrorDown);
-           l.FillTree("j11_btagEff",(float)btagEff);
-           l.FillTree("j11_btagEffError",(float)btagEffError);
+           l.FillTree("j11_btagSF_L",(float)btagSF_L);
+           l.FillTree("j11_btagSFErrorUp_L",(float)btagSFErrorUp_L);
+           l.FillTree("j11_btagSFErrorDown_L",(float)btagSFErrorDown_L);
+           l.FillTree("j11_btagSF_M",(float)btagSF_M);
+           l.FillTree("j11_btagSFErrorUp_M",(float)btagSFErrorUp_M);
+           l.FillTree("j11_btagSFErrorDown_M",(float)btagSFErrorDown_M);
+           l.FillTree("j11_btagSF_T",(float)btagSF_T);
+           l.FillTree("j11_btagSFErrorUp_T",(float)btagSFErrorUp_T);
+           l.FillTree("j11_btagSFErrorDown_T",(float)btagSFErrorDown_T);
+           l.FillTree("j11_btagEff_L",(float)btagEff_L);
+           l.FillTree("j11_btagEffError_L",(float)btagEffError_L);
+           l.FillTree("j11_btagEff_M",(float)btagEff_M);
+           l.FillTree("j11_btagEffError_M",(float)btagEffError_M);
+           l.FillTree("j11_btagEff_T",(float)btagEff_T);
+           l.FillTree("j11_btagEffError_T",(float)btagEffError_T);
         }else{
            l.FillTree("j11_flavour",(int)0);
-           l.FillTree("j11_btagSF",(float)-1001.);
-           l.FillTree("j11_btagSFErrorUp",(float)-1001.);
-           l.FillTree("j11_btagSFErrorDown",(float)-1001.);
-           l.FillTree("j11_btagEff",(float)-1001.);
-           l.FillTree("j11_btagEffError",(float)-1001.);
+           l.FillTree("j11_btagSF_L",(float)-1001.);
+           l.FillTree("j11_btagSFErrorUp_L",(float)-1001.);
+           l.FillTree("j11_btagSFErrorDown_L",(float)-1001.);
+           l.FillTree("j11_btagSF_M",(float)-1001.);
+           l.FillTree("j11_btagSFErrorUp_M",(float)-1001.);
+           l.FillTree("j11_btagSFErrorDown_M",(float)-1001.);
+           l.FillTree("j11_btagSF_T",(float)-1001.);
+           l.FillTree("j11_btagSFErrorUp_T",(float)-1001.);
+           l.FillTree("j11_btagSFErrorDown_T",(float)-1001.);
+           l.FillTree("j11_btagEff_L",(float)-1001.);
+           l.FillTree("j11_btagEffError_L",(float)-1001.);
+           l.FillTree("j11_btagEff_M",(float)-1001.);
+           l.FillTree("j11_btagEffError_M",(float)-1001.);
+           l.FillTree("j11_btagEff_T",(float)-1001.);
+           l.FillTree("j11_btagEffError_T",(float)-1001.);
         }
         l.FillTree("j11_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[10]]);
 		l.FillTree("j11_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[10]]);
@@ -4233,24 +4563,54 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(l.itype[l.current] <= -100){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet12" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet12); 
-           float btagSF = SFReader->getSF(jet12,flavour,BtagWP);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet12,flavour,BtagWP);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet12,flavour,BtagWP);
-           float btagEff = EffReader->getBtagEfficiency(jet12,BtagWP,flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet12,BtagWP,flavour);
+           float btagSF_L = SFReader->getSF(jet12,flavour,"loose");
+           float btagSFErrorUp_L = SFReader->getSFErrorUp(jet12,flavour,"loose");
+           float btagSFErrorDown_L = SFReader->getSFErrorDown(jet12,flavour,"loose");
+           float btagSF_M = SFReader->getSF(jet12,flavour,"medium");
+           float btagSFErrorUp_M = SFReader->getSFErrorUp(jet12,flavour,"medium");
+           float btagSFErrorDown_M = SFReader->getSFErrorDown(jet12,flavour,"medium");
+           float btagSF_T = SFReader->getSF(jet12,flavour,"tight");
+           float btagSFErrorUp_T = SFReader->getSFErrorUp(jet12,flavour,"tight");
+           float btagSFErrorDown_T = SFReader->getSFErrorDown(jet12,flavour,"tight");
+           float btagEff_L = EffReader->getBtagEfficiency(jet12,"loose",flavour);
+           float btagEffError_L = EffReader->getBtagEfficiencyError(jet12,"loose",flavour);
+           float btagEff_M = EffReader->getBtagEfficiency(jet12,"medium",flavour);
+           float btagEffError_M = EffReader->getBtagEfficiencyError(jet12,"medium",flavour);
+           float btagEff_T = EffReader->getBtagEfficiency(jet12,"tight",flavour);
+           float btagEffError_T = EffReader->getBtagEfficiencyError(jet12,"tight",flavour);
            l.FillTree("j12_flavour",(int)flavour);
-           l.FillTree("j12_btagSF",(float)btagSF);
-           l.FillTree("j12_btagSFErrorUp",(float)btagSFErrorUp);
-           l.FillTree("j12_btagSFErrorDown",(float)btagSFErrorDown);
-           l.FillTree("j12_btagEff",(float)btagEff);
-           l.FillTree("j12_btagEffError",(float)btagEffError);
+           l.FillTree("j12_btagSF_L",(float)btagSF_L);
+           l.FillTree("j12_btagSFErrorUp_L",(float)btagSFErrorUp_L);
+           l.FillTree("j12_btagSFErrorDown_L",(float)btagSFErrorDown_L);
+           l.FillTree("j12_btagSF_M",(float)btagSF_M);
+           l.FillTree("j12_btagSFErrorUp_M",(float)btagSFErrorUp_M);
+           l.FillTree("j12_btagSFErrorDown_M",(float)btagSFErrorDown_M);
+           l.FillTree("j12_btagSF_T",(float)btagSF_T);
+           l.FillTree("j12_btagSFErrorUp_T",(float)btagSFErrorUp_T);
+           l.FillTree("j12_btagSFErrorDown_T",(float)btagSFErrorDown_T);
+           l.FillTree("j12_btagEff_L",(float)btagEff_L);
+           l.FillTree("j12_btagEffError_L",(float)btagEffError_L);
+           l.FillTree("j12_btagEff_M",(float)btagEff_M);
+           l.FillTree("j12_btagEffError_M",(float)btagEffError_M);
+           l.FillTree("j12_btagEff_T",(float)btagEff_T);
+           l.FillTree("j12_btagEffError_T",(float)btagEffError_T);
         }else{
            l.FillTree("j12_flavour",(int)0);
-           l.FillTree("j12_btagSF",(float)-1001.);
-           l.FillTree("j12_btagSFErrorUp",(float)-1001.);
-           l.FillTree("j12_btagSFErrorDown",(float)-1001.);
-           l.FillTree("j12_btagEff",(float)-1001.);
-           l.FillTree("j12_btagEffError",(float)-1001.);
+           l.FillTree("j12_btagSF_L",(float)-1001.);
+           l.FillTree("j12_btagSFErrorUp_L",(float)-1001.);
+           l.FillTree("j12_btagSFErrorDown_L",(float)-1001.);
+           l.FillTree("j12_btagSF_M",(float)-1001.);
+           l.FillTree("j12_btagSFErrorUp_M",(float)-1001.);
+           l.FillTree("j12_btagSFErrorDown_M",(float)-1001.);
+           l.FillTree("j12_btagSF_T",(float)-1001.);
+           l.FillTree("j12_btagSFErrorUp_T",(float)-1001.);
+           l.FillTree("j12_btagSFErrorDown_T",(float)-1001.);
+           l.FillTree("j12_btagEff_L",(float)-1001.);
+           l.FillTree("j12_btagEffError_L",(float)-1001.);
+           l.FillTree("j12_btagEff_M",(float)-1001.);
+           l.FillTree("j12_btagEffError_M",(float)-1001.);
+           l.FillTree("j12_btagEff_T",(float)-1001.);
+           l.FillTree("j12_btagEffError_T",(float)-1001.);
         }
         l.FillTree("j12_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[11]]);
 		l.FillTree("j12_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[11]]);
@@ -4361,24 +4721,54 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(l.itype[l.current] <= -100){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet13" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet13); 
-           float btagSF = SFReader->getSF(jet13,flavour,BtagWP);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet13,flavour,BtagWP);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet13,flavour,BtagWP);
-           float btagEff = EffReader->getBtagEfficiency(jet13,BtagWP,flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet13,BtagWP,flavour);
+           float btagSF_L = SFReader->getSF(jet13,flavour,"loose");
+           float btagSFErrorUp_L = SFReader->getSFErrorUp(jet13,flavour,"loose");
+           float btagSFErrorDown_L = SFReader->getSFErrorDown(jet13,flavour,"loose");
+           float btagSF_M = SFReader->getSF(jet13,flavour,"medium");
+           float btagSFErrorUp_M = SFReader->getSFErrorUp(jet13,flavour,"medium");
+           float btagSFErrorDown_M = SFReader->getSFErrorDown(jet13,flavour,"medium");
+           float btagSF_T = SFReader->getSF(jet13,flavour,"tight");
+           float btagSFErrorUp_T = SFReader->getSFErrorUp(jet13,flavour,"tight");
+           float btagSFErrorDown_T = SFReader->getSFErrorDown(jet13,flavour,"tight");
+           float btagEff_L = EffReader->getBtagEfficiency(jet13,"loose",flavour);
+           float btagEffError_L = EffReader->getBtagEfficiencyError(jet13,"loose",flavour);
+           float btagEff_M = EffReader->getBtagEfficiency(jet13,"medium",flavour);
+           float btagEffError_M = EffReader->getBtagEfficiencyError(jet13,"medium",flavour);
+           float btagEff_T = EffReader->getBtagEfficiency(jet13,"tight",flavour);
+           float btagEffError_T = EffReader->getBtagEfficiencyError(jet13,"tight",flavour);
            l.FillTree("j13_flavour",(int)flavour);
-           l.FillTree("j13_btagSF",(float)btagSF);
-           l.FillTree("j13_btagSFErrorUp",(float)btagSFErrorUp);
-           l.FillTree("j13_btagSFErrorDown",(float)btagSFErrorDown);
-           l.FillTree("j13_btagEff",(float)btagEff);
-           l.FillTree("j13_btagEffError",(float)btagEffError);
+           l.FillTree("j13_btagSF_L",(float)btagSF_L);
+           l.FillTree("j13_btagSFErrorUp_L",(float)btagSFErrorUp_L);
+           l.FillTree("j13_btagSFErrorDown_L",(float)btagSFErrorDown_L);
+           l.FillTree("j13_btagSF_M",(float)btagSF_M);
+           l.FillTree("j13_btagSFErrorUp_M",(float)btagSFErrorUp_M);
+           l.FillTree("j13_btagSFErrorDown_M",(float)btagSFErrorDown_M);
+           l.FillTree("j13_btagSF_T",(float)btagSF_T);
+           l.FillTree("j13_btagSFErrorUp_T",(float)btagSFErrorUp_T);
+           l.FillTree("j13_btagSFErrorDown_T",(float)btagSFErrorDown_T);
+           l.FillTree("j13_btagEff_L",(float)btagEff_L);
+           l.FillTree("j13_btagEffError_L",(float)btagEffError_L);
+           l.FillTree("j13_btagEff_M",(float)btagEff_M);
+           l.FillTree("j13_btagEffError_M",(float)btagEffError_M);
+           l.FillTree("j13_btagEff_T",(float)btagEff_T);
+           l.FillTree("j13_btagEffError_T",(float)btagEffError_T);
         }else{
            l.FillTree("j13_flavour",(int)0);
-           l.FillTree("j13_btagSF",(float)-1001.);
-           l.FillTree("j13_btagSFErrorUp",(float)-1001.);
-           l.FillTree("j13_btagSFErrorDown",(float)-1001.);
-           l.FillTree("j13_btagEff",(float)-1001.);
-           l.FillTree("j13_btagEffError",(float)-1001.);
+           l.FillTree("j13_btagSF_L",(float)-1001.);
+           l.FillTree("j13_btagSFErrorUp_L",(float)-1001.);
+           l.FillTree("j13_btagSFErrorDown_L",(float)-1001.);
+           l.FillTree("j13_btagSF_M",(float)-1001.);
+           l.FillTree("j13_btagSFErrorUp_M",(float)-1001.);
+           l.FillTree("j13_btagSFErrorDown_M",(float)-1001.);
+           l.FillTree("j13_btagSF_T",(float)-1001.);
+           l.FillTree("j13_btagSFErrorUp_T",(float)-1001.);
+           l.FillTree("j13_btagSFErrorDown_T",(float)-1001.);
+           l.FillTree("j13_btagEff_L",(float)-1001.);
+           l.FillTree("j13_btagEffError_L",(float)-1001.);
+           l.FillTree("j13_btagEff_M",(float)-1001.);
+           l.FillTree("j13_btagEffError_M",(float)-1001.);
+           l.FillTree("j13_btagEff_T",(float)-1001.);
+           l.FillTree("j13_btagEffError_T",(float)-1001.);
         }
         l.FillTree("j13_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[12]]);
 		l.FillTree("j13_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[12]]);
@@ -4489,24 +4879,54 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(l.itype[l.current] <= -100){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet14" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet14); 
-           float btagSF = SFReader->getSF(jet14,flavour,BtagWP);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet14,flavour,BtagWP);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet14,flavour,BtagWP);
-           float btagEff = EffReader->getBtagEfficiency(jet14,BtagWP,flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet14,BtagWP,flavour);
+           float btagSF_L = SFReader->getSF(jet14,flavour,"loose");
+           float btagSFErrorUp_L = SFReader->getSFErrorUp(jet14,flavour,"loose");
+           float btagSFErrorDown_L = SFReader->getSFErrorDown(jet14,flavour,"loose");
+           float btagSF_M = SFReader->getSF(jet14,flavour,"medium");
+           float btagSFErrorUp_M = SFReader->getSFErrorUp(jet14,flavour,"medium");
+           float btagSFErrorDown_M = SFReader->getSFErrorDown(jet14,flavour,"medium");
+           float btagSF_T = SFReader->getSF(jet14,flavour,"tight");
+           float btagSFErrorUp_T = SFReader->getSFErrorUp(jet14,flavour,"tight");
+           float btagSFErrorDown_T = SFReader->getSFErrorDown(jet14,flavour,"tight");
+           float btagEff_L = EffReader->getBtagEfficiency(jet14,"loose",flavour);
+           float btagEffError_L = EffReader->getBtagEfficiencyError(jet14,"loose",flavour);
+           float btagEff_M = EffReader->getBtagEfficiency(jet14,"medium",flavour);
+           float btagEffError_M = EffReader->getBtagEfficiencyError(jet14,"medium",flavour);
+           float btagEff_T = EffReader->getBtagEfficiency(jet14,"tight",flavour);
+           float btagEffError_T = EffReader->getBtagEfficiencyError(jet14,"tight",flavour);
            l.FillTree("j14_flavour",(int)flavour);
-           l.FillTree("j14_btagSF",(float)btagSF);
-           l.FillTree("j14_btagSFErrorUp",(float)btagSFErrorUp);
-           l.FillTree("j14_btagSFErrorDown",(float)btagSFErrorDown);
-           l.FillTree("j14_btagEff",(float)btagEff);
-           l.FillTree("j14_btagEffError",(float)btagEffError);
+           l.FillTree("j14_btagSF_L",(float)btagSF_L);
+           l.FillTree("j14_btagSFErrorUp_L",(float)btagSFErrorUp_L);
+           l.FillTree("j14_btagSFErrorDown_L",(float)btagSFErrorDown_L);
+           l.FillTree("j14_btagSF_M",(float)btagSF_M);
+           l.FillTree("j14_btagSFErrorUp_M",(float)btagSFErrorUp_M);
+           l.FillTree("j14_btagSFErrorDown_M",(float)btagSFErrorDown_M);
+           l.FillTree("j14_btagSF_T",(float)btagSF_T);
+           l.FillTree("j14_btagSFErrorUp_T",(float)btagSFErrorUp_T);
+           l.FillTree("j14_btagSFErrorDown_T",(float)btagSFErrorDown_T);
+           l.FillTree("j14_btagEff_L",(float)btagEff_L);
+           l.FillTree("j14_btagEffError_L",(float)btagEffError_L);
+           l.FillTree("j14_btagEff_M",(float)btagEff_M);
+           l.FillTree("j14_btagEffError_M",(float)btagEffError_M);
+           l.FillTree("j14_btagEff_T",(float)btagEff_T);
+           l.FillTree("j14_btagEffError_T",(float)btagEffError_T);
         }else{
            l.FillTree("j14_flavour",(int)0);
-           l.FillTree("j14_btagSF",(float)-1001.);
-           l.FillTree("j14_btagSFErrorUp",(float)-1001.);
-           l.FillTree("j14_btagSFErrorDown",(float)-1001.);
-           l.FillTree("j14_btagEff",(float)-1001.);
-           l.FillTree("j14_btagEffError",(float)-1001.);
+           l.FillTree("j14_btagSF_L",(float)-1001.);
+           l.FillTree("j14_btagSFErrorUp_L",(float)-1001.);
+           l.FillTree("j14_btagSFErrorDown_L",(float)-1001.);
+           l.FillTree("j14_btagSF_M",(float)-1001.);
+           l.FillTree("j14_btagSFErrorUp_M",(float)-1001.);
+           l.FillTree("j14_btagSFErrorDown_M",(float)-1001.);
+           l.FillTree("j14_btagSF_T",(float)-1001.);
+           l.FillTree("j14_btagSFErrorUp_T",(float)-1001.);
+           l.FillTree("j14_btagSFErrorDown_T",(float)-1001.);
+           l.FillTree("j14_btagEff_L",(float)-1001.);
+           l.FillTree("j14_btagEffError_L",(float)-1001.);
+           l.FillTree("j14_btagEff_M",(float)-1001.);
+           l.FillTree("j14_btagEffError_M",(float)-1001.);
+           l.FillTree("j14_btagEff_T",(float)-1001.);
+           l.FillTree("j14_btagEffError_T",(float)-1001.);
         }
         l.FillTree("j14_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[13]]);
 		l.FillTree("j14_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[13]]);
@@ -4617,24 +5037,54 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(l.itype[l.current] <= -100){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet15" << endl;
            int flavour = jetFlavReader->getJetFlavour((int)l.lumis, (int)l.event,jet15); 
-           float btagSF = SFReader->getSF(jet15,flavour,BtagWP);
-           float btagSFErrorUp = SFReader->getSFErrorUp(jet15,flavour,BtagWP);
-           float btagSFErrorDown = SFReader->getSFErrorDown(jet15,flavour,BtagWP);
-           float btagEff = EffReader->getBtagEfficiency(jet15,BtagWP,flavour);
-           float btagEffError = EffReader->getBtagEfficiencyError(jet15,BtagWP,flavour);
+           float btagSF_L = SFReader->getSF(jet15,flavour,"loose");
+           float btagSFErrorUp_L = SFReader->getSFErrorUp(jet15,flavour,"loose");
+           float btagSFErrorDown_L = SFReader->getSFErrorDown(jet15,flavour,"loose");
+           float btagSF_M = SFReader->getSF(jet15,flavour,"medium");
+           float btagSFErrorUp_M = SFReader->getSFErrorUp(jet15,flavour,"medium");
+           float btagSFErrorDown_M = SFReader->getSFErrorDown(jet15,flavour,"medium");
+           float btagSF_T = SFReader->getSF(jet15,flavour,"tight");
+           float btagSFErrorUp_T = SFReader->getSFErrorUp(jet15,flavour,"tight");
+           float btagSFErrorDown_T = SFReader->getSFErrorDown(jet15,flavour,"tight");
+           float btagEff_L = EffReader->getBtagEfficiency(jet15,"loose",flavour);
+           float btagEffError_L = EffReader->getBtagEfficiencyError(jet15,"loose",flavour);
+           float btagEff_M = EffReader->getBtagEfficiency(jet15,"medium",flavour);
+           float btagEffError_M = EffReader->getBtagEfficiencyError(jet15,"medium",flavour);
+           float btagEff_T = EffReader->getBtagEfficiency(jet15,"tight",flavour);
+           float btagEffError_T = EffReader->getBtagEfficiencyError(jet15,"tight",flavour);
            l.FillTree("j15_flavour",(int)flavour);
-           l.FillTree("j15_btagSF",(float)btagSF);
-           l.FillTree("j15_btagSFErrorUp",(float)btagSFErrorUp);
-           l.FillTree("j15_btagSFErrorDown",(float)btagSFErrorDown);
-           l.FillTree("j15_btagEff",(float)btagEff);
-           l.FillTree("j15_btagEffError",(float)btagEffError);
+           l.FillTree("j15_btagSF_L",(float)btagSF_L);
+           l.FillTree("j15_btagSFErrorUp_L",(float)btagSFErrorUp_L);
+           l.FillTree("j15_btagSFErrorDown_L",(float)btagSFErrorDown_L);
+           l.FillTree("j15_btagSF_M",(float)btagSF_M);
+           l.FillTree("j15_btagSFErrorUp_M",(float)btagSFErrorUp_M);
+           l.FillTree("j15_btagSFErrorDown_M",(float)btagSFErrorDown_M);
+           l.FillTree("j15_btagSF_T",(float)btagSF_T);
+           l.FillTree("j15_btagSFErrorUp_T",(float)btagSFErrorUp_T);
+           l.FillTree("j15_btagSFErrorDown_T",(float)btagSFErrorDown_T);
+           l.FillTree("j15_btagEff_L",(float)btagEff_L);
+           l.FillTree("j15_btagEffError_L",(float)btagEffError_L);
+           l.FillTree("j15_btagEff_M",(float)btagEff_M);
+           l.FillTree("j15_btagEffError_M",(float)btagEffError_M);
+           l.FillTree("j15_btagEff_T",(float)btagEff_T);
+           l.FillTree("j15_btagEffError_T",(float)btagEffError_T);
         }else{
            l.FillTree("j15_flavour",(int)0);
-           l.FillTree("j15_btagSF",(float)-1001.);
-           l.FillTree("j15_btagSFErrorUp",(float)-1001.);
-           l.FillTree("j15_btagSFErrorDown",(float)-1001.);
-           l.FillTree("j15_btagEff",(float)-1001.);
-           l.FillTree("j15_btagEffError",(float)-1001.);
+           l.FillTree("j15_btagSF_L",(float)-1001.);
+           l.FillTree("j15_btagSFErrorUp_L",(float)-1001.);
+           l.FillTree("j15_btagSFErrorDown_L",(float)-1001.);
+           l.FillTree("j15_btagSF_M",(float)-1001.);
+           l.FillTree("j15_btagSFErrorUp_M",(float)-1001.);
+           l.FillTree("j15_btagSFErrorDown_M",(float)-1001.);
+           l.FillTree("j15_btagSF_T",(float)-1001.);
+           l.FillTree("j15_btagSFErrorUp_T",(float)-1001.);
+           l.FillTree("j15_btagSFErrorDown_T",(float)-1001.);
+           l.FillTree("j15_btagEff_L",(float)-1001.);
+           l.FillTree("j15_btagEffError_L",(float)-1001.);
+           l.FillTree("j15_btagEff_M",(float)-1001.);
+           l.FillTree("j15_btagEffError_M",(float)-1001.);
+           l.FillTree("j15_btagEff_T",(float)-1001.);
+           l.FillTree("j15_btagEffError_T",(float)-1001.);
         }
         l.FillTree("j15_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[14]]);
 		l.FillTree("j15_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[14]]);
@@ -4792,70 +5242,151 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 
     TLorentzVector lead_pesD, lead_pesU, lead_perD, lead_perU;
     TLorentzVector sublead_pesD, sublead_pesU, sublead_perD, sublead_perU;
+    
+    float ph1_pes_smear_weight = -1001.;
+    float ph2_pes_smear_weight = -1001.;
+
+    float ph1_per_smear_weight = -1001.;
+    float ph2_per_smear_weight = -1001.;
+
+    float ph1_idEffU_smear_weight = -1001.;
+    float ph2_idEffU_smear_weight = -1001.;
+    float ph1_idEff_smear_weight = -1001.;
+    float ph2_idEff_smear_weight = -1001.;
+    float ph1_idEffD_smear_weight = -1001.;
+    float ph2_idEffD_smear_weight = -1001.;
+
+    float ph1_r9EffU_smear_weight = -1001.;
+    float ph2_r9EffU_smear_weight = -1001.;
+    float ph1_r9Eff_smear_weight = -1001.;
+    float ph2_r9Eff_smear_weight = -1001.;
+    float ph1_r9EffD_smear_weight = -1001.;
+    float ph2_r9EffD_smear_weight = -1001.;
+
     int cur_type = l.itype[l.current];
-        for(std::vector<BaseSmearer *>::iterator  si=systPhotonSmearers_.begin(); si!= systPhotonSmearers_.end(); ++si ) {
-            if( (*si)->name() != "E_scale" && (*si)->name() != "E_res") continue;
+        for(std::vector<BaseSmearer *>::iterator si=systPhotonSmearers_.begin(); si!= systPhotonSmearers_.end(); ++si ) {
             if(PADEBUG) cout << "(*si)->name()= " << (*si)->name() << "\t(*si)->nRegisteredSmerers()= " << (*si)->nRegisteredSmerers() << endl;
             float systStep = 3.0;
             for(float syst_shift=-systRange; syst_shift<=systRange; syst_shift+=systStep ) {
-                if( syst_shift == 0. ) { continue; } // skip the central value
+               
         applySinglePhotonSmearings(smeared_pho_energy, smeared_pho_r9, smeared_pho_weight, cur_type, l, energyCorrected, energyCorrectedError,
                 *si, syst_shift);
+
+        if( (*si)->name() == "E_scale" && syst_shift == 0.)
+        {
+            ph1_pes_smear_weight = (float)smeared_pho_weight[diphoton_index.first];
+            ph2_pes_smear_weight = (float)smeared_pho_weight[diphoton_index.second];
+        }
+        if( (*si)->name() == "E_res" && syst_shift == 0.)
+        {
+            ph1_per_smear_weight = (float)smeared_pho_weight[diphoton_index.first];
+            ph2_per_smear_weight = (float)smeared_pho_weight[diphoton_index.second];
+        }
+        if( (*si)->name() == "idEff" && syst_shift > 0.)
+        {
+            ph1_idEffU_smear_weight = (float)smeared_pho_weight[diphoton_index.first];
+            ph2_idEffU_smear_weight = (float)smeared_pho_weight[diphoton_index.second];
+        }
+        if( (*si)->name() == "idEff" && syst_shift == 0.)
+        {
+            ph1_idEff_smear_weight = (float)smeared_pho_weight[diphoton_index.first];
+            ph2_idEff_smear_weight = (float)smeared_pho_weight[diphoton_index.second];
+        }
+        if( (*si)->name() == "idEff" && syst_shift < 0.)
+        {
+            ph1_idEffD_smear_weight = (float)smeared_pho_weight[diphoton_index.first];
+            ph2_idEffD_smear_weight = (float)smeared_pho_weight[diphoton_index.second];
+        }
+        if( (*si)->name() == "r9Eff" && syst_shift > 0.)
+        {
+            ph1_r9EffU_smear_weight = (float)smeared_pho_weight[diphoton_index.first];
+            ph2_r9EffU_smear_weight = (float)smeared_pho_weight[diphoton_index.second];
+        }
+        if( (*si)->name() == "r9Eff" && syst_shift == 0.)
+        {
+            ph1_r9Eff_smear_weight = (float)smeared_pho_weight[diphoton_index.first];
+            ph2_r9Eff_smear_weight = (float)smeared_pho_weight[diphoton_index.second];
+        }
+        if( (*si)->name() == "r9Eff" && syst_shift < 0.)
+        {
+            ph1_r9EffD_smear_weight = (float)smeared_pho_weight[diphoton_index.first];
+            ph2_r9EffD_smear_weight = (float)smeared_pho_weight[diphoton_index.second];
+        }
+        
+        if( (*si)->name() != "E_scale" && (*si)->name() != "E_res") continue;
+        if( syst_shift == 0. ) { continue; } // skip the central value
+
         if(PADEBUG) cout << "smeared_pho_energy[" << diphoton_index.first << "]= " << smeared_pho_energy[diphoton_index.first] << endl;
         if(PADEBUG) cout << "smeared_pho_energy[" << diphoton_index.second << "]= " << smeared_pho_energy[diphoton_index.second] << endl;
         if( (*si)->name() == "E_scale" && syst_shift < 0.)
         {
             lead_pesD = l.get_pho_p4(diphoton_index.first, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
-            sublead_pesD = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
+            sublead_pesD = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[1]);
         }
         else if( (*si)->name() == "E_scale" && syst_shift > 0.)
         {
             lead_pesU = l.get_pho_p4(diphoton_index.first, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
-            sublead_pesU = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
+            sublead_pesU = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[1]);
         }
         else if( (*si)->name() == "E_res" && syst_shift < 0.)
         {
             lead_perD = l.get_pho_p4(diphoton_index.first, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
-            sublead_perD = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
+            sublead_perD = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[1]);
         }
         else if( (*si)->name() == "E_res" && syst_shift > 0.)
         {
             lead_perU = l.get_pho_p4(diphoton_index.first, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
-            sublead_perU = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
+            sublead_perU = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[1]);
         }
             }
         }
         if(PADEBUG)
         {
-	        cout << "lead (pt, eta, phi, e)= ( " << lead_p4.Pt() << " , " << lead_p4.Eta() << " , " << lead_p4.Phi() << " , " << lead_p4.E() << " )" << endl;
-	        cout << "pesD (pt, eta, phi, e)= ( " << lead_pesD.Pt() << " , " << lead_pesD.Eta() << " , " << lead_pesD.Phi() << " , " << lead_pesD.E() << " )" << endl;
-	        cout << "pesU (pt, eta, phi, e)= ( " << lead_pesU.Pt() << " , " << lead_pesU.Eta() << " , " << lead_pesU.Phi() << " , " << lead_pesU.E() << " )" << endl;
-	        cout << "perD (pt, eta, phi, e)= ( " << lead_perD.Pt() << " , " << lead_perD.Eta() << " , " << lead_perD.Phi() << " , " << lead_perD.E() << " )" << endl;
-	        cout << "perU (pt, eta, phi, e)= ( " << lead_perU.Pt() << " , " << lead_perU.Eta() << " , " << lead_perU.Phi() << " , " << lead_perU.E() << " )" << endl;
-	        cout << "subl (pt, eta, phi, e)= ( " << sublead_p4.Pt() << " , " << sublead_p4.Eta() << " , " << sublead_p4.Phi() << " , " << sublead_p4.E() << " )" << endl;
-	        cout << "pesD (pt, eta, phi, e)= ( " << sublead_pesD.Pt() << " , " << sublead_pesD.Eta() << " , " << sublead_pesD.Phi() << " , " << sublead_pesD.E() << " )" << endl;
-	        cout << "pesU (pt, eta, phi, e)= ( " << sublead_pesU.Pt() << " , " << sublead_pesU.Eta() << " , " << sublead_pesU.Phi() << " , " << sublead_pesU.E() << " )" << endl;
-	        cout << "perD (pt, eta, phi, e)= ( " << sublead_perD.Pt() << " , " << sublead_perD.Eta() << " , " << sublead_perD.Phi() << " , " << sublead_perD.E() << " )" << endl;
-	        cout << "perU (pt, eta, phi, e)= ( " << sublead_perU.Pt() << " , " << sublead_perU.Eta() << " , " << sublead_perU.Phi() << " , " << sublead_perU.E() << " )" << endl;
+         cout << "lead (pt, eta, phi, e)= ( " << lead_p4.Pt() << " , " << lead_p4.Eta() << " , " << lead_p4.Phi() << " , " << lead_p4.E() << " )" << endl;
+         cout << "pesD (pt, eta, phi, e)= ( " << lead_pesD.Pt() << " , " << lead_pesD.Eta() << " , " << lead_pesD.Phi() << " , " << lead_pesD.E() << " )" << endl;
+         cout << "pesU (pt, eta, phi, e)= ( " << lead_pesU.Pt() << " , " << lead_pesU.Eta() << " , " << lead_pesU.Phi() << " , " << lead_pesU.E() << " )" << endl;
+         cout << "perD (pt, eta, phi, e)= ( " << lead_perD.Pt() << " , " << lead_perD.Eta() << " , " << lead_perD.Phi() << " , " << lead_perD.E() << " )" << endl;
+         cout << "perU (pt, eta, phi, e)= ( " << lead_perU.Pt() << " , " << lead_perU.Eta() << " , " << lead_perU.Phi() << " , " << lead_perU.E() << " )" << endl;
+         cout << "subl (pt, eta, phi, e)= ( " << sublead_p4.Pt() << " , " << sublead_p4.Eta() << " , " << sublead_p4.Phi() << " , " << sublead_p4.E() << " )" << endl;
+         cout << "pesD (pt, eta, phi, e)= ( " << sublead_pesD.Pt() << " , " << sublead_pesD.Eta() << " , " << sublead_pesD.Phi() << " , " << sublead_pesD.E() << " )" << endl;
+         cout << "pesU (pt, eta, phi, e)= ( " << sublead_pesU.Pt() << " , " << sublead_pesU.Eta() << " , " << sublead_pesU.Phi() << " , " << sublead_pesU.E() << " )" << endl;
+         cout << "perD (pt, eta, phi, e)= ( " << sublead_perD.Pt() << " , " << sublead_perD.Eta() << " , " << sublead_perD.Phi() << " , " << sublead_perD.E() << " )" << endl;
+         cout << "perU (pt, eta, phi, e)= ( " << sublead_perU.Pt() << " , " << sublead_perU.Eta() << " , " << sublead_perU.Phi() << " , " << sublead_perU.E() << " )" << endl;
         }
 
-	    l.FillTree("ph1_pesD_pt",(float)lead_pesD.Pt());
-	    l.FillTree("ph2_pesD_pt",(float)sublead_pesD.Pt());
-	    l.FillTree("ph1_pesD_e",(float)lead_pesD.E());
-	    l.FillTree("ph2_pesD_e",(float)sublead_pesD.E());
-	    l.FillTree("ph1_pesU_pt",(float)lead_pesU.Pt());
-	    l.FillTree("ph2_pesU_pt",(float)sublead_pesU.Pt());
-	    l.FillTree("ph1_pesU_e",(float)lead_pesU.E());
-	    l.FillTree("ph2_pesU_e",(float)sublead_pesU.E());
-	    l.FillTree("ph1_perD_pt",(float)lead_perD.Pt());
-	    l.FillTree("ph2_perD_pt",(float)sublead_perD.Pt());
-	    l.FillTree("ph1_perD_e",(float)lead_perD.E());
-	    l.FillTree("ph2_perD_e",(float)sublead_perD.E());
-	    l.FillTree("ph1_perU_pt",(float)lead_perU.Pt());
-	    l.FillTree("ph2_perU_pt",(float)sublead_perU.Pt());
-	    l.FillTree("ph1_perU_e",(float)lead_perU.E());
-	    l.FillTree("ph2_perU_e",(float)sublead_perU.E());
+         l.FillTree("ph1_pesD_pt",(float)lead_pesD.Pt());
+         l.FillTree("ph2_pesD_pt",(float)sublead_pesD.Pt());
+         l.FillTree("ph1_pesD_e",(float)lead_pesD.E());
+         l.FillTree("ph2_pesD_e",(float)sublead_pesD.E());
+         l.FillTree("ph1_pesU_pt",(float)lead_pesU.Pt());
+         l.FillTree("ph2_pesU_pt",(float)sublead_pesU.Pt());
+         l.FillTree("ph1_pesU_e",(float)lead_pesU.E());
+         l.FillTree("ph2_pesU_e",(float)sublead_pesU.E());
+         l.FillTree("ph1_perD_pt",(float)lead_perD.Pt());
+         l.FillTree("ph2_perD_pt",(float)sublead_perD.Pt());
+         l.FillTree("ph1_perD_e",(float)lead_perD.E());
+         l.FillTree("ph2_perD_e",(float)sublead_perD.E());
+         l.FillTree("ph1_perU_pt",(float)lead_perU.Pt());
+         l.FillTree("ph2_perU_pt",(float)sublead_perU.Pt());
+         l.FillTree("ph1_perU_e",(float)lead_perU.E());
+         l.FillTree("ph2_perU_e",(float)sublead_perU.E());  
 
+         l.FillTree("ph1_pes_smear_weight",(float)ph1_pes_smear_weight);
+         l.FillTree("ph2_pes_smear_weight",(float)ph2_pes_smear_weight);
+         l.FillTree("ph1_per_smear_weight",(float)ph1_per_smear_weight);
+         l.FillTree("ph2_per_smear_weight",(float)ph2_per_smear_weight);
+         l.FillTree("ph1_idEffU_smear_weight",(float)ph1_idEffU_smear_weight);
+         l.FillTree("ph2_idEffU_smear_weight",(float)ph2_idEffU_smear_weight); 
+         l.FillTree("ph1_idEff_smear_weight",(float)ph1_idEff_smear_weight);
+         l.FillTree("ph2_idEff_smear_weight",(float)ph2_idEff_smear_weight); 
+         l.FillTree("ph1_idEffD_smear_weight",(float)ph1_idEffD_smear_weight);
+         l.FillTree("ph2_idEffD_smear_weight",(float)ph2_idEffD_smear_weight); 
+         l.FillTree("ph1_r9EffU_smear_weight",(float)ph1_r9EffU_smear_weight);
+         l.FillTree("ph2_r9EffU_smear_weight",(float)ph2_r9EffU_smear_weight); 
+         l.FillTree("ph1_r9Eff_smear_weight",(float)ph1_r9Eff_smear_weight);
+         l.FillTree("ph2_r9Eff_smear_weight",(float)ph2_r9Eff_smear_weight); 
+         l.FillTree("ph1_r9EffD_smear_weight",(float)ph1_r9EffD_smear_weight);
+         l.FillTree("ph2_r9EffD_smear_weight",(float)ph2_r9EffD_smear_weight); 
 
     if(PADEBUG) cerr << "Leaving StatAnalysis::fillOpTree" << endl;
 }
