@@ -9,10 +9,12 @@
 ### DATA
 #rm data2012_RERECO/*.dat
 #./AnalysisScripts/mk_reduction_dat.py /store/group/phys_higgs/cmshgg/processed/V15_00_05/data ${storedir}/data data2012_RERECO.txt
+rm data2012_RERECO_v10c/*.dat
+./AnalysisScripts/mk_reduction_dat.py /store/group/phys_higgs/cmshgg/processed/V15_00_05/data ${storedir}/data data2012_RERECO.txt
 
 ### SM HIGGS AND BACKGROUNDS
-rm mc_radion_SM-HH/*.dat
-./AnalysisScripts/mk_reduction_dat.py /store/caf/user/bmarzocc ${storedir}/mc/Summer12_RD1 mc_radion_SM-HH.txt
+#rm mc_radion_SM-HH/*.dat
+#./AnalysisScripts/mk_reduction_dat.py /store/caf/user/bmarzocc ${storedir}/mc/Summer12_RD1 mc_radion_SM-HH.txt
 #rm mc_Summer12_RD1/*.dat
 #./AnalysisScripts/mk_reduction_dat.py - ${storedir}/mc/Summer12_RD1 mc_Summer12_RD1.txt
 #rm mc_Summer12_RD1_proxy/*.dat
