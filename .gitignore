@@ -64,7 +64,8 @@ eos_log*
 LSFJOB*
 
 # scratch dump files
-dump*
+*dump*
 .__afs*
 core.[0-9]*
-
+log*err
+log*out
