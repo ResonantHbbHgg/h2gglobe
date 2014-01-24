@@ -124,12 +124,14 @@ void StatAnalysis::Init(LoopAll& l)
        char Name[1000];
 
        sprintf(Name, "/afs/cern.ch/work/b/bmarzocc/public/RadionAnalysis_DONOTREMOVE/jettxt_Radion%d_RD_%s.txt", mass_point,SignalType.c_str());
+       if(massNumber.at(massNumber.size()-1) == std::string("2")) sprintf(Name, "/afs/cern.ch/work/b/bmarzocc/public/RadionAnalysis_DONOTREMOVE/jettxt_Graviton%d_RD.txt", mass_point);
        if(massNumber.at(massNumber.size()-1) == std::string("3")) sprintf(Name, "/afs/cern.ch/work/b/bmarzocc/public/RadionAnalysis_DONOTREMOVE/jettxt_GluGluToHTohhTo2Gam2B_mH-%d_RD.txt", mass_point); 
        std::string name_JetFlavourFile = std::string(Name);
 
        if(PADEBUG) cerr << "jettxt: " << Name << endl;
    
        sprintf(Name, "/afs/cern.ch/work/b/bmarzocc/public/RadionAnalysis_DONOTREMOVE/btagEfficiencies_Radion%d_RD_%s.root", mass_point,SignalType.c_str());
+       if(massNumber.at(massNumber.size()-1) == std::string("2")) sprintf(Name, "/afs/cern.ch/work/b/bmarzocc/public/RadionAnalysis_DONOTREMOVE/btagEfficiencies_Graviton%d_RD.root",mass_point);
        if(massNumber.at(massNumber.size()-1) == std::string("3")) sprintf(Name, "/afs/cern.ch/work/b/bmarzocc/public/RadionAnalysis_DONOTREMOVE/btagEfficiencies_GluGluToHTohhTo2Gam2B_mH-%d_RD.root",mass_point);
        std::string name_btagEfficienciesFile = std::string(Name);
 
