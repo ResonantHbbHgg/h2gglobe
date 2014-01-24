@@ -41,8 +41,8 @@ doEresolSyst=1
 doPhotonIdEffSyst=1
 doPhotonIdEffSmear=1
 
-doVtxEffSyst=1
-doVtxEffSmear=1
+doVtxEffSyst=0
+doVtxEffSmear=0
 
 doTriggerEffSmear=1
 doTriggerEffSyst=1

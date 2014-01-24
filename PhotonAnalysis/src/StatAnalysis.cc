@@ -5266,7 +5266,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     int cur_type = l.itype[l.current];
         for(std::vector<BaseSmearer *>::iterator si=systPhotonSmearers_.begin(); si!= systPhotonSmearers_.end(); ++si ) {
             if(PADEBUG) cout << "(*si)->name()= " << (*si)->name() << "\t(*si)->nRegisteredSmerers()= " << (*si)->nRegisteredSmerers() << endl;
-            float systStep = 3.0;
+            float systStep = 1.0;
             for(float syst_shift=-systRange; syst_shift<=systRange; syst_shift+=systStep ) {
                
         applySinglePhotonSmearings(smeared_pho_energy, smeared_pho_r9, smeared_pho_weight, cur_type, l, energyCorrected, energyCorrectedError,
