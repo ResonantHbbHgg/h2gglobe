@@ -99,7 +99,7 @@ typ=-1502 ind=1 draw=1   Nam=Graviton_m1500_8TeV   CaDir=/store/cmst3/user/obond
 
 #typ=+84    ind=99 draw=1  Nam=tGG_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/tGG_8TeV-whizard-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1    red=0   lum=1.e10  xsec=0.00337  kfac=1.  scal=1.
 
-#typ=+85    ind=99 draw=1  Nam=TTGJets_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/TTGJets_8TeV-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1    red=0   lum=1.e10  xsec=14  kfac=1.  scal=1.
+#typ=+85    ind=99 draw=1  Nam=TTGJets_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/TTGJets_8TeV-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1    red=0   lum=1.e10  xsec=1.444  kfac=1.  scal=1.
 
 #typ=+60    ind=99 draw=1  Nam=ZGToLLG_8TeV   CaDir=/store/cmst3/user/obondu/H2GGLOBE/Radion/reduced/radion_reduction_v10/mc/Summer12_RD1/ZGToLLG_8TeV-madgraph_Summer12_DR53X-PU_RD1_START53_V7N-v1    red=0   lum=1.e10  xsec=132.6  kfac=1.  scal=1.
 
