@@ -5324,22 +5324,22 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if( (*si)->name() == "E_scale" && syst_shift < 0.)
         {
             lead_pesD = l.get_pho_p4(diphoton_index.first, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
-            sublead_pesD = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[1]);
+            sublead_pesD = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
         }
         else if( (*si)->name() == "E_scale" && syst_shift > 0.)
         {
             lead_pesU = l.get_pho_p4(diphoton_index.first, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
-            sublead_pesU = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[1]);
+            sublead_pesU = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
         }
         else if( (*si)->name() == "E_res" && syst_shift < 0.)
         {
             lead_perD = l.get_pho_p4(diphoton_index.first, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
-            sublead_perD = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[1]);
+            sublead_perD = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
         }
         else if( (*si)->name() == "E_res" && syst_shift > 0.)
         {
             lead_perU = l.get_pho_p4(diphoton_index.first, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
-            sublead_perU = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[1]);
+            sublead_perU = l.get_pho_p4(diphoton_index.second, (TVector3*)l.vtx_std_xyz->At(l.dipho_vtxind[diphoton_id]), &smeared_pho_energy[0]);
         }
             }
         }
