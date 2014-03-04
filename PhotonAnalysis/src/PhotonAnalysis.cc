@@ -2391,7 +2391,7 @@ bool PhotonAnalysis::SelectEventsReduction(LoopAll& l, int jentry)
             if( l.jet_algoPF1_dR2Mean[j1_i] > 0.06 ) continue;
             if( l.jet_algoPF1_pfloose[j1_i] < 0.1) continue;
             prejets++;
-            if( l.jet_algoPF1_csvBtag[j1_i] < 0.244 ) continue; // CSV Loose Working Point
+            //if( l.jet_algoPF1_csvBtag[j1_i] < 0.244 ) continue; // CSV Loose Working Point
             prebjets++;
         }
         isThereEnoughJets = (isThereEnoughJets) || (prejets >= 2);
@@ -5740,7 +5740,61 @@ float PhotonAnalysis::MuonSFReweight(LoopAll &l){
 
 }
 
+bool PhotonAnalysis::noPartonDaughters(LoopAll &l,int& gen_p_id){
+     
+     int nDaughters = 0;
+     int nPartonDaughters= 0;
+     for(int gi=0;gi<l.gp_n;gi++){
+         if(l.gp_mother[gi] == gen_p_id){
+            nDaughters++;
+            if(abs(l.gp_pdgid[gi]) == 1 || abs(l.gp_pdgid[gi]) == 2 || abs(l.gp_pdgid[gi]) == 3 || abs(l.gp_pdgid[gi]) == 4 || abs(l.gp_pdgid[gi]) == 5 || abs(l.gp_pdgid[gi]) == 6 || abs(l.gp_pdgid[gi]) == 21) nPartonDaughters++;
+         }
+     }
 
+     if(nDaughters > 0 && nPartonDaughters == 0) return true;
+     else return false;    
+          
+}
+
+void PhotonAnalysis::matchJetFlavour(LoopAll &l, vector<int> jets, map<int,short>& flavour){
+    
+     for(int ijet=0; ijet<jets.size(); ++ijet) {
+
+         int tempParticle = -1;
+         int tempPartonHighestPt = -1;
+         float maxPt = 0.;
+		 TLorentzVector* jet = (TLorentzVector*)l.jet_algoPF1_p4->At(jets[ijet]);
+
+         for (int gi=0;gi<l.gp_n;gi++){
+
+              if(gi<6) continue;
+              if(l.gp_status[gi] == 3) continue;
+
+              bool is_good = false;
+              if(abs(l.gp_pdgid[gi]) == 1 || abs(l.gp_pdgid[gi]) == 2 || abs(l.gp_pdgid[gi]) == 3 || abs(l.gp_pdgid[gi]) == 4 || abs(l.gp_pdgid[gi]) == 5 || abs(l.gp_pdgid[gi]) == 21) is_good = true;
+              if(is_good && noPartonDaughters(l,gi) == true) is_good = true;
+
+              if(is_good == false) continue;
+              
+              TLorentzVector* jet_mc = (TLorentzVector*)l.gp_p4->At(gi);
+              double dr_jet=jet->DeltaR(*jet_mc);
+              if(dr_jet > 0.3) continue;
+              
+              if( tempParticle == -1 && ( abs( l.gp_pdgid[gi] ) == 4 ) ) tempParticle = gi;
+              if( abs( l.gp_pdgid[gi] ) == 5 ) tempParticle = gi;
+              if( jet_mc->Pt() > maxPt ) {
+                     maxPt = jet_mc->Pt();
+                     tempPartonHighestPt = gi;
+              }
+		 }
+         
+         if ( tempParticle == -1 ) tempParticle = tempPartonHighestPt;
+
+         flavour[ijet] = l.gp_pdgid[tempParticle];
+    
+     }
+
+}
 
 
 
