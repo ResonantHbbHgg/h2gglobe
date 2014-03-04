@@ -487,6 +487,8 @@ class PhotonAnalysis : public BaseAnalysis
     bool TTHTag7TeV(LoopAll& l, int& diphoton_id, float* smeared_pho_energy=0, bool *jetid_flags=0,bool mvaselection=false,bool vetodipho=false, bool kinonly=false);
 
     //btag syst
+    bool  noPartonDaughters(LoopAll &l,int& gen_p_id);
+    void  matchJetFlavour(LoopAll &l, vector<int> jets, map<int,short>& flavour);
     float BtagReweight(LoopAll& l, bool shiftBtagEffUp_bc, bool shiftBtagEffDown_bc, bool shiftBtagEffUp_l, bool shiftBtagEffDown_l,int WP);
     float BtagReweight2013(LoopAll& l, bool shiftBtagEffUp_bc, bool shiftBtagEffDown_bc, bool shiftBtagEffUp_l, bool shiftBtagEffDown_l,int WP);
 
