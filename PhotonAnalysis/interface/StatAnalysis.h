@@ -187,7 +187,6 @@ class StatAnalysis : public PhotonAnalysis
     std::string name_btagSFFile;
     std::string name_btagEfficienciesFile;
     std::string SignalType;
-    JetFlavourReader* jetFlavReader;
     BtagSFReader* SFReader;
     BtagEfficiencyReader* EffReader;
     
