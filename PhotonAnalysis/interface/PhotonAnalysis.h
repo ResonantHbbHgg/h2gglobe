@@ -488,7 +488,7 @@ class PhotonAnalysis : public BaseAnalysis
 
     //btag syst
     bool  noPartonDaughters(LoopAll &l,int& gen_p_id);
-    void  matchJetFlavour(LoopAll &l, vector<int> jets, map<int,short>& flavour);
+    void  matchJetFlavour(LoopAll &l, map<int,short>& flavour);
     float BtagReweight(LoopAll& l, bool shiftBtagEffUp_bc, bool shiftBtagEffDown_bc, bool shiftBtagEffUp_l, bool shiftBtagEffDown_l,int WP);
     float BtagReweight2013(LoopAll& l, bool shiftBtagEffUp_bc, bool shiftBtagEffDown_bc, bool shiftBtagEffUp_l, bool shiftBtagEffDown_l,int WP);
 
