@@ -2365,19 +2365,16 @@ bool PhotonAnalysis::SelectEventsReduction(LoopAll& l, int jentry)
         postProcessJets(l,ivtx);
     }
 
-    // Radion analysis reduction: add a condition on minimal number of jets + loose bjet cut (to reduce used disk space....)
-    // JET PRESELECTION
+    // Radion analysis reduction: add a condition on minimal number of jets (to reduce used disk space....)
+    // JET PRESELECTION && JET FLAVOUR-MATCHING
     bool isThereEnoughJets = false;
-    bool isThereEnoughBJets = false;
     TLorentzVector* j1p4;
     float dr2pho = 0.3;
     TLorentzVector* pho1, pho2;
     int prejets;
-    int prebjets;
     for(int idipho = 0 ; idipho < l.dipho_n ; idipho++)
     {
         prejets = 0;
-        prebjets = 0;
         for(int j1_i=0; j1_i<l.jet_algoPF1_n; j1_i++)
         {
             j1p4 = (TLorentzVector*) l.jet_algoPF1_p4->At(j1_i);
@@ -2385,23 +2382,27 @@ bool PhotonAnalysis::SelectEventsReduction(LoopAll& l, int jentry)
             TLorentzVector sublead_p4 = l.get_pho_p4( l.dipho_subleadind[idipho], l.dipho_vtxind[idipho], &corrected_pho_energy[0] );
             if( lead_p4.DeltaR(*j1p4) < dr2pho ) continue;
             if( sublead_p4.DeltaR(*j1p4) < dr2pho ) continue;
-            if(fabs(j1p4->Eta()) > 2.5) continue;
-            if(j1p4->Pt() < 10) continue;
             if( l.jet_algoPF1_betaStarClassic[j1_i] > 0.2 * log( l.vtx_std_n - 0.64) ) continue;
             if( l.jet_algoPF1_dR2Mean[j1_i] > 0.06 ) continue;
             if( l.jet_algoPF1_pfloose[j1_i] < 0.1) continue;
             prejets++;
-            //if( l.jet_algoPF1_csvBtag[j1_i] < 0.244 ) continue; // CSV Loose Working Point
-            prebjets++;
+            
         }
         isThereEnoughJets = (isThereEnoughJets) || (prejets >= 2);
-        isThereEnoughBJets = (isThereEnoughBJets) || (prebjets >= 1);
         
-        if(isThereEnoughJets && isThereEnoughBJets) break; 
+        if(isThereEnoughJets) break; 
     }
-    if(! isThereEnoughJets ) return false;
-    if(! isThereEnoughBJets ) return false;
 
+    if(isThereEnoughJets ){
+
+       map<int,short> jetFlavourMap; 
+       matchJetFlavour(l,jetFlavourMap);
+       
+       for(int ijet=0; ijet<l.jet_algoPF1_n; ijet++)
+           l.jet_algoPF1_flavour[ijet] = (int)jetFlavourMap[ijet];
+    }
+
+    if(! isThereEnoughJets ) return false;
 
 
     return oneKinSelected;
@@ -2626,9 +2627,12 @@ void PhotonAnalysis::ReducedOutputTree(LoopAll &l, TTree * outputTree)
     l.pho_cic4pfcutlevel_sublead = new std::vector<std::vector<Short_t> >();
     l.pho_cic4pfpasscuts_sublead = new std::vector<std::vector<std::vector<UInt_t> > >();
     l.dipho_vtx_std_sel =  new std::vector<int>();
-
+    
     if( outputTree ) {
 
+    //jet branches
+    l.Branch_jet_algoPF1_flavour(outputTree);
+ 
 	l.Branch_vtx_std_evt_mva(outputTree);
 	l.Branch_vtx_std_ranked_list(outputTree);
 	l.Branch_vtx_std_sel(outputTree);
@@ -2769,7 +2773,6 @@ void PhotonAnalysis::ReducedOutputTree(LoopAll &l, TTree * outputTree)
 //    l.METcorrected = new TClonesArray("TLorentzVector", 1);     //met at analysis step
 //    l.METcorrected->Clear();                    //met at analysis step
 //    ((*l.METcorrected)[0]) = new TLorentzVector();        //met at analysis step
-
 
     if( outputTree ) {
     l.Branch_gh_gen2reco1( outputTree );
@@ -5756,14 +5759,14 @@ bool PhotonAnalysis::noPartonDaughters(LoopAll &l,int& gen_p_id){
           
 }
 
-void PhotonAnalysis::matchJetFlavour(LoopAll &l, vector<int> jets, map<int,short>& flavour){
+void PhotonAnalysis::matchJetFlavour(LoopAll &l, map<int,short>& flavour){
     
-     for(int ijet=0; ijet<jets.size(); ++ijet) {
+     for(int ijet=0; ijet<l.jet_algoPF1_n; ++ijet) {
 
          int tempParticle = -1;
          int tempPartonHighestPt = -1;
          float maxPt = 0.;
-		 TLorentzVector* jet = (TLorentzVector*)l.jet_algoPF1_p4->At(jets[ijet]);
+		 TLorentzVector* jet = (TLorentzVector*)l.jet_algoPF1_p4->At(ijet);
 
          for (int gi=0;gi<l.gp_n;gi++){
 
