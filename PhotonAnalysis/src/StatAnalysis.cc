@@ -2524,6 +2524,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 
     if(PADEBUG) cerr << "Entering StatAnalysis::fillOpTree" << endl;
     if(PADEBUG) cerr << "StatAnalysis::fillOpTree: lead_p4.Pt()= " << lead_p4.Pt() << "\tsublead_p4.Pt()= " << sublead_p4.Pt() << endl;
+    std::cout << "Flavour = " << l.jet_algoPF1_flavour[0] << std::endl;
 // event variables
     l.FillTree("itype", (int)l.itype[l.current]);
 	l.FillTree("run",(float)l.run);
@@ -2676,9 +2677,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     vector<int> jets;
     jets = l.SelectJets(lead_p4, sublead_p4);
     
-    map<int,short> jetFlavour; 
-    matchJetFlavour(l,jets,jetFlavour);
-    
     if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling jet info" << endl;
     l.FillTree("njets_passing_kLooseID",(int)jets.size());
     int njets_passing_kLooseID_and_CSVL = 0;
@@ -2757,7 +2755,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         if(PADEBUG) cout << "BtagSF variables" << endl;
         if((l.itype[l.current] <= -100) && (l.itype[l.current] > -2000)){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet1" << endl;
-           int flavour = (int)jetFlavour[0];
+           int flavour = (int)l.jet_algoPF1_flavour[jets[0]];
            float btagSF_L = SFReader->getSF(jet1,flavour,"loose");
            float btagSFErrorUp_L = SFReader->getSFErrorUp(jet1,flavour,"loose");
            float btagSFErrorDown_L = SFReader->getSFErrorDown(jet1,flavour,"loose");
@@ -2924,7 +2922,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         //BtagSF variables (Badder)
         if((l.itype[l.current] <= -100) && (l.itype[l.current] > -2000)){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet2" << endl;
-           int flavour = (int)jetFlavour[1];
+           int flavour = (int)l.jet_algoPF1_flavour[jets[1]];
            float btagSF_L = SFReader->getSF(jet2,flavour,"loose");
            float btagSFErrorUp_L = SFReader->getSFErrorUp(jet2,flavour,"loose");
            float btagSFErrorDown_L = SFReader->getSFErrorDown(jet2,flavour,"loose");
@@ -3137,7 +3135,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         //BtagSF variables (Badder)
         if((l.itype[l.current] <= -100) && (l.itype[l.current] > -2000)){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet3" << endl;
-           int flavour = (int)jetFlavour[2];
+           int flavour = (int)l.jet_algoPF1_flavour[jets[2]];
            float btagSF_L = SFReader->getSF(jet3,flavour,"loose");
            float btagSFErrorUp_L = SFReader->getSFErrorUp(jet3,flavour,"loose");
            float btagSFErrorDown_L = SFReader->getSFErrorDown(jet3,flavour,"loose");
@@ -3295,7 +3293,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         //BtagSF variables (Badder)
         if((l.itype[l.current] <= -100) && (l.itype[l.current] > -2000)){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet4" << endl;
-           int flavour = (int)jetFlavour[3];
+           int flavour = (int)l.jet_algoPF1_flavour[jets[3]];
            float btagSF_L = SFReader->getSF(jet4,flavour,"loose");
            float btagSFErrorUp_L = SFReader->getSFErrorUp(jet4,flavour,"loose");
            float btagSFErrorDown_L = SFReader->getSFErrorDown(jet4,flavour,"loose");
@@ -3453,7 +3451,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         //BtagSF variables (Badder)
         if((l.itype[l.current] <= -100) && (l.itype[l.current] > -2000)){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet5" << endl;
-           int flavour = (int)jetFlavour[4];
+           int flavour = (int)l.jet_algoPF1_flavour[jets[4]];
            float btagSF_L = SFReader->getSF(jet5,flavour,"loose");
            float btagSFErrorUp_L = SFReader->getSFErrorUp(jet5,flavour,"loose");
            float btagSFErrorDown_L = SFReader->getSFErrorDown(jet5,flavour,"loose");
@@ -3611,7 +3609,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         //BtagSF variables (Badder)
         if((l.itype[l.current] <= -100) && (l.itype[l.current] > -2000)){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet6" << endl;
-           int flavour = (int)jetFlavour[5];
+           int flavour = (int)l.jet_algoPF1_flavour[jets[5]];
            float btagSF_L = SFReader->getSF(jet6,flavour,"loose");
            float btagSFErrorUp_L = SFReader->getSFErrorUp(jet6,flavour,"loose");
            float btagSFErrorDown_L = SFReader->getSFErrorDown(jet6,flavour,"loose");
@@ -3769,7 +3767,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         //BtagSF variables (Badder)
         if((l.itype[l.current] <= -100) && (l.itype[l.current] > -2000)){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet7" << endl;
-           int flavour = (int)jetFlavour[6];
+           int flavour = (int)l.jet_algoPF1_flavour[jets[6]];
            float btagSF_L = SFReader->getSF(jet7,flavour,"loose");
            float btagSFErrorUp_L = SFReader->getSFErrorUp(jet7,flavour,"loose");
            float btagSFErrorDown_L = SFReader->getSFErrorDown(jet7,flavour,"loose");
@@ -3927,7 +3925,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         //BtagSF variables (Badder)
         if((l.itype[l.current] <= -100) && (l.itype[l.current] > -2000)){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet8" << endl;
-           int flavour = (int)jetFlavour[7]; 
+           int flavour = (int)l.jet_algoPF1_flavour[jets[7]]; 
            float btagSF_L = SFReader->getSF(jet8,flavour,"loose");
            float btagSFErrorUp_L = SFReader->getSFErrorUp(jet8,flavour,"loose");
            float btagSFErrorDown_L = SFReader->getSFErrorDown(jet8,flavour,"loose");
@@ -4085,7 +4083,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         //BtagSF variables (Badder)
         if((l.itype[l.current] <= -100) && (l.itype[l.current] > -2000)){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet9" << endl;
-           int flavour = (int)jetFlavour[8];
+           int flavour = (int)l.jet_algoPF1_flavour[jets[8]];
            float btagSF_L = SFReader->getSF(jet9,flavour,"loose");
            float btagSFErrorUp_L = SFReader->getSFErrorUp(jet9,flavour,"loose");
            float btagSFErrorDown_L = SFReader->getSFErrorDown(jet9,flavour,"loose");
@@ -4243,7 +4241,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         //BtagSF variables (Badder)
         if((l.itype[l.current] <= -100) && (l.itype[l.current] > -2000)){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet10" << endl;
-           int flavour = (int)jetFlavour[9]; 
+           int flavour = (int)l.jet_algoPF1_flavour[jets[9]]; 
            float btagSF_L = SFReader->getSF(jet10,flavour,"loose");
            float btagSFErrorUp_L = SFReader->getSFErrorUp(jet10,flavour,"loose");
            float btagSFErrorDown_L = SFReader->getSFErrorDown(jet10,flavour,"loose");
@@ -4401,7 +4399,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         //BtagSF variables (Badder)
         if((l.itype[l.current] <= -100) && (l.itype[l.current] > -2000)){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet11" << endl;
-           int flavour = (int)jetFlavour[10]; 
+           int flavour = (int)l.jet_algoPF1_flavour[jets[10]]; 
            float btagSF_L = SFReader->getSF(jet11,flavour,"loose");
            float btagSFErrorUp_L = SFReader->getSFErrorUp(jet11,flavour,"loose");
            float btagSFErrorDown_L = SFReader->getSFErrorDown(jet11,flavour,"loose");
@@ -4559,7 +4557,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         //BtagSF variables (Badder)
         if((l.itype[l.current] <= -100) && (l.itype[l.current] > -2000)){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet12" << endl;
-           int flavour = (int)jetFlavour[11];
+           int flavour = (int)l.jet_algoPF1_flavour[jets[11]];
            float btagSF_L = SFReader->getSF(jet12,flavour,"loose");
            float btagSFErrorUp_L = SFReader->getSFErrorUp(jet12,flavour,"loose");
            float btagSFErrorDown_L = SFReader->getSFErrorDown(jet12,flavour,"loose");
@@ -4717,7 +4715,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         //BtagSF variables (Badder)
         if((l.itype[l.current] <= -100) && (l.itype[l.current] > -2000)){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet13" << endl;
-           int flavour = (int)jetFlavour[12]; 
+           int flavour = (int)l.jet_algoPF1_flavour[jets[12]]; 
            float btagSF_L = SFReader->getSF(jet13,flavour,"loose");
            float btagSFErrorUp_L = SFReader->getSFErrorUp(jet13,flavour,"loose");
            float btagSFErrorDown_L = SFReader->getSFErrorDown(jet13,flavour,"loose");
@@ -4875,7 +4873,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         //BtagSF variables (Badder)
         if((l.itype[l.current] <= -100) && (l.itype[l.current] > -2000)){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet14" << endl;
-           int flavour = (int)jetFlavour[13];
+           int flavour = (int)l.jet_algoPF1_flavour[jets[13]];
            float btagSF_L = SFReader->getSF(jet14,flavour,"loose");
            float btagSFErrorUp_L = SFReader->getSFErrorUp(jet14,flavour,"loose");
            float btagSFErrorDown_L = SFReader->getSFErrorDown(jet14,flavour,"loose");
@@ -5033,7 +5031,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         //BtagSF variables (Badder)
         if((l.itype[l.current] <= -100) && (l.itype[l.current] > -2000)){
            if(PADEBUG) cerr << "StatAnalysis::fillOpTree: filling BtagSF variables, jet15" << endl;
-           int flavour = (int)jetFlavour[14];
+           int flavour = (int)l.jet_algoPF1_flavour[jets[14]];
            float btagSF_L = SFReader->getSF(jet15,flavour,"loose");
            float btagSFErrorUp_L = SFReader->getSFErrorUp(jet15,flavour,"loose");
            float btagSFErrorDown_L = SFReader->getSFErrorDown(jet15,flavour,"loose");
