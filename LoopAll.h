@@ -1030,6 +1030,12 @@ TBranch* b_mc_et,*b_mc_eta, *b_mc_phi, *b_higgs, *b_fsr_et, *b_fsr_eta, *b_fsr_p
 
 void DefineUserBranches();
 
+//jet branches
+Int_t jet_algoPF1_flavour[MAX_JETS];
+TBranch * b_jet_algoPF1_flavour;
+void Branch_jet_algoPF1_flavour(TTree * tree) { tree->Branch("jet_algoPF1_flavour", &jet_algoPF1_flavour, "jet_algoPF1_flavour[jet_algoPF1_n]/I" ); };
+void SetBranchAddress_jet_algoPF1_flavour(TTree * tree) { tree->SetBranchAddress("jet_algoPF1_flavour", &jet_algoPF1_flavour, &b_jet_algoPF1_flavour); };
+
 void Branch_mc_et(TTree* tree) { tree->Branch("mc_et", &mc_et, "mc_et[100]/F"); };
 void Branch_mc_eta(TTree* tree) { tree->Branch("mc_eta", &mc_eta, "mc_eta[100]/F"); };
 void Branch_mc_phi(TTree* tree) { tree->Branch("mc_phi", &mc_phi, "mc_phi[100]/F"); };
@@ -1085,7 +1091,6 @@ void Branch_vtx_std_sel(TTree * tree) { tree->Branch("vtx_std_sel", &vtx_std_sel
 void Branch_vtx_std_evt_mva(TTree * tree) { tree->Branch("vtx_std_evt_mva", "std::vector<float>", &vtx_std_evt_mva); }; 
 void Branch_vtx_std_ranked_list(TTree * tree) { tree->Branch("vtx_std_ranked_list", "std::vector<std::vector<int> >", &vtx_std_ranked_list); }; 
 void Branch_pho_matchingConv(TTree * tree) { tree->Branch("pho_matchingConv", "std::vector<int>", &pho_matchingConv); }; 
-
 
 void SetBranchAddress_gh_gen2reco1(TTree * tree) { tree->SetBranchAddress("gh_gen2reco1", &gh_gen2reco1, &b_gh_gen2reco1); }; 
 void SetBranchAddress_gh_gen2reco2(TTree * tree) { tree->SetBranchAddress("gh_gen2reco2", &gh_gen2reco2, &b_gh_gen2reco2); }; 
