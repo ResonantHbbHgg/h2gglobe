@@ -3863,6 +3863,10 @@ void LoopAll::DefineUserBranches()
 {
     runCiC = true;
 #ifndef __CINT__
+    
+    //jet branches
+    BRANCH_DICT(jet_algoPF1_flavour);
+
     BRANCH_DICT(gh_gen2reco1);
     BRANCH_DICT(gh_gen2reco2);
     BRANCH_DICT(gh_vbfq1_pdgid);
