@@ -107,10 +107,11 @@ void StatAnalysis::Init(LoopAll& l)
     std::string btagEffFileName = l.sampleContainer[l.current_sample_index].pileup;
     btagEffFileName.erase(btagEffFileName.end()-11, btagEffFileName.end());
     btagEffFileName = btagEffFileName + std::string("btagEff.root");
-    std::cout << "BTAGEFF: " << btagEffFileName << std::endl;
+    if(PADEBUG) std::cout << " BtagEff File: " << btagEffFileName << std::endl;
     EffReader = new BtagEfficiencyReader(btagEffFileName.c_str());
 
     std::string btagSFFileName = std::string("/afs/cern.ch/work/b/bmarzocc/public/RadionAnalysis_DONOTREMOVE/btagSF_22Jan2013Rereco.root");
+    if(PADEBUG) std::cout << " BtagSF File: " << btagSFFileName << std::endl;
     SFReader = new BtagSFReader(btagSFFileName.c_str());
     
     std::string outputfilename = (std::string) l.histFileName;
