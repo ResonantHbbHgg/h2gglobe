@@ -54,7 +54,7 @@ BtagSFReader::BtagSFReader(const std::string name_btagSFFile)
 
     name_btagSFFile_ = name_btagSFFile;
 
-    TFile* btagSF_File_ = new TFile(name_btagSFFile_.c_str(),"READ");
+    TFile* btagSF_File_ = TFile::Open(name_btagSFFile_.c_str());
         
     SFb_CSVL_ = (TF1*)btagSF_File_->Get("SFb_CSVL");
     h1_SFb_CSVL_ = (TH1F*)btagSF_File_->Get("h1_SFb_CSVL");
@@ -641,7 +641,7 @@ BtagEfficiencyReader::BtagEfficiencyReader(const std::string name_btagEfficienci
 
     name_btagEfficienciesFile_ = name_btagEfficienciesFile;
     
-    TFile* btagEfficiency_File_ = new TFile(name_btagEfficienciesFile_.c_str(),"READ");
+    TFile* btagEfficiency_File_ = TFile::Open(name_btagEfficienciesFile_.c_str());
 
     h2_BTaggingEff_b_L_ = (TH2F*)btagEfficiency_File_->Get("h2_BTaggingEff_b_L");
     h2_BTaggingEff_b_M_ = (TH2F*)btagEfficiency_File_->Get("h2_BTaggingEff_b_M");
