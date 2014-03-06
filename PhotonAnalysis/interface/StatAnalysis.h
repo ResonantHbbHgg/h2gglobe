@@ -183,9 +183,6 @@ class StatAnalysis : public PhotonAnalysis
     TFile *kfacFile;
 
     //Add btagSF variables (Badder)
-    std::string name_btagSFFile;
-    std::string name_btagEfficienciesFile;
-    std::string SignalType;
     BtagSFReader* SFReader;
     BtagEfficiencyReader* EffReader;
     
