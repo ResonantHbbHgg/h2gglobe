@@ -2382,9 +2382,12 @@ bool PhotonAnalysis::SelectEventsReduction(LoopAll& l, int jentry)
             TLorentzVector sublead_p4 = l.get_pho_p4( l.dipho_subleadind[idipho], l.dipho_vtxind[idipho], &corrected_pho_energy[0] );
             if( lead_p4.DeltaR(*j1p4) < dr2pho ) continue;
             if( sublead_p4.DeltaR(*j1p4) < dr2pho ) continue;
-            if( l.jet_algoPF1_betaStarClassic[j1_i] > 0.2 * log( l.vtx_std_n - 0.64) ) continue;
+            if(fabs(j1p4->Eta()) > 2.5) continue;
+            if(j1p4->Pt() < 10) continue;        
+            //cutbased puId selections
+            /*if( l.jet_algoPF1_betaStarClassic[j1_i] > 0.2 * log( l.vtx_std_n - 0.64) ) continue;
             if( l.jet_algoPF1_dR2Mean[j1_i] > 0.06 ) continue;
-            if( l.jet_algoPF1_pfloose[j1_i] < 0.1) continue;
+            if( l.jet_algoPF1_pfloose[j1_i] < 0.1) continue;*/
             prejets++;
             
         }
@@ -2393,7 +2396,7 @@ bool PhotonAnalysis::SelectEventsReduction(LoopAll& l, int jentry)
         if(isThereEnoughJets) break; 
     }
 
-    if(isThereEnoughJets ){
+    if(isThereEnoughJets && l.itype[l.current] != 0){
 
        map<int,short> jetFlavourMap; 
        matchJetFlavour(l,jetFlavourMap);
