@@ -2534,9 +2534,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     if(PADEBUG) cerr << "StatAnalysis::fillOpTree: lead_p4.Pt()= " << lead_p4.Pt() << "\tsublead_p4.Pt()= " << sublead_p4.Pt() << endl;
 // event variables
     l.FillTree("itype", (int)l.itype[l.current]);
-	l.FillTree("run",(float)l.run);
-	l.FillTree("lumis",(float)l.lumis);
-    l.FillTree("event",(float)l.event);
+	l.FillTree("run",(int)l.run);
+	l.FillTree("lumis",(int)l.lumis);
+    l.FillTree("event",(int)l.event);
 	l.FillTree("weight",(float)weight);
 	l.FillTree("evweight",(float)evweight); // evweight = weight * smeared_pho_weight[diphoton_index.first] * smeared_pho_weight[diphoton_index.second] * genLevWeight * BeamspotReweight(vtx->Z(),((TVector3*)l.gv_pos->At(0))->Z()) * applyDiPhotonSmearings;
     float pu_weight = weight/l.sampleContainer[l.current_sample_index].weight(); // contains also the smearings, not only pu
