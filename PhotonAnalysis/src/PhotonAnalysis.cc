@@ -5781,8 +5781,11 @@ void PhotonAnalysis::matchJetFlavour(LoopAll &l, map<int,short>& flavour){
               if(is_good && noPartonDaughters(l,gi) == true) is_good = true;
 
               if(is_good == false) continue;
+              if(gi < l.gp_mother[gi]) continue; // cut particles younger than their mothers....
               
               TLorentzVector* jet_mc = (TLorentzVector*)l.gp_p4->At(gi);
+              if(jet_mc->Pt() < 0.001) continue; // if gen pt is less than 1MeV, then don't bother matching, the p4 is probably buggy
+
               double dr_jet=jet->DeltaR(*jet_mc);
               if(dr_jet > 0.3) continue;
               
