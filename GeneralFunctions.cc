@@ -1418,7 +1418,7 @@ TLorentzVector LoopAll::get_pho_p4(int ipho, int ivtx, const float * energy) con
 TLorentzVector LoopAll::get_pho_p4(int ipho, TVector3 * vtx, const float * energy) const
 {
     /// PhotonInfo p(ipho, *((TVector3*)sc_xyz->At(pho_scind[ipho])),
-    if(GFDEBUG) std::cout<<"General Functions::get p4 -- ipho energy p4energy"<<ipho<<" "<<energy[ipho]<<" "<<((TLorentzVector*)pho_p4->At(ipho))->Energy()<<std::endl;
+//    if(GFDEBUG) std::cout<<"General Functions::get p4 -- ipho energy p4energy"<<ipho<<" "<<energy[ipho]<<" "<<((TLorentzVector*)pho_p4->At(ipho))->Energy()<<std::endl;
     PhotonInfo p(ipho, *((TVector3*)sc_xyz->At(pho_scind[ipho])),
                  energy != 0 ? energy[ipho] : ((TLorentzVector*)pho_p4->At(ipho))->Energy() );
     return p.p4( vtx->X(), vtx->Y(), vtx->Z() );
@@ -1434,6 +1434,7 @@ void LoopAll::set_pho_p4(int ipho, int ivtx, float *pho_energy_array)
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 void LoopAll::FillCICPFInputs()
 {
+    if(GFDEBUG) cout << "Entering LoopAll::FillCICPFInputs" << endl;
     for(int ipho=0; ipho<pho_n; ++ipho) {
         float neu01 = pfEcalIso(ipho, 0.1, 0., 0., 0., 0., 0., 0., 5);
         float neu02 = pfEcalIso(ipho, 0.2, 0., 0., 0., 0., 0., 0., 5);
@@ -1518,11 +1519,13 @@ void LoopAll::FillCICPFInputs()
         }
         pho_tkiso_badvtx_id[ipho] = badvtx;
     }
+    if(GFDEBUG) cout << "Leaving LoopAll::FillCICPFInputs" << endl;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 void LoopAll::FillCICInputs()
 {
+    if(GFDEBUG) cout << "Entering LoopAll::FillCICInputs" << endl;
     pho_tkiso_recvtx_030_002_0000_10_01->clear(); pho_tkiso_recvtx_030_002_0000_10_01->resize(pho_n,std::vector<float>(vtx_std_n,0.));
   
     pho_ZeeVal_tkiso_recvtx_030_002_0000_10_01->clear(); pho_ZeeVal_tkiso_recvtx_030_002_0000_10_01->resize(pho_n,std::vector<float>(vtx_std_n,0.));
@@ -1552,11 +1555,13 @@ void LoopAll::FillCICInputs()
 
         }
     }
+    if(GFDEBUG) cout << "Leaving LoopAll::FillCICInputs" << endl;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 void LoopAll::FillCIC()
 {
+    if(GFDEBUG) cout << "Entering LoopAll::FillCIC" << endl;
     // 6 categories
     pho_cic6passcuts_lead->clear(); pho_cic6passcuts_lead->resize( pho_n, std::vector<std::vector<UInt_t> >(vtx_std_n, std::vector<UInt_t> (phoNCUTLEVELS,0) ) ); 
     pho_cic6cutlevel_lead->clear(); pho_cic6cutlevel_lead->resize( pho_n, std::vector<Short_t>(vtx_std_n,0) );
@@ -1634,6 +1639,7 @@ void LoopAll::FillCIC()
             }
         }
     }
+    if(GFDEBUG) cout << "Leaving LoopAll::FillCIC" << endl;
 }
 
 
