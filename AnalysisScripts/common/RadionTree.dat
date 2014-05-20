@@ -7,9 +7,9 @@ delare:
 
 # event variables
 type=0 name=itype
-type=2 name=run
-type=2 name=lumis
-type=2 name=event
+type=0 name=run
+type=0 name=lumis
+type=0 name=event
 type=2 name=weight
 type=2 name=evweight
 type=2 name=pu_weight
