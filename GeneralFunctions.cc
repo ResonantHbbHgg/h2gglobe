@@ -5096,8 +5096,6 @@ bool LoopAll::FindMCRadion(int& radionInd, int& ggHiggsInd, int& bbHiggsInd, int
 //		if (mcj1 < 0 || mcj2 < 0) return is_mcmatched;
 
 // FIXME: not sure if any of the below is useful in this function
-		TLorentzVector* radion2 = (TLorentzVector*)gp_p4->At(radionStat2);
-		TLorentzVector* radion3 = (TLorentzVector*)gp_p4->At(radionStat3);
 		TLorentzVector* ggHiggs2 = (TLorentzVector*)gp_p4->At(ggHiggsStat2);
 		TLorentzVector* ggHiggs3 = (TLorentzVector*)gp_p4->At(ggHiggsStat3);
 		TLorentzVector* bbHiggs2 = (TLorentzVector*)gp_p4->At(bbHiggsStat2);
