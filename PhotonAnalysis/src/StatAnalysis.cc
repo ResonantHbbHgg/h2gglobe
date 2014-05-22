@@ -5134,11 +5134,20 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    TLorentzVector * mcb2 = (TLorentzVector *)l.gr_b2_p4->At(0);
 	    TLorentzVector * mcj1 = (TLorentzVector *)l.gr_j1_p4->At(0);
 	    TLorentzVector * mcj2 = (TLorentzVector *)l.gr_j2_p4->At(0);
-	
-		l.FillTree("gr_radion_p4_pt", (float)radion->Pt());
-		l.FillTree("gr_radion_p4_eta", (float)radion->Eta());
-		l.FillTree("gr_radion_p4_phi", (float)radion->Phi());
-		l.FillTree("gr_radion_p4_mass", (float)radion->M());
+
+        // Protection for ggHH sample where no radion is present
+        if( radion->Pt() > 0. )
+        {
+            l.FillTree("gr_radion_p4_pt", (float)radion->Pt());
+            l.FillTree("gr_radion_p4_eta", (float)radion->Eta());
+            l.FillTree("gr_radion_p4_phi", (float)radion->Phi());
+            l.FillTree("gr_radion_p4_mass", (float)radion->M());
+        } else {
+            l.FillTree("gr_radion_p4_pt", (float)-1001.);
+            l.FillTree("gr_radion_p4_eta", (float)-1001.);
+            l.FillTree("gr_radion_p4_phi", (float)-1001.);
+            l.FillTree("gr_radion_p4_mass", (float)-1001.);
+        }
 		l.FillTree("gr_hgg_p4_pt", (float)hgg->Pt());
 		l.FillTree("gr_hgg_p4_eta", (float)hgg->Eta());
 		l.FillTree("gr_hgg_p4_phi", (float)hgg->Phi());
