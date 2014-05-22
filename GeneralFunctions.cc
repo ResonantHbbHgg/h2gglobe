@@ -4094,7 +4094,7 @@ std::pair<int, int> LoopAll::Select2HighestPtJets(TLorentzVector& leadpho, TLore
 
 vector<int> LoopAll::SelectJets(const TLorentzVector& leadpho, const TLorentzVector& subleadpho, Bool_t * jetid_flags)
 {
-    float dr2pho = 0.5;
+    float dr2pho = 0.3;
     TLorentzVector* j1p4;
     TLorentzVector* j2p4;
     float j1pt=-1.;
@@ -4120,8 +4120,8 @@ vector<int> LoopAll::SelectJets(const TLorentzVector& leadpho, const TLorentzVec
 				if(j1pt < 20) continue;
 				// pu jet id rejection ### for eta < 2.5
 				if(GFDEBUG) std::cout << "passing pu id rejection" << std::endl;
-				if( jet_algoPF1_betaStarClassic[j1_i] > 0.2 * log( vtx_std_n - 0.64) ) continue;
-				if( jet_algoPF1_dR2Mean[j1_i] > 0.06 ) continue;
+//				if( jet_algoPF1_betaStarClassic[j1_i] > 0.2 * log( vtx_std_n - 0.64) ) continue;
+//				if( jet_algoPF1_dR2Mean[j1_i] > 0.06 ) continue;
 				// min csv value for application of bjet energy regression
 //				if(GFDEBUG) std::cout << "passing csv btagging preselection" << std::endl;
 //				if( jet_algoPF1_csvBtag[j1_i] < 0. ) continue;
