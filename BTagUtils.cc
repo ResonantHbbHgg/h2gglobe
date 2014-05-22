@@ -1,4 +1,5 @@
 #include "BTagUtils.h"
+#define BUDEBUG 0
 
 //ctor
 JetFlavourReader::JetFlavourReader(const std::string name_JetFlavourFile)
@@ -30,6 +31,7 @@ JetFlavourReader::~JetFlavourReader()
 //---------------------------------------------------------------------------------------------------------------------------
 int JetFlavourReader::getJetFlavour(const int& lumis, const int& event, const TLorentzVector* jetP4 )
 {
+    if(BUDEBUG) std::cerr << "Entering JetFlavourReader::getJetFlavour" << std::endl;
     int jet_flavour = 0;
 
     for(unsigned int ii = 0; ii < AODjet_p4_[lumis][event].size(); ii++){
@@ -45,6 +47,7 @@ int JetFlavourReader::getJetFlavour(const int& lumis, const int& event, const TL
     dR_.clear();
     dR_map_.clear();
 
+    if(BUDEBUG) std::cerr << "Leaving JetFlavourReader::getJetFlavour" << std::endl;
     return jet_flavour;
 }
 //---------------------------------------------------------------------------------------------------------------------------
@@ -105,6 +108,7 @@ BtagSFReader::~BtagSFReader()
 //---------------------------------------------------------------------------------------------------------------------------
 float BtagSFReader::getSF(const TLorentzVector* jetP4,const float& flavour, std::string WP)
 {
+    if(BUDEBUG) std::cerr << "Entering BtagSFReader::getSF" << std::endl;
       
     float SF = -1001.;
     
@@ -188,12 +192,14 @@ float BtagSFReader::getSF(const TLorentzVector* jetP4,const float& flavour, std:
           if(jetP4->Pt() < SFudsg_CSVT_00_24_mean_->GetXmin()) SF = SFudsg_CSVT_00_24_mean_->Eval(SFudsg_CSVT_00_24_mean_->GetXmin());
        }
     }
-    
+
+    if(BUDEBUG) std::cerr << "Leaving BtagSFReader::getSF" << std::endl;
     return SF;
 }
 //----------------------------------------------------------------------------------------------------------------------------
 float BtagSFReader::getSFErrorUp(const TLorentzVector* jetP4,const float& flavour, std::string WP)
 {
+    if(BUDEBUG) std::cerr << "Entering BtagSFReader::getSFErrorUp" << std::endl;
       
     float SFerr = -1001.;
     float SFMax = -1001.;
@@ -438,11 +444,13 @@ float BtagSFReader::getSFErrorUp(const TLorentzVector* jetP4,const float& flavou
        }
     }
 
+    if(BUDEBUG) std::cerr << "Leaving BtagSFReader::getSFErrorUp" << std::endl;
     return SFerr;
 }
 //----------------------------------------------------------------------------------------------------------------------------
 float BtagSFReader::getSFErrorDown(const TLorentzVector* jetP4,const float& flavour, std::string WP)
 {
+    if(BUDEBUG) std::cerr << "Entering BtagSFReader::getSFErrorDown" << std::endl;
       
     float SFerr = -1001.;
     float SFmin = -1001.;
@@ -632,6 +640,7 @@ float BtagSFReader::getSFErrorDown(const TLorentzVector* jetP4,const float& flav
        }
     }
 
+    if(BUDEBUG) std::cerr << "Leaving BtagSFReader::getSFErrorDown" << std::endl;
     return SFerr;
 }
 //---------------------------------------------------------------------------------------------------------------------------
@@ -665,6 +674,7 @@ BtagEfficiencyReader::~BtagEfficiencyReader()
 //---------------------------------------------------------------------------------------------------------------------------
 float BtagEfficiencyReader::getBtagEfficiency(const TLorentzVector* jetP4, std::string WP, const int& jet_flavour)
 {
+     if(BUDEBUG) std::cerr << "Entering BtagEfficiencyReader::getBtagEfficiency" << std::endl;
 
      float eff = -1001.;
 
@@ -688,10 +698,13 @@ float BtagEfficiencyReader::getBtagEfficiency(const TLorentzVector* jetP4, std::
      }
      
      if(eff == 0) eff = -1001.;
+     if(BUDEBUG) std::cerr << "Leaving BtagEfficiencyReader::getBtagEfficiency" << std::endl;
      return eff;
 }
 //---------------------------------------------------------------------------------------------------------------------------
-float BtagEfficiencyReader::getBtagEfficiencyError(const TLorentzVector* jetP4, std::string WP, const int& jet_flavour){
+float BtagEfficiencyReader::getBtagEfficiencyError(const TLorentzVector* jetP4, std::string WP, const int& jet_flavour)
+{
+     if(BUDEBUG) std::cerr << "Entering BtagEfficiencyReader::getBtagEfficiencyError" << std::endl;
 
      float eff_err = -1001.;
 
@@ -714,6 +727,7 @@ float BtagEfficiencyReader::getBtagEfficiencyError(const TLorentzVector* jetP4, 
      }
 
      if(eff_err == 0) eff_err = -1001.;
+     if(BUDEBUG) std::cerr << "Leaving BtagEfficiencyReader::getBtagEfficiencyError" << std::endl;
      return eff_err;
 }
 
