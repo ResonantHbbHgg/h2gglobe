@@ -296,6 +296,7 @@ void LoopAll::LoopAndFillHistos(TString treename) {
     }
     this->current_sample_index = which_sample;
 
+//    if( i+1 != 3 ) continue; // OLIVIER
     cout<<"LoopAndFillHistos: opening file " << i+1 << " / " << numberOfFiles << " : " << files[i]<<endl;
     
     for(int itry=0; itry<3; ++itry) {
@@ -682,10 +683,11 @@ void LoopAll::Loop(Int_t a) {
   if(checkBench > 0) {
 	  stopWatch.Start();
   }
-  //for (Int_t jentry=0; jentry<100;jentry++) { // DEBUG OLIVIER 
+//  for (Int_t jentry=3660; jentry<3670;jentry++) { // DEBUG OLIVIER 
   for (Int_t jentry=0; jentry<nentries;jentry++) {
     
     if(jentry%10000==0) {
+//    if(jentry%1==0) { // OLIVIER
       cout << "Entry: "<<jentry << " / "<<nentries <<  " "  ;
       copy(countersred.begin(), countersred.end(), std::ostream_iterator<float>(cout, "_") );
       cout << endl;
