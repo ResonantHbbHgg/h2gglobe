@@ -105,10 +105,12 @@ void StatAnalysis::Init(LoopAll& l)
     //Add btagSF variables (Badder)
 
     std::string btagEffFileName = l.sampleContainer[l.current_sample_index].pileup;
+    if(l.sampleContainer[l.current_sample_index].itype == 0) btagEffFileName = "IAmButAFoolishFileBecauseThisIsDataWeAreRunning.pileup.root";
     btagEffFileName.erase(btagEffFileName.end()-11, btagEffFileName.end());
     btagEffFileName = btagEffFileName + std::string("btagEff.root");
-    if(PADEBUG) std::cout << " BtagEff File: " << btagEffFileName << std::endl;
-    EffReader = new BtagEfficiencyReader(btagEffFileName.c_str());
+    std::cout << " BtagEff File: " << btagEffFileName << std::endl;
+    EffReader = new BtagEfficiencyReader();
+    if(l.sampleContainer[l.current_sample_index].itype != 0) EffReader->Init(btagEffFileName.c_str());
 
     std::string btagSFFileName = std::string("/afs/cern.ch/work/b/bmarzocc/public/RadionAnalysis_DONOTREMOVE/btagSF_22Jan2013Rereco.root");
     if(PADEBUG) std::cout << " BtagSF File: " << btagSFFileName << std::endl;

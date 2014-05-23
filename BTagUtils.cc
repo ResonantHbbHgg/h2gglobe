@@ -99,6 +99,7 @@ BtagSFReader::BtagSFReader(const std::string name_btagSFFile)
     SFudsg_CSVT_00_24_max_ = (TF1*)btagSF_File_->Get("SFudsg_CSVT_00_24_max");
     SFudsg_CSVT_00_24_mean_ = (TF1*)btagSF_File_->Get("SFudsg_CSVT_00_24_mean");
     SFudsg_CSVT_00_24_min_ = (TF1*)btagSF_File_->Get("SFudsg_CSVT_00_24_min");
+
 }
 //---------------------------------------------------------------------------------------------------------------------------
 //dtor
@@ -645,7 +646,9 @@ float BtagSFReader::getSFErrorDown(const TLorentzVector* jetP4,const float& flav
 }
 //---------------------------------------------------------------------------------------------------------------------------
 //ctor
-BtagEfficiencyReader::BtagEfficiencyReader(const std::string name_btagEfficienciesFile)
+BtagEfficiencyReader::BtagEfficiencyReader(){};
+
+void BtagEfficiencyReader::Init(const std::string name_btagEfficienciesFile)
 {
 
     name_btagEfficienciesFile_ = name_btagEfficienciesFile;
@@ -664,7 +667,7 @@ BtagEfficiencyReader::BtagEfficiencyReader(const std::string name_btagEfficienci
     h2_BTaggingEff_udsg_M_ = (TH2F*)btagEfficiency_File_->Get("h2_BTaggingEff_udsg_M");
     h2_BTaggingEff_udsg_T_ = (TH2F*)btagEfficiency_File_->Get("h2_BTaggingEff_udsg_T");
 
-    
+    return;
 }
 //---------------------------------------------------------------------------------------------------------------------------
 //dtor

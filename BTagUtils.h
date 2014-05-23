@@ -98,7 +98,8 @@ class BtagEfficiencyReader
 {
 public:
 	
-    BtagEfficiencyReader(const std::string name_btagEfficienciesFile); 
+    BtagEfficiencyReader();
+    void Init(const std::string name_btagEfficienciesFile); 
     virtual ~BtagEfficiencyReader();
     float getBtagEfficiency(const TLorentzVector* jetP4, std::string WP, const int& jet_flavour);
     float getBtagEfficiencyError(const TLorentzVector* jetP4, std::string WP, const int& jet_flavour);
