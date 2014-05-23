@@ -5135,19 +5135,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    TLorentzVector * mcj1 = (TLorentzVector *)l.gr_j1_p4->At(0);
 	    TLorentzVector * mcj2 = (TLorentzVector *)l.gr_j2_p4->At(0);
 
-        // Protection for ggHH sample where no radion is present
-        if( radion->Pt() > 0. )
-        {
-            l.FillTree("gr_radion_p4_pt", (float)radion->Pt());
-            l.FillTree("gr_radion_p4_eta", (float)radion->Eta());
-            l.FillTree("gr_radion_p4_phi", (float)radion->Phi());
-            l.FillTree("gr_radion_p4_mass", (float)radion->M());
-        } else {
-            l.FillTree("gr_radion_p4_pt", (float)-1001.);
-            l.FillTree("gr_radion_p4_eta", (float)-1001.);
-            l.FillTree("gr_radion_p4_phi", (float)-1001.);
-            l.FillTree("gr_radion_p4_mass", (float)-1001.);
-        }
 		l.FillTree("gr_hgg_p4_pt", (float)hgg->Pt());
 		l.FillTree("gr_hgg_p4_eta", (float)hgg->Eta());
 		l.FillTree("gr_hgg_p4_phi", (float)hgg->Phi());
@@ -5156,6 +5143,20 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("gr_hbb_p4_eta", (float)hbb->Eta());
 		l.FillTree("gr_hbb_p4_phi", (float)hbb->Phi());
 		l.FillTree("gr_hbb_p4_mass", (float)hbb->M());
+        // Protection for ggHH sample where no radion is present
+        if( radion->Pt() > 0. )
+        {
+            l.FillTree("gr_radion_p4_pt", (float)radion->Pt());
+            l.FillTree("gr_radion_p4_eta", (float)radion->Eta());
+            l.FillTree("gr_radion_p4_phi", (float)radion->Phi());
+            l.FillTree("gr_radion_p4_mass", (float)radion->M());
+        } else {
+            *radion = *hbb + *hgg;
+            l.FillTree("gr_radion_p4_pt", (float)radion->Pt());
+            l.FillTree("gr_radion_p4_eta", (float)radion->Eta());
+            l.FillTree("gr_radion_p4_phi", (float)radion->Phi());
+            l.FillTree("gr_radion_p4_mass", (float)radion->M());
+        }
 		l.FillTree("gr_g1_p4_pt", (float)mcg1->Pt());
 		l.FillTree("gr_g1_p4_eta", (float)mcg1->Eta());
 		l.FillTree("gr_g1_p4_phi", (float)mcg1->Phi());
