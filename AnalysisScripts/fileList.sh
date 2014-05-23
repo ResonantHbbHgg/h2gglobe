@@ -2,7 +2,7 @@
 # to produce file list as input to lumi calculation
 # O. Bondu, April 2013
 
-eoscommand="/afs/cern.ch/project/eos/installation/0.2.31/bin/eos.select"
+eoscommand="/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select"
 
 dirFile=""
 if [[ -z ${1} ]]
