@@ -5039,7 +5039,7 @@ bool LoopAll::FindMCRadion(int& radionInd, int& ggHiggsInd, int& bbHiggsInd, int
 						continue;
 				}
 
-				// if particle is a b-quark, store the indexes
+				// if particle is a quark or a gluon, store the indexes
 				if (((fabs(pid) >= 1 && fabs(pid) <= 5) || fabs(pid) == 21) && status==3 && (gp_mother[i]==ggHiggsStat3 || gp_mother[i]==bbHiggsStat3)){
 						// first re-assign correctly ggHiggs and bbHiggs, if need be
 						if(gp_mother[i]==ggHiggsStat3){
