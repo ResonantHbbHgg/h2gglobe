@@ -2784,7 +2784,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j1_btagEff_T",(float)-1001.);
            l.FillTree("j1_btagEffError_T",(float)-1001.);
         }
-        l.FillTree("j1_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[0]]);
+        l.FillTree("j1_bgenMatched", (int)l.jet_algoPF1_bgenMatched[jets[0]]);
         if(PADEBUG) cout << "Secondary vertices" << endl;
 		l.FillTree("j1_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[0]]);
 		l.FillTree("j1_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[0]]);
@@ -2809,8 +2809,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j1_softLeptPt", (float)l.jet_algoPF1_softLeptPt[jets[0]]);
 		l.FillTree("j1_softLeptPtRel", (float)l.jet_algoPF1_softLeptPtRel[jets[0]]);
 		l.FillTree("j1_softLeptDR", (float)l.jet_algoPF1_softLeptDR[jets[0]]);
-		l.FillTree("j1_softLeptIdLooseMu", (float)l.jet_algoPF1_softLeptIdLooseMu[jets[0]]);
-		l.FillTree("j1_softLeptIdEle95", (float)l.jet_algoPF1_softLeptIdEle95[jets[0]]);
+		l.FillTree("j1_softLeptIdLooseMu", (int)l.jet_algoPF1_softLeptIdLooseMu[jets[0]]);
+		l.FillTree("j1_softLeptIdEle95", (int)l.jet_algoPF1_softLeptIdEle95[jets[0]]);
         if(PADEBUG) cout << "genPt info" << endl;
 		l.FillTree("j1_genPt", (float)l.jet_algoPF1_genPt[jets[0]]);
     } else {
@@ -2853,7 +2853,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j1_btagSFErrorDown",(float)-1001.);
         l.FillTree("j1_btagEff",(float)-1001.);
         l.FillTree("j1_btagEffError",(float)-1001.);
-        l.FillTree("j1_bgenMatched", (float)-1001.);
+        l.FillTree("j1_bgenMatched", (int)-1001);
 		l.FillTree("j1_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j1_secVtxPt", (float)-1001.);
 		l.FillTree("j1_secVtxM", (float)-1001.);
@@ -2874,8 +2874,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j1_softLeptPt", (float)-1001.);
 		l.FillTree("j1_softLeptPtRel", (float)-1001.);
 		l.FillTree("j1_softLeptDR", (float)-1001.);
-		l.FillTree("j1_softLeptIdLooseMu", (float)-1001.);
-		l.FillTree("j1_softLeptIdEle95", (float)-1001.);
+		l.FillTree("j1_softLeptIdLooseMu", (int)-1001);
+		l.FillTree("j1_softLeptIdEle95", (int)-1001);
 		l.FillTree("j1_genPt", (float)-1001);
     } // end if njets > 0
 
@@ -2979,7 +2979,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j2_btagEff_T",(float)-1001.);
            l.FillTree("j2_btagEffError_T",(float)-1001.);
         }
-        l.FillTree("j2_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[1]]);
+        l.FillTree("j2_bgenMatched", (int)l.jet_algoPF1_bgenMatched[jets[1]]);
         if(PADEBUG) cout << "Secondary vertices" << endl;
 		l.FillTree("j2_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[1]]);
 		l.FillTree("j2_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[1]]);
@@ -3004,8 +3004,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j2_softLeptPt", (float)l.jet_algoPF1_softLeptPt[jets[1]]);
 		l.FillTree("j2_softLeptPtRel", (float)l.jet_algoPF1_softLeptPtRel[jets[1]]);
 		l.FillTree("j2_softLeptDR", (float)l.jet_algoPF1_softLeptDR[jets[1]]);
-		l.FillTree("j2_softLeptIdLooseMu", (float)l.jet_algoPF1_softLeptIdLooseMu[jets[1]]);
-		l.FillTree("j2_softLeptIdEle95", (float)l.jet_algoPF1_softLeptIdEle95[jets[1]]);
+		l.FillTree("j2_softLeptIdLooseMu", (int)l.jet_algoPF1_softLeptIdLooseMu[jets[1]]);
+		l.FillTree("j2_softLeptIdEle95", (int)l.jet_algoPF1_softLeptIdEle95[jets[1]]);
         if(PADEBUG) cout << "genPt info" << endl;
 		l.FillTree("j2_genPt", (float)l.jet_algoPF1_genPt[jets[1]]);
     } else {
@@ -3048,7 +3048,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j2_btagSFErrorDown",(float)-1001.);
         l.FillTree("j2_btagEff",(float)-1001.);
         l.FillTree("j2_btagEffError",(float)-1001.);
-        l.FillTree("j2_bgenMatched", (float)-1001.);
+        l.FillTree("j2_bgenMatched", (int)-1001);
 		l.FillTree("j2_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j2_secVtxPt", (float)-1001.);
 		l.FillTree("j2_secVtxM", (float)-1001.);
@@ -3069,8 +3069,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j2_softLeptPt", (float)-1001.);
 		l.FillTree("j2_softLeptPtRel", (float)-1001.);
 		l.FillTree("j2_softLeptDR", (float)-1001.);
-		l.FillTree("j2_softLeptIdLooseMu", (float)-1001.);
-		l.FillTree("j2_softLeptIdEle95", (float)-1001.);
+		l.FillTree("j2_softLeptIdLooseMu", (int)-1001);
+		l.FillTree("j2_softLeptIdEle95", (int)-1001);
 		l.FillTree("j2_genPt", (float)-1001);
     } // end if njets > 1
 
@@ -3220,7 +3220,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j3_btagEff_T",(float)-1001.);
            l.FillTree("j3_btagEffError_T",(float)-1001.);
         }
-        l.FillTree("j3_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[2]]);
+        l.FillTree("j3_bgenMatched", (int)l.jet_algoPF1_bgenMatched[jets[2]]);
 		l.FillTree("j3_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[2]]);
 		l.FillTree("j3_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[2]]);
 		l.FillTree("j3_secVtxM", (float)l.jet_algoPF1_secVtxM[jets[2]]);
@@ -3241,8 +3241,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j3_softLeptPt", (float)l.jet_algoPF1_softLeptPt[jets[2]]);
 		l.FillTree("j3_softLeptPtRel", (float)l.jet_algoPF1_softLeptPtRel[jets[2]]);
 		l.FillTree("j3_softLeptDR", (float)l.jet_algoPF1_softLeptDR[jets[2]]);
-		l.FillTree("j3_softLeptIdLooseMu", (float)l.jet_algoPF1_softLeptIdLooseMu[jets[2]]);
-		l.FillTree("j3_softLeptIdEle95", (float)l.jet_algoPF1_softLeptIdEle95[jets[2]]);
+		l.FillTree("j3_softLeptIdLooseMu", (int)l.jet_algoPF1_softLeptIdLooseMu[jets[2]]);
+		l.FillTree("j3_softLeptIdEle95", (int)l.jet_algoPF1_softLeptIdEle95[jets[2]]);
 		l.FillTree("j3_genPt", (float)l.jet_algoPF1_genPt[jets[2]]);
     } else {
     	l.FillTree("j3_e",(float)-1001.);
@@ -3284,7 +3284,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j3_btagSFErrorDown",(float)-1001.);
         l.FillTree("j3_btagEff",(float)-1001.);
         l.FillTree("j3_btagEffError",(float)-1001.);
-        l.FillTree("j3_bgenMatched", (float)-1001.);
+        l.FillTree("j3_bgenMatched", (int)-1001);
 		l.FillTree("j3_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j3_secVtxPt", (float)-1001.);
 		l.FillTree("j3_secVtxM", (float)-1001.);
@@ -3305,8 +3305,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j3_softLeptPt", (float)-1001.);
 		l.FillTree("j3_softLeptPtRel", (float)-1001.);
 		l.FillTree("j3_softLeptDR", (float)-1001.);
-		l.FillTree("j3_softLeptIdLooseMu", (float)-1001.);
-		l.FillTree("j3_softLeptIdEle95", (float)-1001.);
+		l.FillTree("j3_softLeptIdLooseMu", (int)-1001);
+		l.FillTree("j3_softLeptIdEle95", (int)-1001);
 		l.FillTree("j3_genPt", (float)-1001);
     } // if 3 jets
 
@@ -3404,7 +3404,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j4_btagEff_T",(float)-1001.);
            l.FillTree("j4_btagEffError_T",(float)-1001.);
         }
-        l.FillTree("j4_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[3]]);
+        l.FillTree("j4_bgenMatched", (int)l.jet_algoPF1_bgenMatched[jets[3]]);
 		l.FillTree("j4_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[3]]);
 		l.FillTree("j4_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[3]]);
 		l.FillTree("j4_secVtxM", (float)l.jet_algoPF1_secVtxM[jets[3]]);
@@ -3425,8 +3425,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j4_softLeptPt", (float)l.jet_algoPF1_softLeptPt[jets[3]]);
 		l.FillTree("j4_softLeptPtRel", (float)l.jet_algoPF1_softLeptPtRel[jets[3]]);
 		l.FillTree("j4_softLeptDR", (float)l.jet_algoPF1_softLeptDR[jets[3]]);
-		l.FillTree("j4_softLeptIdLooseMu", (float)l.jet_algoPF1_softLeptIdLooseMu[jets[3]]);
-		l.FillTree("j4_softLeptIdEle95", (float)l.jet_algoPF1_softLeptIdEle95[jets[3]]);
+		l.FillTree("j4_softLeptIdLooseMu", (int)l.jet_algoPF1_softLeptIdLooseMu[jets[3]]);
+		l.FillTree("j4_softLeptIdEle95", (int)l.jet_algoPF1_softLeptIdEle95[jets[3]]);
 		l.FillTree("j4_genPt", (float)l.jet_algoPF1_genPt[jets[3]]);
     } else {
     	l.FillTree("j4_e",(float)-1001.);
@@ -3468,7 +3468,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j4_btagSFErrorDown",(float)-1001.);
         l.FillTree("j4_btagEff",(float)-1001.);
         l.FillTree("j4_btagEffError",(float)-1001.);
-        l.FillTree("j4_bgenMatched", (float)-1001.);
+        l.FillTree("j4_bgenMatched", (int)-1001);
 		l.FillTree("j4_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j4_secVtxPt", (float)-1001.);
 		l.FillTree("j4_secVtxM", (float)-1001.);
@@ -3489,8 +3489,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j4_softLeptPt", (float)-1001.);
 		l.FillTree("j4_softLeptPtRel", (float)-1001.);
 		l.FillTree("j4_softLeptDR", (float)-1001.);
-		l.FillTree("j4_softLeptIdLooseMu", (float)-1001.);
-		l.FillTree("j4_softLeptIdEle95", (float)-1001.);
+		l.FillTree("j4_softLeptIdLooseMu", (int)-1001);
+		l.FillTree("j4_softLeptIdEle95", (int)-1001);
 		l.FillTree("j4_genPt", (float)-1001);
     } // if 4 jets
 
@@ -3588,7 +3588,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j5_btagEff_T",(float)-1001.);
            l.FillTree("j5_btagEffError_T",(float)-1001.);
         }
-        l.FillTree("j5_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[4]]);
+        l.FillTree("j5_bgenMatched", (int)l.jet_algoPF1_bgenMatched[jets[4]]);
 		l.FillTree("j5_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[4]]);
 		l.FillTree("j5_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[4]]);
 		l.FillTree("j5_secVtxM", (float)l.jet_algoPF1_secVtxM[jets[4]]);
@@ -3609,8 +3609,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j5_softLeptPt", (float)l.jet_algoPF1_softLeptPt[jets[4]]);
 		l.FillTree("j5_softLeptPtRel", (float)l.jet_algoPF1_softLeptPtRel[jets[4]]);
 		l.FillTree("j5_softLeptDR", (float)l.jet_algoPF1_softLeptDR[jets[4]]);
-		l.FillTree("j5_softLeptIdLooseMu", (float)l.jet_algoPF1_softLeptIdLooseMu[jets[4]]);
-		l.FillTree("j5_softLeptIdEle95", (float)l.jet_algoPF1_softLeptIdEle95[jets[4]]);
+		l.FillTree("j5_softLeptIdLooseMu", (int)l.jet_algoPF1_softLeptIdLooseMu[jets[4]]);
+		l.FillTree("j5_softLeptIdEle95", (int)l.jet_algoPF1_softLeptIdEle95[jets[4]]);
 		l.FillTree("j5_genPt", (float)l.jet_algoPF1_genPt[jets[4]]);
     } else {
     	l.FillTree("j5_e",(float)-1001.);
@@ -3652,7 +3652,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j5_btagSFErrorDown",(float)-1001.);
         l.FillTree("j5_btagEff",(float)-1001.);
         l.FillTree("j5_btagEffError",(float)-1001.);
-        l.FillTree("j5_bgenMatched", (float)-1001.);
+        l.FillTree("j5_bgenMatched", (int)-1001);
 		l.FillTree("j5_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j5_secVtxPt", (float)-1001.);
 		l.FillTree("j5_secVtxM", (float)-1001.);
@@ -3673,8 +3673,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j5_softLeptPt", (float)-1001.);
 		l.FillTree("j5_softLeptPtRel", (float)-1001.);
 		l.FillTree("j5_softLeptDR", (float)-1001.);
-		l.FillTree("j5_softLeptIdLooseMu", (float)-1001.);
-		l.FillTree("j5_softLeptIdEle95", (float)-1001.);
+		l.FillTree("j5_softLeptIdLooseMu", (int)-1001);
+		l.FillTree("j5_softLeptIdEle95", (int)-1001);
 		l.FillTree("j5_genPt", (float)-1001);
     } // if 5 jets
 
@@ -3772,7 +3772,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j6_btagEff_T",(float)-1001.);
            l.FillTree("j6_btagEffError_T",(float)-1001.);
         }
-        l.FillTree("j6_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[5]]);
+        l.FillTree("j6_bgenMatched", (int)l.jet_algoPF1_bgenMatched[jets[5]]);
 		l.FillTree("j6_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[5]]);
 		l.FillTree("j6_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[5]]);
 		l.FillTree("j6_secVtxM", (float)l.jet_algoPF1_secVtxM[jets[5]]);
@@ -3793,8 +3793,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j6_softLeptPt", (float)l.jet_algoPF1_softLeptPt[jets[5]]);
 		l.FillTree("j6_softLeptPtRel", (float)l.jet_algoPF1_softLeptPtRel[jets[5]]);
 		l.FillTree("j6_softLeptDR", (float)l.jet_algoPF1_softLeptDR[jets[5]]);
-		l.FillTree("j6_softLeptIdLooseMu", (float)l.jet_algoPF1_softLeptIdLooseMu[jets[5]]);
-		l.FillTree("j6_softLeptIdEle95", (float)l.jet_algoPF1_softLeptIdEle95[jets[5]]);
+		l.FillTree("j6_softLeptIdLooseMu", (int)l.jet_algoPF1_softLeptIdLooseMu[jets[5]]);
+		l.FillTree("j6_softLeptIdEle95", (int)l.jet_algoPF1_softLeptIdEle95[jets[5]]);
 		l.FillTree("j6_genPt", (float)l.jet_algoPF1_genPt[jets[5]]);
     } else {
     	l.FillTree("j6_e",(float)-1001.);
@@ -3836,7 +3836,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j6_btagSFErrorDown",(float)-1001.);
         l.FillTree("j6_btagEff",(float)-1001.);
         l.FillTree("j6_btagEffError",(float)-1001.);
-        l.FillTree("j6_bgenMatched", (float)-1001.);
+        l.FillTree("j6_bgenMatched", (int)-1001);
 		l.FillTree("j6_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j6_secVtxPt", (float)-1001.);
 		l.FillTree("j6_secVtxM", (float)-1001.);
@@ -3857,8 +3857,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j6_softLeptPt", (float)-1001.);
 		l.FillTree("j6_softLeptPtRel", (float)-1001.);
 		l.FillTree("j6_softLeptDR", (float)-1001.);
-		l.FillTree("j6_softLeptIdLooseMu", (float)-1001.);
-		l.FillTree("j6_softLeptIdEle95", (float)-1001.);
+		l.FillTree("j6_softLeptIdLooseMu", (int)-1001);
+		l.FillTree("j6_softLeptIdEle95", (int)-1001);
 		l.FillTree("j6_genPt", (float)-1001);
     } // if 6 jets
 
@@ -3956,7 +3956,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j7_btagEff_T",(float)-1001.);
            l.FillTree("j7_btagEffError_T",(float)-1001.);
         }
-        l.FillTree("j7_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[6]]);
+        l.FillTree("j7_bgenMatched", (int)l.jet_algoPF1_bgenMatched[jets[6]]);
 		l.FillTree("j7_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[6]]);
 		l.FillTree("j7_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[6]]);
 		l.FillTree("j7_secVtxM", (float)l.jet_algoPF1_secVtxM[jets[6]]);
@@ -3977,8 +3977,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j7_softLeptPt", (float)l.jet_algoPF1_softLeptPt[jets[6]]);
 		l.FillTree("j7_softLeptPtRel", (float)l.jet_algoPF1_softLeptPtRel[jets[6]]);
 		l.FillTree("j7_softLeptDR", (float)l.jet_algoPF1_softLeptDR[jets[6]]);
-		l.FillTree("j7_softLeptIdLooseMu", (float)l.jet_algoPF1_softLeptIdLooseMu[jets[6]]);
-		l.FillTree("j7_softLeptIdEle95", (float)l.jet_algoPF1_softLeptIdEle95[jets[6]]);
+		l.FillTree("j7_softLeptIdLooseMu", (int)l.jet_algoPF1_softLeptIdLooseMu[jets[6]]);
+		l.FillTree("j7_softLeptIdEle95", (int)l.jet_algoPF1_softLeptIdEle95[jets[6]]);
 		l.FillTree("j7_genPt", (float)l.jet_algoPF1_genPt[jets[6]]);
     } else {
     	l.FillTree("j7_e",(float)-1001.);
@@ -4020,7 +4020,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j7_btagSFErrorDown",(float)-1001.);
         l.FillTree("j7_btagEff",(float)-1001.);
         l.FillTree("j7_btagEffError",(float)-1001.);
-        l.FillTree("j7_bgenMatched", (float)-1001.);
+        l.FillTree("j7_bgenMatched", (int)-1001);
 		l.FillTree("j7_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j7_secVtxPt", (float)-1001.);
 		l.FillTree("j7_secVtxM", (float)-1001.);
@@ -4041,8 +4041,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j7_softLeptPt", (float)-1001.);
 		l.FillTree("j7_softLeptPtRel", (float)-1001.);
 		l.FillTree("j7_softLeptDR", (float)-1001.);
-		l.FillTree("j7_softLeptIdLooseMu", (float)-1001.);
-		l.FillTree("j7_softLeptIdEle95", (float)-1001.);
+		l.FillTree("j7_softLeptIdLooseMu", (int)-1001);
+		l.FillTree("j7_softLeptIdEle95", (int)-1001);
 		l.FillTree("j7_genPt", (float)-1001);
     } // if 7 jets
 
@@ -4140,7 +4140,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j8_btagEff_T",(float)-1001.);
            l.FillTree("j8_btagEffError_T",(float)-1001.);
         }
-        l.FillTree("j8_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[7]]);
+        l.FillTree("j8_bgenMatched", (int)l.jet_algoPF1_bgenMatched[jets[7]]);
 		l.FillTree("j8_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[7]]);
 		l.FillTree("j8_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[7]]);
 		l.FillTree("j8_secVtxM", (float)l.jet_algoPF1_secVtxM[jets[7]]);
@@ -4161,8 +4161,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j8_softLeptPt", (float)l.jet_algoPF1_softLeptPt[jets[7]]);
 		l.FillTree("j8_softLeptPtRel", (float)l.jet_algoPF1_softLeptPtRel[jets[7]]);
 		l.FillTree("j8_softLeptDR", (float)l.jet_algoPF1_softLeptDR[jets[7]]);
-		l.FillTree("j8_softLeptIdLooseMu", (float)l.jet_algoPF1_softLeptIdLooseMu[jets[7]]);
-		l.FillTree("j8_softLeptIdEle95", (float)l.jet_algoPF1_softLeptIdEle95[jets[7]]);
+		l.FillTree("j8_softLeptIdLooseMu", (int)l.jet_algoPF1_softLeptIdLooseMu[jets[7]]);
+		l.FillTree("j8_softLeptIdEle95", (int)l.jet_algoPF1_softLeptIdEle95[jets[7]]);
 		l.FillTree("j8_genPt", (float)l.jet_algoPF1_genPt[jets[7]]);
     } else {
     	l.FillTree("j8_e",(float)-1001.);
@@ -4204,7 +4204,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j8_btagSFErrorDown",(float)-1001.);
         l.FillTree("j8_btagEff",(float)-1001.);
         l.FillTree("j8_btagEffError",(float)-1001.);
-        l.FillTree("j8_bgenMatched", (float)-1001.);
+        l.FillTree("j8_bgenMatched", (int)-1001);
 		l.FillTree("j8_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j8_secVtxPt", (float)-1001.);
 		l.FillTree("j8_secVtxM", (float)-1001.);
@@ -4225,8 +4225,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j8_softLeptPt", (float)-1001.);
 		l.FillTree("j8_softLeptPtRel", (float)-1001.);
 		l.FillTree("j8_softLeptDR", (float)-1001.);
-		l.FillTree("j8_softLeptIdLooseMu", (float)-1001.);
-		l.FillTree("j8_softLeptIdEle95", (float)-1001.);
+		l.FillTree("j8_softLeptIdLooseMu", (int)-1001);
+		l.FillTree("j8_softLeptIdEle95", (int)-1001);
 		l.FillTree("j8_genPt", (float)-1001);
     } // if 8 jets
 
@@ -4324,7 +4324,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j9_btagEff_T",(float)-1001.);
            l.FillTree("j9_btagEffError_T",(float)-1001.);
         }
-        l.FillTree("j9_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[8]]);
+        l.FillTree("j9_bgenMatched", (int)l.jet_algoPF1_bgenMatched[jets[8]]);
 		l.FillTree("j9_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[8]]);
 		l.FillTree("j9_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[8]]);
 		l.FillTree("j9_secVtxM", (float)l.jet_algoPF1_secVtxM[jets[8]]);
@@ -4345,8 +4345,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j9_softLeptPt", (float)l.jet_algoPF1_softLeptPt[jets[8]]);
 		l.FillTree("j9_softLeptPtRel", (float)l.jet_algoPF1_softLeptPtRel[jets[8]]);
 		l.FillTree("j9_softLeptDR", (float)l.jet_algoPF1_softLeptDR[jets[8]]);
-		l.FillTree("j9_softLeptIdLooseMu", (float)l.jet_algoPF1_softLeptIdLooseMu[jets[8]]);
-		l.FillTree("j9_softLeptIdEle95", (float)l.jet_algoPF1_softLeptIdEle95[jets[8]]);
+		l.FillTree("j9_softLeptIdLooseMu", (int)l.jet_algoPF1_softLeptIdLooseMu[jets[8]]);
+		l.FillTree("j9_softLeptIdEle95", (int)l.jet_algoPF1_softLeptIdEle95[jets[8]]);
 		l.FillTree("j9_genPt", (float)l.jet_algoPF1_genPt[jets[8]]);
     } else {
     	l.FillTree("j9_e",(float)-1001.);
@@ -4388,7 +4388,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j9_btagSFErrorDown",(float)-1001.);
         l.FillTree("j9_btagEff",(float)-1001.);
         l.FillTree("j9_btagEffError",(float)-1001.);
-        l.FillTree("j9_bgenMatched", (float)-1001.);
+        l.FillTree("j9_bgenMatched", (int)-1001);
 		l.FillTree("j9_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j9_secVtxPt", (float)-1001.);
 		l.FillTree("j9_secVtxM", (float)-1001.);
@@ -4409,8 +4409,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j9_softLeptPt", (float)-1001.);
 		l.FillTree("j9_softLeptPtRel", (float)-1001.);
 		l.FillTree("j9_softLeptDR", (float)-1001.);
-		l.FillTree("j9_softLeptIdLooseMu", (float)-1001.);
-		l.FillTree("j9_softLeptIdEle95", (float)-1001.);
+		l.FillTree("j9_softLeptIdLooseMu", (int)-1001);
+		l.FillTree("j9_softLeptIdEle95", (int)-1001);
 		l.FillTree("j9_genPt", (float)-1001);
     } // if 9 jets
 
@@ -4508,7 +4508,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j10_btagEff_T",(float)-1001.);
            l.FillTree("j10_btagEffError_T",(float)-1001.);
         }
-        l.FillTree("j10_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[9]]);
+        l.FillTree("j10_bgenMatched", (int)l.jet_algoPF1_bgenMatched[jets[9]]);
 		l.FillTree("j10_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[9]]);
 		l.FillTree("j10_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[9]]);
 		l.FillTree("j10_secVtxM", (float)l.jet_algoPF1_secVtxM[jets[9]]);
@@ -4529,8 +4529,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j10_softLeptPt", (float)l.jet_algoPF1_softLeptPt[jets[9]]);
 		l.FillTree("j10_softLeptPtRel", (float)l.jet_algoPF1_softLeptPtRel[jets[9]]);
 		l.FillTree("j10_softLeptDR", (float)l.jet_algoPF1_softLeptDR[jets[9]]);
-		l.FillTree("j10_softLeptIdLooseMu", (float)l.jet_algoPF1_softLeptIdLooseMu[jets[9]]);
-		l.FillTree("j10_softLeptIdEle95", (float)l.jet_algoPF1_softLeptIdEle95[jets[9]]);
+		l.FillTree("j10_softLeptIdLooseMu", (int)l.jet_algoPF1_softLeptIdLooseMu[jets[9]]);
+		l.FillTree("j10_softLeptIdEle95", (int)l.jet_algoPF1_softLeptIdEle95[jets[9]]);
 		l.FillTree("j10_genPt", (float)l.jet_algoPF1_genPt[jets[9]]);
     } else {
     	l.FillTree("j10_e",(float)-1001.);
@@ -4572,7 +4572,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j10_btagSFErrorDown",(float)-1001.);
         l.FillTree("j10_btagEff",(float)-1001.);
         l.FillTree("j10_btagEffError",(float)-1001.);
-        l.FillTree("j10_bgenMatched", (float)-1001.);
+        l.FillTree("j10_bgenMatched", (int)-1001);
 		l.FillTree("j10_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j10_secVtxPt", (float)-1001.);
 		l.FillTree("j10_secVtxM", (float)-1001.);
@@ -4593,8 +4593,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j10_softLeptPt", (float)-1001.);
 		l.FillTree("j10_softLeptPtRel", (float)-1001.);
 		l.FillTree("j10_softLeptDR", (float)-1001.);
-		l.FillTree("j10_softLeptIdLooseMu", (float)-1001.);
-		l.FillTree("j10_softLeptIdEle95", (float)-1001.);
+		l.FillTree("j10_softLeptIdLooseMu", (int)-1001);
+		l.FillTree("j10_softLeptIdEle95", (int)-1001);
 		l.FillTree("j10_genPt", (float)-1001);
     } // if 10 jets
 
@@ -4692,7 +4692,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j11_btagEff_T",(float)-1001.);
            l.FillTree("j11_btagEffError_T",(float)-1001.);
         }
-        l.FillTree("j11_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[10]]);
+        l.FillTree("j11_bgenMatched", (int)l.jet_algoPF1_bgenMatched[jets[10]]);
 		l.FillTree("j11_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[10]]);
 		l.FillTree("j11_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[10]]);
 		l.FillTree("j11_secVtxM", (float)l.jet_algoPF1_secVtxM[jets[10]]);
@@ -4713,8 +4713,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j11_softLeptPt", (float)l.jet_algoPF1_softLeptPt[jets[10]]);
 		l.FillTree("j11_softLeptPtRel", (float)l.jet_algoPF1_softLeptPtRel[jets[10]]);
 		l.FillTree("j11_softLeptDR", (float)l.jet_algoPF1_softLeptDR[jets[10]]);
-		l.FillTree("j11_softLeptIdLooseMu", (float)l.jet_algoPF1_softLeptIdLooseMu[jets[10]]);
-		l.FillTree("j11_softLeptIdEle95", (float)l.jet_algoPF1_softLeptIdEle95[jets[10]]);
+		l.FillTree("j11_softLeptIdLooseMu", (int)l.jet_algoPF1_softLeptIdLooseMu[jets[10]]);
+		l.FillTree("j11_softLeptIdEle95", (int)l.jet_algoPF1_softLeptIdEle95[jets[10]]);
 		l.FillTree("j11_genPt", (float)l.jet_algoPF1_genPt[jets[10]]);
     } else {
     	l.FillTree("j11_e",(float)-1001.);
@@ -4756,7 +4756,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j11_btagSFErrorDown",(float)-1001.);
         l.FillTree("j11_btagEff",(float)-1001.);
         l.FillTree("j11_btagEffError",(float)-1001.);
-        l.FillTree("j11_bgenMatched", (float)-1001.);
+        l.FillTree("j11_bgenMatched", (int)-1001);
 		l.FillTree("j11_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j11_secVtxPt", (float)-1001.);
 		l.FillTree("j11_secVtxM", (float)-1001.);
@@ -4777,8 +4777,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j11_softLeptPt", (float)-1001.);
 		l.FillTree("j11_softLeptPtRel", (float)-1001.);
 		l.FillTree("j11_softLeptDR", (float)-1001.);
-		l.FillTree("j11_softLeptIdLooseMu", (float)-1001.);
-		l.FillTree("j11_softLeptIdEle95", (float)-1001.);
+		l.FillTree("j11_softLeptIdLooseMu", (int)-1001);
+		l.FillTree("j11_softLeptIdEle95", (int)-1001);
 		l.FillTree("j11_genPt", (float)-1001);
     } // if 11 jets
 
@@ -4876,7 +4876,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j12_btagEff_T",(float)-1001.);
            l.FillTree("j12_btagEffError_T",(float)-1001.);
         }
-        l.FillTree("j12_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[11]]);
+        l.FillTree("j12_bgenMatched", (int)l.jet_algoPF1_bgenMatched[jets[11]]);
 		l.FillTree("j12_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[11]]);
 		l.FillTree("j12_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[11]]);
 		l.FillTree("j12_secVtxM", (float)l.jet_algoPF1_secVtxM[jets[11]]);
@@ -4897,8 +4897,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j12_softLeptPt", (float)l.jet_algoPF1_softLeptPt[jets[11]]);
 		l.FillTree("j12_softLeptPtRel", (float)l.jet_algoPF1_softLeptPtRel[jets[11]]);
 		l.FillTree("j12_softLeptDR", (float)l.jet_algoPF1_softLeptDR[jets[11]]);
-		l.FillTree("j12_softLeptIdLooseMu", (float)l.jet_algoPF1_softLeptIdLooseMu[jets[11]]);
-		l.FillTree("j12_softLeptIdEle95", (float)l.jet_algoPF1_softLeptIdEle95[jets[11]]);
+		l.FillTree("j12_softLeptIdLooseMu", (int)l.jet_algoPF1_softLeptIdLooseMu[jets[11]]);
+		l.FillTree("j12_softLeptIdEle95", (int)l.jet_algoPF1_softLeptIdEle95[jets[11]]);
 		l.FillTree("j12_genPt", (float)l.jet_algoPF1_genPt[jets[11]]);
     } else {
     	l.FillTree("j12_e",(float)-1001.);
@@ -4940,7 +4940,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j12_btagSFErrorDown",(float)-1001.);
         l.FillTree("j12_btagEff",(float)-1001.);
         l.FillTree("j12_btagEffError",(float)-1001.);
-        l.FillTree("j12_bgenMatched", (float)-1001.);
+        l.FillTree("j12_bgenMatched", (int)-1001);
 		l.FillTree("j12_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j12_secVtxPt", (float)-1001.);
 		l.FillTree("j12_secVtxM", (float)-1001.);
@@ -4961,8 +4961,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j12_softLeptPt", (float)-1001.);
 		l.FillTree("j12_softLeptPtRel", (float)-1001.);
 		l.FillTree("j12_softLeptDR", (float)-1001.);
-		l.FillTree("j12_softLeptIdLooseMu", (float)-1001.);
-		l.FillTree("j12_softLeptIdEle95", (float)-1001.);
+		l.FillTree("j12_softLeptIdLooseMu", (int)-1001);
+		l.FillTree("j12_softLeptIdEle95", (int)-1001);
 		l.FillTree("j12_genPt", (float)-1001);
     } // if 12 jets
 
@@ -5060,7 +5060,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j13_btagEff_T",(float)-1001.);
            l.FillTree("j13_btagEffError_T",(float)-1001.);
         }
-        l.FillTree("j13_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[12]]);
+        l.FillTree("j13_bgenMatched", (int)l.jet_algoPF1_bgenMatched[jets[12]]);
 		l.FillTree("j13_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[12]]);
 		l.FillTree("j13_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[12]]);
 		l.FillTree("j13_secVtxM", (float)l.jet_algoPF1_secVtxM[jets[12]]);
@@ -5081,8 +5081,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j13_softLeptPt", (float)l.jet_algoPF1_softLeptPt[jets[12]]);
 		l.FillTree("j13_softLeptPtRel", (float)l.jet_algoPF1_softLeptPtRel[jets[12]]);
 		l.FillTree("j13_softLeptDR", (float)l.jet_algoPF1_softLeptDR[jets[12]]);
-		l.FillTree("j13_softLeptIdLooseMu", (float)l.jet_algoPF1_softLeptIdLooseMu[jets[12]]);
-		l.FillTree("j13_softLeptIdEle95", (float)l.jet_algoPF1_softLeptIdEle95[jets[12]]);
+		l.FillTree("j13_softLeptIdLooseMu", (int)l.jet_algoPF1_softLeptIdLooseMu[jets[12]]);
+		l.FillTree("j13_softLeptIdEle95", (int)l.jet_algoPF1_softLeptIdEle95[jets[12]]);
 		l.FillTree("j13_genPt", (float)l.jet_algoPF1_genPt[jets[12]]);
     } else {
     	l.FillTree("j13_e",(float)-1001.);
@@ -5124,7 +5124,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j13_btagSFErrorDown",(float)-1001.);
         l.FillTree("j13_btagEff",(float)-1001.);
         l.FillTree("j13_btagEffError",(float)-1001.);
-        l.FillTree("j13_bgenMatched", (float)-1001.);
+        l.FillTree("j13_bgenMatched", (int)-1001);
 		l.FillTree("j13_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j13_secVtxPt", (float)-1001.);
 		l.FillTree("j13_secVtxM", (float)-1001.);
@@ -5145,8 +5145,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j13_softLeptPt", (float)-1001.);
 		l.FillTree("j13_softLeptPtRel", (float)-1001.);
 		l.FillTree("j13_softLeptDR", (float)-1001.);
-		l.FillTree("j13_softLeptIdLooseMu", (float)-1001.);
-		l.FillTree("j13_softLeptIdEle95", (float)-1001.);
+		l.FillTree("j13_softLeptIdLooseMu", (int)-1001);
+		l.FillTree("j13_softLeptIdEle95", (int)-1001);
 		l.FillTree("j13_genPt", (float)-1001);
     } // if 13 jets
 
@@ -5244,7 +5244,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j14_btagEff_T",(float)-1001.);
            l.FillTree("j14_btagEffError_T",(float)-1001.);
         }
-        l.FillTree("j14_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[13]]);
+        l.FillTree("j14_bgenMatched", (int)l.jet_algoPF1_bgenMatched[jets[13]]);
 		l.FillTree("j14_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[13]]);
 		l.FillTree("j14_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[13]]);
 		l.FillTree("j14_secVtxM", (float)l.jet_algoPF1_secVtxM[jets[13]]);
@@ -5265,8 +5265,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j14_softLeptPt", (float)l.jet_algoPF1_softLeptPt[jets[13]]);
 		l.FillTree("j14_softLeptPtRel", (float)l.jet_algoPF1_softLeptPtRel[jets[13]]);
 		l.FillTree("j14_softLeptDR", (float)l.jet_algoPF1_softLeptDR[jets[13]]);
-		l.FillTree("j14_softLeptIdLooseMu", (float)l.jet_algoPF1_softLeptIdLooseMu[jets[13]]);
-		l.FillTree("j14_softLeptIdEle95", (float)l.jet_algoPF1_softLeptIdEle95[jets[13]]);
+		l.FillTree("j14_softLeptIdLooseMu", (int)l.jet_algoPF1_softLeptIdLooseMu[jets[13]]);
+		l.FillTree("j14_softLeptIdEle95", (int)l.jet_algoPF1_softLeptIdEle95[jets[13]]);
 		l.FillTree("j14_genPt", (float)l.jet_algoPF1_genPt[jets[13]]);
     } else {
     	l.FillTree("j14_e",(float)-1001.);
@@ -5308,7 +5308,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j14_btagSFErrorDown",(float)-1001.);
         l.FillTree("j14_btagEff",(float)-1001.);
         l.FillTree("j14_btagEffError",(float)-1001.);
-        l.FillTree("j14_bgenMatched", (float)-1001.);
+        l.FillTree("j14_bgenMatched", (int)-1001);
 		l.FillTree("j14_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j14_secVtxPt", (float)-1001.);
 		l.FillTree("j14_secVtxM", (float)-1001.);
@@ -5329,8 +5329,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j14_softLeptPt", (float)-1001.);
 		l.FillTree("j14_softLeptPtRel", (float)-1001.);
 		l.FillTree("j14_softLeptDR", (float)-1001.);
-		l.FillTree("j14_softLeptIdLooseMu", (float)-1001.);
-		l.FillTree("j14_softLeptIdEle95", (float)-1001.);
+		l.FillTree("j14_softLeptIdLooseMu", (int)-1001);
+		l.FillTree("j14_softLeptIdEle95", (int)-1001);
 		l.FillTree("j14_genPt", (float)-1001);
     } // if 14 jets
 
@@ -5428,7 +5428,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
            l.FillTree("j15_btagEff_T",(float)-1001.);
            l.FillTree("j15_btagEffError_T",(float)-1001.);
         }
-        l.FillTree("j15_bgenMatched", (float)l.jet_algoPF1_bgenMatched[jets[14]]);
+        l.FillTree("j15_bgenMatched", (int)l.jet_algoPF1_bgenMatched[jets[14]]);
 		l.FillTree("j15_nSecondaryVertices", (float)l.jet_algoPF1_nSecondaryVertices[jets[14]]);
 		l.FillTree("j15_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[14]]);
 		l.FillTree("j15_secVtxM", (float)l.jet_algoPF1_secVtxM[jets[14]]);
@@ -5449,8 +5449,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j15_softLeptPt", (float)l.jet_algoPF1_softLeptPt[jets[14]]);
 		l.FillTree("j15_softLeptPtRel", (float)l.jet_algoPF1_softLeptPtRel[jets[14]]);
 		l.FillTree("j15_softLeptDR", (float)l.jet_algoPF1_softLeptDR[jets[14]]);
-		l.FillTree("j15_softLeptIdLooseMu", (float)l.jet_algoPF1_softLeptIdLooseMu[jets[14]]);
-		l.FillTree("j15_softLeptIdEle95", (float)l.jet_algoPF1_softLeptIdEle95[jets[14]]);
+		l.FillTree("j15_softLeptIdLooseMu", (int)l.jet_algoPF1_softLeptIdLooseMu[jets[14]]);
+		l.FillTree("j15_softLeptIdEle95", (int)l.jet_algoPF1_softLeptIdEle95[jets[14]]);
 		l.FillTree("j15_genPt", (float)l.jet_algoPF1_genPt[jets[14]]);
     } else {
     	l.FillTree("j15_e",(float)-1001.);
@@ -5492,7 +5492,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j15_btagSFErrorDown",(float)-1001.);
         l.FillTree("j15_btagEff",(float)-1001.);
         l.FillTree("j15_btagEffError",(float)-1001.);
-        l.FillTree("j15_bgenMatched", (float)-1001.);
+        l.FillTree("j15_bgenMatched", (int)-1001);
 		l.FillTree("j15_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j15_secVtxPt", (float)-1001.);
 		l.FillTree("j15_secVtxM", (float)-1001.);
@@ -5513,8 +5513,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j15_softLeptPt", (float)-1001.);
 		l.FillTree("j15_softLeptPtRel", (float)-1001.);
 		l.FillTree("j15_softLeptDR", (float)-1001.);
-		l.FillTree("j15_softLeptIdLooseMu", (float)-1001.);
-		l.FillTree("j15_softLeptIdEle95", (float)-1001.);
+		l.FillTree("j15_softLeptIdLooseMu", (int)-1001);
+		l.FillTree("j15_softLeptIdEle95", (int)-1001);
 		l.FillTree("j15_genPt", (float)-1001);
     } // if 15 jets
 

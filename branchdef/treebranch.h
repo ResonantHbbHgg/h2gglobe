@@ -233,8 +233,8 @@ void Branch_jet_algoPF1_leadTrackPt(TTree * tree) { tree->Branch("jet_algoPF1_le
 void Branch_jet_algoPF1_softLeptPt(TTree * tree) { tree->Branch("jet_algoPF1_softLeptPt",&jet_algoPF1_softLeptPt, "jet_algoPF1_softLeptPt[jet_algoPF1_n]/F"); };   
 void Branch_jet_algoPF1_softLeptPtRel(TTree * tree) { tree->Branch("jet_algoPF1_softLeptPtRel",&jet_algoPF1_softLeptPtRel, "jet_algoPF1_softLeptPtRel[jet_algoPF1_n]/F"); };   
 void Branch_jet_algoPF1_softLeptDR(TTree * tree) { tree->Branch("jet_algoPF1_softLeptDR",&jet_algoPF1_softLeptDR, "jet_algoPF1_softLeptDR[jet_algoPF1_n]/F"); };   
-void Branch_jet_algoPF1_softLeptIdLooseMu(TTree * tree) { tree->Branch("jet_algoPF1_softLeptIdLooseMu",&jet_algoPF1_softLeptIdLooseMu, "jet_algoPF1_softLeptIdLooseMu[jet_algoPF1_n]/F"); };
-void Branch_jet_algoPF1_softLeptIdEle95(TTree * tree) { tree->Branch("jet_algoPF1_softLeptIdEle95",&jet_algoPF1_softLeptIdEle95, "jet_algoPF1_softLeptIdEle95[jet_algoPF1_n]/F"); };
+void Branch_jet_algoPF1_softLeptIdLooseMu(TTree * tree) { tree->Branch("jet_algoPF1_softLeptIdLooseMu",&jet_algoPF1_softLeptIdLooseMu, "jet_algoPF1_softLeptIdLooseMu[jet_algoPF1_n]/I"); };
+void Branch_jet_algoPF1_softLeptIdEle95(TTree * tree) { tree->Branch("jet_algoPF1_softLeptIdEle95",&jet_algoPF1_softLeptIdEle95, "jet_algoPF1_softLeptIdEle95[jet_algoPF1_n]/I"); };
 void Branch_jet_algoPF1_erescale(TTree * tree) { tree->Branch("jet_algoPF1_erescale",&jet_algoPF1_erescale, "jet_algoPF1_erescale[jet_algoPF1_n]/F"); }; 
 void Branch_jet_algoPF1_ntk(TTree * tree) { tree->Branch("jet_algoPF1_ntk",&jet_algoPF1_ntk, "jet_algoPF1_ntk[jet_algoPF1_n]/I"); }; 
 void Branch_jet_algoPF1_tkind(TTree * tree) { tree->Branch("jet_algoPF1_tkind", "std::vector<std::vector<unsigned short> >", &jet_algoPF1_tkind); }; 
@@ -274,8 +274,8 @@ void Branch_jet_algoPF2_leadTrackPt(TTree * tree) { tree->Branch("jet_algoPF2_le
 void Branch_jet_algoPF2_softLeptPt(TTree * tree) { tree->Branch("jet_algoPF2_softLeptPt",&jet_algoPF2_softLeptPt, "jet_algoPF2_softLeptPt[jet_algoPF2_n]/F"); };   
 void Branch_jet_algoPF2_softLeptPtRel(TTree * tree) { tree->Branch("jet_algoPF2_softLeptPtRel",&jet_algoPF2_softLeptPtRel, "jet_algoPF2_softLeptPtRel[jet_algoPF2_n]/F"); };   
 void Branch_jet_algoPF2_softLeptDR(TTree * tree) { tree->Branch("jet_algoPF2_softLeptDR",&jet_algoPF2_softLeptDR, "jet_algoPF2_softLeptDR[jet_algoPF2_n]/F"); };   
-void Branch_jet_algoPF2_softLeptIdLooseMu(TTree * tree) { tree->Branch("jet_algoPF2_softLeptIdLooseMu",&jet_algoPF2_softLeptIdLooseMu, "jet_algoPF2_softLeptIdLooseMu[jet_algoPF2_n]/F"); };
-void Branch_jet_algoPF2_softLeptIdEle95(TTree * tree) { tree->Branch("jet_algoPF2_softLeptIdEle95",&jet_algoPF2_softLeptIdEle95, "jet_algoPF2_softLeptIdEle95[jet_algoPF2_n]/F"); };
+void Branch_jet_algoPF2_softLeptIdLooseMu(TTree * tree) { tree->Branch("jet_algoPF2_softLeptIdLooseMu",&jet_algoPF2_softLeptIdLooseMu, "jet_algoPF2_softLeptIdLooseMu[jet_algoPF2_n]/I"); };
+void Branch_jet_algoPF2_softLeptIdEle95(TTree * tree) { tree->Branch("jet_algoPF2_softLeptIdEle95",&jet_algoPF2_softLeptIdEle95, "jet_algoPF2_softLeptIdEle95[jet_algoPF2_n]/I"); };
 void Branch_jet_algoPF2_erescale(TTree * tree) { tree->Branch("jet_algoPF2_erescale",&jet_algoPF2_erescale, "jet_algoPF2_erescale[jet_algoPF2_n]/F"); }; 
 void Branch_jet_algoPF2_ntk(TTree * tree) { tree->Branch("jet_algoPF2_ntk",&jet_algoPF2_ntk, "jet_algoPF2_ntk[jet_algoPF2_n]/I"); }; 
 void Branch_jet_algoPF2_tkind(TTree * tree) { tree->Branch("jet_algoPF2_tkind", "std::vector<std::vector<unsigned short> >", &jet_algoPF2_tkind); }; 
@@ -293,8 +293,8 @@ void Branch_jet_algoPF2_frac04(TTree * tree) { tree->Branch("jet_algoPF2_frac04"
 void Branch_jet_algoPF2_frac05(TTree * tree) { tree->Branch("jet_algoPF2_frac05",&jet_algoPF2_frac05, "jet_algoPF2_frac05[jet_algoPF2_n]/F"); }; 
 void Branch_jet_algoPF2_full_mva(TTree * tree) { tree->Branch("jet_algoPF2_full_mva",&jet_algoPF2_full_mva, "jet_algoPF2_full_mva[jet_algoPF2_n]/F"); }; 
 void Branch_jet_algoPF2_simple_mva(TTree * tree) { tree->Branch("jet_algoPF2_simple_mva",&jet_algoPF2_simple_mva, "jet_algoPF2_simple_mva[jet_algoPF2_n]/F"); }; 
-void Branch_jet_algoPF2_nCharged(TTree * tree) { tree->Branch("jet_algoPF2_nCharged",&jet_algoPF2_nCharged, "jet_algoPF2_nCharged[jet_algoPF2_n]/F"); }; 
-void Branch_jet_algoPF2_nNeutrals(TTree * tree) { tree->Branch("jet_algoPF2_nNeutrals",&jet_algoPF2_nNeutrals, "jet_algoPF2_nNeutrals[jet_algoPF2_n]/F"); }; 
+void Branch_jet_algoPF2_nCharged(TTree * tree) { tree->Branch("jet_algoPF2_nCharged",&jet_algoPF2_nCharged, "jet_algoPF2_nCharged[jet_algoPF2_n]/I"); }; 
+void Branch_jet_algoPF2_nNeutrals(TTree * tree) { tree->Branch("jet_algoPF2_nNeutrals",&jet_algoPF2_nNeutrals, "jet_algoPF2_nNeutrals[jet_algoPF2_n]/I"); }; 
 void Branch_jet_algoPF2_full_wp_level(TTree * tree) { tree->Branch("jet_algoPF2_full_wp_level",&jet_algoPF2_full_wp_level, "jet_algoPF2_full_wp_level[jet_algoPF2_n]/I"); }; 
 void Branch_jet_algoPF2_simple_wp_level(TTree * tree) { tree->Branch("jet_algoPF2_simple_wp_level",&jet_algoPF2_simple_wp_level, "jet_algoPF2_simple_wp_level[jet_algoPF2_n]/I"); }; 
 void Branch_jet_algoPF3_n(TTree * tree) { tree->Branch("jet_algoPF3_n",&jet_algoPF3_n, "jet_algoPF3_n/I"); }; 
@@ -312,8 +312,8 @@ void Branch_jet_algoPF3_leadTrackPt(TTree * tree) { tree->Branch("jet_algoPF3_le
 void Branch_jet_algoPF3_softLeptPt(TTree * tree) { tree->Branch("jet_algoPF3_softLeptPt",&jet_algoPF3_softLeptPt, "jet_algoPF3_softLeptPt[jet_algoPF2_n]/F"); };   
 void Branch_jet_algoPF3_softLeptPtRel(TTree * tree) { tree->Branch("jet_algoPF3_softLeptPtRel",&jet_algoPF3_softLeptPtRel, "jet_algoPF3_softLeptPtRel[jet_algoPF2_n]/F"); };   
 void Branch_jet_algoPF3_softLeptDR(TTree * tree) { tree->Branch("jet_algoPF3_softLeptDR",&jet_algoPF3_softLeptDR, "jet_algoPF3_softLeptDR[jet_algoPF2_n]/F"); };   
-void Branch_jet_algoPF3_softLeptIdLooseMu(TTree * tree) { tree->Branch("jet_algoPF3_softLeptIdLooseMu",&jet_algoPF3_softLeptIdLooseMu, "jet_algoPF3_softLeptIdLooseMu[jet_algoPF2_n]/F"); };
-void Branch_jet_algoPF3_softLeptIdEle95(TTree * tree) { tree->Branch("jet_algoPF3_softLeptIdEle95",&jet_algoPF3_softLeptIdEle95, "jet_algoPF3_softLeptIdEle95[jet_algoPF2_n]/F"); };
+void Branch_jet_algoPF3_softLeptIdLooseMu(TTree * tree) { tree->Branch("jet_algoPF3_softLeptIdLooseMu",&jet_algoPF3_softLeptIdLooseMu, "jet_algoPF3_softLeptIdLooseMu[jet_algoPF2_n]/I"); };
+void Branch_jet_algoPF3_softLeptIdEle95(TTree * tree) { tree->Branch("jet_algoPF3_softLeptIdEle95",&jet_algoPF3_softLeptIdEle95, "jet_algoPF3_softLeptIdEle95[jet_algoPF2_n]/I"); };
 void Branch_jet_algoPF3_erescale(TTree * tree) { tree->Branch("jet_algoPF3_erescale",&jet_algoPF3_erescale, "jet_algoPF3_erescale[jet_algoPF3_n]/F"); }; 
 void Branch_jet_algoPF3_ntk(TTree * tree) { tree->Branch("jet_algoPF3_ntk",&jet_algoPF3_ntk, "jet_algoPF3_ntk[jet_algoPF3_n]/I"); }; 
 void Branch_jet_algoPF3_tkind(TTree * tree) { tree->Branch("jet_algoPF3_tkind", "std::vector<std::vector<unsigned short> >", &jet_algoPF3_tkind); }; 
@@ -331,8 +331,8 @@ void Branch_jet_algoPF3_frac04(TTree * tree) { tree->Branch("jet_algoPF3_frac04"
 void Branch_jet_algoPF3_frac05(TTree * tree) { tree->Branch("jet_algoPF3_frac05",&jet_algoPF3_frac05, "jet_algoPF3_frac05[jet_algoPF3_n]/F"); }; 
 void Branch_jet_algoPF3_full_mva(TTree * tree) { tree->Branch("jet_algoPF3_full_mva",&jet_algoPF3_full_mva, "jet_algoPF3_full_mva[jet_algoPF3_n]/F"); }; 
 void Branch_jet_algoPF3_simple_mva(TTree * tree) { tree->Branch("jet_algoPF3_simple_mva",&jet_algoPF3_simple_mva, "jet_algoPF3_simple_mva[jet_algoPF3_n]/F"); }; 
-void Branch_jet_algoPF3_nCharged(TTree * tree) { tree->Branch("jet_algoPF3_nCharged",&jet_algoPF3_nCharged, "jet_algoPF3_nCharged[jet_algoPF3_n]/F"); }; 
-void Branch_jet_algoPF3_nNeutrals(TTree * tree) { tree->Branch("jet_algoPF3_nNeutrals",&jet_algoPF3_nNeutrals, "jet_algoPF3_nNeutrals[jet_algoPF3_n]/F"); }; 
+void Branch_jet_algoPF3_nCharged(TTree * tree) { tree->Branch("jet_algoPF3_nCharged",&jet_algoPF3_nCharged, "jet_algoPF3_nCharged[jet_algoPF3_n]/I"); }; 
+void Branch_jet_algoPF3_nNeutrals(TTree * tree) { tree->Branch("jet_algoPF3_nNeutrals",&jet_algoPF3_nNeutrals, "jet_algoPF3_nNeutrals[jet_algoPF3_n]/I"); }; 
 void Branch_jet_algoPF3_full_wp_level(TTree * tree) { tree->Branch("jet_algoPF3_full_wp_level",&jet_algoPF3_full_wp_level, "jet_algoPF3_full_wp_level[jet_algoPF3_n]/I"); }; 
 void Branch_jet_algoPF3_simple_wp_level(TTree * tree) { tree->Branch("jet_algoPF3_simple_wp_level",&jet_algoPF3_simple_wp_level, "jet_algoPF3_simple_wp_level[jet_algoPF3_n]/I"); }; 
 
