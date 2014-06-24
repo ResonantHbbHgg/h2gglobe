@@ -216,12 +216,6 @@ type=2 name=j1_btagSFErrorDown_M
 type=2 name=j1_btagSF_T
 type=2 name=j1_btagSFErrorUp_T
 type=2 name=j1_btagSFErrorDown_T
-type=2 name=j1_btagEff_L
-type=2 name=j1_btagEffError_L
-type=2 name=j1_btagEff_M
-type=2 name=j1_btagEffError_M
-type=2 name=j1_btagEff_T
-type=2 name=j1_btagEffError_T
 
 
 type=2 name=j2_e
@@ -294,12 +288,6 @@ type=2 name=j2_btagSFErrorDown_M
 type=2 name=j2_btagSF_T
 type=2 name=j2_btagSFErrorUp_T
 type=2 name=j2_btagSFErrorDown_T
-type=2 name=j2_btagEff_L
-type=2 name=j2_btagEffError_L
-type=2 name=j2_btagEff_M
-type=2 name=j2_btagEffError_M
-type=2 name=j2_btagEff_T
-type=2 name=j2_btagEffError_T
 
 type=2 name=j3_e
 type=2 name=j3_pt
@@ -371,12 +359,6 @@ type=2 name=j3_btagSFErrorDown_M
 type=2 name=j3_btagSF_T
 type=2 name=j3_btagSFErrorUp_T
 type=2 name=j3_btagSFErrorDown_T
-type=2 name=j3_btagEff_L
-type=2 name=j3_btagEffError_L
-type=2 name=j3_btagEff_M
-type=2 name=j3_btagEffError_M
-type=2 name=j3_btagEff_T
-type=2 name=j3_btagEffError_T
 
 type=2 name=j4_e
 type=2 name=j4_pt
@@ -448,12 +430,6 @@ type=2 name=j4_btagSFErrorDown_M
 type=2 name=j4_btagSF_T
 type=2 name=j4_btagSFErrorUp_T
 type=2 name=j4_btagSFErrorDown_T
-type=2 name=j4_btagEff_L
-type=2 name=j4_btagEffError_L
-type=2 name=j4_btagEff_M
-type=2 name=j4_btagEffError_M
-type=2 name=j4_btagEff_T
-type=2 name=j4_btagEffError_T
 
 type=2 name=j5_e
 type=2 name=j5_pt
@@ -525,12 +501,6 @@ type=2 name=j5_btagSFErrorDown_M
 type=2 name=j5_btagSF_T
 type=2 name=j5_btagSFErrorUp_T
 type=2 name=j5_btagSFErrorDown_T
-type=2 name=j5_btagEff_L
-type=2 name=j5_btagEffError_L
-type=2 name=j5_btagEff_M
-type=2 name=j5_btagEffError_M
-type=2 name=j5_btagEff_T
-type=2 name=j5_btagEffError_T
 
 type=2 name=j6_e
 type=2 name=j6_pt
@@ -602,12 +572,6 @@ type=2 name=j6_btagSFErrorDown_M
 type=2 name=j6_btagSF_T
 type=2 name=j6_btagSFErrorUp_T
 type=2 name=j6_btagSFErrorDown_T
-type=2 name=j6_btagEff_L
-type=2 name=j6_btagEffError_L
-type=2 name=j6_btagEff_M
-type=2 name=j6_btagEffError_M
-type=2 name=j6_btagEff_T
-type=2 name=j6_btagEffError_T
 
 type=2 name=j7_e
 type=2 name=j7_pt
@@ -679,12 +643,6 @@ type=2 name=j7_btagSFErrorDown_M
 type=2 name=j7_btagSF_T
 type=2 name=j7_btagSFErrorUp_T
 type=2 name=j7_btagSFErrorDown_T
-type=2 name=j7_btagEff_L
-type=2 name=j7_btagEffError_L
-type=2 name=j7_btagEff_M
-type=2 name=j7_btagEffError_M
-type=2 name=j7_btagEff_T
-type=2 name=j7_btagEffError_T
 
 type=2 name=j8_e
 type=2 name=j8_pt
@@ -756,12 +714,6 @@ type=2 name=j8_btagSFErrorDown_M
 type=2 name=j8_btagSF_T
 type=2 name=j8_btagSFErrorUp_T
 type=2 name=j8_btagSFErrorDown_T
-type=2 name=j8_btagEff_L
-type=2 name=j8_btagEffError_L
-type=2 name=j8_btagEff_M
-type=2 name=j8_btagEffError_M
-type=2 name=j8_btagEff_T
-type=2 name=j8_btagEffError_T
 
 type=2 name=j9_e
 type=2 name=j9_pt
@@ -833,12 +785,6 @@ type=2 name=j9_btagSFErrorDown_M
 type=2 name=j9_btagSF_T
 type=2 name=j9_btagSFErrorUp_T
 type=2 name=j9_btagSFErrorDown_T
-type=2 name=j9_btagEff_L
-type=2 name=j9_btagEffError_L
-type=2 name=j9_btagEff_M
-type=2 name=j9_btagEffError_M
-type=2 name=j9_btagEff_T
-type=2 name=j9_btagEffError_T
 
 type=2 name=j10_e
 type=2 name=j10_pt
@@ -910,12 +856,6 @@ type=2 name=j10_btagSFErrorDown_M
 type=2 name=j10_btagSF_T
 type=2 name=j10_btagSFErrorUp_T
 type=2 name=j10_btagSFErrorDown_T
-type=2 name=j10_btagEff_L
-type=2 name=j10_btagEffError_L
-type=2 name=j10_btagEff_M
-type=2 name=j10_btagEffError_M
-type=2 name=j10_btagEff_T
-type=2 name=j10_btagEffError_T
 
 type=2 name=j11_e
 type=2 name=j11_pt
@@ -987,12 +927,6 @@ type=2 name=j11_btagSFErrorDown_M
 type=2 name=j11_btagSF_T
 type=2 name=j11_btagSFErrorUp_T
 type=2 name=j11_btagSFErrorDown_T
-type=2 name=j11_btagEff_L
-type=2 name=j11_btagEffError_L
-type=2 name=j11_btagEff_M
-type=2 name=j11_btagEffError_M
-type=2 name=j11_btagEff_T
-type=2 name=j11_btagEffError_T
 
 type=2 name=j12_e
 type=2 name=j12_pt
@@ -1064,12 +998,6 @@ type=2 name=j12_btagSFErrorDown_M
 type=2 name=j12_btagSF_T
 type=2 name=j12_btagSFErrorUp_T
 type=2 name=j12_btagSFErrorDown_T
-type=2 name=j12_btagEff_L
-type=2 name=j12_btagEffError_L
-type=2 name=j12_btagEff_M
-type=2 name=j12_btagEffError_M
-type=2 name=j12_btagEff_T
-type=2 name=j12_btagEffError_T
 
 type=2 name=j13_e
 type=2 name=j13_pt
@@ -1141,12 +1069,6 @@ type=2 name=j13_btagSFErrorDown_M
 type=2 name=j13_btagSF_T
 type=2 name=j13_btagSFErrorUp_T
 type=2 name=j13_btagSFErrorDown_T
-type=2 name=j13_btagEff_L
-type=2 name=j13_btagEffError_L
-type=2 name=j13_btagEff_M
-type=2 name=j13_btagEffError_M
-type=2 name=j13_btagEff_T
-type=2 name=j13_btagEffError_T
 
 type=2 name=j14_e
 type=2 name=j14_pt
@@ -1218,12 +1140,6 @@ type=2 name=j14_btagSFErrorDown_M
 type=2 name=j14_btagSF_T
 type=2 name=j14_btagSFErrorUp_T
 type=2 name=j14_btagSFErrorDown_T
-type=2 name=j14_btagEff_L
-type=2 name=j14_btagEffError_L
-type=2 name=j14_btagEff_M
-type=2 name=j14_btagEffError_M
-type=2 name=j14_btagEff_T
-type=2 name=j14_btagEffError_T
 
 type=2 name=j15_e
 type=2 name=j15_pt
@@ -1295,12 +1211,6 @@ type=2 name=j15_btagSFErrorDown_M
 type=2 name=j15_btagSF_T
 type=2 name=j15_btagSFErrorUp_T
 type=2 name=j15_btagSFErrorDown_T
-type=2 name=j15_btagEff_L
-type=2 name=j15_btagEffError_L
-type=2 name=j15_btagEff_M
-type=2 name=j15_btagEffError_M
-type=2 name=j15_btagEff_T
-type=2 name=j15_btagEffError_T
 
 # dijet variables
 type=2 name=JetsMass
