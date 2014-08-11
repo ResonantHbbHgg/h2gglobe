@@ -414,6 +414,49 @@ void StatAnalysis::Init(LoopAll& l)
     buildBkgModel(l, postfix);
     bookSignalModel(l,nDataBins);
 
+// OLIVIER: get the MVA stuff for storing photon id mva information
+    // Initialize all MVA ---------------------------------------------------//
+    if( useGbrDiphotonMva ) {
+	TFile * fin = TFile::Open(gbrDiphotonFile.c_str());
+	RooWorkspace * ws = (RooWorkspace*) (fin->Get("wsfitmc")->Clone());
+	fin->Close();
+	l.funcReader_dipho_MIT = new RooFuncReader(ws,"sigxxb","trainingvars");
+    }
+    l.SetAllMVA();
+    if( ! useGbrDiphotonMva ) {
+	l.tmvaReader_dipho_MIT->BookMVA("Gradient"   ,eventLevelMvaMIT.c_str());
+    }
+    // UCSD
+    l.tmvaReaderID_UCSD->BookMVA("Gradient"      ,photonLevelMvaUCSD.c_str()  );
+    //// l.tmvaReader_dipho_UCSD->BookMVA("Gradient"  ,eventLevelMvaUCSD.c_str()   );
+
+    // 2013 ID MVA
+    if( photonLevel2013IDMVA_EB != "" && photonLevel2013IDMVA_EE != "" ) {
+	l.tmvaReaderID_2013_Barrel->BookMVA("AdaBoost",photonLevel2013IDMVA_EB.c_str());
+	l.tmvaReaderID_2013_Endcap->BookMVA("AdaBoost",photonLevel2013IDMVA_EE.c_str());
+    } else if( photonLevel2012IDMVA_EB != "" && photonLevel2012IDMVA_EE != "" ) {
+    	l.tmvaReaderID_Single_Barrel->BookMVA("AdaBoost",photonLevel2012IDMVA_EB.c_str());
+    	l.tmvaReaderID_Single_Endcap->BookMVA("AdaBoost",photonLevel2012IDMVA_EE.c_str());
+	assert( bdtTrainingType == "Moriond2013" ); 
+    } else if (photonLevel2013_7TeV_IDMVA_EB != "" && photonLevel2013_7TeV_IDMVA_EE != "" ) {
+    	l.tmvaReaderID_2013_7TeV_MIT_Barrel->BookMVA("AdaBoost",photonLevel2013_7TeV_IDMVA_EB.c_str());
+    	l.tmvaReaderID_2013_7TeV_MIT_Endcap->BookMVA("AdaBoost",photonLevel2013_7TeV_IDMVA_EE.c_str());
+    } else { 
+    	assert( run7TeV4Xanalysis );
+    }
+
+    // MIT 
+    if( photonLevel2011IDMVA_EB != "" && photonLevel2011IDMVA_EE != "" ) {
+    	l.tmvaReaderID_MIT_Barrel->BookMVA("AdaBoost",photonLevel2011IDMVA_EB.c_str());
+    	l.tmvaReaderID_MIT_Endcap->BookMVA("AdaBoost",photonLevel2011IDMVA_EE.c_str());
+	assert(bdtTrainingType == "Old7TeV");
+    } else {
+    	assert( ! run7TeV4Xanalysis );
+    }
+    
+    // ----------------------------------------------------------------------//
+
+
     // Make sure the Map is filled
     FillSignalLabelMap(l);
 
@@ -2619,6 +2662,18 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     l.FillTree("ph2_e3x3", l.pho_e3x3[diphoton_index.second]);
     l.FillTree("ph1_e5x5", l.pho_e5x5[diphoton_index.first]);
     l.FillTree("ph2_e5x5", l.pho_e5x5[diphoton_index.second]);
+    // we need to unconst the p4 of the photons for reading the photon ID mva...
+    // don't ask me why since this very same p4 isn't used anywhere in there.
+    TLorentzVector lead_p4_notconst, sublead_p4_notconst;
+    lead_p4_notconst.SetPtEtaPhiE(lead_p4.Pt(), lead_p4.Eta(), lead_p4.Phi(), lead_p4.E());
+    sublead_p4_notconst.SetPtEtaPhiE(sublead_p4.Pt(), sublead_p4.Eta(), sublead_p4.Phi(), sublead_p4.E());
+    phoid_mvaout_lead = l.photonIDMVA(l.dipho_leadind[diphoton_id],l.dipho_vtxind[diphoton_id], 
+				      lead_p4_notconst,bdtTrainingType.c_str());
+    phoid_mvaout_sublead = l.photonIDMVA(l.dipho_subleadind[diphoton_id],l.dipho_vtxind[diphoton_id],
+					 sublead_p4_notconst,bdtTrainingType.c_str());
+//    cout << "phoid_mvaout_lead= " << phoid_mvaout_lead << "\tphoid_mvaout_sublead= " << phoid_mvaout_sublead << endl;
+    l.FillTree("ph1_IDmva", phoid_mvaout_lead);
+    l.FillTree("ph2_IDmva", phoid_mvaout_sublead);
 
 // diphoton variables
 	l.FillTree("PhotonsMass",(float)mass);

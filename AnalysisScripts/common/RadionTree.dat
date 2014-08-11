@@ -115,6 +115,8 @@ type=2 name=ph1_r9Eff_smear_weight
 type=2 name=ph2_r9Eff_smear_weight
 type=2 name=ph1_r9EffD_smear_weight
 type=2 name=ph2_r9EffD_smear_weight
+type=2 name=ph1_IDmva
+type=2 name=ph2_IDmva
 
 # diphoton variables
 type=2 name=PhotonsMass
