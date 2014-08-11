@@ -2563,7 +2563,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     if(PADEBUG) cerr << "StatAnalysis::fillOpTree: computing and storing isolations wrt chosen vertex" << endl;
 	for(int ivtx=0; ivtx<l.vtx_std_n; ivtx++){
         if ((*l.pho_pfiso_mycharged04)[diphoton_index.first][ivtx]>pho1_pfchargedisobad04){
-            pho1_pfchargedisobad04=(*l.pho_pfiso_mycharged04)[diphoton_index.first][ivtx]>pho1_pfchargedisobad04;
+            pho1_pfchargedisobad04=(*l.pho_pfiso_mycharged04)[diphoton_index.first][ivtx];
 	        pho1_ivtxpfch04bad = ivtx;
     }
 	}
@@ -2572,7 +2572,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
    int pho2_ivtxpfch04bad=-1;
     for(int ivtx=0; ivtx<l.vtx_std_n; ivtx++){
       if ((*l.pho_pfiso_mycharged04)[diphoton_index.second][ivtx]>pho2_pfchargedisobad04){
-        pho2_pfchargedisobad04=(*l.pho_pfiso_mycharged04)[diphoton_index.second][ivtx]>pho2_pfchargedisobad04;
+        pho2_pfchargedisobad04=(*l.pho_pfiso_mycharged04)[diphoton_index.second][ivtx];
           pho2_ivtxpfch04bad = ivtx;
       }
     }
