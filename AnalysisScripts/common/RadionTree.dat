@@ -179,6 +179,7 @@ type=2 name=j1_jerU_eta
 type=2 name=j1_beta
 type=2 name=j1_betaStar
 type=2 name=j1_betaStarClassic
+type=2 name=j1_pfloose
 type=2 name=j1_dR2Mean
 type=2 name=j1_csvBtag
 type=2 name=j1_csvMvaBtag
@@ -244,6 +245,7 @@ type=2 name=j2_jerU_eta
 type=2 name=j2_beta
 type=2 name=j2_betaStar
 type=2 name=j2_betaStarClassic
+type=2 name=j2_pfloose
 type=2 name=j2_dR2Mean
 type=2 name=j2_csvBtag
 type=2 name=j2_csvMvaBtag
@@ -308,6 +310,7 @@ type=2 name=j3_jerU_eta
 type=2 name=j3_beta
 type=2 name=j3_betaStar
 type=2 name=j3_betaStarClassic
+type=2 name=j3_pfloose
 type=2 name=j3_dR2Mean
 type=2 name=j3_csvBtag
 type=2 name=j3_csvMvaBtag
@@ -372,6 +375,7 @@ type=2 name=j4_jerU_eta
 type=2 name=j4_beta
 type=2 name=j4_betaStar
 type=2 name=j4_betaStarClassic
+type=2 name=j4_pfloose
 type=2 name=j4_dR2Mean
 type=2 name=j4_csvBtag
 type=2 name=j4_csvMvaBtag
@@ -436,6 +440,7 @@ type=2 name=j5_jerU_eta
 type=2 name=j5_beta
 type=2 name=j5_betaStar
 type=2 name=j5_betaStarClassic
+type=2 name=j5_pfloose
 type=2 name=j5_dR2Mean
 type=2 name=j5_csvBtag
 type=2 name=j5_csvMvaBtag
@@ -500,6 +505,7 @@ type=2 name=j6_jerU_eta
 type=2 name=j6_beta
 type=2 name=j6_betaStar
 type=2 name=j6_betaStarClassic
+type=2 name=j6_pfloose
 type=2 name=j6_dR2Mean
 type=2 name=j6_csvBtag
 type=2 name=j6_csvMvaBtag
@@ -564,6 +570,7 @@ type=2 name=j7_jerU_eta
 type=2 name=j7_beta
 type=2 name=j7_betaStar
 type=2 name=j7_betaStarClassic
+type=2 name=j7_pfloose
 type=2 name=j7_dR2Mean
 type=2 name=j7_csvBtag
 type=2 name=j7_csvMvaBtag
@@ -628,6 +635,7 @@ type=2 name=j8_jerU_eta
 type=2 name=j8_beta
 type=2 name=j8_betaStar
 type=2 name=j8_betaStarClassic
+type=2 name=j8_pfloose
 type=2 name=j8_dR2Mean
 type=2 name=j8_csvBtag
 type=2 name=j8_csvMvaBtag
@@ -692,6 +700,7 @@ type=2 name=j9_jerU_eta
 type=2 name=j9_beta
 type=2 name=j9_betaStar
 type=2 name=j9_betaStarClassic
+type=2 name=j9_pfloose
 type=2 name=j9_dR2Mean
 type=2 name=j9_csvBtag
 type=2 name=j9_csvMvaBtag
@@ -756,6 +765,7 @@ type=2 name=j10_jerU_eta
 type=2 name=j10_beta
 type=2 name=j10_betaStar
 type=2 name=j10_betaStarClassic
+type=2 name=j10_pfloose
 type=2 name=j10_dR2Mean
 type=2 name=j10_csvBtag
 type=2 name=j10_csvMvaBtag
@@ -820,6 +830,7 @@ type=2 name=j11_jerU_eta
 type=2 name=j11_beta
 type=2 name=j11_betaStar
 type=2 name=j11_betaStarClassic
+type=2 name=j11_pfloose
 type=2 name=j11_dR2Mean
 type=2 name=j11_csvBtag
 type=2 name=j11_csvMvaBtag
@@ -884,6 +895,7 @@ type=2 name=j12_jerU_eta
 type=2 name=j12_beta
 type=2 name=j12_betaStar
 type=2 name=j12_betaStarClassic
+type=2 name=j12_pfloose
 type=2 name=j12_dR2Mean
 type=2 name=j12_csvBtag
 type=2 name=j12_csvMvaBtag
@@ -948,6 +960,7 @@ type=2 name=j13_jerU_eta
 type=2 name=j13_beta
 type=2 name=j13_betaStar
 type=2 name=j13_betaStarClassic
+type=2 name=j13_pfloose
 type=2 name=j13_dR2Mean
 type=2 name=j13_csvBtag
 type=2 name=j13_csvMvaBtag
@@ -1012,6 +1025,7 @@ type=2 name=j14_jerU_eta
 type=2 name=j14_beta
 type=2 name=j14_betaStar
 type=2 name=j14_betaStarClassic
+type=2 name=j14_pfloose
 type=2 name=j14_dR2Mean
 type=2 name=j14_csvBtag
 type=2 name=j14_csvMvaBtag
@@ -1076,6 +1090,7 @@ type=2 name=j15_jerU_eta
 type=2 name=j15_beta
 type=2 name=j15_betaStar
 type=2 name=j15_betaStarClassic
+type=2 name=j15_pfloose
 type=2 name=j15_dR2Mean
 type=2 name=j15_csvBtag
 type=2 name=j15_csvMvaBtag

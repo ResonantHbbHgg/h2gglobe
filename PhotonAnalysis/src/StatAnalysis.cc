@@ -2783,6 +2783,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j1_beta", (float)l.jet_algoPF1_beta[jets[0]]);
 	    l.FillTree("j1_betaStar", (float)l.jet_algoPF1_betaStar[jets[0]]);
     	l.FillTree("j1_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[0]]);
+    	l.FillTree("j1_pfloose", (float)l.jet_algoPF1_pfloose[jets[0]]);
 	    l.FillTree("j1_dR2Mean", (float)l.jet_algoPF1_dR2Mean[jets[0]]);
         if(PADEBUG) cout << "B-tagging variables" << endl;
         l.FillTree("j1_csvBtag", (float)l.jet_algoPF1_csvBtag[jets[0]]);
@@ -2886,6 +2887,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j1_beta", (float)-1001.);
 	    l.FillTree("j1_betaStar", (float)-1001.);
     	l.FillTree("j1_betaStarClassic", (float)-1001.);
+    	l.FillTree("j1_pfloose", (float)-1001.);
 	    l.FillTree("j1_dR2Mean", (float)-1001.);
         l.FillTree("j1_csvBtag", (float)-1001.);
         l.FillTree("j1_csvMvaBtag", (float)-1001.);
@@ -2950,6 +2952,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j2_beta", (float)l.jet_algoPF1_beta[jets[1]]);
     	l.FillTree("j2_betaStar", (float)l.jet_algoPF1_betaStar[jets[1]]);
     	l.FillTree("j2_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[1]]);
+    	l.FillTree("j2_pfloose", (float)l.jet_algoPF1_pfloose[jets[1]]);
     	l.FillTree("j2_dR2Mean", (float)l.jet_algoPF1_dR2Mean[jets[1]]);
         if(PADEBUG) cout << "B-tagging variables" << endl;
         l.FillTree("j2_csvBtag", (float)l.jet_algoPF1_csvBtag[jets[1]]);
@@ -3053,6 +3056,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j2_beta", (float)-1001.);
     	l.FillTree("j2_betaStar", (float)-1001.);
     	l.FillTree("j2_betaStarClassic", (float)-1001.);
+    	l.FillTree("j2_pfloose", (float)-1001.);
     	l.FillTree("j2_dR2Mean", (float)-1001.);
         l.FillTree("j2_csvBtag", (float)-1001.);
         l.FillTree("j2_csvMvaBtag", (float)-1001.);
@@ -3165,6 +3169,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j3_beta", (float)l.jet_algoPF1_beta[jets[2]]);
 	    l.FillTree("j3_betaStar", (float)l.jet_algoPF1_betaStar[jets[2]]);
 	    l.FillTree("j3_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[2]]);
+	    l.FillTree("j3_pfloose", (float)l.jet_algoPF1_pfloose[jets[2]]);
 	    l.FillTree("j3_dR2Mean", (float)l.jet_algoPF1_dR2Mean[jets[2]]);
         l.FillTree("j3_csvBtag", (float)l.jet_algoPF1_csvBtag[jets[2]]);
         l.FillTree("j3_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[2]]);
@@ -3263,6 +3268,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j3_beta", (float)-1001.);
 	    l.FillTree("j3_betaStar", (float)-1001.);
 	    l.FillTree("j3_betaStarClassic", (float)-1001.);
+	    l.FillTree("j3_pfloose", (float)-1001.);
 	    l.FillTree("j3_dR2Mean", (float)-1001.);
         l.FillTree("j3_csvBtag", (float)-1001.);
         l.FillTree("j3_csvMvaBtag", (float)-1001.);
@@ -3323,6 +3329,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j4_beta", (float)l.jet_algoPF1_beta[jets[3]]);
 	    l.FillTree("j4_betaStar", (float)l.jet_algoPF1_betaStar[jets[3]]);
 	    l.FillTree("j4_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[3]]);
+	    l.FillTree("j4_pfloose", (float)l.jet_algoPF1_pfloose[jets[3]]);
 	    l.FillTree("j4_dR2Mean", (float)l.jet_algoPF1_dR2Mean[jets[3]]);
         l.FillTree("j4_csvBtag", (float)l.jet_algoPF1_csvBtag[jets[3]]);
         l.FillTree("j4_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[3]]);
@@ -3421,6 +3428,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j4_beta", (float)-1001.);
 	    l.FillTree("j4_betaStar", (float)-1001.);
 	    l.FillTree("j4_betaStarClassic", (float)-1001.);
+	    l.FillTree("j4_pfloose", (float)-1001.);
 	    l.FillTree("j4_dR2Mean", (float)-1001.);
         l.FillTree("j4_csvBtag", (float)-1001.);
         l.FillTree("j4_csvMvaBtag", (float)-1001.);
@@ -3481,6 +3489,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j5_beta", (float)l.jet_algoPF1_beta[jets[4]]);
 	    l.FillTree("j5_betaStar", (float)l.jet_algoPF1_betaStar[jets[4]]);
 	    l.FillTree("j5_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[4]]);
+	    l.FillTree("j5_pfloose", (float)l.jet_algoPF1_pfloose[jets[4]]);
 	    l.FillTree("j5_dR2Mean", (float)l.jet_algoPF1_dR2Mean[jets[4]]);
         l.FillTree("j5_csvBtag", (float)l.jet_algoPF1_csvBtag[jets[4]]);
         l.FillTree("j5_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[4]]);
@@ -3579,6 +3588,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j5_beta", (float)-1001.);
 	    l.FillTree("j5_betaStar", (float)-1001.);
 	    l.FillTree("j5_betaStarClassic", (float)-1001.);
+	    l.FillTree("j5_pfloose", (float)-1001.);
 	    l.FillTree("j5_dR2Mean", (float)-1001.);
         l.FillTree("j5_csvBtag", (float)-1001.);
         l.FillTree("j5_csvMvaBtag", (float)-1001.);
@@ -3639,6 +3649,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j6_beta", (float)l.jet_algoPF1_beta[jets[5]]);
 	    l.FillTree("j6_betaStar", (float)l.jet_algoPF1_betaStar[jets[5]]);
 	    l.FillTree("j6_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[5]]);
+	    l.FillTree("j6_pfloose", (float)l.jet_algoPF1_pfloose[jets[5]]);
 	    l.FillTree("j6_dR2Mean", (float)l.jet_algoPF1_dR2Mean[jets[5]]);
         l.FillTree("j6_csvBtag", (float)l.jet_algoPF1_csvBtag[jets[5]]);
         l.FillTree("j6_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[5]]);
@@ -3737,6 +3748,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j6_beta", (float)-1001.);
 	    l.FillTree("j6_betaStar", (float)-1001.);
 	    l.FillTree("j6_betaStarClassic", (float)-1001.);
+	    l.FillTree("j6_pfloose", (float)-1001.);
 	    l.FillTree("j6_dR2Mean", (float)-1001.);
         l.FillTree("j6_csvBtag", (float)-1001.);
         l.FillTree("j6_csvMvaBtag", (float)-1001.);
@@ -3797,6 +3809,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j7_beta", (float)l.jet_algoPF1_beta[jets[6]]);
 	    l.FillTree("j7_betaStar", (float)l.jet_algoPF1_betaStar[jets[6]]);
 	    l.FillTree("j7_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[6]]);
+	    l.FillTree("j7_pfloose", (float)l.jet_algoPF1_pfloose[jets[6]]);
 	    l.FillTree("j7_dR2Mean", (float)l.jet_algoPF1_dR2Mean[jets[6]]);
         l.FillTree("j7_csvBtag", (float)l.jet_algoPF1_csvBtag[jets[6]]);
         l.FillTree("j7_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[6]]);
@@ -3895,6 +3908,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j7_beta", (float)-1001.);
 	    l.FillTree("j7_betaStar", (float)-1001.);
 	    l.FillTree("j7_betaStarClassic", (float)-1001.);
+	    l.FillTree("j7_pfloose", (float)-1001.);
 	    l.FillTree("j7_dR2Mean", (float)-1001.);
         l.FillTree("j7_csvBtag", (float)-1001.);
         l.FillTree("j7_csvMvaBtag", (float)-1001.);
@@ -3955,6 +3969,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j8_beta", (float)l.jet_algoPF1_beta[jets[7]]);
 	    l.FillTree("j8_betaStar", (float)l.jet_algoPF1_betaStar[jets[7]]);
 	    l.FillTree("j8_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[7]]);
+	    l.FillTree("j8_pfloose", (float)l.jet_algoPF1_pfloose[jets[7]]);
 	    l.FillTree("j8_dR2Mean", (float)l.jet_algoPF1_dR2Mean[jets[7]]);
         l.FillTree("j8_csvBtag", (float)l.jet_algoPF1_csvBtag[jets[7]]);
         l.FillTree("j8_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[7]]);
@@ -4053,6 +4068,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j8_beta", (float)-1001.);
 	    l.FillTree("j8_betaStar", (float)-1001.);
 	    l.FillTree("j8_betaStarClassic", (float)-1001.);
+	    l.FillTree("j8_pfloose", (float)-1001.);
 	    l.FillTree("j8_dR2Mean", (float)-1001.);
         l.FillTree("j8_csvBtag", (float)-1001.);
         l.FillTree("j8_csvMvaBtag", (float)-1001.);
@@ -4113,6 +4129,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j9_beta", (float)l.jet_algoPF1_beta[jets[8]]);
 	    l.FillTree("j9_betaStar", (float)l.jet_algoPF1_betaStar[jets[8]]);
 	    l.FillTree("j9_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[8]]);
+	    l.FillTree("j9_pfloose", (float)l.jet_algoPF1_pfloose[jets[8]]);
 	    l.FillTree("j9_dR2Mean", (float)l.jet_algoPF1_dR2Mean[jets[8]]);
         l.FillTree("j9_csvBtag", (float)l.jet_algoPF1_csvBtag[jets[8]]);
         l.FillTree("j9_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[8]]);
@@ -4211,6 +4228,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j9_beta", (float)-1001.);
 	    l.FillTree("j9_betaStar", (float)-1001.);
 	    l.FillTree("j9_betaStarClassic", (float)-1001.);
+	    l.FillTree("j9_pfloose", (float)-1001.);
 	    l.FillTree("j9_dR2Mean", (float)-1001.);
         l.FillTree("j9_csvBtag", (float)-1001.);
         l.FillTree("j9_csvMvaBtag", (float)-1001.);
@@ -4271,6 +4289,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j10_beta", (float)l.jet_algoPF1_beta[jets[9]]);
 	    l.FillTree("j10_betaStar", (float)l.jet_algoPF1_betaStar[jets[9]]);
 	    l.FillTree("j10_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[9]]);
+	    l.FillTree("j10_pfloose", (float)l.jet_algoPF1_pfloose[jets[9]]);
 	    l.FillTree("j10_dR2Mean", (float)l.jet_algoPF1_dR2Mean[jets[9]]);
         l.FillTree("j10_csvBtag", (float)l.jet_algoPF1_csvBtag[jets[9]]);
         l.FillTree("j10_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[9]]);
@@ -4369,6 +4388,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j10_beta", (float)-1001.);
 	    l.FillTree("j10_betaStar", (float)-1001.);
 	    l.FillTree("j10_betaStarClassic", (float)-1001.);
+	    l.FillTree("j10_pfloose", (float)-1001.);
 	    l.FillTree("j10_dR2Mean", (float)-1001.);
         l.FillTree("j10_csvBtag", (float)-1001.);
         l.FillTree("j10_csvMvaBtag", (float)-1001.);
@@ -4429,6 +4449,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j11_beta", (float)l.jet_algoPF1_beta[jets[10]]);
 	    l.FillTree("j11_betaStar", (float)l.jet_algoPF1_betaStar[jets[10]]);
 	    l.FillTree("j11_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[10]]);
+	    l.FillTree("j11_pfloose", (float)l.jet_algoPF1_pfloose[jets[10]]);
 	    l.FillTree("j11_dR2Mean", (float)l.jet_algoPF1_dR2Mean[jets[10]]);
         l.FillTree("j11_csvBtag", (float)l.jet_algoPF1_csvBtag[jets[10]]);
         l.FillTree("j11_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[10]]);
@@ -4527,6 +4548,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j11_beta", (float)-1001.);
 	    l.FillTree("j11_betaStar", (float)-1001.);
 	    l.FillTree("j11_betaStarClassic", (float)-1001.);
+	    l.FillTree("j11_pfloose", (float)-1001.);
 	    l.FillTree("j11_dR2Mean", (float)-1001.);
         l.FillTree("j11_csvBtag", (float)-1001.);
         l.FillTree("j11_csvMvaBtag", (float)-1001.);
@@ -4587,6 +4609,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j12_beta", (float)l.jet_algoPF1_beta[jets[11]]);
 	    l.FillTree("j12_betaStar", (float)l.jet_algoPF1_betaStar[jets[11]]);
 	    l.FillTree("j12_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[11]]);
+	    l.FillTree("j12_pfloose", (float)l.jet_algoPF1_pfloose[jets[11]]);
 	    l.FillTree("j12_dR2Mean", (float)l.jet_algoPF1_dR2Mean[jets[11]]);
         l.FillTree("j12_csvBtag", (float)l.jet_algoPF1_csvBtag[jets[11]]);
         l.FillTree("j12_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[11]]);
@@ -4685,6 +4708,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j12_beta", (float)-1001.);
 	    l.FillTree("j12_betaStar", (float)-1001.);
 	    l.FillTree("j12_betaStarClassic", (float)-1001.);
+	    l.FillTree("j12_pfloose", (float)-1001.);
 	    l.FillTree("j12_dR2Mean", (float)-1001.);
         l.FillTree("j12_csvBtag", (float)-1001.);
         l.FillTree("j12_csvMvaBtag", (float)-1001.);
@@ -4745,6 +4769,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j13_beta", (float)l.jet_algoPF1_beta[jets[12]]);
 	    l.FillTree("j13_betaStar", (float)l.jet_algoPF1_betaStar[jets[12]]);
 	    l.FillTree("j13_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[12]]);
+	    l.FillTree("j13_pfloose", (float)l.jet_algoPF1_pfloose[jets[12]]);
 	    l.FillTree("j13_dR2Mean", (float)l.jet_algoPF1_dR2Mean[jets[12]]);
         l.FillTree("j13_csvBtag", (float)l.jet_algoPF1_csvBtag[jets[12]]);
         l.FillTree("j13_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[12]]);
@@ -4843,6 +4868,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j13_beta", (float)-1001.);
 	    l.FillTree("j13_betaStar", (float)-1001.);
 	    l.FillTree("j13_betaStarClassic", (float)-1001.);
+	    l.FillTree("j13_pfloose", (float)-1001.);
 	    l.FillTree("j13_dR2Mean", (float)-1001.);
         l.FillTree("j13_csvBtag", (float)-1001.);
         l.FillTree("j13_csvMvaBtag", (float)-1001.);
@@ -4903,6 +4929,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j14_beta", (float)l.jet_algoPF1_beta[jets[13]]);
 	    l.FillTree("j14_betaStar", (float)l.jet_algoPF1_betaStar[jets[13]]);
 	    l.FillTree("j14_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[13]]);
+	    l.FillTree("j14_pfloose", (float)l.jet_algoPF1_pfloose[jets[13]]);
 	    l.FillTree("j14_dR2Mean", (float)l.jet_algoPF1_dR2Mean[jets[13]]);
         l.FillTree("j14_csvBtag", (float)l.jet_algoPF1_csvBtag[jets[13]]);
         l.FillTree("j14_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[13]]);
@@ -5001,6 +5028,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j14_beta", (float)-1001.);
 	    l.FillTree("j14_betaStar", (float)-1001.);
 	    l.FillTree("j14_betaStarClassic", (float)-1001.);
+	    l.FillTree("j14_pfloose", (float)-1001.);
 	    l.FillTree("j14_dR2Mean", (float)-1001.);
         l.FillTree("j14_csvBtag", (float)-1001.);
         l.FillTree("j14_csvMvaBtag", (float)-1001.);
@@ -5061,6 +5089,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j15_beta", (float)l.jet_algoPF1_beta[jets[14]]);
 	    l.FillTree("j15_betaStar", (float)l.jet_algoPF1_betaStar[jets[14]]);
 	    l.FillTree("j15_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[14]]);
+	    l.FillTree("j15_pfloose", (float)l.jet_algoPF1_pfloose[jets[14]]);
 	    l.FillTree("j15_dR2Mean", (float)l.jet_algoPF1_dR2Mean[jets[14]]);
         l.FillTree("j15_csvBtag", (float)l.jet_algoPF1_csvBtag[jets[14]]);
         l.FillTree("j15_csvMvaBtag", (float)l.jet_algoPF1_csvMvaBtag[jets[14]]);
@@ -5159,6 +5188,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j15_beta", (float)-1001.);
 	    l.FillTree("j15_betaStar", (float)-1001.);
 	    l.FillTree("j15_betaStarClassic", (float)-1001.);
+	    l.FillTree("j15_pfloose", (float)-1001.);
 	    l.FillTree("j15_dR2Mean", (float)-1001.);
         l.FillTree("j15_csvBtag", (float)-1001.);
         l.FillTree("j15_csvMvaBtag", (float)-1001.);
