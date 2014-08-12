@@ -2672,6 +2672,10 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     phoid_mvaout_sublead = l.photonIDMVA(l.dipho_subleadind[diphoton_id],l.dipho_vtxind[diphoton_id],
 					 sublead_p4_notconst,bdtTrainingType.c_str());
 //    cout << "phoid_mvaout_lead= " << phoid_mvaout_lead << "\tphoid_mvaout_sublead= " << phoid_mvaout_sublead << endl;
+    l.FillTree("ph1_rawE", l.sc_raw[l.pho_scind[l.dipho_leadind[diphoton_id]]]);
+    l.FillTree("ph2_rawE", l.sc_raw[l.pho_scind[l.dipho_subleadind[diphoton_id]]]);
+    l.FillTree("ph1_e2x2_o_e5x5", l.pho_e2x2[diphoton_index.first] / l.pho_e5x5[diphoton_index.first]);
+    l.FillTree("ph2_e2x2_o_e5x5", l.pho_e2x2[diphoton_index.first] / l.pho_e5x5[diphoton_index.second]);
     l.FillTree("ph1_IDmva", phoid_mvaout_lead);
     l.FillTree("ph2_IDmva", phoid_mvaout_sublead);
 

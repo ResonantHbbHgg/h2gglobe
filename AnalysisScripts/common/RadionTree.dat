@@ -83,6 +83,12 @@ type=2 name=ph1_e3x3
 type=2 name=ph2_e3x3
 type=2 name=ph1_e5x5
 type=2 name=ph2_e5x5
+type=2 name=ph1_rawE
+type=2 name=ph2_rawE
+type=2 name=ph1_e2x2_o_e5x5
+type=2 name=ph2_e2x2_o_e5x5
+type=2 name=ph1_IDmva
+type=2 name=ph2_IDmva
 type=2 name=ph1_pesD_e
 type=2 name=ph2_pesD_e
 type=2 name=ph1_pesD_pt
@@ -115,8 +121,6 @@ type=2 name=ph1_r9Eff_smear_weight
 type=2 name=ph2_r9Eff_smear_weight
 type=2 name=ph1_r9EffD_smear_weight
 type=2 name=ph2_r9EffD_smear_weight
-type=2 name=ph1_IDmva
-type=2 name=ph2_IDmva
 
 # diphoton variables
 type=2 name=PhotonsMass
