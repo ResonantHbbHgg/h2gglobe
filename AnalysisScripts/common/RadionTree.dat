@@ -35,6 +35,8 @@ type=2 name=ph1_eta
 type=2 name=ph2_eta
 type=2 name=ph1_r9
 type=2 name=ph2_r9
+type=2 name=ph1_r9_cic
+type=2 name=ph2_r9_cic
 type=0 name=ph1_isPrompt
 type=0 name=ph2_isPrompt
 type=2 name=ph1_SCEta

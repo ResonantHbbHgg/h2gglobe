@@ -2583,6 +2583,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	l.FillTree("ph2_eta",(float)sublead_p4.Eta());
 	l.FillTree("ph1_r9",(float)l.pho_r9[diphoton_index.first]);
 	l.FillTree("ph2_r9",(float)l.pho_r9[diphoton_index.second]);
+	l.FillTree("ph1_r9_cic",(float)l.pho_r9_cic[diphoton_index.first]);
+	l.FillTree("ph2_r9_cic",(float)l.pho_r9_cic[diphoton_index.second]);
 //	l.FillTree("ph1_isPrompt", (int)l.GenParticleInfo(diphoton_index.first, l.dipho_vtxind[diphoton_id], 0.1));
 //	l.FillTree("ph2_isPrompt", (int)l.GenParticleInfo(diphoton_index.second, l.dipho_vtxind[diphoton_id], 0.1));
     l.FillTree("ph1_isPrompt", (int)l.pho_genmatched[diphoton_index.first]); // Alternative definition for gen photon matching: Nicolas' definition need re-reduction
@@ -2648,6 +2650,156 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     int ph2_ciclevel = l.PhotonCiCPFSelectionLevel(diphoton_index.second, l.dipho_vtxind[diphoton_id], ph_passcut, 4, 0, &smeared_pho_energy[0]);
     l.FillTree("ph1_ciclevel", (int)ph1_ciclevel);
     l.FillTree("ph2_ciclevel", (int)ph2_ciclevel);
+    if(PADEBUG)
+    {
+        // ******************** <CIC DEBUG>  ************************************
+        float ph1_pfchargedisogood03 = (float)(*l.pho_pfiso_mycharged03)[diphoton_index.first][l.dipho_vtxind[diphoton_id]];
+        float ph2_pfchargedisogood03 = (float)(*l.pho_pfiso_mycharged03)[diphoton_index.second][l.dipho_vtxind[diphoton_id]];
+        float ph1_ecaliso = (float)l.pho_pfiso_myphoton03[diphoton_index.first];
+        float ph2_ecaliso = (float)l.pho_pfiso_myphoton03[diphoton_index.second];
+        float ph1_pt = (float)lead_p4.Pt();
+        float ph2_pt = (float)sublead_p4.Pt();
+        float ph1_pfchargedisobad04 = (float)pho1_pfchargedisobad04;
+        float ph2_pfchargedisobad04 = (float)pho2_pfchargedisobad04;
+        float ph1_ecalisobad = (float)l.pho_pfiso_myphoton04[diphoton_index.first];
+        float ph2_ecalisobad = (float)l.pho_pfiso_myphoton04[diphoton_index.second];
+        float ph1_badvtx_Et = (float)ph1_badvtx.Et();
+        float ph2_badvtx_Et = (float)ph2_badvtx.Et();
+        float rho = (float)l.rho_algo1;
+        
+        float ph1_PFisoA = (ph1_pfchargedisogood03 + ph1_ecaliso + 2.5 - rho * 0.09) * 50. / ph1_pt;
+        float ph2_PFisoA = (ph2_pfchargedisogood03 + ph2_ecaliso + 2.5 - rho * 0.09) * 50. / ph2_pt;
+        float ph1_PFisoB = (ph1_pfchargedisobad04 + ph1_ecalisobad + 2.5 - rho * 0.23) * 50. / ph1_badvtx_Et;
+        float ph2_PFisoB = (ph2_pfchargedisobad04 + ph2_ecalisobad + 2.5 - rho * 0.23) * 50. / ph2_badvtx_Et;
+        float ph1_PFisoC = ph1_pfchargedisogood03 * 50. / ph1_pt;
+        float ph2_PFisoC = ph2_pfchargedisogood03 * 50. / ph2_pt;
+        int ph1_isEB = (int)l.pho_isEB[diphoton_index.first];
+        int ph2_isEB = (int)l.pho_isEB[diphoton_index.second];
+        float ph1_r9 = (float)l.pho_r9[diphoton_index.first];
+        float ph2_r9 = (float)l.pho_r9[diphoton_index.second];
+        float ph1_r9_cic = (float)l.pho_r9_cic[diphoton_index.first];
+        float ph2_r9_cic = (float)l.pho_r9_cic[diphoton_index.second];
+        float ph1_hoe = (float)l.pho_hoe[diphoton_index.first];
+        float ph2_hoe = (float)l.pho_hoe[diphoton_index.second];
+        float ph1_sieie = (float)l.pho_sieie[diphoton_index.first];
+        float ph2_sieie = (float)l.pho_sieie[diphoton_index.second];
+        
+        bool ph1_cic = false;
+        bool ph2_cic = false;
+        if (ph1_isEB && ph1_r9_cic > .94)
+        {
+            if( ph1_PFisoA < 6.
+                && ph1_PFisoB < 10.
+                && ph1_PFisoC < 3.8
+                && ph1_sieie < 0.0108
+                && ph1_hoe < 0.124
+                && ph1_r9_cic > .94 )
+                ph1_cic = true;
+        }
+        else if (ph1_isEB && ph1_r9_cic < .94)
+        {
+            if( ph1_PFisoA < 4.7
+                && ph1_PFisoB < 6.5
+                && ph1_PFisoC < 2.5
+                && ph1_sieie < 0.0102
+                && ph1_hoe < 0.092
+                && ph1_r9_cic > .298 )
+                ph1_cic = true;
+        }
+        else if (!ph1_isEB && ph1_r9_cic > .94)
+        {
+            if( ph1_PFisoA < 5.6
+                && ph1_PFisoB < 5.6
+                && ph1_PFisoC < 3.1
+                && ph1_sieie < 0.028
+                && ph1_hoe < 0.142
+                && ph1_r9_cic > .94 )
+                ph1_cic = true;
+        }
+        else if (!ph1_isEB && ph1_r9_cic < .94)
+        {
+            if( ph1_PFisoA < 3.6
+                && ph1_PFisoB < 4.4
+                && ph1_PFisoC < 2.2
+                && ph1_sieie < 0.028
+                && ph1_hoe < 0.063
+                && ph1_r9_cic > .24 )
+                ph1_cic = true;
+        }
+        if (ph2_isEB && ph2_r9_cic > .94)
+        {
+            if( ph2_PFisoA < 6.
+                && ph2_PFisoB < 10.
+                && ph2_PFisoC < 3.8
+                && ph2_sieie < 0.0108
+                && ph2_hoe < 0.124
+                && ph2_r9_cic > .94 )
+                ph2_cic = true;
+        }
+        else if (ph2_isEB && ph2_r9_cic < .94)
+        {
+            if( ph2_PFisoA < 4.7
+                && ph2_PFisoB < 6.5
+                && ph2_PFisoC < 2.5
+                && ph2_sieie < 0.0102
+                && ph2_hoe < 0.092
+                && ph2_r9_cic > .298 )
+                ph2_cic = true;
+        }
+        else if (!ph2_isEB && ph2_r9_cic > .94)
+        {
+            if( ph2_PFisoA < 5.6
+                && ph2_PFisoB < 5.6
+                && ph2_PFisoC < 3.1
+                && ph2_sieie < 0.028
+                && ph2_hoe < 0.142
+                && ph2_r9_cic > .94 )
+                ph2_cic = true;
+        }
+        else if (!ph2_isEB && ph2_r9_cic < .94)
+        {
+            if( ph2_PFisoA < 3.6
+                && ph2_PFisoB < 4.4
+                && ph2_PFisoC < 2.2
+                && ph2_sieie < 0.028
+                && ph2_hoe < 0.063
+                && ph2_r9_cic > .24 )
+                ph2_cic = true;
+        }
+        if (ph1_cic != (ph1_ciclevel >= 4) )
+        {
+            cout << "ERROR, something wrong is happening with CiC for the photon 1" << endl;
+            cout << "\tph1_cic= " << ph1_cic
+                << "\tph1_ciclevel= " << ph1_ciclevel
+                << "\tcategory= " << l.PhotonCategory(diphoton_index.first,2,2)
+                << "\tph1_isEB= " << ph1_isEB
+                << "\tph1_r9= " << ph1_r9
+                << "\tph1_r9_cic= " << ph1_r9_cic
+                << "\tph1_PFisoA= " << ph1_PFisoA
+                << "\tph1_PFisoB= " << ph1_PFisoB
+                << "\tph1_PFisoC= " << ph1_PFisoC
+                << "\tph1_sieie= " << ph1_sieie
+                << "\tph1_hoe= " << ph1_hoe
+                << endl;
+        }
+        if (ph2_cic != (ph2_ciclevel >= 4) )
+        {
+            cout << "ERROR, something wrong is happening with CiC for the photon 2" << endl;
+            cout << "\tph2_cic= " << ph2_cic
+                << "\tph2_ciclevel= " << ph2_ciclevel
+                << "\tcategory= " << l.PhotonCategory(diphoton_index.first,2,2)
+                << "\tph2_isEB= " << ph2_isEB
+                << "\tph2_r9= " << ph2_r9
+                << "\tph2_r9_cic= " << ph2_r9_cic
+                << "\tph2_PFisoA= " << ph2_PFisoA
+                << "\tph2_PFisoB= " << ph2_PFisoB
+                << "\tph2_PFisoC= " << ph2_PFisoC
+                << "\tph2_sieie= " << ph2_sieie
+                << "\tph2_hoe= " << ph2_hoe
+                << endl;
+        }
+        // ******************** </CIC DEBUG> ************************************
+    } 
     l.FillTree("ph1_sigmaEoE", (float)l.pho_regr_energyerr[diphoton_index.first]/(float)l.pho_regr_energy[diphoton_index.first]);
     l.FillTree("ph2_sigmaEoE", (float)l.pho_regr_energyerr[diphoton_index.second]/(float)l.pho_regr_energy[diphoton_index.second]);
 	l.FillTree("ph1_ptoM", (float)lead_p4.Pt()/mass);
