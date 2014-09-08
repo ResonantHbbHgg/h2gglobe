@@ -193,6 +193,9 @@ type=2 name=j1_nSecondaryVertices
 type=2 name=j1_secVtxPt
 type=2 name=j1_secVtx3dL
 type=2 name=j1_secVtx3deL
+type=0 name=j1_full_wp_level
+type=0 name=j1_simple_wp_level
+type=0 name=j1_cutbased_wp_level
 type=2 name=j1_emfrac
 type=2 name=j1_hadfrac
 type=0 name=j1_ntk
@@ -259,6 +262,9 @@ type=2 name=j2_nSecondaryVertices
 type=2 name=j2_secVtxPt
 type=2 name=j2_secVtx3dL
 type=2 name=j2_secVtx3deL
+type=0 name=j2_full_wp_level
+type=0 name=j2_simple_wp_level
+type=0 name=j2_cutbased_wp_level
 type=2 name=j2_emfrac
 type=2 name=j2_hadfrac
 type=0 name=j2_ntk
@@ -324,6 +330,9 @@ type=2 name=j3_nSecondaryVertices
 type=2 name=j3_secVtxPt
 type=2 name=j3_secVtx3dL
 type=2 name=j3_secVtx3deL
+type=0 name=j3_full_wp_level
+type=0 name=j3_simple_wp_level
+type=0 name=j3_cutbased_wp_level
 type=2 name=j3_emfrac
 type=2 name=j3_hadfrac
 type=0 name=j3_ntk
@@ -389,6 +398,9 @@ type=2 name=j4_nSecondaryVertices
 type=2 name=j4_secVtxPt
 type=2 name=j4_secVtx3dL
 type=2 name=j4_secVtx3deL
+type=0 name=j4_full_wp_level
+type=0 name=j4_simple_wp_level
+type=0 name=j4_cutbased_wp_level
 type=2 name=j4_emfrac
 type=2 name=j4_hadfrac
 type=0 name=j4_ntk
@@ -454,6 +466,9 @@ type=2 name=j5_nSecondaryVertices
 type=2 name=j5_secVtxPt
 type=2 name=j5_secVtx3dL
 type=2 name=j5_secVtx3deL
+type=0 name=j5_full_wp_level
+type=0 name=j5_simple_wp_level
+type=0 name=j5_cutbased_wp_level
 type=2 name=j5_emfrac
 type=2 name=j5_hadfrac
 type=0 name=j5_ntk
@@ -519,6 +534,9 @@ type=2 name=j6_nSecondaryVertices
 type=2 name=j6_secVtxPt
 type=2 name=j6_secVtx3dL
 type=2 name=j6_secVtx3deL
+type=0 name=j6_full_wp_level
+type=0 name=j6_simple_wp_level
+type=0 name=j6_cutbased_wp_level
 type=2 name=j6_emfrac
 type=2 name=j6_hadfrac
 type=0 name=j6_ntk
@@ -584,6 +602,9 @@ type=2 name=j7_nSecondaryVertices
 type=2 name=j7_secVtxPt
 type=2 name=j7_secVtx3dL
 type=2 name=j7_secVtx3deL
+type=0 name=j7_full_wp_level
+type=0 name=j7_simple_wp_level
+type=0 name=j7_cutbased_wp_level
 type=2 name=j7_emfrac
 type=2 name=j7_hadfrac
 type=0 name=j7_ntk
@@ -649,6 +670,9 @@ type=2 name=j8_nSecondaryVertices
 type=2 name=j8_secVtxPt
 type=2 name=j8_secVtx3dL
 type=2 name=j8_secVtx3deL
+type=0 name=j8_full_wp_level
+type=0 name=j8_simple_wp_level
+type=0 name=j8_cutbased_wp_level
 type=2 name=j8_emfrac
 type=2 name=j8_hadfrac
 type=0 name=j8_ntk
@@ -714,6 +738,9 @@ type=2 name=j9_nSecondaryVertices
 type=2 name=j9_secVtxPt
 type=2 name=j9_secVtx3dL
 type=2 name=j9_secVtx3deL
+type=0 name=j9_full_wp_level
+type=0 name=j9_simple_wp_level
+type=0 name=j9_cutbased_wp_level
 type=2 name=j9_emfrac
 type=2 name=j9_hadfrac
 type=0 name=j9_ntk
@@ -779,6 +806,9 @@ type=2 name=j10_nSecondaryVertices
 type=2 name=j10_secVtxPt
 type=2 name=j10_secVtx3dL
 type=2 name=j10_secVtx3deL
+type=0 name=j10_full_wp_level
+type=0 name=j10_simple_wp_level
+type=0 name=j10_cutbased_wp_level
 type=2 name=j10_emfrac
 type=2 name=j10_hadfrac
 type=0 name=j10_ntk
@@ -844,6 +874,9 @@ type=2 name=j11_nSecondaryVertices
 type=2 name=j11_secVtxPt
 type=2 name=j11_secVtx3dL
 type=2 name=j11_secVtx3deL
+type=0 name=j11_full_wp_level
+type=0 name=j11_simple_wp_level
+type=0 name=j11_cutbased_wp_level
 type=2 name=j11_emfrac
 type=2 name=j11_hadfrac
 type=0 name=j11_ntk
@@ -909,6 +942,9 @@ type=2 name=j12_nSecondaryVertices
 type=2 name=j12_secVtxPt
 type=2 name=j12_secVtx3dL
 type=2 name=j12_secVtx3deL
+type=0 name=j12_full_wp_level
+type=0 name=j12_simple_wp_level
+type=0 name=j12_cutbased_wp_level
 type=2 name=j12_emfrac
 type=2 name=j12_hadfrac
 type=0 name=j12_ntk
@@ -974,6 +1010,9 @@ type=2 name=j13_nSecondaryVertices
 type=2 name=j13_secVtxPt
 type=2 name=j13_secVtx3dL
 type=2 name=j13_secVtx3deL
+type=0 name=j13_full_wp_level
+type=0 name=j13_simple_wp_level
+type=0 name=j13_cutbased_wp_level
 type=2 name=j13_emfrac
 type=2 name=j13_hadfrac
 type=0 name=j13_ntk
@@ -1039,6 +1078,9 @@ type=2 name=j14_nSecondaryVertices
 type=2 name=j14_secVtxPt
 type=2 name=j14_secVtx3dL
 type=2 name=j14_secVtx3deL
+type=0 name=j14_full_wp_level
+type=0 name=j14_simple_wp_level
+type=0 name=j14_cutbased_wp_level
 type=2 name=j14_emfrac
 type=2 name=j14_hadfrac
 type=0 name=j14_ntk
@@ -1104,6 +1146,9 @@ type=2 name=j15_nSecondaryVertices
 type=2 name=j15_secVtxPt
 type=2 name=j15_secVtx3dL
 type=2 name=j15_secVtx3deL
+type=0 name=j15_full_wp_level
+type=0 name=j15_simple_wp_level
+type=0 name=j15_cutbased_wp_level
 type=2 name=j15_emfrac
 type=2 name=j15_hadfrac
 type=0 name=j15_ntk

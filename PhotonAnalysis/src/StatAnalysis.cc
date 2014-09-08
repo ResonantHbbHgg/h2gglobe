@@ -2931,7 +2931,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 	    l.FillTree("j1_jerU_phi",(float)j1_jerU.Phi());
     	l.FillTree("j1_jerU_eta",(float)j1_jerU.Eta());
         if(PADEBUG) cout << "PU ID variables" << endl;
-	    //l.FillTree("j1_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[0]]);
+	    //l.FillTree("j1_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[0]]);
     	l.FillTree("j1_beta", (float)l.jet_algoPF1_beta[jets[0]]);
 	    l.FillTree("j1_betaStar", (float)l.jet_algoPF1_betaStar[jets[0]]);
     	l.FillTree("j1_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[0]]);
@@ -3002,6 +3002,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j1_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[0]]);
 		l.FillTree("j1_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[0]]);
 		l.FillTree("j1_secVtx3deL", (float)l.jet_algoPF1_secVtx3deL[jets[0]]);
+		l.FillTree("j1_full_wp_level", (int)l.jet_algoPF1_full_wp_level[jets[0]]);
+		l.FillTree("j1_simple_wp_level", (int)l.jet_algoPF1_simple_wp_level[jets[0]]);
+		l.FillTree("j1_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[0]]);
         if(PADEBUG) cout << "PF energy fractions" << endl;
 		l.FillTree("j1_emfrac", (float)l.jet_algoPF1_emfrac[jets[0]]);
 		l.FillTree("j1_hadfrac", (float)l.jet_algoPF1_hadfrac[jets[0]]);
@@ -3035,7 +3038,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j1_jerU_pt",(float)-1001.);
 	    l.FillTree("j1_jerU_phi",(float)-1001.);
     	l.FillTree("j1_jerU_eta",(float)-1001.);
-	    //l.FillTree("j1_cutbased_wp_level", (float)-1001.);
+	    //l.FillTree("j1_cutbased_wp_level", (int)-1001);
     	l.FillTree("j1_beta", (float)-1001.);
 	    l.FillTree("j1_betaStar", (float)-1001.);
     	l.FillTree("j1_betaStarClassic", (float)-1001.);
@@ -3056,6 +3059,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j1_secVtxPt", (float)-1001.);
 		l.FillTree("j1_secVtx3dL", (float)-1001.);
 		l.FillTree("j1_secVtx3deL", (float)-1001.);
+		l.FillTree("j1_full_wp_level", (int)-1001);
+		l.FillTree("j1_simple_wp_level", (int)-1001);
+		l.FillTree("j1_cutbased_wp_level", (int)-1001);
 		l.FillTree("j1_emfrac", (float)-1001.);
 		l.FillTree("j1_hadfrac", (float)-1001.);
 		l.FillTree("j1_ntk", (int)-1001);
@@ -3099,7 +3105,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j2_jerU_pt",(float)j2_jerU.Pt());
 	    l.FillTree("j2_jerU_phi",(float)j2_jerU.Phi());
     	l.FillTree("j2_jerU_eta",(float)j2_jerU.Eta());
-	    //l.FillTree("j2_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[1]]);
+	    //l.FillTree("j2_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[1]]);
         if(PADEBUG) cout << "PU ID variables" << endl;
     	l.FillTree("j2_beta", (float)l.jet_algoPF1_beta[jets[1]]);
     	l.FillTree("j2_betaStar", (float)l.jet_algoPF1_betaStar[jets[1]]);
@@ -3171,6 +3177,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j2_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[1]]);
 		l.FillTree("j2_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[1]]);
 		l.FillTree("j2_secVtx3deL", (float)l.jet_algoPF1_secVtx3deL[jets[1]]);
+		l.FillTree("j2_full_wp_level", (int)l.jet_algoPF1_full_wp_level[jets[1]]);
+		l.FillTree("j2_simple_wp_level", (int)l.jet_algoPF1_simple_wp_level[jets[1]]);
+		l.FillTree("j2_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[1]]);
         if(PADEBUG) cout << "PF energy fractions" << endl;
 		l.FillTree("j2_emfrac", (float)l.jet_algoPF1_emfrac[jets[1]]);
 		l.FillTree("j2_hadfrac", (float)l.jet_algoPF1_hadfrac[jets[1]]);
@@ -3204,7 +3213,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j2_jerU_pt",(float)-1001.);
 	    l.FillTree("j2_jerU_phi",(float)-1001.);
     	l.FillTree("j2_jerU_eta",(float)-1001.);
-	    //l.FillTree("j2_cutbased_wp_level", (float)-1001.);
+	    //l.FillTree("j2_cutbased_wp_level", (int)-1001);
     	l.FillTree("j2_beta", (float)-1001.);
     	l.FillTree("j2_betaStar", (float)-1001.);
     	l.FillTree("j2_betaStarClassic", (float)-1001.);
@@ -3225,6 +3234,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j2_secVtxPt", (float)-1001.);
 		l.FillTree("j2_secVtx3dL", (float)-1001.);
 		l.FillTree("j2_secVtx3deL", (float)-1001.);
+		l.FillTree("j2_full_wp_level", (int)-1001);
+		l.FillTree("j2_simple_wp_level", (int)-1001);
+		l.FillTree("j2_cutbased_wp_level", (int)-1001);
 		l.FillTree("j2_emfrac", (float)-1001.);
 		l.FillTree("j2_hadfrac", (float)-1001.);
 		l.FillTree("j2_ntk", (int)-1001);
@@ -3317,7 +3329,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j3_jerU_pt",(float)j3_jerU.Pt());
 	    l.FillTree("j3_jerU_phi",(float)j3_jerU.Phi());
     	l.FillTree("j3_jerU_eta",(float)j3_jerU.Eta());
-	    //l.FillTree("j3_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[2]]);
+	    //l.FillTree("j3_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[2]]);
 	    l.FillTree("j3_beta", (float)l.jet_algoPF1_beta[jets[2]]);
 	    l.FillTree("j3_betaStar", (float)l.jet_algoPF1_betaStar[jets[2]]);
 	    l.FillTree("j3_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[2]]);
@@ -3385,6 +3397,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j3_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[2]]);
 		l.FillTree("j3_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[2]]);
 		l.FillTree("j3_secVtx3deL", (float)l.jet_algoPF1_secVtx3deL[jets[2]]);
+		l.FillTree("j3_full_wp_level", (int)l.jet_algoPF1_full_wp_level[jets[2]]);
+		l.FillTree("j3_simple_wp_level", (int)l.jet_algoPF1_simple_wp_level[jets[2]]);
+		l.FillTree("j3_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[2]]);
 		l.FillTree("j3_emfrac", (float)l.jet_algoPF1_emfrac[jets[2]]);
 		l.FillTree("j3_hadfrac", (float)l.jet_algoPF1_hadfrac[jets[2]]);
 		l.FillTree("j3_ntk", (int)l.jet_algoPF1_ntk[jets[2]]);
@@ -3416,7 +3431,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j3_jerU_pt",(float)-1001.);
 	    l.FillTree("j3_jerU_phi",(float)-1001.);
     	l.FillTree("j3_jerU_eta",(float)-1001.);
-	    //l.FillTree("j3_cutbased_wp_level", (float)-1001.);
+	    //l.FillTree("j3_cutbased_wp_level", (int)-1001);
 	    l.FillTree("j3_beta", (float)-1001.);
 	    l.FillTree("j3_betaStar", (float)-1001.);
 	    l.FillTree("j3_betaStarClassic", (float)-1001.);
@@ -3437,6 +3452,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j3_secVtxPt", (float)-1001.);
 		l.FillTree("j3_secVtx3dL", (float)-1001.);
 		l.FillTree("j3_secVtx3deL", (float)-1001.);
+		l.FillTree("j3_full_wp_level", (int)-1001);
+		l.FillTree("j3_simple_wp_level", (int)-1001);
+		l.FillTree("j3_cutbased_wp_level", (int)-1001);
 		l.FillTree("j3_emfrac", (float)-1001.);
 		l.FillTree("j3_hadfrac", (float)-1001.);
 		l.FillTree("j3_ntk", (int)-1001);
@@ -3477,7 +3495,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j4_jerU_pt",(float)j4_jerU.Pt());
 	    l.FillTree("j4_jerU_phi",(float)j4_jerU.Phi());
     	l.FillTree("j4_jerU_eta",(float)j4_jerU.Eta());
-	    //l.FillTree("j4_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[3]]);
+	    //l.FillTree("j4_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[3]]);
 	    l.FillTree("j4_beta", (float)l.jet_algoPF1_beta[jets[3]]);
 	    l.FillTree("j4_betaStar", (float)l.jet_algoPF1_betaStar[jets[3]]);
 	    l.FillTree("j4_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[3]]);
@@ -3545,6 +3563,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j4_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[3]]);
 		l.FillTree("j4_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[3]]);
 		l.FillTree("j4_secVtx3deL", (float)l.jet_algoPF1_secVtx3deL[jets[3]]);
+		l.FillTree("j4_full_wp_level", (int)l.jet_algoPF1_full_wp_level[jets[3]]);
+		l.FillTree("j4_simple_wp_level", (int)l.jet_algoPF1_simple_wp_level[jets[3]]);
+		l.FillTree("j4_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[3]]);
 		l.FillTree("j4_emfrac", (float)l.jet_algoPF1_emfrac[jets[3]]);
 		l.FillTree("j4_hadfrac", (float)l.jet_algoPF1_hadfrac[jets[3]]);
 		l.FillTree("j4_ntk", (int)l.jet_algoPF1_ntk[jets[3]]);
@@ -3576,7 +3597,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j4_jerU_pt",(float)-1001.);
 	    l.FillTree("j4_jerU_phi",(float)-1001.);
     	l.FillTree("j4_jerU_eta",(float)-1001.);
-	    //l.FillTree("j4_cutbased_wp_level", (float)-1001.);
+	    //l.FillTree("j4_cutbased_wp_level", (int)-1001);
 	    l.FillTree("j4_beta", (float)-1001.);
 	    l.FillTree("j4_betaStar", (float)-1001.);
 	    l.FillTree("j4_betaStarClassic", (float)-1001.);
@@ -3597,6 +3618,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j4_secVtxPt", (float)-1001.);
 		l.FillTree("j4_secVtx3dL", (float)-1001.);
 		l.FillTree("j4_secVtx3deL", (float)-1001.);
+		l.FillTree("j4_full_wp_level", (int)-1001);
+		l.FillTree("j4_simple_wp_level", (int)-1001);
+		l.FillTree("j4_cutbased_wp_level", (int)-1001);
 		l.FillTree("j4_emfrac", (float)-1001.);
 		l.FillTree("j4_hadfrac", (float)-1001.);
 		l.FillTree("j4_ntk", (int)-1001);
@@ -3637,7 +3661,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j5_jerU_pt",(float)j5_jerU.Pt());
 	    l.FillTree("j5_jerU_phi",(float)j5_jerU.Phi());
     	l.FillTree("j5_jerU_eta",(float)j5_jerU.Eta());
-	    //l.FillTree("j5_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[4]]);
+	    //l.FillTree("j5_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[4]]);
 	    l.FillTree("j5_beta", (float)l.jet_algoPF1_beta[jets[4]]);
 	    l.FillTree("j5_betaStar", (float)l.jet_algoPF1_betaStar[jets[4]]);
 	    l.FillTree("j5_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[4]]);
@@ -3705,6 +3729,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j5_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[4]]);
 		l.FillTree("j5_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[4]]);
 		l.FillTree("j5_secVtx3deL", (float)l.jet_algoPF1_secVtx3deL[jets[4]]);
+		l.FillTree("j5_full_wp_level", (int)l.jet_algoPF1_full_wp_level[jets[4]]);
+		l.FillTree("j5_simple_wp_level", (int)l.jet_algoPF1_simple_wp_level[jets[4]]);
+		l.FillTree("j5_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[4]]);
 		l.FillTree("j5_emfrac", (float)l.jet_algoPF1_emfrac[jets[4]]);
 		l.FillTree("j5_hadfrac", (float)l.jet_algoPF1_hadfrac[jets[4]]);
 		l.FillTree("j5_ntk", (int)l.jet_algoPF1_ntk[jets[4]]);
@@ -3736,7 +3763,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j5_jerU_pt",(float)-1001.);
 	    l.FillTree("j5_jerU_phi",(float)-1001.);
     	l.FillTree("j5_jerU_eta",(float)-1001.);
-	    //l.FillTree("j5_cutbased_wp_level", (float)-1001.);
+	    //l.FillTree("j5_cutbased_wp_level", (int)-1001);
 	    l.FillTree("j5_beta", (float)-1001.);
 	    l.FillTree("j5_betaStar", (float)-1001.);
 	    l.FillTree("j5_betaStarClassic", (float)-1001.);
@@ -3757,6 +3784,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j5_secVtxPt", (float)-1001.);
 		l.FillTree("j5_secVtx3dL", (float)-1001.);
 		l.FillTree("j5_secVtx3deL", (float)-1001.);
+		l.FillTree("j5_full_wp_level", (int)-1001);
+		l.FillTree("j5_simple_wp_level", (int)-1001);
+		l.FillTree("j5_cutbased_wp_level", (int)-1001);
 		l.FillTree("j5_emfrac", (float)-1001.);
 		l.FillTree("j5_hadfrac", (float)-1001.);
 		l.FillTree("j5_ntk", (int)-1001);
@@ -3797,7 +3827,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j6_jerU_pt",(float)j6_jerU.Pt());
 	    l.FillTree("j6_jerU_phi",(float)j6_jerU.Phi());
     	l.FillTree("j6_jerU_eta",(float)j6_jerU.Eta());
-	    //l.FillTree("j6_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[5]]);
+	    //l.FillTree("j6_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[5]]);
 	    l.FillTree("j6_beta", (float)l.jet_algoPF1_beta[jets[5]]);
 	    l.FillTree("j6_betaStar", (float)l.jet_algoPF1_betaStar[jets[5]]);
 	    l.FillTree("j6_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[5]]);
@@ -3865,6 +3895,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j6_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[5]]);
 		l.FillTree("j6_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[5]]);
 		l.FillTree("j6_secVtx3deL", (float)l.jet_algoPF1_secVtx3deL[jets[5]]);
+		l.FillTree("j6_full_wp_level", (int)l.jet_algoPF1_full_wp_level[jets[5]]);
+		l.FillTree("j6_simple_wp_level", (int)l.jet_algoPF1_simple_wp_level[jets[5]]);
+		l.FillTree("j6_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[5]]);
 		l.FillTree("j6_emfrac", (float)l.jet_algoPF1_emfrac[jets[5]]);
 		l.FillTree("j6_hadfrac", (float)l.jet_algoPF1_hadfrac[jets[5]]);
 		l.FillTree("j6_ntk", (int)l.jet_algoPF1_ntk[jets[5]]);
@@ -3896,7 +3929,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j6_jerU_pt",(float)-1001.);
 	    l.FillTree("j6_jerU_phi",(float)-1001.);
     	l.FillTree("j6_jerU_eta",(float)-1001.);
-	    //l.FillTree("j6_cutbased_wp_level", (float)-1001.);
+	    //l.FillTree("j6_cutbased_wp_level", (int)-1001);
 	    l.FillTree("j6_beta", (float)-1001.);
 	    l.FillTree("j6_betaStar", (float)-1001.);
 	    l.FillTree("j6_betaStarClassic", (float)-1001.);
@@ -3917,6 +3950,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j6_secVtxPt", (float)-1001.);
 		l.FillTree("j6_secVtx3dL", (float)-1001.);
 		l.FillTree("j6_secVtx3deL", (float)-1001.);
+		l.FillTree("j6_full_wp_level", (int)-1001);
+		l.FillTree("j6_simple_wp_level", (int)-1001);
+		l.FillTree("j6_cutbased_wp_level", (int)-1001);
 		l.FillTree("j6_emfrac", (float)-1001.);
 		l.FillTree("j6_hadfrac", (float)-1001.);
 		l.FillTree("j6_ntk", (int)-1001);
@@ -3957,7 +3993,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j7_jerU_pt",(float)j7_jerU.Pt());
 	    l.FillTree("j7_jerU_phi",(float)j7_jerU.Phi());
     	l.FillTree("j7_jerU_eta",(float)j7_jerU.Eta());
-	    //l.FillTree("j7_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[6]]);
+	    //l.FillTree("j7_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[6]]);
 	    l.FillTree("j7_beta", (float)l.jet_algoPF1_beta[jets[6]]);
 	    l.FillTree("j7_betaStar", (float)l.jet_algoPF1_betaStar[jets[6]]);
 	    l.FillTree("j7_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[6]]);
@@ -4025,6 +4061,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j7_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[6]]);
 		l.FillTree("j7_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[6]]);
 		l.FillTree("j7_secVtx3deL", (float)l.jet_algoPF1_secVtx3deL[jets[6]]);
+		l.FillTree("j7_full_wp_level", (int)l.jet_algoPF1_full_wp_level[jets[6]]);
+		l.FillTree("j7_simple_wp_level", (int)l.jet_algoPF1_simple_wp_level[jets[6]]);
+		l.FillTree("j7_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[6]]);
 		l.FillTree("j7_emfrac", (float)l.jet_algoPF1_emfrac[jets[6]]);
 		l.FillTree("j7_hadfrac", (float)l.jet_algoPF1_hadfrac[jets[6]]);
 		l.FillTree("j7_ntk", (int)l.jet_algoPF1_ntk[jets[6]]);
@@ -4056,7 +4095,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j7_jerU_pt",(float)-1001.);
 	    l.FillTree("j7_jerU_phi",(float)-1001.);
     	l.FillTree("j7_jerU_eta",(float)-1001.);
-	    //l.FillTree("j7_cutbased_wp_level", (float)-1001.);
+	    //l.FillTree("j7_cutbased_wp_level", (int)-1001);
 	    l.FillTree("j7_beta", (float)-1001.);
 	    l.FillTree("j7_betaStar", (float)-1001.);
 	    l.FillTree("j7_betaStarClassic", (float)-1001.);
@@ -4077,6 +4116,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j7_secVtxPt", (float)-1001.);
 		l.FillTree("j7_secVtx3dL", (float)-1001.);
 		l.FillTree("j7_secVtx3deL", (float)-1001.);
+		l.FillTree("j7_full_wp_level", (int)-1001);
+		l.FillTree("j7_simple_wp_level", (int)-1001);
+		l.FillTree("j7_cutbased_wp_level", (int)-1001);
 		l.FillTree("j7_emfrac", (float)-1001.);
 		l.FillTree("j7_hadfrac", (float)-1001.);
 		l.FillTree("j7_ntk", (int)-1001);
@@ -4117,7 +4159,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j8_jerU_pt",(float)j8_jerU.Pt());
 	    l.FillTree("j8_jerU_phi",(float)j8_jerU.Phi());
     	l.FillTree("j8_jerU_eta",(float)j8_jerU.Eta());
-	    //l.FillTree("j8_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[7]]);
+	    //l.FillTree("j8_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[7]]);
 	    l.FillTree("j8_beta", (float)l.jet_algoPF1_beta[jets[7]]);
 	    l.FillTree("j8_betaStar", (float)l.jet_algoPF1_betaStar[jets[7]]);
 	    l.FillTree("j8_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[7]]);
@@ -4185,6 +4227,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j8_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[7]]);
 		l.FillTree("j8_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[7]]);
 		l.FillTree("j8_secVtx3deL", (float)l.jet_algoPF1_secVtx3deL[jets[7]]);
+		l.FillTree("j8_full_wp_level", (int)l.jet_algoPF1_full_wp_level[jets[7]]);
+		l.FillTree("j8_simple_wp_level", (int)l.jet_algoPF1_simple_wp_level[jets[7]]);
+		l.FillTree("j8_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[7]]);
 		l.FillTree("j8_emfrac", (float)l.jet_algoPF1_emfrac[jets[7]]);
 		l.FillTree("j8_hadfrac", (float)l.jet_algoPF1_hadfrac[jets[7]]);
 		l.FillTree("j8_ntk", (int)l.jet_algoPF1_ntk[jets[7]]);
@@ -4216,7 +4261,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j8_jerU_pt",(float)-1001.);
 	    l.FillTree("j8_jerU_phi",(float)-1001.);
     	l.FillTree("j8_jerU_eta",(float)-1001.);
-	    //l.FillTree("j8_cutbased_wp_level", (float)-1001.);
+	    //l.FillTree("j8_cutbased_wp_level", (int)-1001);
 	    l.FillTree("j8_beta", (float)-1001.);
 	    l.FillTree("j8_betaStar", (float)-1001.);
 	    l.FillTree("j8_betaStarClassic", (float)-1001.);
@@ -4237,6 +4282,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j8_secVtxPt", (float)-1001.);
 		l.FillTree("j8_secVtx3dL", (float)-1001.);
 		l.FillTree("j8_secVtx3deL", (float)-1001.);
+		l.FillTree("j8_full_wp_level", (int)-1001);
+		l.FillTree("j8_simple_wp_level", (int)-1001);
+		l.FillTree("j8_cutbased_wp_level", (int)-1001);
 		l.FillTree("j8_emfrac", (float)-1001.);
 		l.FillTree("j8_hadfrac", (float)-1001.);
 		l.FillTree("j8_ntk", (int)-1001);
@@ -4277,7 +4325,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j9_jerU_pt",(float)j9_jerU.Pt());
 	    l.FillTree("j9_jerU_phi",(float)j9_jerU.Phi());
     	l.FillTree("j9_jerU_eta",(float)j9_jerU.Eta());
-	    //l.FillTree("j9_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[8]]);
+	    //l.FillTree("j9_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[8]]);
 	    l.FillTree("j9_beta", (float)l.jet_algoPF1_beta[jets[8]]);
 	    l.FillTree("j9_betaStar", (float)l.jet_algoPF1_betaStar[jets[8]]);
 	    l.FillTree("j9_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[8]]);
@@ -4345,6 +4393,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j9_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[8]]);
 		l.FillTree("j9_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[8]]);
 		l.FillTree("j9_secVtx3deL", (float)l.jet_algoPF1_secVtx3deL[jets[8]]);
+		l.FillTree("j9_full_wp_level", (int)l.jet_algoPF1_full_wp_level[jets[8]]);
+		l.FillTree("j9_simple_wp_level", (int)l.jet_algoPF1_simple_wp_level[jets[8]]);
+		l.FillTree("j9_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[8]]);
 		l.FillTree("j9_emfrac", (float)l.jet_algoPF1_emfrac[jets[8]]);
 		l.FillTree("j9_hadfrac", (float)l.jet_algoPF1_hadfrac[jets[8]]);
 		l.FillTree("j9_ntk", (int)l.jet_algoPF1_ntk[jets[8]]);
@@ -4376,7 +4427,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j9_jerU_pt",(float)-1001.);
 	    l.FillTree("j9_jerU_phi",(float)-1001.);
     	l.FillTree("j9_jerU_eta",(float)-1001.);
-	    //l.FillTree("j9_cutbased_wp_level", (float)-1001.);
+	    //l.FillTree("j9_cutbased_wp_level", (int)-1001);
 	    l.FillTree("j9_beta", (float)-1001.);
 	    l.FillTree("j9_betaStar", (float)-1001.);
 	    l.FillTree("j9_betaStarClassic", (float)-1001.);
@@ -4397,6 +4448,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j9_secVtxPt", (float)-1001.);
 		l.FillTree("j9_secVtx3dL", (float)-1001.);
 		l.FillTree("j9_secVtx3deL", (float)-1001.);
+		l.FillTree("j9_full_wp_level", (int)-1001);
+		l.FillTree("j9_simple_wp_level", (int)-1001);
+		l.FillTree("j9_cutbased_wp_level", (int)-1001);
 		l.FillTree("j9_emfrac", (float)-1001.);
 		l.FillTree("j9_hadfrac", (float)-1001.);
 		l.FillTree("j9_ntk", (int)-1001);
@@ -4437,7 +4491,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j10_jerU_pt",(float)j10_jerU.Pt());
 	    l.FillTree("j10_jerU_phi",(float)j10_jerU.Phi());
     	l.FillTree("j10_jerU_eta",(float)j10_jerU.Eta());
-	    //l.FillTree("j10_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[9]]);
+	    //l.FillTree("j10_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[9]]);
 	    l.FillTree("j10_beta", (float)l.jet_algoPF1_beta[jets[9]]);
 	    l.FillTree("j10_betaStar", (float)l.jet_algoPF1_betaStar[jets[9]]);
 	    l.FillTree("j10_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[9]]);
@@ -4505,6 +4559,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j10_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[9]]);
 		l.FillTree("j10_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[9]]);
 		l.FillTree("j10_secVtx3deL", (float)l.jet_algoPF1_secVtx3deL[jets[9]]);
+		l.FillTree("j10_full_wp_level", (int)l.jet_algoPF1_full_wp_level[jets[9]]);
+		l.FillTree("j10_simple_wp_level", (int)l.jet_algoPF1_simple_wp_level[jets[9]]);
+		l.FillTree("j10_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[9]]);
 		l.FillTree("j10_emfrac", (float)l.jet_algoPF1_emfrac[jets[9]]);
 		l.FillTree("j10_hadfrac", (float)l.jet_algoPF1_hadfrac[jets[9]]);
 		l.FillTree("j10_ntk", (int)l.jet_algoPF1_ntk[jets[9]]);
@@ -4536,7 +4593,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j10_jerU_pt",(float)-1001.);
 	    l.FillTree("j10_jerU_phi",(float)-1001.);
     	l.FillTree("j10_jerU_eta",(float)-1001.);
-	    //l.FillTree("j10_cutbased_wp_level", (float)-1001.);
+	    //l.FillTree("j10_cutbased_wp_level", (int)-1001);
 	    l.FillTree("j10_beta", (float)-1001.);
 	    l.FillTree("j10_betaStar", (float)-1001.);
 	    l.FillTree("j10_betaStarClassic", (float)-1001.);
@@ -4557,6 +4614,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j10_secVtxPt", (float)-1001.);
 		l.FillTree("j10_secVtx3dL", (float)-1001.);
 		l.FillTree("j10_secVtx3deL", (float)-1001.);
+		l.FillTree("j10_full_wp_level", (int)-1001);
+		l.FillTree("j10_simple_wp_level", (int)-1001);
+		l.FillTree("j10_cutbased_wp_level", (int)-1001);
 		l.FillTree("j10_emfrac", (float)-1001.);
 		l.FillTree("j10_hadfrac", (float)-1001.);
 		l.FillTree("j10_ntk", (int)-1001);
@@ -4597,7 +4657,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j11_jerU_pt",(float)j11_jerU.Pt());
 	    l.FillTree("j11_jerU_phi",(float)j11_jerU.Phi());
     	l.FillTree("j11_jerU_eta",(float)j11_jerU.Eta());
-	    //l.FillTree("j11_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[10]]);
+	    //l.FillTree("j11_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[10]]);
 	    l.FillTree("j11_beta", (float)l.jet_algoPF1_beta[jets[10]]);
 	    l.FillTree("j11_betaStar", (float)l.jet_algoPF1_betaStar[jets[10]]);
 	    l.FillTree("j11_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[10]]);
@@ -4665,6 +4725,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j11_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[10]]);
 		l.FillTree("j11_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[10]]);
 		l.FillTree("j11_secVtx3deL", (float)l.jet_algoPF1_secVtx3deL[jets[10]]);
+		l.FillTree("j11_full_wp_level", (int)l.jet_algoPF1_full_wp_level[jets[10]]);
+		l.FillTree("j11_simple_wp_level", (int)l.jet_algoPF1_simple_wp_level[jets[10]]);
+		l.FillTree("j11_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[10]]);
 		l.FillTree("j11_emfrac", (float)l.jet_algoPF1_emfrac[jets[10]]);
 		l.FillTree("j11_hadfrac", (float)l.jet_algoPF1_hadfrac[jets[10]]);
 		l.FillTree("j11_ntk", (int)l.jet_algoPF1_ntk[jets[10]]);
@@ -4696,7 +4759,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j11_jerU_pt",(float)-1001.);
 	    l.FillTree("j11_jerU_phi",(float)-1001.);
     	l.FillTree("j11_jerU_eta",(float)-1001.);
-	    //l.FillTree("j11_cutbased_wp_level", (float)-1001.);
+	    //l.FillTree("j11_cutbased_wp_level", (int)-1001);
 	    l.FillTree("j11_beta", (float)-1001.);
 	    l.FillTree("j11_betaStar", (float)-1001.);
 	    l.FillTree("j11_betaStarClassic", (float)-1001.);
@@ -4717,6 +4780,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j11_secVtxPt", (float)-1001.);
 		l.FillTree("j11_secVtx3dL", (float)-1001.);
 		l.FillTree("j11_secVtx3deL", (float)-1001.);
+		l.FillTree("j11_full_wp_level", (int)-1001);
+		l.FillTree("j11_simple_wp_level", (int)-1001);
+		l.FillTree("j11_cutbased_wp_level", (int)-1001);
 		l.FillTree("j11_emfrac", (float)-1001.);
 		l.FillTree("j11_hadfrac", (float)-1001.);
 		l.FillTree("j11_ntk", (int)-1001);
@@ -4757,7 +4823,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j12_jerU_pt",(float)j12_jerU.Pt());
 	    l.FillTree("j12_jerU_phi",(float)j12_jerU.Phi());
     	l.FillTree("j12_jerU_eta",(float)j12_jerU.Eta());
-	    //l.FillTree("j12_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[11]]);
+	    //l.FillTree("j12_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[11]]);
 	    l.FillTree("j12_beta", (float)l.jet_algoPF1_beta[jets[11]]);
 	    l.FillTree("j12_betaStar", (float)l.jet_algoPF1_betaStar[jets[11]]);
 	    l.FillTree("j12_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[11]]);
@@ -4825,6 +4891,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j12_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[11]]);
 		l.FillTree("j12_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[11]]);
 		l.FillTree("j12_secVtx3deL", (float)l.jet_algoPF1_secVtx3deL[jets[11]]);
+		l.FillTree("j12_full_wp_level", (int)l.jet_algoPF1_full_wp_level[jets[11]]);
+		l.FillTree("j12_simple_wp_level", (int)l.jet_algoPF1_simple_wp_level[jets[11]]);
+		l.FillTree("j12_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[11]]);
 		l.FillTree("j12_emfrac", (float)l.jet_algoPF1_emfrac[jets[11]]);
 		l.FillTree("j12_hadfrac", (float)l.jet_algoPF1_hadfrac[jets[11]]);
 		l.FillTree("j12_ntk", (int)l.jet_algoPF1_ntk[jets[11]]);
@@ -4856,7 +4925,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j12_jerU_pt",(float)-1001.);
 	    l.FillTree("j12_jerU_phi",(float)-1001.);
     	l.FillTree("j12_jerU_eta",(float)-1001.);
-	    //l.FillTree("j12_cutbased_wp_level", (float)-1001.);
+	    //l.FillTree("j12_cutbased_wp_level", (int)-1001);
 	    l.FillTree("j12_beta", (float)-1001.);
 	    l.FillTree("j12_betaStar", (float)-1001.);
 	    l.FillTree("j12_betaStarClassic", (float)-1001.);
@@ -4877,6 +4946,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j12_secVtxPt", (float)-1001.);
 		l.FillTree("j12_secVtx3dL", (float)-1001.);
 		l.FillTree("j12_secVtx3deL", (float)-1001.);
+		l.FillTree("j12_full_wp_level", (int)-1001);
+		l.FillTree("j12_simple_wp_level", (int)-1001);
+		l.FillTree("j12_cutbased_wp_level", (int)-1001);
 		l.FillTree("j12_emfrac", (float)-1001.);
 		l.FillTree("j12_hadfrac", (float)-1001.);
 		l.FillTree("j12_ntk", (int)-1001);
@@ -4917,7 +4989,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j13_jerU_pt",(float)j13_jerU.Pt());
 	    l.FillTree("j13_jerU_phi",(float)j13_jerU.Phi());
     	l.FillTree("j13_jerU_eta",(float)j13_jerU.Eta());
-	    //l.FillTree("j13_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[12]]);
+	    //l.FillTree("j13_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[12]]);
 	    l.FillTree("j13_beta", (float)l.jet_algoPF1_beta[jets[12]]);
 	    l.FillTree("j13_betaStar", (float)l.jet_algoPF1_betaStar[jets[12]]);
 	    l.FillTree("j13_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[12]]);
@@ -4985,6 +5057,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j13_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[12]]);
 		l.FillTree("j13_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[12]]);
 		l.FillTree("j13_secVtx3deL", (float)l.jet_algoPF1_secVtx3deL[jets[12]]);
+		l.FillTree("j13_full_wp_level", (int)l.jet_algoPF1_full_wp_level[jets[12]]);
+		l.FillTree("j13_simple_wp_level", (int)l.jet_algoPF1_simple_wp_level[jets[12]]);
+		l.FillTree("j13_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[12]]);
 		l.FillTree("j13_emfrac", (float)l.jet_algoPF1_emfrac[jets[12]]);
 		l.FillTree("j13_hadfrac", (float)l.jet_algoPF1_hadfrac[jets[12]]);
 		l.FillTree("j13_ntk", (int)l.jet_algoPF1_ntk[jets[12]]);
@@ -5016,7 +5091,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j13_jerU_pt",(float)-1001.);
 	    l.FillTree("j13_jerU_phi",(float)-1001.);
     	l.FillTree("j13_jerU_eta",(float)-1001.);
-	    //l.FillTree("j13_cutbased_wp_level", (float)-1001.);
+	    //l.FillTree("j13_cutbased_wp_level", (int)-1001);
 	    l.FillTree("j13_beta", (float)-1001.);
 	    l.FillTree("j13_betaStar", (float)-1001.);
 	    l.FillTree("j13_betaStarClassic", (float)-1001.);
@@ -5037,6 +5112,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j13_secVtxPt", (float)-1001.);
 		l.FillTree("j13_secVtx3dL", (float)-1001.);
 		l.FillTree("j13_secVtx3deL", (float)-1001.);
+		l.FillTree("j13_full_wp_level", (int)-1001);
+		l.FillTree("j13_simple_wp_level", (int)-1001);
+		l.FillTree("j13_cutbased_wp_level", (int)-1001);
 		l.FillTree("j13_emfrac", (float)-1001.);
 		l.FillTree("j13_hadfrac", (float)-1001.);
 		l.FillTree("j13_ntk", (int)-1001);
@@ -5077,7 +5155,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j14_jerU_pt",(float)j14_jerU.Pt());
 	    l.FillTree("j14_jerU_phi",(float)j14_jerU.Phi());
     	l.FillTree("j14_jerU_eta",(float)j14_jerU.Eta());
-	    //l.FillTree("j14_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[13]]);
+	    //l.FillTree("j14_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[13]]);
 	    l.FillTree("j14_beta", (float)l.jet_algoPF1_beta[jets[13]]);
 	    l.FillTree("j14_betaStar", (float)l.jet_algoPF1_betaStar[jets[13]]);
 	    l.FillTree("j14_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[13]]);
@@ -5145,6 +5223,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j14_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[13]]);
 		l.FillTree("j14_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[13]]);
 		l.FillTree("j14_secVtx3deL", (float)l.jet_algoPF1_secVtx3deL[jets[13]]);
+		l.FillTree("j14_full_wp_level", (int)l.jet_algoPF1_full_wp_level[jets[13]]);
+		l.FillTree("j14_simple_wp_level", (int)l.jet_algoPF1_simple_wp_level[jets[13]]);
+		l.FillTree("j14_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[13]]);
 		l.FillTree("j14_emfrac", (float)l.jet_algoPF1_emfrac[jets[13]]);
 		l.FillTree("j14_hadfrac", (float)l.jet_algoPF1_hadfrac[jets[13]]);
 		l.FillTree("j14_ntk", (int)l.jet_algoPF1_ntk[jets[13]]);
@@ -5176,7 +5257,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j14_jerU_pt",(float)-1001.);
 	    l.FillTree("j14_jerU_phi",(float)-1001.);
     	l.FillTree("j14_jerU_eta",(float)-1001.);
-	    //l.FillTree("j14_cutbased_wp_level", (float)-1001.);
+	    //l.FillTree("j14_cutbased_wp_level", (int)-1001);
 	    l.FillTree("j14_beta", (float)-1001.);
 	    l.FillTree("j14_betaStar", (float)-1001.);
 	    l.FillTree("j14_betaStarClassic", (float)-1001.);
@@ -5197,6 +5278,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j14_secVtxPt", (float)-1001.);
 		l.FillTree("j14_secVtx3dL", (float)-1001.);
 		l.FillTree("j14_secVtx3deL", (float)-1001.);
+		l.FillTree("j14_full_wp_level", (int)-1001);
+		l.FillTree("j14_simple_wp_level", (int)-1001);
+		l.FillTree("j14_cutbased_wp_level", (int)-1001);
 		l.FillTree("j14_emfrac", (float)-1001.);
 		l.FillTree("j14_hadfrac", (float)-1001.);
 		l.FillTree("j14_ntk", (int)-1001);
@@ -5237,7 +5321,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j15_jerU_pt",(float)j15_jerU.Pt());
 	    l.FillTree("j15_jerU_phi",(float)j15_jerU.Phi());
     	l.FillTree("j15_jerU_eta",(float)j15_jerU.Eta());
-	    //l.FillTree("j15_cutbased_wp_level", (float)l.jet_algoPF1_cutbased_wp_level[jets[14]]);
+	    //l.FillTree("j15_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[14]]);
 	    l.FillTree("j15_beta", (float)l.jet_algoPF1_beta[jets[14]]);
 	    l.FillTree("j15_betaStar", (float)l.jet_algoPF1_betaStar[jets[14]]);
 	    l.FillTree("j15_betaStarClassic", (float)l.jet_algoPF1_betaStarClassic[jets[14]]);
@@ -5305,6 +5389,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j15_secVtxPt", (float)l.jet_algoPF1_secVtxPt[jets[14]]);
 		l.FillTree("j15_secVtx3dL", (float)l.jet_algoPF1_secVtx3dL[jets[14]]);
 		l.FillTree("j15_secVtx3deL", (float)l.jet_algoPF1_secVtx3deL[jets[14]]);
+		l.FillTree("j15_full_wp_level", (int)l.jet_algoPF1_full_wp_level[jets[14]]);
+		l.FillTree("j15_simple_wp_level", (int)l.jet_algoPF1_simple_wp_level[jets[14]]);
+		l.FillTree("j15_cutbased_wp_level", (int)l.jet_algoPF1_cutbased_wp_level[jets[14]]);
 		l.FillTree("j15_emfrac", (float)l.jet_algoPF1_emfrac[jets[14]]);
 		l.FillTree("j15_hadfrac", (float)l.jet_algoPF1_hadfrac[jets[14]]);
 		l.FillTree("j15_ntk", (int)l.jet_algoPF1_ntk[jets[14]]);
@@ -5336,7 +5423,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     	l.FillTree("j15_jerU_pt",(float)-1001.);
 	    l.FillTree("j15_jerU_phi",(float)-1001.);
     	l.FillTree("j15_jerU_eta",(float)-1001.);
-	    //l.FillTree("j15_cutbased_wp_level", (float)-1001.);
+	    //l.FillTree("j15_cutbased_wp_level", (int)-1001);
 	    l.FillTree("j15_beta", (float)-1001.);
 	    l.FillTree("j15_betaStar", (float)-1001.);
 	    l.FillTree("j15_betaStarClassic", (float)-1001.);
@@ -5357,6 +5444,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j15_secVtxPt", (float)-1001.);
 		l.FillTree("j15_secVtx3dL", (float)-1001.);
 		l.FillTree("j15_secVtx3deL", (float)-1001.);
+		l.FillTree("j15_full_wp_level", (int)-1001);
+		l.FillTree("j15_simple_wp_level", (int)-1001);
+		l.FillTree("j15_cutbased_wp_level", (int)-1001);
 		l.FillTree("j15_emfrac", (float)-1001.);
 		l.FillTree("j15_hadfrac", (float)-1001.);
 		l.FillTree("j15_ntk", (int)-1001);
