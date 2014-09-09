@@ -42,6 +42,9 @@ jet_algoPF1_genPt
 jet_algoPF1_genDr
 #jet_algoPF1_full_mva_ext
 #jet_algoPF1_simple_mva_ext
+jet_algoPF1_full_wp_level
+jet_algoPF1_simple_wp_level
+jet_algoPF1_cutbased_wp_level
 #jet_algoPF1_full_wp_level_ext
 #jet_algoPF1_simple_wp_level_ext
 #jet_algoPF1_cutbased_wp_level_ext

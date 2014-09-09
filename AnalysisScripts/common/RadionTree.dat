@@ -35,6 +35,8 @@ type=2 name=ph1_eta
 type=2 name=ph2_eta
 type=2 name=ph1_r9
 type=2 name=ph2_r9
+type=2 name=ph1_r9_cic
+type=2 name=ph2_r9_cic
 type=0 name=ph1_isPrompt
 type=0 name=ph2_isPrompt
 type=2 name=ph1_SCEta
@@ -83,6 +85,12 @@ type=2 name=ph1_e3x3
 type=2 name=ph2_e3x3
 type=2 name=ph1_e5x5
 type=2 name=ph2_e5x5
+type=2 name=ph1_rawE
+type=2 name=ph2_rawE
+type=2 name=ph1_e2x2_o_e5x5
+type=2 name=ph2_e2x2_o_e5x5
+type=2 name=ph1_IDmva
+type=2 name=ph2_IDmva
 type=2 name=ph1_pesD_e
 type=2 name=ph2_pesD_e
 type=2 name=ph1_pesD_pt
@@ -173,6 +181,7 @@ type=2 name=j1_jerU_eta
 type=2 name=j1_beta
 type=2 name=j1_betaStar
 type=2 name=j1_betaStarClassic
+type=2 name=j1_pfloose
 type=2 name=j1_dR2Mean
 type=2 name=j1_csvBtag
 type=2 name=j1_csvMvaBtag
@@ -185,6 +194,9 @@ type=2 name=j1_secVtxPt
 type=2 name=j1_secVtxM
 type=2 name=j1_secVtx3dL
 type=2 name=j1_secVtx3deL
+type=0 name=j1_full_wp_level
+type=0 name=j1_simple_wp_level
+type=0 name=j1_cutbased_wp_level
 type=2 name=j1_emfrac
 type=2 name=j1_hadfrac
 type=0 name=j1_ntk
@@ -245,6 +257,7 @@ type=2 name=j2_jerU_eta
 type=2 name=j2_beta
 type=2 name=j2_betaStar
 type=2 name=j2_betaStarClassic
+type=2 name=j2_pfloose
 type=2 name=j2_dR2Mean
 type=2 name=j2_csvBtag
 type=2 name=j2_csvMvaBtag
@@ -257,6 +270,9 @@ type=2 name=j2_secVtxPt
 type=2 name=j2_secVtxM
 type=2 name=j2_secVtx3dL
 type=2 name=j2_secVtx3deL
+type=0 name=j2_full_wp_level
+type=0 name=j2_simple_wp_level
+type=0 name=j2_cutbased_wp_level
 type=2 name=j2_emfrac
 type=2 name=j2_hadfrac
 type=0 name=j2_ntk
@@ -316,6 +332,7 @@ type=2 name=j3_jerU_eta
 type=2 name=j3_beta
 type=2 name=j3_betaStar
 type=2 name=j3_betaStarClassic
+type=2 name=j3_pfloose
 type=2 name=j3_dR2Mean
 type=2 name=j3_csvBtag
 type=2 name=j3_csvMvaBtag
@@ -328,6 +345,9 @@ type=2 name=j3_secVtxPt
 type=2 name=j3_secVtxM
 type=2 name=j3_secVtx3dL
 type=2 name=j3_secVtx3deL
+type=0 name=j3_full_wp_level
+type=0 name=j3_simple_wp_level
+type=0 name=j3_cutbased_wp_level
 type=2 name=j3_emfrac
 type=2 name=j3_hadfrac
 type=0 name=j3_ntk
@@ -387,6 +407,7 @@ type=2 name=j4_jerU_eta
 type=2 name=j4_beta
 type=2 name=j4_betaStar
 type=2 name=j4_betaStarClassic
+type=2 name=j4_pfloose
 type=2 name=j4_dR2Mean
 type=2 name=j4_csvBtag
 type=2 name=j4_csvMvaBtag
@@ -399,6 +420,9 @@ type=2 name=j4_secVtxPt
 type=2 name=j4_secVtxM
 type=2 name=j4_secVtx3dL
 type=2 name=j4_secVtx3deL
+type=0 name=j4_full_wp_level
+type=0 name=j4_simple_wp_level
+type=0 name=j4_cutbased_wp_level
 type=2 name=j4_emfrac
 type=2 name=j4_hadfrac
 type=0 name=j4_ntk
@@ -458,6 +482,7 @@ type=2 name=j5_jerU_eta
 type=2 name=j5_beta
 type=2 name=j5_betaStar
 type=2 name=j5_betaStarClassic
+type=2 name=j5_pfloose
 type=2 name=j5_dR2Mean
 type=2 name=j5_csvBtag
 type=2 name=j5_csvMvaBtag
@@ -470,6 +495,9 @@ type=2 name=j5_secVtxPt
 type=2 name=j5_secVtxM
 type=2 name=j5_secVtx3dL
 type=2 name=j5_secVtx3deL
+type=0 name=j5_full_wp_level
+type=0 name=j5_simple_wp_level
+type=0 name=j5_cutbased_wp_level
 type=2 name=j5_emfrac
 type=2 name=j5_hadfrac
 type=0 name=j5_ntk
@@ -529,6 +557,7 @@ type=2 name=j6_jerU_eta
 type=2 name=j6_beta
 type=2 name=j6_betaStar
 type=2 name=j6_betaStarClassic
+type=2 name=j6_pfloose
 type=2 name=j6_dR2Mean
 type=2 name=j6_csvBtag
 type=2 name=j6_csvMvaBtag
@@ -541,6 +570,9 @@ type=2 name=j6_secVtxPt
 type=2 name=j6_secVtxM
 type=2 name=j6_secVtx3dL
 type=2 name=j6_secVtx3deL
+type=0 name=j6_full_wp_level
+type=0 name=j6_simple_wp_level
+type=0 name=j6_cutbased_wp_level
 type=2 name=j6_emfrac
 type=2 name=j6_hadfrac
 type=0 name=j6_ntk
@@ -600,6 +632,7 @@ type=2 name=j7_jerU_eta
 type=2 name=j7_beta
 type=2 name=j7_betaStar
 type=2 name=j7_betaStarClassic
+type=2 name=j7_pfloose
 type=2 name=j7_dR2Mean
 type=2 name=j7_csvBtag
 type=2 name=j7_csvMvaBtag
@@ -612,6 +645,9 @@ type=2 name=j7_secVtxPt
 type=2 name=j7_secVtxM
 type=2 name=j7_secVtx3dL
 type=2 name=j7_secVtx3deL
+type=0 name=j7_full_wp_level
+type=0 name=j7_simple_wp_level
+type=0 name=j7_cutbased_wp_level
 type=2 name=j7_emfrac
 type=2 name=j7_hadfrac
 type=0 name=j7_ntk
@@ -671,6 +707,7 @@ type=2 name=j8_jerU_eta
 type=2 name=j8_beta
 type=2 name=j8_betaStar
 type=2 name=j8_betaStarClassic
+type=2 name=j8_pfloose
 type=2 name=j8_dR2Mean
 type=2 name=j8_csvBtag
 type=2 name=j8_csvMvaBtag
@@ -683,6 +720,9 @@ type=2 name=j8_secVtxPt
 type=2 name=j8_secVtxM
 type=2 name=j8_secVtx3dL
 type=2 name=j8_secVtx3deL
+type=0 name=j8_full_wp_level
+type=0 name=j8_simple_wp_level
+type=0 name=j8_cutbased_wp_level
 type=2 name=j8_emfrac
 type=2 name=j8_hadfrac
 type=0 name=j8_ntk
@@ -742,6 +782,7 @@ type=2 name=j9_jerU_eta
 type=2 name=j9_beta
 type=2 name=j9_betaStar
 type=2 name=j9_betaStarClassic
+type=2 name=j9_pfloose
 type=2 name=j9_dR2Mean
 type=2 name=j9_csvBtag
 type=2 name=j9_csvMvaBtag
@@ -754,6 +795,9 @@ type=2 name=j9_secVtxPt
 type=2 name=j9_secVtxM
 type=2 name=j9_secVtx3dL
 type=2 name=j9_secVtx3deL
+type=0 name=j9_full_wp_level
+type=0 name=j9_simple_wp_level
+type=0 name=j9_cutbased_wp_level
 type=2 name=j9_emfrac
 type=2 name=j9_hadfrac
 type=0 name=j9_ntk
@@ -813,6 +857,7 @@ type=2 name=j10_jerU_eta
 type=2 name=j10_beta
 type=2 name=j10_betaStar
 type=2 name=j10_betaStarClassic
+type=2 name=j10_pfloose
 type=2 name=j10_dR2Mean
 type=2 name=j10_csvBtag
 type=2 name=j10_csvMvaBtag
@@ -825,6 +870,9 @@ type=2 name=j10_secVtxPt
 type=2 name=j10_secVtxM
 type=2 name=j10_secVtx3dL
 type=2 name=j10_secVtx3deL
+type=0 name=j10_full_wp_level
+type=0 name=j10_simple_wp_level
+type=0 name=j10_cutbased_wp_level
 type=2 name=j10_emfrac
 type=2 name=j10_hadfrac
 type=0 name=j10_ntk
@@ -884,6 +932,7 @@ type=2 name=j11_jerU_eta
 type=2 name=j11_beta
 type=2 name=j11_betaStar
 type=2 name=j11_betaStarClassic
+type=2 name=j11_pfloose
 type=2 name=j11_dR2Mean
 type=2 name=j11_csvBtag
 type=2 name=j11_csvMvaBtag
@@ -896,6 +945,9 @@ type=2 name=j11_secVtxPt
 type=2 name=j11_secVtxM
 type=2 name=j11_secVtx3dL
 type=2 name=j11_secVtx3deL
+type=0 name=j11_full_wp_level
+type=0 name=j11_simple_wp_level
+type=0 name=j11_cutbased_wp_level
 type=2 name=j11_emfrac
 type=2 name=j11_hadfrac
 type=0 name=j11_ntk
@@ -955,6 +1007,7 @@ type=2 name=j12_jerU_eta
 type=2 name=j12_beta
 type=2 name=j12_betaStar
 type=2 name=j12_betaStarClassic
+type=2 name=j12_pfloose
 type=2 name=j12_dR2Mean
 type=2 name=j12_csvBtag
 type=2 name=j12_csvMvaBtag
@@ -967,6 +1020,9 @@ type=2 name=j12_secVtxPt
 type=2 name=j12_secVtxM
 type=2 name=j12_secVtx3dL
 type=2 name=j12_secVtx3deL
+type=0 name=j12_full_wp_level
+type=0 name=j12_simple_wp_level
+type=0 name=j12_cutbased_wp_level
 type=2 name=j12_emfrac
 type=2 name=j12_hadfrac
 type=0 name=j12_ntk
@@ -1026,6 +1082,7 @@ type=2 name=j13_jerU_eta
 type=2 name=j13_beta
 type=2 name=j13_betaStar
 type=2 name=j13_betaStarClassic
+type=2 name=j13_pfloose
 type=2 name=j13_dR2Mean
 type=2 name=j13_csvBtag
 type=2 name=j13_csvMvaBtag
@@ -1038,6 +1095,9 @@ type=2 name=j13_secVtxPt
 type=2 name=j13_secVtxM
 type=2 name=j13_secVtx3dL
 type=2 name=j13_secVtx3deL
+type=0 name=j13_full_wp_level
+type=0 name=j13_simple_wp_level
+type=0 name=j13_cutbased_wp_level
 type=2 name=j13_emfrac
 type=2 name=j13_hadfrac
 type=0 name=j13_ntk
@@ -1097,6 +1157,7 @@ type=2 name=j14_jerU_eta
 type=2 name=j14_beta
 type=2 name=j14_betaStar
 type=2 name=j14_betaStarClassic
+type=2 name=j14_pfloose
 type=2 name=j14_dR2Mean
 type=2 name=j14_csvBtag
 type=2 name=j14_csvMvaBtag
@@ -1109,6 +1170,9 @@ type=2 name=j14_secVtxPt
 type=2 name=j14_secVtxM
 type=2 name=j14_secVtx3dL
 type=2 name=j14_secVtx3deL
+type=0 name=j14_full_wp_level
+type=0 name=j14_simple_wp_level
+type=0 name=j14_cutbased_wp_level
 type=2 name=j14_emfrac
 type=2 name=j14_hadfrac
 type=0 name=j14_ntk
@@ -1168,6 +1232,7 @@ type=2 name=j15_jerU_eta
 type=2 name=j15_beta
 type=2 name=j15_betaStar
 type=2 name=j15_betaStarClassic
+type=2 name=j15_pfloose
 type=2 name=j15_dR2Mean
 type=2 name=j15_csvBtag
 type=2 name=j15_csvMvaBtag
@@ -1180,6 +1245,9 @@ type=2 name=j15_secVtxPt
 type=2 name=j15_secVtxM
 type=2 name=j15_secVtx3dL
 type=2 name=j15_secVtx3deL
+type=0 name=j15_full_wp_level
+type=0 name=j15_simple_wp_level
+type=0 name=j15_cutbased_wp_level
 type=2 name=j15_emfrac
 type=2 name=j15_hadfrac
 type=0 name=j15_ntk

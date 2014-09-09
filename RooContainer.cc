@@ -554,9 +554,10 @@ void RooContainer::InputDataPoint(std::string var_name, int cat, double x, doubl
   if (cat>-1 && cat<ncat){
     std::string name = getcatName(var_name,cat);
     std::map<std::string, RooDataSet>::iterator it_var  = data_.find(name);
-    if (it_var == data_.end()) 
-      std::cerr << "WARNING -- RooContainer::InputDataPoint -- No DataSet named "<< name << std::endl;
-    else{
+    if (it_var != data_.end()) 
+//      std::cerr << "WARNING -- RooContainer::InputDataPoint -- No DataSet named "<< name << std::endl;
+//    else
+{
       double min_x = m_var_min_[name];
       double max_x = m_var_max_[name];
 
@@ -614,10 +615,11 @@ void RooContainer::InputSystematicPoint(std::string s_name, std::string sys_name
 	  
 	  std::map<std::string,RooDataSet>::iterator it_var  = data_.find(cat_name);
 	  
-	  if (it_var == data_.end()) 
-	    std::cerr << "WARNING -- RooContainer::InpusSystematicSet -- No DataSet named "<< cat_name << std::endl;
-	  
-	  else {
+	  if (it_var != data_.end()) 
+//	    std::cerr << "WARNING -- RooContainer::InpusSystematicSet -- No DataSet named "<< cat_name << std::endl;
+//	  
+//	  else 
+{
 	    
 	    // Safe to use this since creation of systematic set guaranteed to have come from an already existing dataset
 	    RooRealVar *ptr = m_data_var_ptr_[cat_name];
@@ -676,11 +678,11 @@ void RooContainer::InputSystematicSet(std::string s_name, std::string sys_name, 
 	  
 	  std::map<std::string,RooDataSet>::iterator it_var  = data_.find(cat_name);
 	  
-	  if (it_var == data_.end()) 
-	    std::cerr << "WARNING -- RooContainer::InpusSystematicSet -- No DataSet named "<< cat_name << std::endl;
-	  
-	  else {
-	    
+	  if (it_var != data_.end()) 
+//	    std::cerr << "WARNING -- RooContainer::InpusSystematicSet -- No DataSet named "<< cat_name << std::endl;
+//	  
+//	  else 
+{	    
 	    // Safe to use this since creation of systematic set guaranteed to have come from an already existing dataset
 	    RooRealVar *ptr = m_data_var_ptr_[cat_name];
 	    double min_x = m_var_min_[cat_name];
@@ -3293,9 +3295,10 @@ void RooContainer::AppendDataSet(std::string name, RooDataSet *extraData){
 
   // Find the DataSet
   std::map<std::string, RooDataSet>::iterator it_var  = data_.find(name);
-    if (it_var == data_.end()) 
-      std::cerr << "WARNING -- RooContainer::InputDataPoint -- No DataSet named "<< name << std::endl;
-    else {
+    if (it_var != data_.end()) 
+//      std::cerr << "WARNING -- RooContainer::InputDataPoint -- No DataSet named "<< name << std::endl;
+//    else 
+{
 
       (it_var->second).append(*extraData);
 
@@ -3305,9 +3308,10 @@ void RooContainer::AppendDataSet(std::string name, RooDataSet *extraData){
 void RooContainer::AppendTH1F(std::string name, TH1F *extraHist){
   
     std::map<std::string, TH1F>::iterator it_var  = m_th1f_.find(name);
-    if (it_var == m_th1f_.end()) 
-      std::cerr << "WARNING -- RooContainer::InputDataPoint -- No DataSet named "<< name << std::endl;
-    else (it_var->second).Add(extraHist);
+    if (it_var != m_th1f_.end()) 
+//      std::cerr << "WARNING -- RooContainer::InputDataPoint -- No DataSet named "<< name << std::endl;
+//    else
+      (it_var->second).Add(extraHist);
 
 }
 
