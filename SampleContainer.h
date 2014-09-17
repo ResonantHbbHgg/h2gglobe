@@ -28,7 +28,7 @@ class SampleContainer {
   
   bool isdata() const { return itype == 0; };
   bool isminlo() const { return itype == -125050; };
-  bool isanomaloushh() const { if(itype < 50000000000) return true; };
+  bool isanomaloushh() const { if(itype < -50000000000) return true; };
   float weight() const { return ( (extweight!=0 && *extweight > 0 && ! isdata() && ! isminlo() && ! isanomaloushh()) ? (*extweight)*intweight : intweight); };
   
   int itype;
