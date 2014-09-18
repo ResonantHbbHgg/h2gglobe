@@ -3049,8 +3049,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j1_btagSF",(float)-1001.);
         l.FillTree("j1_btagSFErrorUp",(float)-1001.);
         l.FillTree("j1_btagSFErrorDown",(float)-1001.);
-        l.FillTree("j1_btagEff",(float)-1001.);
-        l.FillTree("j1_btagEffError",(float)-1001.);
         l.FillTree("j1_bgenMatched", (int)-1001);
 		l.FillTree("j1_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j1_secVtxPt", (float)-1001.);
@@ -3234,8 +3232,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j2_btagSF",(float)-1001.);
         l.FillTree("j2_btagSFErrorUp",(float)-1001.);
         l.FillTree("j2_btagSFErrorDown",(float)-1001.);
-        l.FillTree("j2_btagEff",(float)-1001.);
-        l.FillTree("j2_btagEffError",(float)-1001.);
         l.FillTree("j2_bgenMatched", (int)-1001);
 		l.FillTree("j2_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j2_secVtxPt", (float)-1001.);
@@ -3460,9 +3456,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j3_btagSF",(float)-1001.);
         l.FillTree("j3_btagSFErrorUp",(float)-1001.);
         l.FillTree("j3_btagSFErrorDown",(float)-1001.);
-        l.FillTree("j3_btagEff",(float)-1001.);
-        l.FillTree("j3_btagEffError",(float)-1001.);
-        l.FillTree("j3_bgenMatched", (int)-1001);
 		l.FillTree("j3_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j3_secVtxPt", (float)-1001.);
 		l.FillTree("j3_secVtxM", (float)-1001.);
@@ -3634,8 +3627,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j4_btagSF",(float)-1001.);
         l.FillTree("j4_btagSFErrorUp",(float)-1001.);
         l.FillTree("j4_btagSFErrorDown",(float)-1001.);
-        l.FillTree("j4_btagEff",(float)-1001.);
-        l.FillTree("j4_btagEffError",(float)-1001.);
         l.FillTree("j4_bgenMatched", (int)-1001);
 		l.FillTree("j4_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j4_secVtxPt", (float)-1001.);
@@ -3808,8 +3799,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j5_btagSF",(float)-1001.);
         l.FillTree("j5_btagSFErrorUp",(float)-1001.);
         l.FillTree("j5_btagSFErrorDown",(float)-1001.);
-        l.FillTree("j5_btagEff",(float)-1001.);
-        l.FillTree("j5_btagEffError",(float)-1001.);
         l.FillTree("j5_bgenMatched", (int)-1001);
 		l.FillTree("j5_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j5_secVtxPt", (float)-1001.);
@@ -3982,8 +3971,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j6_btagSF",(float)-1001.);
         l.FillTree("j6_btagSFErrorUp",(float)-1001.);
         l.FillTree("j6_btagSFErrorDown",(float)-1001.);
-        l.FillTree("j6_btagEff",(float)-1001.);
-        l.FillTree("j6_btagEffError",(float)-1001.);
         l.FillTree("j6_bgenMatched", (int)-1001);
 		l.FillTree("j6_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j6_secVtxPt", (float)-1001.);
@@ -4156,8 +4143,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j7_btagSF",(float)-1001.);
         l.FillTree("j7_btagSFErrorUp",(float)-1001.);
         l.FillTree("j7_btagSFErrorDown",(float)-1001.);
-        l.FillTree("j7_btagEff",(float)-1001.);
-        l.FillTree("j7_btagEffError",(float)-1001.);
         l.FillTree("j7_bgenMatched", (int)-1001);
 		l.FillTree("j7_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j7_secVtxPt", (float)-1001.);
@@ -4330,8 +4315,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j8_btagSF",(float)-1001.);
         l.FillTree("j8_btagSFErrorUp",(float)-1001.);
         l.FillTree("j8_btagSFErrorDown",(float)-1001.);
-        l.FillTree("j8_btagEff",(float)-1001.);
-        l.FillTree("j8_btagEffError",(float)-1001.);
         l.FillTree("j8_bgenMatched", (int)-1001);
 		l.FillTree("j8_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j8_secVtxPt", (float)-1001.);
@@ -4504,8 +4487,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j9_btagSF",(float)-1001.);
         l.FillTree("j9_btagSFErrorUp",(float)-1001.);
         l.FillTree("j9_btagSFErrorDown",(float)-1001.);
-        l.FillTree("j9_btagEff",(float)-1001.);
-        l.FillTree("j9_btagEffError",(float)-1001.);
         l.FillTree("j9_bgenMatched", (int)-1001);
 		l.FillTree("j9_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j9_secVtxPt", (float)-1001.);
@@ -4678,8 +4659,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j10_btagSF",(float)-1001.);
         l.FillTree("j10_btagSFErrorUp",(float)-1001.);
         l.FillTree("j10_btagSFErrorDown",(float)-1001.);
-        l.FillTree("j10_btagEff",(float)-1001.);
-        l.FillTree("j10_btagEffError",(float)-1001.);
         l.FillTree("j10_bgenMatched", (int)-1001);
 		l.FillTree("j10_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j10_secVtxPt", (float)-1001.);
@@ -4852,8 +4831,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j11_btagSF",(float)-1001.);
         l.FillTree("j11_btagSFErrorUp",(float)-1001.);
         l.FillTree("j11_btagSFErrorDown",(float)-1001.);
-        l.FillTree("j11_btagEff",(float)-1001.);
-        l.FillTree("j11_btagEffError",(float)-1001.);
         l.FillTree("j11_bgenMatched", (int)-1001);
 		l.FillTree("j11_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j11_secVtxPt", (float)-1001.);
@@ -5026,8 +5003,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j12_btagSF",(float)-1001.);
         l.FillTree("j12_btagSFErrorUp",(float)-1001.);
         l.FillTree("j12_btagSFErrorDown",(float)-1001.);
-        l.FillTree("j12_btagEff",(float)-1001.);
-        l.FillTree("j12_btagEffError",(float)-1001.);
         l.FillTree("j12_bgenMatched", (int)-1001);
 		l.FillTree("j12_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j12_secVtxPt", (float)-1001.);
@@ -5200,8 +5175,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j13_btagSF",(float)-1001.);
         l.FillTree("j13_btagSFErrorUp",(float)-1001.);
         l.FillTree("j13_btagSFErrorDown",(float)-1001.);
-        l.FillTree("j13_btagEff",(float)-1001.);
-        l.FillTree("j13_btagEffError",(float)-1001.);
         l.FillTree("j13_bgenMatched", (int)-1001);
 		l.FillTree("j13_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j13_secVtxPt", (float)-1001.);
@@ -5374,8 +5347,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j14_btagSF",(float)-1001.);
         l.FillTree("j14_btagSFErrorUp",(float)-1001.);
         l.FillTree("j14_btagSFErrorDown",(float)-1001.);
-        l.FillTree("j14_btagEff",(float)-1001.);
-        l.FillTree("j14_btagEffError",(float)-1001.);
         l.FillTree("j14_bgenMatched", (int)-1001);
 		l.FillTree("j14_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j14_secVtxPt", (float)-1001.);
@@ -5548,8 +5519,6 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("j15_btagSF",(float)-1001.);
         l.FillTree("j15_btagSFErrorUp",(float)-1001.);
         l.FillTree("j15_btagSFErrorDown",(float)-1001.);
-        l.FillTree("j15_btagEff",(float)-1001.);
-        l.FillTree("j15_btagEffError",(float)-1001.);
         l.FillTree("j15_bgenMatched", (int)-1001);
 		l.FillTree("j15_nSecondaryVertices", (float)-1001.);
 		l.FillTree("j15_secVtxPt", (float)-1001.);
@@ -5578,10 +5547,12 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j15_softLeptIdEle95", (int)-1001);
 		l.FillTree("j15_genPt", (float)-1001);
     } // if 15 jets
-
+    std::cout << "TYPE = " << l.itype[l.current] << std::endl;
 // MC Truth radion signal information
-    if((l.itype[l.current] <= -100) && (l.itype[l.current] > -2000) )
+    if((l.itype[l.current] <= -100) && (l.itype[l.current] > -2000) || l.itype[l.current] < -500000000)
     {
+        std::cout << "SONO QUI 1" << std::endl;
+
 	    TLorentzVector * radion = (TLorentzVector *)l.gr_radion_p4->At(0);
 	    TLorentzVector * hgg = (TLorentzVector *)l.gr_hgg_p4->At(0);
 	    TLorentzVector * hbb = (TLorentzVector *)l.gr_hbb_p4->At(0);
