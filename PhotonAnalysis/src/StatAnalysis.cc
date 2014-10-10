@@ -5547,11 +5547,11 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 		l.FillTree("j15_softLeptIdEle95", (int)-1001);
 		l.FillTree("j15_genPt", (float)-1001);
     } // if 15 jets
-    std::cout << "TYPE = " << l.itype[l.current] << std::endl;
+//    std::cout << "TYPE = " << l.itype[l.current] << std::endl;
 // MC Truth radion signal information
     if((l.itype[l.current] <= -100) && (l.itype[l.current] > -2000) || l.itype[l.current] < -500000000)
     {
-        std::cout << "SONO QUI 1" << std::endl;
+//        std::cout << "SONO QUI 1" << std::endl;
 
 	    TLorentzVector * radion = (TLorentzVector *)l.gr_radion_p4->At(0);
 	    TLorentzVector * hgg = (TLorentzVector *)l.gr_hgg_p4->At(0);

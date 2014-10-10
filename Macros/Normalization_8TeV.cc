@@ -248,7 +248,7 @@ double Normalization_8TeV::GetVBFCorrection(double mass) {
 
 // Simple accessors
 TString Normalization_8TeV::GetProcess(int ty){
-  if (ty < -7999){  // We dont go below 80 GeV and Spin samples in the 100 range 
+  if (ty < -7999 && ty > -500000000 ){  // We dont go below 80 GeV and Spin samples in the 100 range 
     int process = -ty % 1000;
 		if (process == 0 || process == 50) return "ggh";
     else if (process == 10 ) return "ggh_minlo";
@@ -265,7 +265,8 @@ TString Normalization_8TeV::GetProcess(int ty){
 	std::cout << "Error -- No signal process known " << process << std::endl;
 	assert(0);
     }
-
+  } else if( ty < -500000000) {
+    return "ggh";
   } else {
     return SignalTypeMap[ty].first;
   }
