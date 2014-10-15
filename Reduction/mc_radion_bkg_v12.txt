@@ -1,0 +1,29 @@
+GluGluToHToGG_M-125_8TeV-powheg-pythia6 -1 version=150011 analyzer PhotonAnalysis photonanalysis.dat useDefaultVertex=1 common/reduction_settings_jan22rereco_rd_mc.dat
+VBF_HToGG_M-125_8TeV-powheg-pythia6 -1 version=150011 analyzer PhotonAnalysis photonanalysis.dat useDefaultVertex=1 common/reduction_settings_jan22rereco_rd_mc.dat
+WH_ZH_HToGG_M-125_8TeV-pythia6 -1 append=_zh version=150011 analyzer PhotonAnalysis photonanalysis.dat useDefaultVertex=1 keep_ZH.dat common/reduction_settings_jan22rereco_rd_mc.dat
+WH_ZH_HToGG_M-125_8TeV-pythia6 -1 append=_wh version=150011 analyzer PhotonAnalysis photonanalysis.dat useDefaultVertex=1 keep_WH.dat common/reduction_settings_jan22rereco_rd_mc.dat
+TTH_HToGG_M-125_8TeV-pythia6 -1 version=150011 analyzer PhotonAnalysis photonanalysis.dat useDefaultVertex=1 common/reduction_settings_jan22rereco_rd_mc.dat
+DiPhoQCD 3 version=150011 analyzer PhotonAnalysis photonanalysis.dat useDefaultVertex=1 common/reduction_settings_jan22rereco_rd_mc.dat
+DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball 4 version=150011 analyzer PhotonAnalysis photonanalysis.dat useDefaultVertex=1 common/reduction_settings_jan22rereco_rd_mc.dat
+LNuGG_enhanced_ISR_8TeV_madgraph 5 version=150011 analyzer PhotonAnalysis photonanalysis.dat useDefaultVertex=1 common/reduction_settings_jan22rereco_rd_mc.dat
+LNuGG_enhanced_FSR_8TeV_madgraph 6 version=150011 analyzer PhotonAnalysis photonanalysis.dat useDefaultVertex=1 common/reduction_settings_jan22rereco_rd_mc.dat
+ttGG_8TeV-whizard-pythia6 7 version=150011 analyzer PhotonAnalysis photonanalysis.dat useDefaultVertex=1 common/reduction_settings_jan22rereco_rd_mc.dat
+tGG_8TeV-whizard-pythia6 8 version=150011 analyzer PhotonAnalysis photonanalysis.dat useDefaultVertex=1 common/reduction_settings_jan22rereco_rd_mc.dat
+TTGJets_8TeV-madgraph 9 version=150011 analyzer PhotonAnalysis photonanalysis.dat useDefaultVertex=1 common/reduction_settings_jan22rereco_rd_mc.dat
+ZGToLLG_8TeV-madgraph 10 version=150011 analyzer PhotonAnalysis photonanalysis.dat useDefaultVertex=1 common/reduction_settings_jan22rereco_rd_mc.dat
+
+GJet_Pt-20to40_doubleEMEnriched_TuneZ2star_8TeV-pythia6  2 append=_pp version=150011 analyzer PhotonAnalysis photonanalysis.dat keep_pp.dat common/reduction_settings_jan22rereco_rd_mc.dat
+GJet_Pt-20to40_doubleEMEnriched_TuneZ2star_8TeV-pythia6  2 append=_pf version=150011 analyzer PhotonAnalysis photonanalysis.dat keep_pf.dat common/reduction_settings_jan22rereco_rd_mc.dat
+GJet_Pt-20to40_doubleEMEnriched_TuneZ2star_8TeV-pythia6  2 append=_ff version=150011 analyzer PhotonAnalysis photonanalysis.dat keep_ff.dat common/reduction_settings_jan22rereco_rd_mc.dat
+
+GJet_Pt40_doubleEMEnriched_TuneZ2star_8TeV_ext-pythia6  2 append=_pp version=150011 analyzer PhotonAnalysis photonanalysis.dat keep_pp.dat common/reduction_settings_jan22rereco_rd_mc.dat
+GJet_Pt40_doubleEMEnriched_TuneZ2star_8TeV_ext-pythia6  2 append=_pf version=150011 analyzer PhotonAnalysis photonanalysis.dat keep_pf.dat common/reduction_settings_jan22rereco_rd_mc.dat
+GJet_Pt40_doubleEMEnriched_TuneZ2star_8TeV_ext-pythia6  2 append=_ff version=150011 analyzer PhotonAnalysis photonanalysis.dat keep_ff.dat common/reduction_settings_jan22rereco_rd_mc.dat
+
+QCD_Pt-30to40_doubleEMEnriched_TuneZ2star_8TeV-pythia6  1 append=_pp version=150011 analyzer PhotonAnalysis photonanalysis.dat keep_pp.dat common/reduction_settings_jan22rereco_rd_mc.dat
+QCD_Pt-30to40_doubleEMEnriched_TuneZ2star_8TeV-pythia6  1 append=_pf version=150011 analyzer PhotonAnalysis photonanalysis.dat keep_pf.dat common/reduction_settings_jan22rereco_rd_mc.dat
+QCD_Pt-30to40_doubleEMEnriched_TuneZ2star_8TeV-pythia6  1 append=_ff version=150011 analyzer PhotonAnalysis photonanalysis.dat keep_ff.dat common/reduction_settings_jan22rereco_rd_mc.dat
+
+QCD_Pt-40_doubleEMEnriched_TuneZ2star_8TeV-pythia6  1 append=_pp version=150011 analyzer PhotonAnalysis photonanalysis.dat keep_pp.dat common/reduction_settings_jan22rereco_rd_mc.dat
+QCD_Pt-40_doubleEMEnriched_TuneZ2star_8TeV-pythia6  1 append=_pf version=150011 analyzer PhotonAnalysis photonanalysis.dat keep_pf.dat common/reduction_settings_jan22rereco_rd_mc.dat
+QCD_Pt-40_doubleEMEnriched_TuneZ2star_8TeV-pythia6  1 append=_ff version=150011 analyzer PhotonAnalysis photonanalysis.dat keep_ff.dat common/reduction_settings_jan22rereco_rd_mc.dat
