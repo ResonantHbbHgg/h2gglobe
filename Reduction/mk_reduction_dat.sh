@@ -4,7 +4,7 @@
 
 ### RADION SIGNAL
 #rm mc_radion_signal/*.dat
-./AnalysisScripts/mk_reduction_dat.py /store/caf/user/bmarzocc ${storedir}/mc mc_radion_signal.txt
+#./AnalysisScripts/mk_reduction_dat.py /store/caf/user/bmarzocc ${storedir}/mc mc_radion_signal.txt
 
 ### DATA
 #rm data2012_RERECO/*.dat
@@ -19,7 +19,8 @@
 #./AnalysisScripts/mk_reduction_dat.py - ${storedir}/mc/Summer12_RD1 mc_Summer12_RD1.txt
 #rm mc_Summer12_RD1_proxy/*.dat
 #./AnalysisScripts/mk_reduction_dat.py - ${storedir}/mc/Summer12_RD1 mc_Summer12_RD1_proxy.txt
-
+rm mc_radion_bbH_summer12_rd1/*dat.txt
+./AnalysisScripts/mk_reduction_dat.py /store/group/phys_higgs/resonant_HH/V15_00_12/bbH_HToGG_M-125_8TeV-Madgraph_LO_Summer12_DR53X-PU_RD1_START53_V7N-v1_AODSIM ${storedir}/mc mc_radion_bbH_summer12_rd1.txt
 
 
 #### OTHER OLD STUFF
