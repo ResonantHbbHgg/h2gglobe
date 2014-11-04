@@ -1,0 +1,144 @@
+intL=19706. histfile=tree.root output=eventsList.txt
+#should be 19712, 0.03% effect
+
+#
+# SM 
+#
+
+typ=-500110000   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_1d0_Yt_1d0_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_1d0_Yt_1d0_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000
+
+#
+# Scenario 1
+#
+
+typ=-500210000   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_2_Yt_1d0_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_2_Yt_1d0_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-512007500   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m20_Yt_0d75_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m20_Yt_0d75_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511507500   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m15_Yt_0d75_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m15_Yt_0d75_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511007500   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m10_Yt_0d75_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m10_Yt_0d75_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-500007500   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_0d0_Yt_0d75_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_0d0_Yt_0d75_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501007500   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_10_Yt_0d75_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_10_Yt_0d75_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501507500   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_15_Yt_0d75_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_15_Yt_0d75_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-502007500   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_20_Yt_0d75_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_20_Yt_0d75_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-512010000   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m20_Yt_1d0_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m20_Yt_1d0_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511510000   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m15_Yt_1d0_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m15_Yt_1d0_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511010000   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m10_Yt_1d0_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m10_Yt_1d0_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-500010000   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_0d0_Yt_1d0_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_0d0_Yt_1d0_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501010000   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_10_Yt_1d0_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_10_Yt_1d0_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501510000   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_15_Yt_1d0_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_15_Yt_1d0_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-502010000   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_20_Yt_1d0_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_20_Yt_1d0_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-512012500   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m20_Yt_1d25_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m20_Yt_1d25_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511512500   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m15_Yt_1d25_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m15_Yt_1d25_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511012500   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m10_Yt_1d25_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m10_Yt_1d25_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-500012500   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_0d0_Yt_1d25_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_0d0_Yt_1d25_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501012500   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_10_Yt_1d25_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_10_Yt_1d25_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501512500   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_15_Yt_1d25_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_15_Yt_1d25_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-502012500   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_20_Yt_1d25_c2_0d0 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_20_Yt_1d25_c2_0d0   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+
+#
+# Scenario 2
+#
+
+typ=-512007513   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m20_Yt_0d75_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m20_Yt_0d75_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511507513   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m15_Yt_0d75_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m15_Yt_0d75_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511007513   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m10_Yt_0d75_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m10_Yt_0d75_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-500007513   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_0d0_Yt_0d75_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_0d0_Yt_0d75_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501007513   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_10_Yt_0d75_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_10_Yt_0d75_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501507513   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_15_Yt_0d75_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_15_Yt_0d75_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-502007513   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_20_Yt_0d75_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_20_Yt_0d75_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-512010013   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m20_Yt_1d0_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m20_Yt_1d0_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511510013   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m15_Yt_1d0_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m15_Yt_1d0_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511010013   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m10_Yt_1d0_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m10_Yt_1d0_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-500010013   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_0d0_Yt_1d0_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_0d0_Yt_1d0_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+#typ=-501010013   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_10_Yt_1d0_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_10_Yt_1d0_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501510013   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_15_Yt_1d0_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_15_Yt_1d0_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-502010013   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_20_Yt_1d0_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_20_Yt_1d0_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-512012513   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m20_Yt_1d25_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m20_Yt_1d25_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511512513   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m15_Yt_1d25_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m15_Yt_1d25_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511012513   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m10_Yt_1d25_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m10_Yt_1d25_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+#typ=-500012513   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_0d0_Yt_1d25_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_0d0_Yt_1d25_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501012513   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_10_Yt_1d25_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_10_Yt_1d25_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501512513   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_15_Yt_1d25_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_15_Yt_1d25_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+#typ=-502012513   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_20_Yt_1d25_c2_m3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_20_Yt_1d25_c2_m3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-512007512   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m20_Yt_0d75_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m20_Yt_0d75_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511507512   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m15_Yt_0d75_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m15_Yt_0d75_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511007512   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m10_Yt_0d75_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m10_Yt_0d75_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-500007512   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_0d0_Yt_0d75_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_0d0_Yt_0d75_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501007512   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_10_Yt_0d75_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_10_Yt_0d75_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501507512   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_15_Yt_0d75_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_15_Yt_0d75_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-502007512   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_20_Yt_0d75_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_20_Yt_0d75_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-512010012   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m20_Yt_1d0_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m20_Yt_1d0_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511510012   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m15_Yt_1d0_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m15_Yt_1d0_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511010012   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m10_Yt_1d0_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m10_Yt_1d0_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-500010012   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_0d0_Yt_1d0_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_0d0_Yt_1d0_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501010012   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_10_Yt_1d0_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_10_Yt_1d0_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501510012   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_15_Yt_1d0_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_15_Yt_1d0_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-502010012   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_20_Yt_1d0_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_20_Yt_1d0_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-512012512   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m20_Yt_1d25_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m20_Yt_1d25_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511512512   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m15_Yt_1d25_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m15_Yt_1d25_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511012512   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m10_Yt_1d25_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m10_Yt_1d25_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+#typ=-500012512   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_0d0_Yt_1d25_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_0d0_Yt_1d25_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501012512   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_10_Yt_1d25_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_10_Yt_1d25_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501512512   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_15_Yt_1d25_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_15_Yt_1d25_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-502012512   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_20_Yt_1d25_c2_m2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_20_Yt_1d25_c2_m2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-512007502   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m20_Yt_0d75_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m20_Yt_0d75_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511507502   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m15_Yt_0d75_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m15_Yt_0d75_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511007502   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m10_Yt_0d75_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m10_Yt_0d75_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-500007502   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_0d0_Yt_0d75_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_0d0_Yt_0d75_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501007502   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_10_Yt_0d75_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_10_Yt_0d75_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501507502   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_15_Yt_0d75_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_15_Yt_0d75_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-502007502   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_20_Yt_0d75_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_20_Yt_0d75_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-512010002   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m20_Yt_1d0_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m20_Yt_1d0_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511510002   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m15_Yt_1d0_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m15_Yt_1d0_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511010002   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m10_Yt_1d0_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m10_Yt_1d0_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-500010002   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_0d0_Yt_1d0_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_0d0_Yt_1d0_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501010002   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_10_Yt_1d0_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_10_Yt_1d0_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501510002   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_15_Yt_1d0_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_15_Yt_1d0_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+#typ=-502010002   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_20_Yt_1d0_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_20_Yt_1d0_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-512012502   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m20_Yt_1d25_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m20_Yt_1d25_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511512502   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m15_Yt_1d25_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m15_Yt_1d25_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511012502   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m10_Yt_1d25_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m10_Yt_1d25_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+#typ=-500012502   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_0d0_Yt_1d25_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_0d0_Yt_1d25_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501012502   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_10_Yt_1d25_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_10_Yt_1d25_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501512502   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_15_Yt_1d25_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_15_Yt_1d25_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-502012502   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_20_Yt_1d25_c2_2_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_20_Yt_1d25_c2_2_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+#typ=-512007503   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m20_Yt_0d75_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m20_Yt_0d75_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511507503   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m15_Yt_0d75_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m15_Yt_0d75_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511007503   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m10_Yt_0d75_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m10_Yt_0d75_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-500007503   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_0d0_Yt_0d75_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_0d0_Yt_0d75_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+#typ=-501007503   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_10_Yt_0d75_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_10_Yt_0d75_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501507503   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_15_Yt_0d75_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_15_Yt_0d75_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-502007503   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_20_Yt_0d75_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_20_Yt_0d75_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-512010003   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m20_Yt_1d0_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m20_Yt_1d0_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511510003   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m15_Yt_1d0_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m15_Yt_1d0_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511010003   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m10_Yt_1d0_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m10_Yt_1d0_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-500010003   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_0d0_Yt_1d0_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_0d0_Yt_1d0_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501010003   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_10_Yt_1d0_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_10_Yt_1d0_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501510003   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_15_Yt_1d0_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_15_Yt_1d0_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-502010003   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_20_Yt_1d0_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_20_Yt_1d0_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-512012503   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m20_Yt_1d25_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m20_Yt_1d25_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511512503   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m15_Yt_1d25_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m15_Yt_1d25_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-511012503   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_m10_Yt_1d25_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_m10_Yt_1d25_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+#typ=-500012503   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_0d0_Yt_1d25_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_0d0_Yt_1d25_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501012503   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_10_Yt_1d25_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_10_Yt_1d25_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-501512503   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_15_Yt_1d25_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_15_Yt_1d25_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+typ=-502012503   ind=1 draw=1  Nam=HH_bbaa_8TeV_Lam_20_Yt_1d25_c2_3_v2 CaDir=/store/user/zghiche/hbbhgg/H2GGLOBE/Radion/reduced/radion_reduction_v12/mc/HH_bbaa_8TeV_Lam_20_Yt_1d25_c2_3_v2   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+
+#
+# Branches to use
+#
+inputBranches minimal_analysis_input_Radion.dat
+inputBranches minimal_statanalysis_input.dat
+inputBranches minimal_leptmetanalysis_input.dat
+
+#treevariables massfac_mva_binned/unbinned_datacard_trees.dat
+treevariables common/RadionTree.dat
+cuts jetanalysis/cuts_vbfcutb.dat
+
+## define analyses to run
+##   a library containing the class dictionary has loaded before parsing the
+##   configuration file
+## syntax:
+##   analyzer <class_name> <config_file>
+##
+## analyzer PhotonAnalysis photonanalysis.dat
+analyzer StatAnalysis photonanalysis.dat analysis_settings_Radion.dat statanalysis_Radion.dat jetanalysis/cutbvbftag.dat bkgPolOrderByCat=5,5,5,5,4,4,3,3 saveDatacardTrees_=0 dumpAscii=0 dumpMcAscii=0 scaleClusterShapes=1 scaleR9Only=1 scaleR9ForCicOnly=1 fillOptTree=1 useDefaultVertex=1 mvasetup_Radion.dat
