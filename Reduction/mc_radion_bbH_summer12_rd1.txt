@@ -1,0 +1,1 @@
+bbHtoGG_AODSIM_RD -1 version=150011 analyzer PhotonAnalysis photonanalysis.dat useDefaultVertex=1 common/reduction_settings_jan22rereco_rd_mc.dat
