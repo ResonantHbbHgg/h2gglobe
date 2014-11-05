@@ -265,8 +265,6 @@ TString Normalization_8TeV::GetProcess(int ty){
 	std::cout << "Error -- No signal process known " << process << std::endl;
 	assert(0);
     }
-  } else if( ty < -500000000) {
-    return "ggh";
   } else {
     return SignalTypeMap[ty].first;
   }
