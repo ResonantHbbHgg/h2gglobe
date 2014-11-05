@@ -1,4 +1,4 @@
-intL=19706. histfile=tree.root output=eventsList.txt
+intL=19712. histfile=tree.root output=eventsList.txt
 #should be 19712, 0.03% effect
 
 #
@@ -18,29 +18,31 @@ intL=19706. histfile=tree.root output=eventsList.txt
 #typ=-125200 ind=4 draw=1   Nam=wzh_m125_8TeV_wh   CaDir=/store/group/phys_higgs/resonant_HH/V15_00_12/reduced/radion_reduction_v12/mc/WH_ZH_HToGG_M-125_8TeV-pythia6_wh   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
 #typ=-125300 ind=4 draw=1   Nam=wzh_m125_8TeV_zh   CaDir=/store/group/phys_higgs/resonant_HH/V15_00_12/reduced/radion_reduction_v12/mc/WH_ZH_HToGG_M-125_8TeV-pythia6_zh   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
 #typ=-1 ind=3 draw=1   Nam=tth_m125_8TeV   CaDir=/store/group/phys_higgs/resonant_HH/V15_00_12/reduced/radion_reduction_v12/mc/TTH_HToGG_M-125_8TeV-pythia6   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+#typ=-150 ind=1 draw=1   Nam=bbh_m125_8TeV   CaDir=/store/group/phys_higgs/resonant_HH/V15_00_12/reduced/radion_reduction_v12/mc/bbHtoGG_RD   red=0 lum=1000000.0   xsec=0.000464   kfac=1.000000   scal=1.000000
 
 typ=-500   ind=92 draw=1  Nam=ggHH_8TeV CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/GluGluToHHTo2B2G_M-125_8TeV-madgraph-pythia6    red=0 lum=1000000.0   xsec=0.0000212   kfac=1.000000 
 
 #
 # Radion Signal
 # Cross sections taken from https://twiki.cern.ch/twiki/bin/viewauth/CMS/HHtoGammaGammabb#MC_signal_simulation for radion and prep (http://cms.cern.ch/iCMS/jsp/mcprod/admin/requestmanagement.jsp?dsn=GravitonToHH_2Gamma_2b_M-*&campid=Summer12) for graviton
+# kfactors for 300, 500 and 700 samples are here to fix by hand the merging of the two samples into one, weights are (Processed Events(which for redu_12 is correct)) / (sample A + sample B)
 
-#typ=-301 ind=1 draw=1   Nam=Radion_m300_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
-#typ=-501 ind=1 draw=1   Nam=Radion_m500_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHHTo2G2B_M-500_TuneZ2star_8TeV-nm-madgraph   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
-#typ=-701 ind=1 draw=1   Nam=Radion_m700_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHHTo2G2B_M-700_TuneZ2star_8TeV-nm-madgraph   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000
+#typ=-301 ind=1 draw=1   Nam=Radion_m300_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHHTo2G2B_M-300_TuneZ2star_8TeV-nm-madgraph   red=0 lum=1000000.0   xsec=-1.0   kfac=0.5000125003125078   scal=1.000000 
+#typ=-501 ind=1 draw=1   Nam=Radion_m500_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHHTo2G2B_M-500_TuneZ2star_8TeV-nm-madgraph   red=0 lum=1000000.0   xsec=-1.0   kfac=0.4999874990624297   scal=1.000000 
+#typ=-701 ind=1 draw=1   Nam=Radion_m700_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHHTo2G2B_M-700_TuneZ2star_8TeV-nm-madgraph   red=0 lum=1000000.0   xsec=-1.0   kfac=0.5000125015626954   scal=1.000000
 #typ=-1001 ind=1 draw=1   Nam=Radion_m1000_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHHTo2G2B_M-1000_TuneZ2star_8TeV-nm-madgraph   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
 #typ=-1501 ind=1 draw=1   Nam=Radion_m1500_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHHTo2G2B_M-1500_TuneZ2star_8TeV-nm-madgraph   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
 #
 #typ=-271 ind=1 draw=1   Nam=Radion_m270_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHH_2Gamma_2b_M-270_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
-#typ=-301 ind=1 draw=1   Nam=Radion_m300_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHH_2Gamma_2b_M-300_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
+#typ=-301 ind=1 draw=1   Nam=Radion_m300_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHH_2Gamma_2b_M-300_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=1000000.0   xsec=-1.0   kfac=0.5000125003125078   scal=1.000000 
 #typ=-351 ind=1 draw=1   Nam=Radion_m350_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHH_2Gamma_2b_M-350_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
 #typ=-401 ind=1 draw=1   Nam=Radion_m400_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHH_2Gamma_2b_M-400_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
 #typ=-451 ind=1 draw=1   Nam=Radion_m450_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHH_2Gamma_2b_M-450_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
-#typ=-501 ind=1 draw=1   Nam=Radion_m500_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHH_2Gamma_2b_M-500_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
+#typ=-501 ind=1 draw=1   Nam=Radion_m500_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHH_2Gamma_2b_M-500_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=1000000.0   xsec=-1.0   kfac=0.4999874990624297   scal=1.000000 
 #typ=-551 ind=1 draw=1   Nam=Radion_m550_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHH_2Gamma_2b_M-550_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
 #typ=-601 ind=1 draw=1   Nam=Radion_m600_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHH_2Gamma_2b_M-600_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
 #typ=-651 ind=1 draw=1   Nam=Radion_m650_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHH_2Gamma_2b_M-650_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
-#typ=-701 ind=1 draw=1   Nam=Radion_m700_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHH_2Gamma_2b_M-700_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
+#typ=-701 ind=1 draw=1   Nam=Radion_m700_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHH_2Gamma_2b_M-700_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=1000000.0   xsec=-1.0   kfac=0.5000125015626954   scal=1.000000 
 #typ=-801 ind=1 draw=1   Nam=Radion_m800_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHH_2Gamma_2b_M-800_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
 #typ=-901 ind=1 draw=1   Nam=Radion_m900_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHH_2Gamma_2b_M-900_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
 #typ=-1101 ind=1 draw=1   Nam=Radion_m1100_8TeV   CaDir=/store/user/hebda/h2gglobe/reduced/radion_reduction_v12/mc/RadionToHH_2Gamma_2b_M-1100_TuneZ2star_8TeV-Madgraph_pythia6   red=0 lum=1000000.0   xsec=-1.0   kfac=1.000000   scal=1.000000 
