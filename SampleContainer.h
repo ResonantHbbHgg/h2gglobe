@@ -4,9 +4,6 @@
 #include <string>
 #include <map>
 #include <vector>
-#include <stdio.h>
-#include <iostream>
-#include <algorithm>
 
 class SampleContainer {
 	
