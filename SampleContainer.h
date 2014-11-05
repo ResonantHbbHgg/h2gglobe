@@ -4,6 +4,9 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
 
 class SampleContainer {
 	
@@ -28,8 +31,8 @@ class SampleContainer {
   
   bool isdata() const { return itype == 0; };
   bool isminlo() const { return itype == -125050; };
-  bool isanomaloushh() const { return (itype < -500000000); };
-  float weight() const { return ( (extweight!=0 && *extweight > 0 && ! isdata() && ! isminlo() && ! isanomaloushh()) ? (*extweight)*intweight : intweight); };
+  float weight() const { 
+  return ( (extweight!=0 && *extweight > 0 && ! isdata() && ! isminlo()) ? (*extweight)*intweight : intweight); };
   
   int itype;
   int ind;
